@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Checker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+
+    <main class="page">
+
+        <div class="card">
+
+            <!-- Header -->
+            <div class="card-header">
+                <p class="eyebrow">project 01</p>
+                <h1 class="title">Name <span class="acc">Checker</span></h1>
+                <p class="subtitle">Is your name long enough? Let's find out.</p>
+            </div>
+
+            <!-- Input area -->
+            <div class="input-area">
+                <div class="input-wrap" id="inputWrap">
+                    <input
+                        type="text"
+                        id="text_in"
+                        class="name-input"
+                        placeholder="Type your name…"
+                        maxlength="32"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                    <div class="char-bar">
+                        <div class="char-fill" id="charFill"></div>
+                    </div>
+                </div>
+
+                <div class="input-meta">
+                    <span class="char-count" id="charCount">0 / 4 characters</span>
+                    <span class="validity" id="validity"></span>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <button class="submit-btn" id="submitBtn" disabled>
+                <span id="btnLabel">Enter a name first</span>
+            </button>
+
+            <!-- Result -->
+            <div class="result hidden" id="result">
+                <div class="result-icon" id="resultIcon">✓</div>
+                <p class="result-text" id="resultText">That's a great name!</p>
+                <button class="try-again" id="tryAgain">Try another →</button>
+            </div>
+
+        </div>
+
+        <p class="footer-note">My first ever website — rebuilt.</p>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D0015E — Abdalla</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <a href="../portfolio-site/index.html" class="back-link">← Portfolio</a>
+    <span class="top-bar-left">Luleå University of Technology</span>
+    <span class="nav-course">D0015E</span>
+</header>
+
+<div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-eyebrow">Computer Science &amp; Engineering Fundamentals</div>
+        <h1 class="hero-title">D0015E</h1>
+        <p class="hero-sub">
+            A broad survey course — Hammurabi strategy simulation, Arduino embedded programming,
+            LaTeX typesetting, algorithm complexity analysis, and engineering ethics.
+            Five modules, one course.
+        </p>
+        <div class="hero-pills">
+            <span class="tag">Hammurabi</span>
+            <span class="tag">Arduino</span>
+            <span class="tag">LaTeX</span>
+            <span class="tag">Algorithm Analysis</span>
+            <span class="tag">Engineering Ethics</span>
+        </div>
+    </div>
+
+    <!-- ═══════════════ MODULE A: HAMMURABI ═══════════════ -->
+    <span class="section-label">Module A — Hammurabi Simulation Game</span>
+
+    <div class="lab-intro">
+        <h3>Govern ancient Sumeria for 10 years</h3>
+        <p>
+            Hammurabi is one of the earliest computer games — a resource-allocation strategy game
+            named after the 2nd-millennium BC Babylonian king. Each year you decide how many acres
+            to buy or sell, how much grain to feed your people, and how much to plant.
+            Survive 10 years and your rule is evaluated against history's great leaders.
+        </p>
+    </div>
+
+    <div class="projects lab2-projects">
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Module A · Hammurabi</span>
+                    <div class="card-title">Strategy Simulation <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <p class="card-desc">
+                        Full browser port of the classic Hammurabi game. Govern for 10 years —
+                        allocate grain, feed your people, plant crops, buy and sell land.
+                        Starve too many or let land per person drop and the people overthrow you.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Resource allocation</span>
+                        <span class="tag">Random events</span>
+                        <span class="tag">Strategy</span>
+                        <span class="tag">1973 classic</span>
+                    </div>
+                </div>
+                <div class="card-header-right">
+                    <a href="hammurabi.html" target="_blank" class="demo-btn demo-btn-sm ext-link-btn">↗ Standalone</a>
+                    <button class="code-toggle" onclick="toggleCode(this)">View Rules</button>
+                </div>
+            </div>
+
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo — Hammurabi</div>
+                <div class="hamm-wrap">
+                    <!-- Game display -->
+                    <div class="hamm-display" id="hammDisplay">
+                        <div class="hamm-title">⚔ HAMMURABI</div>
+                        <div class="hamm-subtitle">Govern ancient Sumeria for 10 years</div>
+                        <button class="demo-btn" onclick="hammStart()" id="hammStartBtn" style="margin-top:16px">Begin Your Reign</button>
+                    </div>
+
+                    <!-- Stats panel -->
+                    <div class="hamm-stats" id="hammStats" style="display:none">
+                        <div class="hamm-year-badge" id="hammYearBadge">Year 1</div>
+                        <div class="hamm-stat-grid">
+                            <div class="hamm-stat"><span>Population</span><strong id="hsPop">100</strong></div>
+                            <div class="hamm-stat"><span>Grain</span><strong id="hsGrain">2800</strong></div>
+                            <div class="hamm-stat"><span>Acres</span><strong id="hsAcres">1000</strong></div>
+                            <div class="hamm-stat"><span>Land price</span><strong id="hsPrice">18 bu/ac</strong></div>
+                            <div class="hamm-stat"><span>Starved last year</span><strong id="hsStarved" class="hs-bad">0</strong></div>
+                            <div class="hamm-stat"><span>Immigrants</span><strong id="hsImmig" class="hs-good">0</strong></div>
+                        </div>
+
+                        <div class="hamm-report" id="hammReport"></div>
+
+                        <div class="hamm-input-section" id="hammInputSection">
+                            <div class="hamm-input-row">
+                                <label class="hamm-label">Acres to buy <span class="hamm-hint">(negative = sell)</span></label>
+                                <input class="demo-input hamm-input" type="number" id="hBuy" value="0">
+                            </div>
+                            <div class="hamm-input-row">
+                                <label class="hamm-label">Bushels to feed people <span class="hamm-hint">(20 per person)</span></label>
+                                <input class="demo-input hamm-input" type="number" id="hFeed" value="0">
+                            </div>
+                            <div class="hamm-input-row">
+                                <label class="hamm-label">Acres to plant <span class="hamm-hint">(1 bushel/acre, 10 acres/person)</span></label>
+                                <input class="demo-input hamm-input" type="number" id="hPlant" value="0">
+                            </div>
+                            <button class="demo-btn hamm-go" onclick="hammTurn()">Make It So!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rules tab -->
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this,'hRules')">Rules</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'hStrategy')">Strategy</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'hAbout')">About</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'hJS')">hammurabi.js</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'hHTML')">hammurabi.html</button>
+                </div>
+                <div id="hRules" style="padding:20px;font-family:var(--font-m);font-size:0.8rem;color:var(--muted);line-height:1.8;font-weight:300">
+                    <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px">
+                        <li>The game lasts <strong style="color:var(--text)">10 years</strong> — one decision per year.</li>
+                        <li>Each year: buy or sell acres, feed your people, and plant crops.</li>
+                        <li>Each person needs <strong style="color:var(--text)">20 bushels</strong> of grain per year to survive.</li>
+                        <li>Each person can till at most <strong style="color:var(--text)">10 acres</strong>.</li>
+                        <li>Each acre needs <strong style="color:var(--text)">1 bushel</strong> of seed to plant.</li>
+                        <li>Land price fluctuates from <strong style="color:var(--text)">17 to 26 bushels per acre</strong>.</li>
+                        <li>If too many people starve the people will <strong style="color:var(--text)">overthrow you</strong>.</li>
+                        <li>Survive all 10 years and your rule is ranked against great figures in history.</li>
+                    </ol>
+                </div>
+                <div id="hStrategy" class="hidden" style="padding:20px;font-family:var(--font-m);font-size:0.8rem;color:var(--muted);line-height:1.8;font-weight:300">
+                    <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px">
+                        <li><strong style="color:var(--text)">First: feed everyone.</strong> Allocate 20 bushels × population to food. Starvation loses the game.</li>
+                        <li><strong style="color:var(--text)">Second: plant all land.</strong> You need 1 bushel per acre and 1 person per 10 acres. Plant as much as you can afford.</li>
+                        <li><strong style="color:var(--text)">Third: buy land cheap.</strong> If price is 17–19, consider buying. Above 23, consider selling.</li>
+                        <li>A plague can halve your population — keep grain reserves for bad harvests.</li>
+                        <li>Rats eat 0–7% of grain randomly each year — factor this into your planning.</li>
+                    </ol>
+                </div>
+                <div id="hAbout" class="hidden" style="padding:20px;font-family:var(--font-m);font-size:0.8rem;color:var(--muted);line-height:1.8;font-weight:300">
+                    <p>Hammurabi (originally "HMRABI") was written in BASIC around 1968–1973. It appeared in <em>101 BASIC Computer Games</em> (1973) by David Ahl and became one of the most widely distributed early computer games.</p>
+                    <p style="margin-top:8px">It is widely considered the grandfather of resource management and strategy games — a direct ancestor of games like Civilization, SimCity, and Dwarf Fortress.</p>
+                    <p style="margin-top:8px">Hammurabi himself was the sixth king of Babylon (c. 1810–1750 BC), famous for the Code of Hammurabi — one of the oldest and most complete written legal codes.</p>
+                </div>
+                <div id="hJS" class="hidden"><div class="code-filename">hammurabi.js</div>
+<pre><code class="language-javascript">// This is the game state.
+
+var gameState;
+
+gameState = {
+	year : 0,
+	starved : 0,
+	newcomers : 0,
+	population : 0,
+	acres : 0,
+	bushels : 0,
+	harvest : 0,
+	rats : 0,
+	price : 0,
+	internalAcres : 0,
+	internalBushels : 0,
+	totalStarved: 0
+};
+
+/* Returns the minimum of the three input values. */
+
+function minimum(firstValue, secondValue, thirdValue) {
+	if (firstValue &lt;= secondValue) {
+		if (firstValue &lt;= thirdValue) {
+			return firstValue;
+		} else {
+			return thirdValue;
+		}
+	} else if (secondValue &lt;= thirdValue) {
+		return secondValue;
+	} else {
+		return thirdValue;
+	}
+}
+
+/* Returns the slider which has the id sliderId. */
+
+function getSlider(sliderId) {
+	return document.getElementById(sliderId);
+}
+
+/* Outputs the value of the slider with the id sliderId
+   to the element with the id outputElementId. */
+
+function updateSliderValueOutput(sliderId, outputElementId) {
+	document.getElementById(outputElementId).innerHTML = document.getElementById(sliderId).value;
+}
+
+/* Helper function. 
+
+function helperFunction(sliderId, outputElementId) {
+	var slider = document.getElementById(sliderId);
+	outputElement = document.getElementById(outputElementId);
+	outputElement.innerHTML = " " + slider.min + " " + slider.max + " " + slider.step;
+}*/
+
+/* Outputs the momentary game state. */
+
+function writeGameState() {
+	document.getElementById("year").innerHTML = "Rapport för år: " + gameState.year;
+	document.getElementById("starved").innerHTML = "Ihjälsvultna: " + gameState.starved;
+	document.getElementById("newcomers").innerHTML = "Inflyttade: " + gameState.newcomers;
+	document.getElementById("population").innerHTML = "Befolkning: " + gameState.population;
+	document.getElementById("acres").innerHTML = "Tunnland: " + gameState.acres;
+	document.getElementById("bushels").innerHTML = "Skäppor: " + gameState.bushels;
+	document.getElementById("harvest").innerHTML = "Skörd: " + gameState.harvest;
+	document.getElementById("rats").innerHTML = "Råttor: " + gameState.rats;
+	document.getElementById("price").innerHTML = "Pris: " + gameState.price;
+
+	updateSliderValueOutput("sliderAcrestosellbuy", "outputAcrestosellbuy");
+	updateSliderValueOutput("sliderFeedpeople", "outputFeedpeople");
+	updateSliderValueOutput("sliderPlantwithseed", "outputPlantwithseed");
+}
+
+/* Sets and outputs the initial game state. */
+
+function gameStart() {
+	gameState.year = 1;
+	gameState.starved = 0;
+	gameState.newcomers = 5;
+	gameState.population = 100;
+	gameState.acres = 1000;
+	gameState.bushels = 2800;
+	gameState.harvest = 3;
+	gameState.rats = 200;
+	gameState.price = randomNumber(10) + 16;
+	gameState.internalAcres = gameState.acres;
+	gameState.internalBushels = gameState.bushels;
+	gameState.totalStarved = 0;
+
+	/* We have to set value after we set min and max,
+        because if min and max are set after value has
+        been set the Google Chrome browser changes value
+        again which leads to a bug in the game.
+        We could not figure out the concrete operation
+        of the Google Chrome browser which leads to this
+        behaviour, despite extensive search on the internet. 
+        Issue found out: 12/15/2011 */
+
+	var acresSlider = getSlider("sliderAcrestosellbuy");
+	acresSlider.min = -gameState.acres;
+	acresSlider.max = Math.floor(gameState.internalBushels / gameState.price);
+	acresSlider.value = 0;
+	acresSlider.step = 1;
+
+	var feedSlider = getSlider("sliderFeedpeople");
+	feedSlider.min = 0;
+	feedSlider.max = gameState.internalBushels;
+	feedSlider.value = 0;
+	feedSlider.step = 1;
+
+	var plantSlider = getSlider("sliderPlantwithseed");
+	plantSlider.min = 0;
+	plantSlider.max = minimum(gameState.internalAcres, 10 * gameState.population, gameState.internalBushels);
+	plantSlider.value = 0;
+	plantSlider.step = 1;
+
+	writeGameState();
+}
+
+/* Takes the value of the slider for acres to sell or buy
+	and adds it to the acres value. The result is stored
+    in internal acres. */
+
+function updateInternalAcres() {
+	gameState.internalAcres = gameState.acres + parseInt(getSlider("sliderAcrestosellbuy").value);
+}
+
+/* Takes the values of the sliders for acres to sell or buy,
+	feed people and plant with seed, subtracts them from
+    bushels and stores the result in internal bushels. */
+
+function updateInternalBushels() {
+	var acresToSellOrBuy = parseInt(getSlider("sliderAcrestosellbuy").value);
+	var bushelsForFeeding = parseInt(getSlider("sliderFeedpeople").value);
+	var bushelsForPlanting = parseInt(getSlider("sliderPlantwithseed").value);
+	gameState.internalBushels = gameState.bushels - acresToSellOrBuy * gameState.price - bushelsForFeeding - bushelsForPlanting;
+}
+
+/* Updates the max property of the acres to buy or sell slider. */
+
+function updateMaximumAcresToSellBuy() {
+	var acresSlider = getSlider("sliderAcrestosellbuy");
+	acresSlider.max = Math.floor(gameState.internalBushels / gameState.price) + parseInt(acresSlider.value);
+}
+
+/* Updates the max property of the feed people slider. */
+
+function updateMaximumFeedPeople() {
+	var feedSlider = getSlider("sliderFeedpeople");
+	feedSlider.max = gameState.internalBushels + parseInt(feedSlider.value);
+}
+
+/* Updates the max property of the plant with seed slider. */
+
+function updateMaximumPlantWithSeed() {
+	var plantSlider = getSlider("sliderPlantwithseed");
+	plantSlider.max = minimum(gameState.internalAcres, 10 * gameState.population, gameState.internalBushels + parseInt(plantSlider.value));
+}
+
+/* This function gets called when the value of the slider
+	which determines how much acres will be bought or sold
+	is changed.	
+	It changes the value of the internal acres as following:	
+	- minus button: decrement the internal acres by 1
+	- plus button: increment the internal acres by 1
+	- slider: add the new value to internal acres	
+	The values of the internal bushels, the maximum of
+	feed people and plant with seed are also changed. */
+
+function onChangeAcres(elementId) {
+	if (elementId === "minusbuttonAcrestosellbuy") {
+		getSlider("sliderAcrestosellbuy").value = parseInt(getSlider("sliderAcrestosellbuy").value) - 1;
+	} else if (elementId === "plusbuttonAcrestosellbuy") {
+		getSlider("sliderAcrestosellbuy").value = parseInt(getSlider("sliderAcrestosellbuy").value) + 1;
+	}
+	updateSliderValueOutput("sliderAcrestosellbuy", "outputAcrestosellbuy");
+	updateInternalAcres();
+	updateInternalBushels();
+	updateMaximumFeedPeople();
+	updateMaximumPlantWithSeed();
+}
+
+/* This function gets called when the value of the slider
+	which determines how much bushels will be used for feeding
+	is changed.	
+	The values of the internal bushels, the maximum of
+   acres to sell or buy and plant with seed are changed. */
+
+function onChangeFeeding(elementId) {
+	if (elementId === "minusbuttonFeedpeople") {
+		getSlider("sliderFeedpeople").value = parseInt(getSlider("sliderFeedpeople").value) - 1;
+	} else if (elementId === "plusbuttonFeedpeople") {
+		getSlider("sliderFeedpeople").value = parseInt(getSlider("sliderFeedpeople").value) + 1;
+	}
+	updateSliderValueOutput("sliderFeedpeople", "outputFeedpeople");
+	updateInternalBushels();
+	updateMaximumAcresToSellBuy();
+	updateMaximumPlantWithSeed();
+}
+
+/* This function gets called when the value of the slider
+	which determines how much bushels will be used for planting
+	is changed.	
+	The values of the internal bushels, the maximum of
+	acres to sell or buy and feed people are changed. */
+
+function onChangePlanting(elementId) {
+	if (elementId === "minusbuttonPlantwithseed") {
+		getSlider("sliderPlantwithseed").value = parseInt(getSlider("sliderPlantwithseed").value) - 1;
+	} else if (elementId === "plusbuttonPlantwithseed") {
+		getSlider("sliderPlantwithseed").value = parseInt(getSlider("sliderPlantwithseed").value) + 1;
+	}
+	updateSliderValueOutput("sliderPlantwithseed", "outputPlantwithseed");
+	updateInternalBushels();
+	updateMaximumAcresToSellBuy();
+	updateMaximumFeedPeople();
+}
+
+/* Returns a random number between 1 and maxValue. */
+
+function randomNumber(maxValue) {
+	var number = Math.floor(Math.random() * maxValue + 1);
+	return number;
+}
+
+/* Returns 15% of the time the boolean value true
+   and 85% of the time the boolean value false. */
+
+function plague() {
+	var plagueOccurs;
+	if (randomNumber(100) &lt;= 15) {
+		plagueOccurs = true;
+	} else {
+		plagueOccurs = false;
+	}
+	return plagueOccurs;
+}
+
+/* Returns 40% of the time the boolean value true
+   and 60% of the time the boolean value false. */
+
+function ratsProblem() {
+	var ratsProblemOccurs;
+	if (randomNumber(10) &lt;= 4) {
+		ratsProblemOccurs = true;
+	} else {
+		ratsProblemOccurs = false;
+	}
+	return ratsProblemOccurs;
+}
+
+/* If there is a problem with rats, they eat 1/10, 2/10 or
+   3/10 of the bushels. Otherwise they eat none. */
+
+function bushelsEatenByRats() {
+	var bushelsEaten;
+	if (ratsProblem()) {
+		bushelsEaten = Math.floor((randomNumber(3) / 10) * gameState.bushels);
+	} else {
+		bushelsEaten = 0;
+	}
+	return bushelsEaten; 
+}
+
+/* Returns a random number between 1 and 8. */
+
+function harvestPerAcre() {
+	var harvest = randomNumber(8);
+	return harvest;
+}
+
+/* Calculates how many people starved, depending on
+	the number of bushels which were used to feed
+	people. */
+
+function calculateStarvedPeople() {
+	var numberPeopleStarved = gameState.population - Math.floor(parseInt(getSlider("sliderFeedpeople").value) / 20);
+	if (numberPeopleStarved &lt;= 0) {
+		return 0;
+	} else {
+		return numberPeopleStarved;
+	}
+}
+
+/* Calculates the number of newcomers, depending on
+	the internal number of acres, internal number of
+	bushels and the size of the population. 	
+	Formula:
+	(20 * number of acres you have + amount of grain you have in storage) / (100 * population) + 1*/
+
+function calculateNewcomers() {
+	return Math.floor((20 * gameState.internalAcres + gameState.internalBushels) / (100 * gameState.population)) + 1;
+}
+
+/* The function returns true if more than 45% of the
+	original population starved. Otherwise it returns
+	false. */
+
+function tooManyPeopleStarved() {
+	var originalPopulation = gameState.population + gameState.starved - gameState.newcomers;
+	if (Math.floor((gameState.starved / originalPopulation) * 100) &gt; 45) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/* If the maximum number of turns is not fulfilled yet and
+	not too many people starved, the new game state is being
+	calculated and outputted.
+	If too many people starved the user is being informed
+	that he is kicked out of office.
+	Otherwise the end-page is shown which informs the user
+	about his performance. */
+
+function finishTurn() {
+	if (plague()) {
+		alert("En hemsk pest slår till!\n" + "Halva befolkningen dör.");
+		gameState.population = Math.floor(gameState.population / 2);
+	}
+	gameState.starved = calculateStarvedPeople();
+	gameState.totalStarved = gameState.totalStarved + gameState.starved;
+	gameState.newcomers = calculateNewcomers();
+	gameState.population = gameState.population - gameState.starved + gameState.newcomers;
+	gameState.harvest = harvestPerAcre();
+	gameState.bushels = gameState.internalBushels + gameState.harvest * parseInt(getSlider("sliderPlantwithseed").value);
+	gameState.rats = bushelsEatenByRats();
+	gameState.bushels = gameState.bushels - gameState.rats;
+	gameState.internalBushels = gameState.bushels;
+	gameState.price = randomNumber(10) + 16;
+	gameState.acres = gameState.internalAcres;
+
+	if (gameState.year &lt; 10 &amp;&amp; !tooManyPeopleStarved()) {
+		gameState.year++;
+		
+		var acresSlider = getSlider("sliderAcrestosellbuy");
+		acresSlider.min = -gameState.acres;
+		acresSlider.max = Math.floor(gameState.internalBushels / gameState.price);
+		acresSlider.value = 0;
+		acresSlider.step = 1;
+
+		var feedSlider = getSlider("sliderFeedpeople");
+		feedSlider.min = 0;
+		feedSlider.max = gameState.internalBushels;
+		feedSlider.value = 0;
+		feedSlider.step = 1;
+
+		var plantSlider = getSlider("sliderPlantwithseed");
+		plantSlider.min = 0;
+		plantSlider.max = minimum(gameState.internalAcres, 10 * gameState.population, gameState.internalBushels);
+		plantSlider.value = 0;
+		plantSlider.step = 1;
+
+		writeGameState();
+	} else if (tooManyPeopleStarved()) {
+		alert("Du har orsakat att 45% av befolkningen svultit ihjäl!\n" + "Du har avsatts.\n" + "Försök igen.");
+		gameStart();
+	} else {
+		var averagePeopleStarved = Math.floor(gameState.totalStarved / 10);
+		var acrePerPerson = Math.floor(gameState.acres / gameState.population);
+		alert("Total prestation\n" + "Genomsnittligt antal ihjälsvultna per år: " + averagePeopleStarved + "\n" + "Befolkning: " + gameState.population + "\n" + "Tunnland per person: " + acrePerPerson);
+		gameStart();
+	}
+}</code></pre></div>
+                <div id="hHTML" class="hidden"><div class="code-filename">hammurabi.html</div>
+<pre><code class="language-html">&lt;!-- Namn --- personnummer
+Mohammed Abuharaz --- 20060831-7434
+Abdalla Nasreldin --- 20050113-5958
+--&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="sv"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  
+  &lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;
+  &lt;title&gt;Hammurabi&lt;/title&gt;
+
+
+  &lt;link rel="stylesheet" href="hammurabi.css"&gt;
+
+  &lt;script src="hammurabi.js" defer&gt;&lt;/script&gt;
+    &lt;link rel="icon" type="image/png" href="logo.png"&gt;
+  &lt;!--
+    This script waits until the page is loaded,
+    then starts the game by calling gameStart().
+    It checks if gameStart exists before calling it.
+  --&gt;
+  &lt;script defer&gt;
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof gameStart === 'function') gameStart();
+    });
+  &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  &lt;!--
+  Bilden på sidan
+  --&gt;
+  &lt;div class="hero-row"&gt;
+    &lt;img src="Babylonian.png" alt="Babylonian" class="side-img side-img--abs"&gt;
+  &lt;/div&gt;
+
+  &lt;header class="site-header"&gt;
+    &lt;div class="container"&gt;
+      &lt;!-- Logo image for the game --&gt;
+      &lt;img src="logo.png" alt="Hammurabi logotyp" class="site-logo"&gt;
+      &lt;!-- Main title of the game --&gt;
+      &lt;h1&gt;Hammurabi&lt;/h1&gt;
+      &lt;!-- Navigation menu --&gt;
+      &lt;nav class="top-nav"&gt;
+        &lt;a href="#om-spelet"&gt;Om spelet&lt;/a&gt;
+        &lt;a href="#om-kungen"&gt;Om Hammurabi&lt;/a&gt;
+        &lt;a href="#regler"&gt;Regler&lt;/a&gt;
+        &lt;a href="#kallor"&gt;Källor&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!--
+    Main content area.
+    Uses a two-column layout:
+    - Left: the game controls and status
+    - Right: information and instructions
+  --&gt;
+  &lt;main class="container layout"&gt;
+    
+    &lt;!--
+      Spelkontroller
+    --&gt;
+    &lt;section aria-label="Spelkontroller" class="card card--accent-blue"&gt;
+        
+    
+      &lt;h2 id="year" aria-live="polite"&gt;TEXT-SOM-BYTS-UT-AV-JS-FILEN&lt;/h2&gt;
+
+      &lt;ul id="people" class="panel card card--accent-green"&gt;
+        &lt;li id="starved"&gt;TEXT-SOM-BYTS-UT-AV-JS-FILEN&lt;/li&gt;
+        &lt;li id="newcomers"&gt;TEXT-SOM-BYTS-UT-AV-JS-FILEN&lt;/li&gt;
+        &lt;li id="population"&gt;TEXT-SOM-BYTS-UT-AV-JS-FILEN&lt;/li&gt;
+      &lt;/ul&gt;
+
+      &lt;ul id="economy" class="panel card card--accent-purple"&gt;
+        &lt;li id="acres"&gt;TEXT-SOM-BYTS-UT-AV-JS-FILEN&lt;/li&gt;
+        &lt;li id="bushels"&gt;TEXT-SOM-BYTS-UT-AV-JS-FILEN&lt;/li&gt;
+        &lt;li id="harvest"&gt;TEXT-SOM-BYTS-UT-AV-JS-FILEN&lt;/li&gt;
+        &lt;li id="rats"&gt;TEXT-SOM-BYTS-UT-AV-JS-FILEN&lt;/li&gt;
+        &lt;li id="price"&gt;TEXT-SOM-BYTS-UT-AV-JS-FILEN&lt;/li&gt;
+      &lt;/ul&gt;
+
+      &lt;form onsubmit="return false"&gt; 
+        
+        &lt;fieldset&gt;
+          &lt;legend&gt;
+            Tunnland sälja/köpa:
+            
+            &lt;span class="value" id="outputAcrestosellbuy"&gt;&lt;/span&gt;
+          &lt;/legend&gt;
+          &lt;div class="row"&gt;
+            
+            &lt;button class="button red" id="minusbuttonAcrestosellbuy"
+              onclick="onChangeAcres('minusbuttonAcrestosellbuy')" type="button"
+                aria-label="Minska"&gt;
+            
+              &lt;svg width="20" height="20" viewBox="0 0 20 20" 
+                    aria-hidden="true"&gt;
+                &lt;rect x="4" y="9" width="12" height="2" rx="1" /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+
+            &lt;input type="range" id="sliderAcrestosellbuy"
+              min="-1000" max="1000" step="1" value="0"
+              onchange="onChangeAcres('sliderAcrestosellbuy')"&gt;
+
+
+            &lt;button class="button blue" id="plusbuttonAcrestosellbuy"
+              onclick="onChangeAcres('plusbuttonAcrestosellbuy')" 
+                type="button" aria-label="Öka"&gt;
+
+              &lt;svg width="20" height="20" viewBox="0 0 20 20" 
+                    aria-hidden="true"&gt;
+                &lt;rect x="9" y="4" width="2" height="12" rx="1" /&gt;
+                &lt;rect x="4" y="9" width="12" height="2" rx="1" /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/fieldset&gt;
+
+        &lt;!--
+          Slider for how much food to give the people.
+        --&gt;
+        &lt;fieldset&gt;
+          &lt;legend&gt;
+            Mat till folket:
+            
+            &lt;span class="value" id="outputFeedpeople"&gt;&lt;/span&gt;
+          &lt;/legend&gt;
+          &lt;div class="row"&gt;
+            
+            &lt;button class="button red" id="minusbuttonFeedpeople"
+              onclick="onChangeFeeding('minusbuttonFeedpeople')" 
+              type="button"&gt;-&lt;/button&gt;
+
+            
+            &lt;input type="range" id="sliderFeedpeople"
+              min="0" max="2800" step="1" value="0"
+              onchange="onChangeFeeding('sliderFeedpeople')"&gt;
+
+            &lt;!-- Button to increase food amount --&gt;
+            &lt;button class="button blue" id="plusbuttonFeedpeople"
+              onclick="onChangeFeeding('plusbuttonFeedpeople')" type="button"&gt;+
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/fieldset&gt;
+
+        
+        &lt;fieldset&gt;
+          &lt;legend&gt;
+            Sådd:
+            
+            &lt;span class="value" id="outputPlantwithseed"&gt;&lt;/span&gt;
+          &lt;/legend&gt;
+          &lt;div class="row"&gt;
+            
+            &lt;button class="button red" id="minusbuttonPlantwithseed"
+              onclick="onChangePlanting('minusbuttonPlantwithseed')" 
+              type="button"&gt;-
+            &lt;/button&gt;
+
+            
+            &lt;input type="range" id="sliderPlantwithseed"
+              min="0" max="1000" step="1" value="0"
+              onchange="onChangePlanting('sliderPlantwithseed')"&gt;
+
+            &lt;button class="button blue" id="plusbuttonPlantwithseed"
+              onclick="onChangePlanting('plusbuttonPlantwithseed')" 
+              type="button"&gt;+
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/fieldset&gt;
+
+        
+        &lt;div class="actions-row"&gt;
+          &lt;!-- Button to restart the game --&gt;
+          &lt;button class="button yellow" type="button" onclick="gameStart()"&gt;
+            Starta om&lt;/button&gt;
+          &lt;!-- Button to finish and send orders --&gt;
+          &lt;button class="button green" type="button" onclick="finishTurn()"&gt;
+            Detta är min order!
+          &lt;/button&gt;
+
+          &lt;!--
+            Hjälp knappen.
+          --&gt;
+          &lt;details class="help-pop"&gt;
+            &lt;!-- Looks like a button, opens the help --&gt;
+            &lt;summary class="button neutral" aria-label="Hur funkar spelet?"&gt;
+              Hjälp
+            &lt;/summary&gt;
+            &lt;div class="help-pop__card card"&gt;
+              &lt;h3 class="help-pop__title"&gt;Snabbguide&lt;/h3&gt;
+              &lt;ul class="bullets"&gt;
+                &lt;li&gt;Spelet pågår i &lt;strong&gt;10 år&lt;/strong&gt; (10 rundor).&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Mat:&lt;/strong&gt; 20 skäppor behövs per person/år.&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Sådd:&lt;/strong&gt; 1 skäppa per tunnland. Max sådd = 
+                  &lt;em&gt;min&lt;/em&gt;(tunnland, 10×befolkning, skäppor).&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Landpris&lt;/strong&gt; varierar varje år.&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Råttor/pest&lt;/strong&gt; kan slå till vissa år.&lt;/li&gt;
+                &lt;li&gt;Försök hålla folket mätta och så all mark om möjligt.&lt;/li&gt;
+              &lt;/ul&gt;
+              &lt;p class="small"&gt;
+                Vill du läsa mer? Se 
+                &lt;a href="Hammurabi Game - Play Hammurabi Online-1.pdf" 
+                target="_blank" rel="noopener"&gt;Regler&lt;/a&gt;.
+              &lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/section&gt;
+
+    &lt;!--
+      RIGHT COLUMN: Info and instructions
+      These sections do not change during the game.
+      They explain the rules, background, and sources.
+    --&gt;
+    &lt;aside aria-label="Rapport och info" class="stack"&gt;
+
+      &lt;!-- Section about the game itself --&gt;
+      &lt;section id="om-spelet" class="info card card--tint-blue"&gt;
+        &lt;h2&gt;Om spelet&lt;/h2&gt;
+        &lt;p&gt;
+          Hammurabi är ett av de första spelen som gjordes år 1968, du har i 
+          uppgift att ta över en stad och vägleda den genom 10 år av skörd,
+          svält, och pest. Ditt mål är att hålla så många av dina invånare vid
+          liv som möjligt och att maximera mängden land du äger vid slutet av 
+          de 10 åren.
+          Lycka till!
+        &lt;/p&gt;
+      &lt;/section&gt;
+
+      &lt;!-- Section about King Hammurabi --&gt;
+      &lt;section id="om-kungen" class="info card card--tint-amber"&gt;
+        &lt;h2&gt;Om Hammurabi (kungen)&lt;/h2&gt;
+        &lt;p&gt;
+          Hammurabi var den sjätte kungen av Babylon, som regerade från cirka
+          1792 f.Kr. till 1750 f.Kr. Han är mest känd för sin lagkodex, en av de
+          äldsta och mest kompletta lagkoderna som har bevarats från den antika
+          världen.
+        &lt;/p&gt;
+      &lt;/section&gt;
+
+      &lt;!-- Section with the rules of the game --&gt;
+      &lt;section id="regler" class="info card card--tint-green"&gt;
+        &lt;h2&gt;Regler&lt;/h2&gt;
+        &lt;ul class="bullets"&gt;
+          &lt;li&gt;Varje år: gör dina val och klicka &lt;em&gt;Detta är min order!&lt;/em&gt;
+          &lt;/li&gt;
+          &lt;li&gt;Mat: &lt;strong&gt;20 skäppor&lt;/strong&gt; föder &lt;strong&gt;1 person&lt;/strong&gt;
+            per år.&lt;/li&gt;
+          &lt;li&gt;Sådd: Du kan högst så
+            &lt;strong&gt;min(tunnland, 10 × befolkning, skäppor i lager)&lt;/strong&gt;.
+          &lt;/li&gt;
+          &lt;li&gt;Pris per tunnland varierar (slump inom spelet).&lt;/li&gt;
+          &lt;li&gt;Råttor kan äta upp spannmål vissa år; pest kan halvera
+            befolkningen.&lt;/li&gt;
+          &lt;li&gt;Om för många svälter ett år blir du avsatt.&lt;/li&gt;
+          &lt;li&gt;Efter år 10 får du en sammanfattning av din prestation.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/section&gt;
+
+      &lt;!-- Section with sources and links --&gt;
+      &lt;section id="kallor" class="info card card--tint-purple"&gt;
+        &lt;h2&gt;Källor&lt;/h2&gt;
+        &lt;ul class="bullets"&gt;
+          &lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/Hammurabi" target= 
+            rel &gt;Wikipedia: Om Hammurabi&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="Hammurabi Game - Play Hammurabi Online-1.pdf" target=
+            rel &gt;Regler&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=
+              "https://www.nationalgeographic.com/culture/article/hammurabi" 
+              target=  rel &gt;Logo Image&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=
+            "https://warhistory.org/es/@msw/article/babylonia-enemy-of-assyria" 
+            target=  rel &gt;Standing Image&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/section&gt;
+    &lt;/aside&gt;
+  &lt;/main&gt;
+
+  
+  &lt;footer class="site-footer"&gt;
+    &lt;div class="container small"&gt;&amp;copy; 2025 – Studentprojekt för LTU&lt;/div&gt;
+  &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!--
+1-change colors on the right boxes --- Done
+2- fix the information --- dome
+3- change buttons --- Done
+4- fix footer --- Done
+5- max 80 char/line --- Done
+6- add pictures (optional) --- Done
+7- add comments to the code --- Done
+8- fix any other issues --- Done
+9- Understand the code
+10. Ref img --- done
+--&gt;</code></pre></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ MODULE B: ARDUINO ═══════════════ -->
+    <span class="section-label" style="margin-top:56px">Module B — Arduino &amp; Embedded Systems</span>
+
+    <div class="lab-intro">
+        <h3>Circuits, sensors, and sound</h3>
+        <p>
+            Physical computing with Arduino. Four circuits exploring digital output, analog input,
+            light-dependent resistors, and tone generation — building from a simple blinking LED
+            up to a melody-playing buzzer that syncs with LEDs.
+        </p>
+    </div>
+
+    <div class="projects lab2-projects">
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Module B · Arduino</span>
+                    <div class="card-title">Project 1 — Four Circuits</div>
+                    <p class="card-desc">
+                        Progressive Arduino exercises: LED blink timing, potentiometer-controlled blink rate,
+                        LDR ambient light sensor driving LED brightness, and a buzzer playing a melody
+                        with LEDs alternating on each note.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Arduino</span>
+                        <span class="tag">digitalWrite / analogWrite</span>
+                        <span class="tag">analogRead</span>
+                        <span class="tag">tone()</span>
+                        <span class="tag">PWM</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this,'ard1A')">Circuit 1A — LED blink</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'ard1B')">Circuit 1B — Potentiometer</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'ard1C')">Circuit 1C — LDR sensor</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'ard2')">Circuit 2 — Melody + LEDs</button>
+                </div>
+                <div id="ard1A"><div class="code-filename">Circuit 1A — Two LEDs blink in sync</div>
+<pre><code class="language-cpp">int ledRed  = 7;   // Red LED pin
+int ledBlue = 6;   // Blue LED pin
+
+void setup() {
+    pinMode(ledRed,  OUTPUT);
+    pinMode(ledBlue, OUTPUT);
+}
+
+void loop() {
+    digitalWrite(ledRed,  HIGH);
+    digitalWrite(ledBlue, HIGH);
+    delay(2000);           // on for 2 seconds
+    digitalWrite(ledRed,  LOW);
+    digitalWrite(ledBlue, LOW);
+    delay(2000);           // off for 2 seconds
+}
+
+// Variations tested:
+// delay(500) / delay(3500)  →  short flash, long pause
+// delay(1)   / delay(1)     →  PWM-like flicker at ~500 Hz</code></pre></div>
+                <div id="ard1B" class="hidden"><div class="code-filename">Circuit 1B — Potentiometer controls blink speed</div>
+<pre><code class="language-cpp">int potPin = A0;   // Potentiometer on analog pin A0
+int ledRed = 7;
+
+void setup() {
+    pinMode(ledRed, OUTPUT);
+}
+
+void loop() {
+    int potPosition = analogRead(potPin);  // 0–1023
+
+    // Map pot range to blink delay 50ms–1000ms
+    int delayTime = map(potPosition, 0, 1023, 50, 1000);
+
+    digitalWrite(ledRed, HIGH);
+    delay(delayTime);
+    digitalWrite(ledRed, LOW);
+    delay(delayTime);
+}</code></pre></div>
+                <div id="ard1C" class="hidden"><div class="code-filename">Circuit 1C — LDR ambient light sensor</div>
+<pre><code class="language-cpp">int ldrPin  = A0;   // Light-dependent resistor
+int ledRed  = 7;
+int ledBlue = 6;
+
+void setup() {
+    pinMode(ledRed,  OUTPUT);
+    pinMode(ledBlue, OUTPUT);
+}
+
+void loop() {
+    int ldrValue   = analogRead(ldrPin);              // 0–1023
+    int brightness = map(ldrValue, 0, 1023, 0, 255); // map to PWM range
+
+    analogWrite(ledBlue, brightness);  // brighter in more light
+    analogWrite(ledRed,  brightness);
+    delay(50);
+}
+// analogWrite uses PWM — only works on pins 3,5,6,9,10,11 on Uno</code></pre></div>
+                <div id="ard2" class="hidden"><div class="code-filename">Circuit 2 — Buzzer plays melody, LEDs alternate per note</div>
+<pre><code class="language-cpp">const int buzzerPin = 10;
+int ledRed  = 7;
+int ledBlue = 6;
+
+#define NOTE_C4  262
+#define NOTE_D4  294
+#define NOTE_E4  330
+#define NOTE_G4  392
+#define NOTE_C5  523
+#define NOTE_REST  0
+
+void setup() {
+    pinMode(buzzerPin, OUTPUT);
+    pinMode(ledRed,  OUTPUT);
+    pinMode(ledBlue, OUTPUT);
+    playMelody();
+}
+
+void loop() {} // melody plays once on startup
+
+void playMelody() {
+    int melody[]   = { C4, D4, E4, G4, C5,  C4, D4, E4, G4, C5,
+                       C4, D4, E4, G4, C5,  NOTE_REST };
+    int duration[] = { 200,200,200,200,400, 200,200,200,200,400,
+                       200,200,200,200,400, 250 };
+
+    for (int i = 0; i &lt; 16; i++) {
+        digitalWrite(ledRed,  LOW);
+        digitalWrite(ledBlue, LOW);
+
+        if (melody[i] != NOTE_REST) {
+            // Alternate LEDs on even/odd notes
+            if (i % 2 == 0) digitalWrite(ledRed,  HIGH);
+            else             digitalWrite(ledBlue, HIGH);
+            tone(buzzerPin, melody[i]);
+        } else {
+            noTone(buzzerPin);
+        }
+        delay(duration[i]);
+        noTone(buzzerPin);
+        delay(50); // gap between notes
+    }
+    digitalWrite(ledRed,  LOW);
+    digitalWrite(ledBlue, LOW);
+}</code></pre></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ MODULE C: LATEX ═══════════════ -->
+    <span class="section-label" style="margin-top:56px">Module C — LaTeX Typesetting</span>
+
+    <div class="lab-intro">
+        <h3>Academic writing with LaTeX</h3>
+        <p>
+            Two mathematical documents typeset in LaTeX. The Koch Snowflake paper proves two
+            theorems about the fractal's infinite perimeter and finite area using formal proof
+            environments. The Ski Slope paper solves a Swedish national exam problem using
+            calculus — finding where a hill is steepest by analysing the second derivative.
+        </p>
+    </div>
+
+    <div class="projects lab2-projects">
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Module C · LaTeX</span>
+                    <div class="card-title">D1 — Koch Snowflake &amp; D2 — Ski Slope</div>
+                    <p class="card-desc">
+                        Two academic papers using LaTeX theorem/proof environments, aligned equations,
+                        figure insertion, and BibTeX citations.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">LaTeX</span>
+                        <span class="tag">amsmath</span>
+                        <span class="tag">Theorem environments</span>
+                        <span class="tag">Calculus</span>
+                        <span class="tag">Fractals</span>
+                    </div>
+                </div>
+                <div class="card-header-right">
+                    <a href="D1.pdf" target="_blank" class="demo-btn demo-btn-sm ext-link-btn">↗ D1 PDF</a>
+                    <a href="D2.pdf" target="_blank" class="demo-btn demo-btn-sm ext-link-btn">↗ D2 PDF</a>
+                    <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                </div>
+            </div>
+
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this,'latD1')">D1 — Koch Snowflake</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'latD2')">D2 — Ski Slope</button>
+                </div>
+                <div id="latD1"><div class="code-filename">D1_Snöflingan.sty — Koch Snowflake (key excerpts)</div>
+<pre><code class="language-latex">\section{A Famous Fractal: The Koch Snowflake}
+
+The \emph{Koch snowflake} is based on work by the Swedish mathematician
+Helge von Koch \cite{koch}. It is constructed from an equilateral triangle
+by repeating this process infinitely:
+
+\begin{quote}
+  \textit{Divide all segments into three equal parts. For each middle
+  segment, draw an outward equilateral triangle, then remove the middle.}
+\end{quote}
+
+% --- Theorem 1: Infinite perimeter ---
+\begin{theorem}
+  The Koch snowflake has infinite length.
+\end{theorem}
+
+\begin{proof}
+Let $N_n = 3 \cdot 4^n$ be the number of segments after $n$ iterations,
+and $L_n = s / 3^n$ the length of each segment.  Then
+\[
+  N_n L_n = 3s \left(\frac{4}{3}\right)^n \to \infty \quad (n \to \infty).
+\]
+Since $4/3 > 1$, the total length diverges.
+\end{proof}
+
+% --- Theorem 2: Finite area ---
+\begin{theorem}
+  The Koch snowflake has finite area.
+\end{theorem}
+
+\begin{proof}
+In iteration $n$, the number of new triangles is $T_n = \tfrac{3}{4} \cdot 4^n$
+and each has area $a_n = a_0 / 9^n$.  The total area after $n$ iterations:
+\[
+  A_n = \frac{a_0}{5}\!\left(8 - 3\!\left(\tfrac{4}{9}\right)^{\!n}\right)
+  \;\xrightarrow{n\to\infty}\; \frac{8a_0}{5}  \quad \text{(finite)}.
+\]
+\end{proof}</code></pre></div>
+                <div id="latD2" class="hidden"><div class="code-filename">D2_Skidbacken — Ski Slope (key excerpts)</div>
+<pre><code class="language-latex">\section{Höjdprofilen och dess derivata}
+
+The height profile of the slope is given by
+\begin{equation}
+  y(x) = x^2 e^{-0.5x}.   \label{eq:y}
+\end{equation}
+
+Using the product rule $\frac{d}{dx}(uv) = u'v + uv'$ with
+$u = x^2,\; v = e^{-0.5x}$:
+\begin{align}
+  y'(x) &= 2x\,e^{-0.5x} + x^2(-0.5)e^{-0.5x} \nonumber \\
+         &= e^{-0.5x}(2x - 0.5x^2).              \label{eq:yprime}
+\end{align}
+
+\section{Maximal branthet}  % "maximum steepness"
+
+Setting $y''(x) = 0$ and factoring out the always-positive $e^{-0.5x}$:
+\begin{align}
+  y''(x) &= e^{-0.5x}(0.25x^2 - 2x + 2) = 0 \nonumber \\
+  \Rightarrow\quad & x^2 - 8x + 8 = 0.
+\end{align}
+
+By the quadratic formula:
+\begin{align}
+  x &= \frac{8 \pm \sqrt{64-32}}{2} = 4 \pm 2\sqrt{2}.
+\end{align}
+
+Analysis shows $x_1 = 4 - 2\sqrt{2} \approx 1.17$ km is a maximum of $y'$,
+so the slope is steepest at $\boxed{x \approx 1.17 \text{ km}}$.</code></pre></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ MODULE D: ALGORITHM ANALYSIS ═══════════════ -->
+    <span class="section-label" style="margin-top:56px">Module D — Algorithm Analysis</span>
+
+    <div class="lab-intro">
+        <h3>Maximum subarray — three algorithms, three complexities</h3>
+        <p>
+            Finding the largest sum of a contiguous subsequence. Three approaches —
+            O(n³) brute force, O(n²) with reuse, and O(n²) with prefix sums —
+            analysed in a LaTeX report co-authored with a classmate.
+        </p>
+    </div>
+
+    <div class="projects lab2-projects">
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Module D · Algorithms</span>
+                    <div class="card-title">Maximum Subarray — Big-O Analysis <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <p class="card-desc">
+                        Compare all three algorithms visually. Enter a list of numbers and watch each approach
+                        find the maximum subarray, with step counts shown live.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">O(n³)</span>
+                        <span class="tag">O(n²)</span>
+                        <span class="tag">Prefix sums</span>
+                        <span class="tag">Big-O</span>
+                        <span class="tag">Bentley 1984</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo — Compare All Three Algorithms</div>
+                <div class="algo-controls">
+                    <input class="demo-input" type="text" id="algoInput" value="-2, 1, -3, 4, -1, 2, 1, -5, 4" style="flex:1;min-width:200px" placeholder="Enter numbers, e.g. -2, 1, -3, 4, -1, 2" oninput="algoRunDebounced()">
+                    <button class="demo-btn demo-btn-sm" onclick="algoRandom()">↺ Random</button>
+                </div>
+                <div class="algo-demo-wrap">
+                    <div class="algo-array-label" id="algoArrayLabel" style="display:none">
+                        <span class="algo-sub-label">← Highlighted cells = maximum subarray (highest sum contiguous slice)</span>
+                    </div>
+                    <div class="algo-array-vis" id="algoArrayVis"></div>
+                    <div class="algo-results" id="algoResults"></div>
+                </div>
+            </div>
+
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this,'algCubic')">O(n³) Cubic</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'algQuad1')">O(n²) Quadratic 1</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'algQuad2')">O(n²) Prefix sum</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'algReport')">Report excerpt</button>
+                </div>
+                <div id="algCubic"><div class="code-filename">Cubic — O(n³) brute force</div>
+<pre><code class="language-java">// Three nested loops — all possible subsequences
+// Time complexity: O(n³)
+static int maxSubCubic(int[] a) {
+    int maxSum = 0;
+    for (int i = 0; i &lt; a.length; i++) {
+        for (int j = i; j &lt; a.length; j++) {
+            int sum = 0;
+            for (int k = i; k &lt;= j; k++)  // recompute sum each time
+                sum += a[k];
+            maxSum = Math.max(maxSum, sum);
+        }
+    }
+    return maxSum;
+}
+// Steps: n³/6  →  if n doubles, steps × 8</code></pre></div>
+                <div id="algQuad1" class="hidden"><div class="code-filename">Quadratic 1 — O(n²) reusing inner sums</div>
+<pre><code class="language-java">// Two loops — extend running sum instead of restarting
+// Time complexity: O(n²)
+static int maxSubQuad1(int[] a) {
+    int maxSum = 0;
+    for (int i = 0; i &lt; a.length; i++) {
+        int sum = 0;
+        for (int j = i; j &lt; a.length; j++) {
+            sum += a[j];   // reuse: don't restart inner loop from i
+            maxSum = Math.max(maxSum, sum);
+        }
+    }
+    return maxSum;
+}
+// Steps: n²/2  →  if n doubles, steps × 4</code></pre></div>
+                <div id="algQuad2" class="hidden"><div class="code-filename">Quadratic 2 — O(n²) with prefix sum array</div>
+<pre><code class="language-java">// Precompute prefix sums, then check all pairs in O(1) each
+// Build: O(n),  Query: O(1) each,  Total: O(n²)
+static int maxSubPrefix(int[] a) {
+    int n = a.length;
+    int[] prefix = new int[n + 1];
+    for (int i = 0; i &lt; n; i++)
+        prefix[i + 1] = prefix[i] + a[i];  // prefix[j] = a[0]+...+a[j-1]
+
+    int maxSum = 0;
+    for (int i = 0; i &lt; n; i++)
+        for (int j = i + 1; j &lt;= n; j++)
+            // sum from i to j-1 = prefix[j] - prefix[i]
+            maxSum = Math.max(maxSum, prefix[j] - prefix[i]);
+    return maxSum;
+}
+// Key insight: sum(i..j) = prefix[j+1] - prefix[i]  →  O(1) lookup</code></pre></div>
+                <div id="algReport" class="hidden"><div class="code-filename">Report — LaTeX excerpt (Algoritmdesign)</div>
+<pre><code class="language-latex">\section{Diskussion och sammanfattning}
+
+\textbf{Jämförelse.}
+De kvadratiska metoderna är mycket snabbare än den kubiska
+metoden, men alla metoder ger samma resultat.
+
+\textbf{Big-O i vardagsord.}
+Om listans längd $n$ ökar med 10, ökar antalet beräkningssteg
+med $1000\times$ för den kubiska metoden men bara $100\times$
+för de kvadratiska metoderna.
+
+\begin{align}
+  \text{Cubic:  } &O(n^3) \label{eq:cubic} \\
+  \text{Quad 1: } &O(n^2) \label{eq:quad1} \\
+  \text{Quad 2: } &O(n) + O(n^2)\cdot O(1) = O(n^2) \label{eq:quad2}
+\end{align}
+
+\begin{thebibliography}{99}
+\bibitem{bentley}
+  Jon Bentley.
+  \textit{Programming Pearls: Algorithm Design Techniques}.
+  CACM, 27(9):865--873, 1984.
+\end{thebibliography}</code></pre></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ MODULE E: ETHICS ═══════════════ -->
+    <span class="section-label" style="margin-top:56px">Module E — Engineering Ethics &amp; Professional Role</span>
+
+    <div class="lab-intro">
+        <h3>Yrkesrollen — the engineer's professional identity</h3>
+        <p>
+            A written assignment co-authored in LaTeX covering gender equality in tech,
+            engineering virtues, professional licensing, and the ethics of refusing clients.
+            Based on course readings from Sven Ove Hansson's <em>Teknik och etik</em>.
+        </p>
+    </div>
+
+    <div class="projects lab2-projects">
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Module E · Ethics</span>
+                    <div class="card-title">Yrkesrollen Assignment</div>
+                    <p class="card-desc">
+                        Five questions on gender equality, engineering virtues, licensing, and professional ethics.
+                        Written in Swedish, co-authored with a classmate, typeset in LaTeX.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Engineering ethics</span>
+                        <span class="tag">Gender equality</span>
+                        <span class="tag">Professional role</span>
+                        <span class="tag">LaTeX</span>
+                        <span class="tag">Swedish</span>
+                    </div>
+                </div>
+                <div class="card-header-right">
+                    <a href="L.pdf" target="_blank" class="demo-btn demo-btn-sm ext-link-btn">↗ PDF</a>
+                    <button class="code-toggle" onclick="toggleCode(this)">View Document</button>
+                </div>
+            </div>
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this,'ethQ1')">Q1 — Gender equality</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'ethQ2')">Q2 — Concrete actions</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'ethQ3')">Q3 — Engineering virtues</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'ethQ4')">Q4 — Licensing</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'ethQ5')">Q5 — Refusing clients</button>
+                </div>
+                <div id="ethQ1" style="padding:20px;font-family:var(--font-m);font-size:0.8rem;color:var(--muted);line-height:1.8;font-weight:300">
+                    <strong style="color:var(--accent);display:block;margin-bottom:10px">Three benefits of active gender equality work</strong>
+                    <ol style="padding-left:20px;display:flex;flex-direction:column;gap:10px">
+                        <li><strong style="color:var(--text)">Better decisions &amp; innovation.</strong> Diverse groups have more perspectives and fewer blind spots. This improves user-centred design, risk assessment, and requirements analysis.</li>
+                        <li><strong style="color:var(--text)">Identifying and developing talent.</strong> An inclusive workplace attracts more candidates and reduces turnover, saving money and retaining key people long-term.</li>
+                        <li><strong style="color:var(--text)">Customer value, compliance &amp; reputation.</strong> Actively promoting equality reduces legal risk, strengthens the brand, and opens new markets as products are designed for a broader audience.</li>
+                    </ol>
+                </div>
+                <div id="ethQ2" class="hidden" style="padding:20px;font-family:var(--font-m);font-size:0.8rem;color:var(--muted);line-height:1.8;font-weight:300">
+                    <strong style="color:var(--accent);display:block;margin-bottom:10px">Three concrete measures for a male-dominated workplace</strong>
+                    <ol style="padding-left:20px;display:flex;flex-direction:column;gap:10px">
+                        <li><strong style="color:var(--text)">Structured meetings for equal voice.</strong> Collect ideas via anonymous forms before meetings so proposals are judged on content, not who sent them. Use speaker lists, timing, and rotating chairs.</li>
+                        <li><strong style="color:var(--text)">Transparent recruitment &amp; promotion.</strong> Blind CV reviews, standardised competency profiles, diverse hiring panels, and data-driven bias correction.</li>
+                        <li><strong style="color:var(--text)">Mentorship &amp; sponsorship programmes.</strong> Formal mentor/sponsor schemes with scheduled time during work hours, with effect and engagement tracked to ensure long-term success.</li>
+                    </ol>
+                </div>
+                <div id="ethQ3" class="hidden" style="padding:20px;font-family:var(--font-m);font-size:0.8rem;color:var(--muted);line-height:1.8;font-weight:300">
+                    <strong style="color:var(--accent);display:block;margin-bottom:10px">Are there specific engineering virtues?</strong>
+                    <p>Yes. In addition to general virtues like justice and temperance, engineering requires specific qualities:</p>
+                    <ul style="padding-left:20px;margin-top:8px;display:flex;flex-direction:column;gap:6px">
+                        <li>A sense of <strong style="color:var(--text)">responsibility for impact on society</strong></li>
+                        <li><strong style="color:var(--text)">Truthfulness and honesty</strong> in data and communication</li>
+                        <li><strong style="color:var(--text)">Care for environment and safety</strong></li>
+                        <li><strong style="color:var(--text)">Judgement</strong> in ambiguous situations</li>
+                        <li><strong style="color:var(--text)">Moral courage</strong> to speak up when something is wrong</li>
+                    </ul>
+                    <p style="margin-top:10px">These align with the principles of responsibility, impartiality, openness about risks, and loyalty described in the honour code.</p>
+                </div>
+                <div id="ethQ4" class="hidden" style="padding:20px;font-family:var(--font-m);font-size:0.8rem;color:var(--muted);line-height:1.8;font-weight:300">
+                    <strong style="color:var(--accent);display:block;margin-bottom:10px">Should engineers require a licence? (for &amp; against)</strong>
+                    <p><strong style="color:var(--text)">For:</strong> Engineers significantly influence infrastructure, the environment, and human lives. Professional regulation could allow licences to be revoked for serious violations and strengthen public trust.</p>
+                    <p style="margin-top:8px"><strong style="color:var(--text)">Against:</strong> Standardised certification risks being discriminatory and ineffective given the broad scope of the engineering sector. Innovation may be hampered, and organisations and processes are often held responsible instead of individuals.</p>
+                    <p style="margin-top:8px"><strong style="color:var(--text)">Position:</strong> Implement limited licencing for safety-critical areas (e.g. electrical authority) combined with strict organisational criteria. Focus regulation where risks are highest to preserve flexibility elsewhere.</p>
+                </div>
+                <div id="ethQ5" class="hidden" style="padding:20px;font-family:var(--font-m);font-size:0.8rem;color:var(--muted);line-height:1.8;font-weight:300">
+                    <strong style="color:var(--accent);display:block;margin-bottom:10px">Should engineers be able to refuse unethical clients?</strong>
+                    <p style="font-style:italic;margin-bottom:8px">Selected question: Should engineers ethically be able to "judge" their clients — unlike lawyers or doctors who must help everyone?</p>
+                    <p><strong style="color:var(--text)">For:</strong> Technical expertise is a public good. Using it neutrally reduces bias. Even in controversial projects, innovations that benefit society can emerge.</p>
+                    <p style="margin-top:8px"><strong style="color:var(--text)">Against:</strong> The honour code requires engineers to abstain from projects that are questionable or conflict with their own convictions. Engineers also have obligations to the environment and public, not just their clients.</p>
+                    <p style="margin-top:8px"><strong style="color:var(--text)">Position:</strong> When the primary purpose of a project conflicts with fundamental ethical principles (such as human rights violations), engineers must be able to refuse. In other situations, engineers should demand transparency, conduct risk assessments, and establish guidelines to minimise harm.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- end .page -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    hljs.highlightAll();
+    algoRun();
+});
+
+function toggleCode(btn) {
+    const card = btn.closest('.project-card');
+    const body = card.querySelector('.code-body');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    btn.classList.toggle('open', !isOpen);
+    if(!btn.dataset.origLabel) btn.dataset.origLabel = btn.textContent;
+    btn.textContent = isOpen ? (btn.dataset.origLabel || 'View Code') : 'Hide';
+}
+
+function switchCodeTab(btn, targetId) {
+    const card = btn.closest('.project-card');
+    card.querySelectorAll('.code-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    card.querySelectorAll('.code-body > div[id]').forEach(el => el.classList.add('hidden'));
+    document.getElementById(targetId).classList.remove('hidden');
+}
+
+// ══════════ HAMMURABI ════════════════════════════════════
+let H = {};
+
+function hammStart() {
+    H = {
+        year: 1, pop: 100, grain: 2800, acres: 1000,
+        starvedTotal: 0, pctStarvedMax: 0,
+        rng: (a,b) => Math.floor(Math.random()*(b-a+1))+a
+    };
+    document.getElementById('hammDisplay').style.display = 'none';
+    document.getElementById('hammStats').style.display  = 'flex';
+    hammShowYear();
+}
+
+function hammShowYear() {
+    const price = H.rng(17, 26);
+    H.price = price;
+    document.getElementById('hammYearBadge').textContent = `Year ${H.year} of 10`;
+    document.getElementById('hsPop').textContent   = H.pop;
+    document.getElementById('hsGrain').textContent = H.grain + ' bu';
+    document.getElementById('hsAcres').textContent = H.acres + ' ac';
+    document.getElementById('hsPrice').textContent = price + ' bu/ac';
+    document.getElementById('hsStarved').textContent = H.lastStarved ?? 0;
+    document.getElementById('hsImmig').textContent   = H.lastImmig  ?? 0;
+    document.getElementById('hBuy').value   = 0;
+    document.getElementById('hFeed').value  = H.pop * 20;
+    document.getElementById('hPlant').value = Math.min(H.acres, Math.floor(H.grain / 2));
+    document.getElementById('hammReport').innerHTML = H.report || '';
+    document.getElementById('hammInputSection').style.display = 'flex';
+}
+
+function hammTurn() {
+    const buy   = parseInt(document.getElementById('hBuy').value)   || 0;
+    const feed  = parseInt(document.getElementById('hFeed').value)  || 0;
+    const plant = parseInt(document.getElementById('hPlant').value) || 0;
+    let g = H.grain;
+
+    // Buy/sell land
+    const cost = buy * H.price;
+    if (cost > g) return hammMsg('Not enough grain to buy that much land!', 'error');
+    if (-buy > H.acres) return hammMsg("You don't own that many acres!", 'error');
+    H.acres += buy; g -= cost;
+
+    // Feed
+    if (feed > g) return hammMsg("Not enough grain to feed that many people!", 'error');
+    g -= feed;
+
+    // Plant
+    const maxPlant = Math.min(H.acres, Math.floor(g), H.pop * 10);
+    const actualPlant = Math.min(plant, maxPlant);
+    if (actualPlant < plant) hammMsg(`Can only plant ${actualPlant} acres (limited by grain/people/land).`, 'warn');
+    g -= actualPlant;
+
+    // Harvest
+    const yield_ = H.rng(1, 7);
+    g += actualPlant * yield_;
+
+    // Rats
+    const rats = H.rng(0, 7);
+    const eaten = Math.floor(g * rats / 100);
+    g -= eaten;
+
+    // Plague (10% chance)
+    let plague = false;
+    if (Math.random() < 0.10) { H.pop = Math.floor(H.pop / 2); plague = true; }
+
+    // Starve
+    const fed = Math.floor(feed / 20);
+    const starved = Math.max(0, H.pop - fed);
+    const pctStarved = H.pop > 0 ? starved / H.pop : 0;
+    if (pctStarved > 0.45) return hammEnd(false, `${Math.round(pctStarved*100)}% of your people starved — you were overthrown!`);
+    H.starvedTotal += starved;
+    H.pctStarvedMax = Math.max(H.pctStarvedMax, pctStarved);
+
+    // Immigration
+    const immigrants = Math.floor((20 * H.acres + g) / (100 * H.pop) * 5);
+    H.pop = fed + immigrants;
+    H.lastStarved = starved;
+    H.lastImmig = immigrants;
+    H.grain = g;
+
+    H.report = `
+        <div class="hamm-event ${starved>0?'hamm-bad':''}">Year ${H.year} report: ${starved} starved, ${immigrants} arrived. Harvest: ${yield_} bu/acre. Rats ate ${eaten} bu.${plague?' 🦠 Plague halved population!':''}</div>`;
+
+    H.year++;
+    if (H.year > 10) return hammEnd(true);
+    hammShowYear();
+}
+
+function hammMsg(msg, type) {
+    const el = document.getElementById('hammReport');
+    el.innerHTML = `<div class="hamm-event hamm-${type}">${msg}</div>`;
+}
+
+function hammEnd(won, reason) {
+    document.getElementById('hammInputSection').style.display = 'none';
+    const acresPerPerson = H.acres / H.pop;
+    const avgStarved = H.starvedTotal / 10;
+    let rank, rankClass;
+    if (!won) { rank = reason; rankClass = 'hamm-bad'; }
+    else if (avgStarved < 3 && acresPerPerson > 10) { rank = '🏆 Hammurabi himself would be proud! A truly magnificent reign.'; rankClass = 'hamm-good'; }
+    else if (avgStarved < 10 && acresPerPerson > 8) { rank = '👑 A competent and just ruler. History will remember you well.'; rankClass = ''; }
+    else if (avgStarved < 33) { rank = '⚔ Your rule was adequate — not great, not terrible.'; rankClass = ''; }
+    else { rank = '☠ A dismal performance. You are responsible for undue suffering.'; rankClass = 'hamm-bad'; }
+    document.getElementById('hammReport').innerHTML = `
+        <div class="hamm-event ${rankClass}" style="font-size:0.9rem;line-height:1.6">
+            <strong>10 Year Summary</strong><br>
+            Population: ${H.pop} · Acres: ${H.acres} · Acres/person: ${acresPerPerson.toFixed(1)}<br>
+            Total starved: ${H.starvedTotal} · Avg per year: ${avgStarved.toFixed(1)}<br><br>
+            ${rank}
+        </div>
+        <button class="demo-btn" onclick="hammStart()" style="margin-top:12px">Reign Again</button>`;
+}
+
+
+// ══════════ ALGORITHM DEMO ════════════════════════════════
+function algoRandom() {
+    const n = 10 + Math.floor(Math.random() * 8);
+    const arr = Array.from({length:n}, () => Math.floor(Math.random()*21) - 10);
+    document.getElementById('algoInput').value = arr.join(', ');
+    algoRun();
+}
+
+let algoTimer = null;
+function algoRunDebounced() {
+    clearTimeout(algoTimer);
+    algoTimer = setTimeout(algoRun, 400);
+}
+
+function algoRun() {
+    const raw = document.getElementById('algoInput').value;
+    const arr = raw.split(',').map(s => parseInt(s.trim())).filter(x => !isNaN(x));
+    if (arr.length === 0) return;
+    // Flash clear so user sees the update happened
+    const vis = document.getElementById('algoArrayVis');
+    const res = document.getElementById('algoResults');
+    vis.innerHTML = ''; res.innerHTML = '';
+
+    // Cubic O(n³) — init to -Infinity so all-negative arrays work
+    let maxC=-Infinity, bestC={i:0,j:0}, stepsC=0;
+    for (let i=0;i<arr.length;i++) for (let j=i;j<arr.length;j++) {
+        let s=0; for (let k=i;k<=j;k++){s+=arr[k];stepsC++;}
+        if(s>maxC){maxC=s;bestC={i,j};}
+    }
+
+    // Quadratic 1 O(n²)
+    let maxQ1=-Infinity, bestQ1={i:0,j:0}, stepsQ1=0;
+    for (let i=0;i<arr.length;i++){let s=0;for(let j=i;j<arr.length;j++){s+=arr[j];stepsQ1++;if(s>maxQ1){maxQ1=s;bestQ1={i,j};}}}
+
+    // Prefix sum O(n²)
+    let pre=[0]; for(let i=0;i<arr.length;i++) pre.push(pre[i]+arr[i]);
+    let maxP=-Infinity, bestP={i:0,j:0}, stepsP=0;
+    for(let i=0;i<arr.length;i++) for(let j=i+1;j<=arr.length;j++){stepsP++;const s=pre[j]-pre[i];if(s>maxP){maxP=s;bestP={i,j:j-1};}}
+
+    // Render array
+    document.getElementById('algoArrayLabel').style.display = 'block';
+    document.getElementById('algoArrayVis').innerHTML = arr.map((v,i) => {
+        const inSub = i >= bestC.i && i <= bestC.j;
+        return `<div class="algo-cell ${inSub?'algo-cell-hl':''} ${v<0?'algo-cell-neg':''}">
+            <span class="algo-cell-idx">${i}</span>
+            <span class="algo-cell-val">${v}</span>
+        </div>`;
+    }).join('');
+
+    // Render results
+    const n = arr.length;
+    const subArr = arr.slice(bestC.i, bestC.j+1).join(' + ');
+    document.getElementById('algoResults').innerHTML = `
+        <div class="algo-answer-banner">
+            Maximum subarray sum = <strong>${maxC}</strong>
+            &nbsp;·&nbsp; subarray: [${subArr}]
+            &nbsp;·&nbsp; indices ${bestC.i} to ${bestC.j}
+        </div>
+        <div class="algo-result">
+            <span class="algo-name">O(n³) Cubic</span>
+            <span class="algo-ans">${stepsC.toLocaleString()} operations (n³÷6 ≈ ${Math.round(n**3/6)})</span>
+        </div>
+        <div class="algo-result">
+            <span class="algo-name">O(n²) Quadratic</span>
+            <span class="algo-ans">${stepsQ1.toLocaleString()} operations (n²÷2 ≈ ${Math.round(n**2/2)}) — ${Math.round(stepsC/stepsQ1)}× faster</span>
+        </div>
+        <div class="algo-result">
+            <span class="algo-name">O(n²) Prefix sum</span>
+            <span class="algo-ans">${stepsP.toLocaleString()} operations — same O but with prefix array precomputation</span>
+        </div>
+        <div class="algo-complexity">
+            <div class="algo-bar-row"><span>O(n³)</span><div class="algo-bar"><div style="width:100%;background:#ef4444"></div></div><span>${stepsC}</span></div>
+            <div class="algo-bar-row"><span>O(n²)</span><div class="algo-bar"><div style="width:${Math.min(100,stepsQ1/stepsC*100)}%;background:#f59e0b"></div></div><span>${stepsQ1}</span></div>
+            <div class="algo-bar-row"><span>Prefix</span><div class="algo-bar"><div style="width:${Math.min(100,stepsP/stepsC*100)}%;background:#34d399"></div></div><span>${stepsP}</span></div>
+        </div>`;
+}
+
+// Scroll tabs
+function initScrollTabs() {
+    document.querySelectorAll('.code-tabs').forEach(tabs => {
+        const wrap = document.createElement('div');
+        wrap.className = 'code-tabs-wrap';
+        tabs.parentNode.insertBefore(wrap, tabs);
+        wrap.appendChild(tabs);
+        const btnL = document.createElement('button');
+        btnL.className = 'tab-scroll-btn tab-scroll-left';
+        btnL.innerHTML = '&#8249;';
+        btnL.onclick = () => tabs.scrollBy({left:-160,behavior:'smooth'});
+        wrap.prepend(btnL);
+        const btnR = document.createElement('button');
+        btnR.className = 'tab-scroll-btn tab-scroll-right';
+        btnR.innerHTML = '&#8250;';
+        btnR.onclick = () => tabs.scrollBy({left:160,behavior:'smooth'});
+        wrap.appendChild(btnR);
+        function upd() {
+            const atStart = tabs.scrollLeft <= 4;
+            const atEnd   = tabs.scrollLeft + tabs.clientWidth >= tabs.scrollWidth - 4;
+            btnL.style.opacity = atStart ? '0' : '1';
+            btnL.style.pointerEvents = atStart ? 'none' : 'auto';
+            btnR.style.opacity = atEnd ? '0' : '1';
+            btnR.style.pointerEvents = atEnd ? 'none' : 'auto';
+            wrap.style.webkitMaskImage = atEnd ? 'none' : 'linear-gradient(to right,black 70%,transparent 100%)';
+            wrap.style.maskImage       = atEnd ? 'none' : 'linear-gradient(to right,black 70%,transparent 100%)';
+        }
+        tabs.addEventListener('scroll', upd);
+        setTimeout(upd, 50);
+        const toggle = tabs.closest('.project-card')?.querySelector('.code-toggle');
+        if (toggle) toggle.addEventListener('click', () => setTimeout(upd, 50));
+    });
+}
+document.addEventListener('DOMContentLoaded', initScrollTabs);
+</script>
+</body>
+</html>

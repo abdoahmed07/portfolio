@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D0009E — Abdalla</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <a href="../portfolio-site/index.html" class="nav-logo">← Portfolio</a>
+    <span class="top-bar-center">Luleå University of Technology</span>
+    <span class="nav-course">D0009E</span>
+</header>
+
+<div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+        <span class="hero-eyebrow">Introduction to Programming in Python</span>
+        <h1 class="hero-title">Course <span class="acc">D0009E</span></h1>
+        <p class="hero-desc">
+            Introduction to Programming — Python assignments covering functions,
+            data structures, object-oriented programming, and file I/O.
+            Each task is fully interactive — try them live below.
+        </p>
+        <div class="hero-meta">
+            <span class="meta-pill">Python</span>
+            <span class="meta-pill">Functions</span>
+            <span class="meta-pill">Data Structures</span>
+            <span class="meta-pill">OOP</span>
+            <span class="meta-pill">File I/O</span>
+            <span class="meta-pill">6 tasks</span>
+        </div>
+    </div>
+
+    <!-- ════════════════════ LAB 1 ════════════════════ -->
+    <span class="section-label">Lab 1 — Functions & Calculation</span>
+    <div class="projects" style="margin-bottom:56px">
+
+        <!-- L1-T1: Loan Calculator -->
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">L1 · Task 1</span>
+                    <div class="card-title">Loan Cost Calculator</div>
+                    <p class="card-desc">Calculates the total cost of a loan given principal, interest rate, and number of years.</p>
+                    <div class="card-tags">
+                        <span class="tag">Functions</span>
+                        <span class="tag">Math</span>
+                        <span class="tag">f-strings</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo</div>
+                <div class="demo-grid-3">
+                    <div class="demo-field">
+                        <label class="demo-field-label">Principal (kr)</label>
+                        <input class="demo-input" type="number" id="loanP" value="50000" min="1">
+                    </div>
+                    <div class="demo-field">
+                        <label class="demo-field-label">Interest Rate (%)</label>
+                        <input class="demo-input" type="number" id="loanR" value="3" step="0.1" min="0">
+                    </div>
+                    <div class="demo-field">
+                        <label class="demo-field-label">Years</label>
+                        <input class="demo-input" type="number" id="loanA" value="10" min="1">
+                    </div>
+                </div>
+                <button class="demo-btn" onclick="calcLoan()">Calculate</button>
+                <div class="demo-output hidden" id="loanOutput"></div>
+            </div>
+            <div class="code-body">
+                <div class="code-filename">L1_-_T1.py</div>
+                <pre><code class="language-python">def kostnad(P, R, A):
+    k = P + ((A + 1) * R * P) / 2
+    print(f"The total cost of the loan is:  {k} kr")
+
+kostnad(50000, 0.03, 10)</code></pre>
+            </div>
+        </div>
+
+        <!-- L1-T2: Recipe Scaler -->
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">L1 · Task 2</span>
+                    <div class="card-title">Recipe Scaler</div>
+                    <p class="card-desc">Scales a cake recipe to any number of people. Calculates ingredient amounts, mixing time, baking time, and total time.</p>
+                    <div class="card-tags">
+                        <span class="tag">Functions</span>
+                        <span class="tag">Arithmetic</span>
+                        <span class="tag">Return values</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo</div>
+                <div class="demo-field" style="max-width:260px">
+                    <label class="demo-field-label">Number of people — <span id="recipeVal">4</span></label>
+                    <input class="demo-slider" type="range" id="recipeP" min="1" max="20" value="4"
+                        oninput="document.getElementById('recipeVal').textContent=this.value; calcRecipe()">
+                </div>
+                <div class="demo-output" id="recipeOutput" style="margin-top:16px"></div>
+            </div>
+            <div class="code-body">
+                <div class="code-filename">L1_-_T2.py</div>
+                <pre><code class="language-python">def calc_recipe(P):
+    print(f"For {P} people, you will need:")
+    print(f"  {(15/4)*P} g butter (shape)")
+    print(f"  {int(3/4*P)} eggs")
+    print(f"  {(3/4)*P} dl powdered sugar")
+    print(f"  {(2/4)*P} tsp vanilla sugar")
+    print(f"  {(2/4)*P} tsp baking powder")
+    print(f"  {(3/4)*P} dl flour")
+    print(f"  {(75/4)*P} g butter")
+    print(f"  {(1/4)*P} dl water")
+
+def calc_mix_time(P):    return 10 + P
+def calc_baking_time(P): return 30 + (P * 3)
+
+def print_recipe(P):
+    calc_recipe(P)
+    mix  = calc_mix_time(P)
+    bake = calc_baking_time(P)
+    print(f"Mixing: {mix} min  Baking: {bake} min  Total: {mix+bake} min")
+
+print_recipe(4)</code></pre>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ════════════════════ LAB 3 ════════════════════ -->
+    <span class="section-label">Lab 3 — Data Structures (Three Implementations)</span>
+
+    <div class="comparison-note">
+        <h3>Same problem, three different data structures</h3>
+        <p>All three implement a word dictionary with insert, lookup, and delete. The live demo is on the last card — the Python dict, which is the cleanest and most natural approach.</p>
+        <div class="comparison-grid">
+            <div class="comparison-cell">
+                <span class="cc-title">Approach 1 · Parallel Lists</span>
+                <span class="cc-text">Two lists synced by index position. Simple but fragile.</span>
+            </div>
+            <div class="comparison-cell">
+                <span class="cc-title">Approach 2 · Tuples</span>
+                <span class="cc-text">List of (word, definition) tuples. More structured, still O(n).</span>
+            </div>
+            <div class="comparison-cell">
+                <span class="cc-title">Approach 3 · Dict ★</span>
+                <span class="cc-text">Built-in dict. O(1) lookup. The natural fit — try it live.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="projects" style="margin-bottom:56px">
+
+        <!-- L3-1: Parallel Lists -->
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">L3 · Approach 1</span>
+                    <div class="card-title">Word Book — Using Two Lists</div>
+                    <p class="card-desc">Two synchronized lists: <code style="color:var(--accent);font-family:var(--font-m)">words[]</code> and <code style="color:var(--accent);font-family:var(--font-m)">defs[]</code>. The position of a word in one list always matches its definition in the other.</p>
+                    <div class="card-tags"><span class="tag">Parallel Lists</span><span class="tag">Index sync</span><span class="tag">O(n) lookup</span></div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+            <div class="code-body">
+                <div class="code-filename">L3-1.py</div>
+                <pre><code class="language-python">def insert(words, defs):
+    word = input("Enter word to insert: ").strip()
+    definition = input("Enter definition: ").strip()
+    if word in words:
+        print(f"'{word}' already exists.")
+        return
+    words.append(word)
+    defs.append(definition)
+    print(f"Inserted '{word}': '{definition}'")
+
+def lookup(words, defs):
+    word = input("Enter word to lookup: ").strip()
+    if word in words:
+        i = words.index(word)
+        print(f"You looked up {word}: {defs[i]}")
+    else:
+        print(f"'{word}' not found.")
+
+def delete(words, defs):
+    word = input("Enter word to delete: ").strip()
+    if word in words:
+        i = words.index(word)
+        words.pop(i)
+        defs.pop(i)
+        print(f"Deleted '{word}'.")
+    else:
+        print(f"'{word}' not found.")
+
+def main_lists():
+    words, defs = [], []
+    while True:
+        choice = input("1.Insert 2.Lookup 3.Delete 4.Exit: ").strip()
+        if   choice == "1": insert(words, defs)
+        elif choice == "2": lookup(words, defs)
+        elif choice == "3": delete(words, defs)
+        elif choice == "4": break
+
+main_lists()</code></pre>
+            </div>
+        </div>
+
+        <!-- L3-3: Tuples -->
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">L3 · Approach 2</span>
+                    <div class="card-title">Word Book — Using Tuples</div>
+                    <p class="card-desc">Stores each entry as a <code style="color:var(--accent);font-family:var(--font-m)">(word, definition)</code> pair inside a list. More structured than parallel lists, but still requires iterating through everything to find a match.</p>
+                    <div class="card-tags"><span class="tag">Tuples</span><span class="tag">List of pairs</span><span class="tag">O(n) lookup</span></div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+            <div class="code-body">
+                <div class="code-filename">L3-3.py</div>
+                <pre><code class="language-python">def insert(entries):
+    word = input("Enter word to insert: ").strip()
+    definition = input("Enter definition: ").strip()
+    for w, d in entries:
+        if w == word:
+            print(f"'{word}' already exists.")
+            return
+    entries.append((word, definition))
+    print(f"Inserted '{word}': '{definition}'")
+
+def lookup(entries):
+    word = input("Enter word to lookup: ").strip()
+    for w, d in entries:
+        if w == word:
+            print(f"You looked up {word}: {d}")
+            return
+    print(f"'{word}' not found.")
+
+def delete(entries):
+    word = input("Enter word to delete: ").strip()
+    for i, (w, d) in enumerate(entries):
+        if w == word:
+            entries.pop(i)
+            print(f"Deleted '{word}'.")
+            return
+    print(f"'{word}' not found.")
+
+def main_tuples():
+    entries = []
+    while True:
+        choice = input("1.Insert 2.Lookup 3.Delete 4.Exit: ").strip()
+        if   choice == "1": insert(entries)
+        elif choice == "2": lookup(entries)
+        elif choice == "3": delete(entries)
+        elif choice == "4": break
+
+main_tuples()</code></pre>
+            </div>
+        </div>
+
+        <!-- L3-2: Dict — LIVE DEMO -->
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">L3 · Approach 3</span>
+                    <div class="card-title">Word Book — Using a Dictionary <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <p class="card-desc">Uses Python's built-in <code style="color:var(--accent);font-family:var(--font-m)">dict</code> — the most natural fit. Direct key→value mapping with O(1) average lookup. The cleanest of the three.</p>
+                    <div class="card-tags"><span class="tag">Dict</span><span class="tag">Hash table</span><span class="tag">O(1) lookup</span></div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo</div>
+                <div class="demo-dict-controls">
+                    <div class="demo-dict-row">
+                        <input class="demo-input" type="text" id="dictWord" placeholder="Word" autocomplete="off">
+                        <input class="demo-input" type="text" id="dictDef" placeholder="Definition" autocomplete="off">
+                        <button class="demo-btn demo-btn-sm" onclick="dictInsert()">Insert</button>
+                    </div>
+                    <div class="demo-dict-row">
+                        <input class="demo-input" type="text" id="dictLookup" placeholder="Word to look up" autocomplete="off">
+                        <button class="demo-btn demo-btn-sm" onclick="dictLookup()">Lookup</button>
+                        <button class="demo-btn demo-btn-sm demo-btn-danger" onclick="dictDelete()">Delete</button>
+                    </div>
+                </div>
+                <div class="demo-output hidden" id="dictMsg"></div>
+                <div class="dict-entries" id="dictEntries"></div>
+            </div>
+            <div class="code-body">
+                <div class="code-filename">L3-2.py</div>
+                <pre><code class="language-python">def insert(d):
+    word = input("Enter word to insert: ")
+    definition = input("Enter definition: ")
+    if word in d:
+        print(f"'{word}' already exists.")
+    else:
+        d[word] = definition
+        print(f"Inserted '{word}': '{definition}'")
+
+def lookup(d):
+    word = input("Enter word to lookup: ")
+    if word in d:
+        print(f"You looked up {word}: {d[word]}")
+    else:
+        print(f"'{word}' was not found.")
+
+def delete(d):
+    word = input("Enter word to delete: ")
+    if word in d:
+        del d[word]
+        print(f"Deleted '{word}'.")
+    else:
+        print(f"'{word}' was not found.")
+
+def main_dic():
+    d = {}
+    while True:
+        choice = int(input("1.Insert 2.Lookup 3.Delete 4.Exit: "))
+        if   choice == 1: insert(d)
+        elif choice == 2: lookup(d)
+        elif choice == 3: delete(d)
+        elif choice == 4: break
+
+main_dic()</code></pre>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ════════════════════ LAB 4 ════════════════════ -->
+    <span class="section-label">Lab 4 — Object-Oriented Programming</span>
+    <div class="projects">
+
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">L4</span>
+                    <div class="card-title">Phonebook — OOP with File I/O</div>
+                    <p class="card-desc">A full phonebook class. Supports multiple names (aliases) per number, persistent save/load, and a command-line interface dispatched via lambda dict.</p>
+                    <div class="card-tags">
+                        <span class="tag">Class</span><span class="tag">OOP</span>
+                        <span class="tag">File I/O</span><span class="tag">Aliases</span>
+                        <span class="tag">Lambda dispatch</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo</div>
+                <p style="font-family:var(--font-m);font-size:0.75rem;color:var(--muted);margin-bottom:14px;font-weight:300">
+                    Use the buttons below or type a command directly. Try: <code style="color:var(--accent)">add</code> · <code style="color:var(--accent)">lookup</code> · <code style="color:var(--accent)">alias</code> · <code style="color:var(--accent)">change</code> · <code style="color:var(--accent)">remove</code> · <code style="color:var(--accent)">list</code>
+                </p>
+                <div class="pb-quick-btns">
+                    <button class="pb-quick" onclick="pbSetAction('add')">+ Add</button>
+                    <button class="pb-quick" onclick="pbSetAction('lookup')">🔍 Lookup</button>
+                    <button class="pb-quick" onclick="pbSetAction('alias')">↗ Alias</button>
+                    <button class="pb-quick" onclick="pbSetAction('change')">✎ Change</button>
+                    <button class="pb-quick" onclick="pbSetAction('remove')">✕ Remove</button>
+                    <button class="pb-quick" onclick="pbSetAction('list')">☰ List</button>
+                </div>
+                <div class="pb-input-area" id="pbInputArea"></div>
+                <div class="pb-terminal" id="pbTerminal">
+                    <div class="pb-line pb-muted">Phonebook ready. Select an action above or type a command.</div>
+                </div>
+                <div class="pb-cmd-row">
+                    <span class="pb-prompt">phoneBook&gt;</span>
+                    <input class="pb-cmd-input" type="text" id="pbCmd"
+                        placeholder="or type a command directly…"
+                        autocomplete="off"
+                        onkeydown="if(event.key==='Enter') pbRunCmd()">
+                    <button class="demo-btn demo-btn-sm" onclick="pbRunCmd()">Run</button>
+                </div>
+            </div>
+
+            <div class="card-notes visible">
+                <div class="notes-inner">
+                    <span class="notes-label">Commands</span>
+                    <span class="notes-text">
+                        <code style="color:var(--accent)">add &lt;name&gt; &lt;number&gt;</code> &nbsp;·&nbsp;
+                        <code style="color:var(--accent)">lookup &lt;name&gt;</code> &nbsp;·&nbsp;
+                        <code style="color:var(--accent)">alias &lt;name&gt; &lt;alias&gt;</code> &nbsp;·&nbsp;
+                        <code style="color:var(--accent)">change &lt;name&gt; &lt;new_number&gt;</code> &nbsp;·&nbsp;
+                        <code style="color:var(--accent)">remove &lt;name&gt; &lt;number&gt;</code> &nbsp;·&nbsp;
+                        <code style="color:var(--accent)">list</code>
+                    </span>
+                </div>
+            </div>
+
+            <div class="code-body">
+                <div class="code-filename">L4.py</div>
+                <pre><code class="language-python">class phoneBook:
+    def __init__(self):
+        self.entries = {}  # number -> list of names (aliases)
+
+    def add(self, name, number):
+        if number not in self.entries:
+            self.entries[number] = []
+        if name in self.entries[number]:
+            print(f"{name} already exists for {number}")
+        else:
+            self.entries[number].append(name)
+            print(f"Added {name} with number {number}")
+
+    def lookup(self, name):
+        matches = [num for num, names in self.entries.items() if name in names]
+        if not matches:         print(f"{name} not found")
+        elif len(matches) == 1: print(f"{name}'s number is {matches[0]}")
+        else:                   print(f"{name} has multiple numbers: {', '.join(matches)}")
+
+    def alias(self, existing_name, new_name, number=None):
+        matches = [num for num, names in self.entries.items() if existing_name in names]
+        if not matches: print(f"{existing_name} not found"); return
+        if number is None: number = matches[0]
+        if new_name in self.entries[number]:
+            print(f"{new_name} already exists for {number}")
+        else:
+            self.entries[number].append(new_name)
+            print(f"Added alias {new_name} for {existing_name} ({number})")
+
+    def change(self, name, new_number, old_number=None):
+        matches = [num for num, names in self.entries.items() if name in names]
+        if not matches: print(f"{name} not found"); return
+        if old_number is None: old_number = matches[0]
+        self.entries[new_number] = list(self.entries[old_number])
+        del self.entries[old_number]
+        print(f"Changed {name}'s number from {old_number} to {new_number}")
+
+    def remove(self, name, number):
+        if number not in self.entries or name not in self.entries[number]:
+            print(f"{name} with {number} not found"); return
+        self.entries[number].remove(name)
+        if not self.entries[number]: del self.entries[number]
+        print(f"Removed {name} ({number})")
+
+    def list_entries(self):
+        for num, names in self.entries.items():
+            print(f"{num}: {', '.join(names)}")
+
+    def run(self):
+        commands = {
+            "add":    lambda a: self.add(a[0], a[1])    if len(a)==2 else print("add &lt;name&gt; &lt;number&gt;"),
+            "lookup": lambda a: self.lookup(a[0])        if len(a)==1 else print("lookup &lt;name&gt;"),
+            "alias":  lambda a: self.alias(*a[:3])       if 2&lt;=len(a)&lt;=3 else print("alias &lt;name&gt; &lt;alias&gt;"),
+            "change": lambda a: self.change(*a[:3])      if 2&lt;=len(a)&lt;=3 else print("change &lt;name&gt; &lt;number&gt;"),
+            "remove": lambda a: self.remove(a[0], a[1]) if len(a)==2 else print("remove &lt;name&gt; &lt;number&gt;"),
+            "list":   lambda a: self.list_entries(),
+        }
+        while True:
+            parts = input("phoneBook> ").strip().split()
+            if not parts: continue
+            if parts[0] == "quit": break
+            if parts[0] in commands: commands[parts[0]](parts[1:])
+            else: print("Unknown command")
+
+phoneBook().run()</code></pre>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    hljs.highlightAll();
+    calcRecipe();
+});
+
+function toggleCode(btn) {
+    const card = btn.closest(".project-card");
+    const body = card.querySelector(".code-body");
+    const isOpen = body.classList.contains("open");
+    body.classList.toggle("open", !isOpen);
+    btn.classList.toggle("open", !isOpen);
+    btn.textContent = isOpen ? "View Code" : "Hide Code";
+}
+
+// ── LOAN CALCULATOR ────────────────────────────────────────
+function calcLoan() {
+    const P = parseFloat(document.getElementById("loanP").value);
+    const R = parseFloat(document.getElementById("loanR").value) / 100;
+    const A = parseFloat(document.getElementById("loanA").value);
+    const out = document.getElementById("loanOutput");
+    if (isNaN(P) || isNaN(R) || isNaN(A) || P <= 0 || A <= 0) {
+        out.className = "demo-output demo-error";
+        out.textContent = "Please enter valid positive values.";
+        return;
+    }
+    const k = P + ((A + 1) * R * P) / 2;
+    const interest = k - P;
+    const monthly = k / (A * 12);
+    out.className = "demo-output";
+    out.innerHTML = `
+        <div class="loan-result">
+            <div class="loan-stat"><span class="loan-stat-label">Total Cost</span><span class="loan-stat-val accent">${k.toLocaleString("sv-SE",{maximumFractionDigits:2})} kr</span></div>
+            <div class="loan-stat"><span class="loan-stat-label">Principal</span><span class="loan-stat-val">${P.toLocaleString("sv-SE")} kr</span></div>
+            <div class="loan-stat"><span class="loan-stat-label">Total Interest</span><span class="loan-stat-val">${interest.toLocaleString("sv-SE",{maximumFractionDigits:2})} kr</span></div>
+            <div class="loan-stat"><span class="loan-stat-label">Monthly Payment</span><span class="loan-stat-val">${monthly.toLocaleString("sv-SE",{maximumFractionDigits:2})} kr</span></div>
+        </div>`;
+}
+
+// ── RECIPE SCALER ──────────────────────────────────────────
+function calcRecipe() {
+    const P = parseInt(document.getElementById("recipeP").value);
+    const out = document.getElementById("recipeOutput");
+    const ingredients = [
+        { label:"Butter (shape)", val:(15/4)*P, unit:"g" },
+        { label:"Ströbröd",       val:(3/4)*P,  unit:"msk" },
+        { label:"Eggs",           val:Math.floor((3/4)*P), unit:"" },
+        { label:"Powdered sugar", val:(3/4)*P,  unit:"dl" },
+        { label:"Vanilla sugar",  val:(2/4)*P,  unit:"tsp" },
+        { label:"Baking powder",  val:(2/4)*P,  unit:"tsp" },
+        { label:"Flour",          val:(3/4)*P,  unit:"dl" },
+        { label:"Butter (cake)",  val:(75/4)*P, unit:"g" },
+        { label:"Water",          val:(1/4)*P,  unit:"dl" },
+    ];
+    const mix = 10+P, bake = 30+P*3;
+    out.innerHTML = `
+        <div class="recipe-grid">${ingredients.map(i=>`
+            <div class="recipe-row">
+                <span class="recipe-label">${i.label}</span>
+                <span class="recipe-val">${i.val%1===0?i.val:i.val.toFixed(2)} ${i.unit}</span>
+            </div>`).join("")}
+        </div>
+        <div class="recipe-times">
+            <div class="time-pill">Mix: ${mix} min</div>
+            <div class="time-pill">Bake: ${bake} min</div>
+            <div class="time-pill accent-pill">Total: ${mix+bake} min</div>
+        </div>`;
+}
+
+// ── DICTIONARY ─────────────────────────────────────────────
+const dict = {};
+
+function dictMsg(msg, type) {
+    const el = document.getElementById("dictMsg");
+    el.textContent = msg;
+    el.className = `demo-output ${type==="error"?"demo-error":"demo-success"}`;
+    setTimeout(() => el.className = "demo-output hidden", 3000);
+}
+
+function renderDict() {
+    const el = document.getElementById("dictEntries");
+    const keys = Object.keys(dict);
+    if (keys.length === 0) { el.innerHTML = '<div class="dict-empty">Dictionary is empty. Add some words above.</div>'; return; }
+    el.innerHTML = keys.map(w=>`
+        <div class="dict-entry">
+            <span class="dict-word">${w}</span>
+            <span class="dict-def">${dict[w]}</span>
+            <button class="dict-del" onclick="dictDeleteWord('${w}')">✕</button>
+        </div>`).join("");
+}
+
+function dictInsert() {
+    const word = document.getElementById("dictWord").value.trim();
+    const def  = document.getElementById("dictDef").value.trim();
+    if (!word||!def) { dictMsg("Enter both a word and a definition.","error"); return; }
+    if (word in dict) { dictMsg(`'${word}' already exists.`,"error"); return; }
+    dict[word] = def;
+    document.getElementById("dictWord").value = "";
+    document.getElementById("dictDef").value  = "";
+    dictMsg(`Inserted '${word}'.`,"success");
+    renderDict();
+}
+
+function dictLookup() {
+    const word = document.getElementById("dictLookup").value.trim();
+    if (!word) return;
+    if (word in dict) dictMsg(`${word}: ${dict[word]}`,"success");
+    else              dictMsg(`'${word}' not found.`,"error");
+}
+
+function dictDelete() {
+    dictDeleteWord(document.getElementById("dictLookup").value.trim());
+}
+
+function dictDeleteWord(word) {
+    if (!word) return;
+    if (word in dict) { delete dict[word]; dictMsg(`Deleted '${word}'.`,"success"); renderDict(); }
+    else dictMsg(`'${word}' not found.`,"error");
+}
+
+renderDict();
+
+// ── PHONEBOOK ──────────────────────────────────────────────
+const pb = {};
+
+function pbLog(msg, type) {
+    const t = document.getElementById("pbTerminal");
+    const l = document.createElement("div");
+    l.className = `pb-line pb-${type==="error"?"error":type==="success"?"success":"muted"}`;
+    l.textContent = msg;
+    t.appendChild(l);
+    t.scrollTop = t.scrollHeight;
+}
+
+function pbCmd(text) {
+    const t = document.getElementById("pbTerminal");
+    const e = document.createElement("div");
+    e.className = "pb-line pb-cmd";
+    e.textContent = "phoneBook> " + text;
+    t.appendChild(e);
+    const parts = text.trim().split(/\s+/);
+    const action = parts[0].toLowerCase();
+    const args = parts.slice(1);
+    switch(action) {
+        case "add":    if(args.length!==2){pbLog("Usage: add <name> <number>","error");break;} pbAdd(args[0],args[1]); break;
+        case "lookup": if(args.length!==1){pbLog("Usage: lookup <name>","error");break;} pbLookup(args[0]); break;
+        case "alias":  if(args.length<2){pbLog("Usage: alias <name> <alias>","error");break;} pbAlias(args[0],args[1],args[2]); break;
+        case "change": if(args.length<2){pbLog("Usage: change <name> <new_number>","error");break;} pbChange(args[0],args[1],args[2]); break;
+        case "remove": if(args.length!==2){pbLog("Usage: remove <name> <number>","error");break;} pbRemove(args[0],args[1]); break;
+        case "list":   pbList(); break;
+        case "clear":  document.getElementById("pbTerminal").innerHTML=""; break;
+        default: pbLog(`Unknown command: ${action}. Try: add, lookup, alias, change, remove, list`,"error");
+    }
+}
+
+function pbAdd(name,number){if(!pb[number])pb[number]=[];if(pb[number].includes(name)){pbLog(`${name} already exists for ${number}`,"error");return;}pb[number].push(name);pbLog(`Added ${name} with number ${number}`,"success");}
+function pbLookup(name){const m=Object.entries(pb).filter(([,n])=>n.includes(name)).map(([num])=>num);if(!m.length)pbLog(`${name} not found`,"error");else if(m.length===1)pbLog(`${name}'s number is ${m[0]}`,"success");else pbLog(`${name} has multiple numbers: ${m.join(", ")}`,"success");}
+function pbAlias(existing,alias,number){const m=Object.entries(pb).filter(([,n])=>n.includes(existing)).map(([num])=>num);if(!m.length){pbLog(`${existing} not found`,"error");return;}const num=number||m[0];if(!pb[num]){pbLog(`Number ${num} not found`,"error");return;}if(pb[num].includes(alias)){pbLog(`${alias} already exists for ${num}`,"error");return;}pb[num].push(alias);pbLog(`Added alias ${alias} for ${existing} (${num})`,"success");}
+function pbChange(name,newNum,oldNum){const m=Object.entries(pb).filter(([,n])=>n.includes(name)).map(([num])=>num);if(!m.length){pbLog(`${name} not found`,"error");return;}const on=oldNum||m[0];if(!pb[on]){pbLog(`Number ${on} not found`,"error");return;}pb[newNum]=[...pb[on]];delete pb[on];pbLog(`Changed ${name}'s number from ${on} to ${newNum}`,"success");}
+function pbRemove(name,number){if(!pb[number]||!pb[number].includes(name)){pbLog(`${name} with ${number} not found`,"error");return;}pb[number]=pb[number].filter(n=>n!==name);if(!pb[number].length)delete pb[number];pbLog(`Removed ${name} (${number})`,"success");}
+function pbList(){const e=Object.entries(pb);if(!e.length){pbLog("Phonebook is empty.","error");return;}e.forEach(([num,names])=>pbLog(`${num}: ${names.join(", ")}`,"success"));}
+
+const pbForms = {
+    add:    { fields:["Name","Number"],           cmd:(v)=>`add ${v[0]} ${v[1]}` },
+    lookup: { fields:["Name"],                    cmd:(v)=>`lookup ${v[0]}` },
+    alias:  { fields:["Existing name","New alias"],cmd:(v)=>`alias ${v[0]} ${v[1]}` },
+    change: { fields:["Name","New number"],       cmd:(v)=>`change ${v[0]} ${v[1]}` },
+    remove: { fields:["Name","Number"],           cmd:(v)=>`remove ${v[0]} ${v[1]}` },
+    list:   { fields:[],                          cmd:()=>`list` },
+};
+
+function pbSetAction(action) {
+    document.querySelectorAll(".pb-quick").forEach(b=>b.classList.remove("active"));
+    event.target.classList.add("active");
+    const area = document.getElementById("pbInputArea");
+    const form = pbForms[action];
+    if (form.fields.length===0) { area.innerHTML=""; pbCmd("list"); return; }
+    area.innerHTML = `<div class="demo-dict-row" style="margin-top:12px">
+        ${form.fields.map((f,i)=>`<input class="demo-input" type="text" id="pbF${i}" placeholder="${f}" autocomplete="off">`).join("")}
+        <button class="demo-btn demo-btn-sm" onclick="pbSubmitAction('${action}')">${action.charAt(0).toUpperCase()+action.slice(1)}</button>
+    </div>`;
+    document.getElementById("pbF0")?.focus();
+    form.fields.forEach((_,i)=>document.getElementById(`pbF${i}`)?.addEventListener("keydown",e=>{if(e.key==="Enter")pbSubmitAction(action);}));
+}
+
+function pbSubmitAction(action) {
+    const form = pbForms[action];
+    const vals = form.fields.map((_,i)=>document.getElementById(`pbF${i}`)?.value.trim()||"");
+    if(vals.some(v=>!v)){pbLog("Please fill in all fields.","error");return;}
+    pbCmd(form.cmd(vals));
+    form.fields.forEach((_,i)=>{const el=document.getElementById(`pbF${i}`);if(el)el.value="";});
+    document.getElementById("pbF0")?.focus();
+}
+
+function pbRunCmd() {
+    const input = document.getElementById("pbCmd");
+    const val = input.value.trim();
+    if(!val) return;
+    pbCmd(val);
+    input.value = "";
+}
+</script>
+</body>
+</html>

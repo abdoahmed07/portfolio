@@ -1,0 +1,405 @@
+/* Namn - personnummer
+Mohammed Abuharaz --- 20060831-7434
+Abdalla Nasreldin --- 20050113-5958
+*/
+
+/* main colors used throughout the web*/
+:root{
+  /* Main background color for the page */
+  --bg: #f3e5c0;        
+  /* Main text color */
+  --text: #2a241b;      
+  /* Muted text color for less important info */
+  --muted: #6a5c4b;     
+
+
+  --card: #fcf8ee;      
+  --border: #e3d7bf;    
+
+  --blue: #224aa6;      
+  --blue-200: #e1e7f8;  
+
+  --green: #3a7a57;
+  --green-200: #e6f2ea;
+
+  --purple: #6b2c7a;
+  --purple-200: #efe5f4;
+
+  --amber: #c9a248;
+  --amber-200: #fddd7e;
+
+  /* Gradient colors for the header background */
+  --brand-grad-start: #1a3f8f;
+  --brand-grad-end: #c9a248;
+}
+
+/* Remove default browser spacing and set box-sizing 
+   '*' for everything
+*/
+*{ box-sizing: border-box; }
+html, body{ margin:0; padding:0; }
+/* Set main font, text color, background, and line spacing */
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.55;
+}
+
+/* Center page content and add padding around it */
+.container{ max-width: 1024px; margin: 0 auto; padding: 16px; }
+
+/* ---- Header & navigation ---- */
+/* Header uses a gradient background and white text */
+.site-header{
+  background: linear-gradient(90deg, var(--brand-grad-start), 
+  var(--brand-grad-end));
+  color: #ffffff;
+}
+/* Main title in the header */
+.site-header h1{ margin: 0; font-size: 1.9rem; }
+
+/* Navigation bar: links are spaced and styled like pills */
+.top-nav{ margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap; }
+.top-nav a{
+  color: #ffffff;
+  text-decoration: none;
+  background: rgba(255,255,255,.12);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,.25);
+}
+/* Change background on hover for better feedback */
+.top-nav a:hover{ background: rgba(255,255,255,.2); }
+
+/* Logo image size and alignment */
+.site-logo{ height:48px; width:auto; margin-right:1rem; display:inline-block; 
+  vertical-align:middle; }
+
+/* ---- Responsive layout ----
+  On small screens: stack columns
+  On wide screens: two columns (game | info) */
+.layout{ display: grid; gap: 16px; }
+@media (min-width: 840px){
+  .layout{
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+/* ---- Cards / panels ---- */
+/* Card is a box with background, border, and rounded corners */
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.03);
+}
+
+/* Accent rings for different card types (blue, green, purple) */
+.card--accent-blue{ border-color: #b9c8ef; box-shadow: 0 0 0 3px 
+  var(--blue-200) inset; }
+.card--accent-green{ border-color: #c8e3d3; box-shadow: 0 0 0 3px 
+  var(--green-200) inset; }
+.card--accent-purple{ border-color: #dccbe6; box-shadow: 0 0 0 3px 
+  var(--purple-200) inset; }
+
+/* Tinted backgrounds for info cards on the right */
+.card--tint-blue{ background: var(--blue-200); }
+.card--tint-amber{ background: var(--amber-200); }
+.card--tint-green{ background: var(--green-200); }
+.card--tint-purple{ background: var(--purple-200); }
+
+/* Stack items vertically with space between them */
+.stack > * + *{ margin-top: 16px; }
+/* Headings spacing and line height */
+h1,h2{ line-height: 1.25; }
+h2{ margin: 0 0 10px 0; }
+
+/* ---- Reports ---- */
+/* Remove bullets and spacing from panel lists */
+.panel{ list-style: none; padding: 0; margin: 0; }
+/* Each list item has padding and a bottom border */
+.panel li{
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: #fffaf0;
+}
+/* Alternate background color for odd rows */
+.panel li:nth-child(odd){ background: #fdf7e9; }
+/* Remove border from last item */
+.panel li:last-child{ border-bottom: 0; }
+
+/* ---- Form & controls ---- */
+/* Fieldset is a box around each slider group */
+fieldset{
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 0 0 12px 0;
+  background: #fffdf6;
+}
+/* Legend is the title for each slider group */
+legend{
+  padding: 0 6px;
+  font-weight: bold;
+  color: var(--blue);
+}
+/* Value next to legend is less bold and purple */
+legend .value{
+  font-weight: normal;
+  color: var(--purple);
+  margin-left: 6px;
+}
+
+/* Slider row:
+   3 columns = [-] [range] [+] */
+.row{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+/* Make slider fill the space between buttons */
+input[type="range"]{ width: 100%; }
+
+/* Buttons (shared) */
+/* All buttons have pointer cursor, border, padding, and rounded corners */
+button{
+  cursor: pointer;
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font: inherit;
+  transition: transform .02s ease, background .15s ease, border-color .15s ease;
+}
+/* Button hover: light background and darker border */
+button:hover{ background: #f1ead7; border-color: #d9c9a8; }
+/* Button pressed: move down slightly */
+button:active{ transform: translateY(1px); }
+
+/* Semantic action colors for special buttons */
+button.green{ background: var(--green); 
+  color: #ffffff; border-color: #1f4f37; }
+button.yellow{ background: var(--amber); 
+  color: #2a241b; border-color: #8b6f2e; }
+
+/* Neutral button style (used for the Help <summary>) */
+button.neutral, .button.neutral {
+  background: #fffdf6;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* Focus ring for keyboard users (shows when tabbing) */
+button:focus, input[type="range"]:focus, summary.button:focus{
+  outline: 3px solid #e0d3b2;
+  outline-offset: 2px;
+}
+
+/* Bulleted lists in info sections */
+.bullets{ margin: 0; padding-left: 18px; }
+.bullets li{ margin-bottom: 6px; }
+
+/* ---- Footer ---- */
+/* Footer is at the bottom, with a light background and small text */
+.site-footer {
+  background: #f3ebd6;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+  padding: 12px 0;
+}
+/* Smaller font for copyright */
+.small{ font-size: .92rem; }
+
+/* ---- Submit row + help popover ---- */
+/* Row for action buttons and help, with spacing */
+.actions-row{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Details/summary styled like a button for help popup */
+.help-pop { position: relative; }
+/* Remove default marker from summary */
+.help-pop > summary { list-style: none; }
+.help-pop > summary::-webkit-details-marker { display: none; }
+/* Make summary look like a button */
+.help-pop > summary.button {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  user-select: none;
+}
+
+/* Floating help card (shows when help is open) */
+.help-pop__card{
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: min(360px, 80vw);
+  z-index: 10;
+  box-shadow: 0 6px 28px rgba(0,0,0,.12);
+  border-radius: 10px;
+}
+/* Title inside help popup */
+.help-pop__title{
+  margin: 0 0 8px 0;
+  font-size: 1.05rem;
+}
+
+/* ---- Round +/- buttons flanking sliders ---- */
+/* Red and blue round buttons for minus and plus */
+.button.red, .button.blue {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: background 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+/* CHANGE: Improve contrast on round buttons (white text) */
+.button.red { background: #f87171; color: #000000; }   /* was #000000 */
+.button.red:hover { background: #dc2626; transform: scale(1.08); }
+.button.blue { background: #60a5fa; color: #000000; }  /* was #000000 */
+.button.blue:hover { background: #2563eb; transform: scale(1.08); }
+
+/* ---- Decorative side image (matches original behavior) ----
+  On desktop: image is absolutely positioned on the left
+  On mobile: image is normal and fills width */
+.hero-row{
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+}
+/* Side image size */
+.side-img { width: 220px; height: auto; margin-right: 16px; }
+/* Absolutely positioned image for large screens */
+.side-img.side-img--abs{
+  height: 600px;
+  width: 240px;
+  display: block;
+  margin-left: 10px;
+  position: absolute;
+  left: 0;
+  top: 80px;
+  z-index: 1000;
+}
+
+/* =========================================================
+  CHANGE: Prevent overlap + stack right column on medium
+  - ≥1200px: keep absolute image, reserve space for it
+  - 700–1199px: image becomes normal flow, info stacks under game
+  - ≤699px: keep existing mobile layout
+  ========================================================= */
+
+/* LARGE DESKTOP: keep absolute image AND make room for it */
+@media (min-width: 1200px) {
+  /* Absolute side image */
+  .side-img.side-img--abs{
+    position: absolute;
+    width: 240px;
+    height: 600px;
+    left: 0;
+    top: 80px;
+    margin-left: 10px;
+    z-index: 1000;
+    display: block;
+  }
+
+  /* Reserve space so content never sits under the image */
+  .site-header .container,
+  main.container,
+  .site-footer .container {
+    margin-left: 260px; /* 240 img + 10 margin + a little buffer */
+  }
+
+  /* Two-column layout (game | info) */
+  .layout{
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+/* MEDIUM SCREENS: single column + MOBILE-STYLE IMAGE (visible, normal flow) */
+@media (min-width: 700px) and (max-width: 1199px) {
+  /* Image behaves like on phones (normal flow above content) */
+  .hero-row { display: block; }
+
+  .side-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 40vh;    /* prevent it from getting too tall */
+    object-fit: contain; /* keep aspect ratio without cropping */
+    margin: 0 0 12px;
+  }
+
+  /* Override absolute variant to be normal flow here */
+  .side-img.side-img--abs{
+    position: static;
+    width: 100%;
+    height: auto;
+    z-index: auto;
+    margin-left: 0;
+    top: auto;
+    left: auto;
+  }
+
+  /* Return containers to normal centering */
+  .site-header .container,
+  main.container,
+  .site-footer .container {
+    margin-left: auto;
+  }
+
+  /* Single column so right-side boxes drop under the game */
+  .layout{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* SMALL SCREENS (phones): single column + MOBILE-STYLE IMAGE */
+@media (max-width: 699px) {
+  .hero-row { display: block; }
+
+  .side-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 40vh;
+    object-fit: contain;
+    margin: 0 0 12px;
+  }
+
+  .side-img.side-img--abs{
+    position: static;
+    width: 100%;
+    height: auto;
+    z-index: auto;
+    margin-left: 0;
+    top: auto;
+    left: auto;
+  }
+
+  .layout{
+    grid-template-columns: 1fr;
+  }
+
+  .site-header .container,
+  main.container,
+  .site-footer .container {
+    margin-left: auto;
+  }
+}

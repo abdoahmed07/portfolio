@@ -1,0 +1,303 @@
+<!-- Namn --- personnummer
+Mohammed Abuharaz --- 20060831-7434
+Abdalla Nasreldin --- 20050113-5958
+-->
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hammurabi</title>
+
+
+  <link rel="stylesheet" href="hammurabi.css">
+
+  <script src="hammurabi.js" defer></script>
+    <link rel="icon" type="image/png" href="logo.png">
+  <!--
+    This script waits until the page is loaded,
+    then starts the game by calling gameStart().
+    It checks if gameStart exists before calling it.
+  -->
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof gameStart === 'function') gameStart();
+    });
+  </script>
+</head>
+
+<body>
+
+  <!--
+  Bilden på sidan
+  -->
+  <div class="hero-row">
+    <img src="Babylonian.png" alt="Babylonian" class="side-img side-img--abs">
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <!-- Logo image for the game -->
+      <img src="logo.png" alt="Hammurabi logotyp" class="site-logo">
+      <!-- Main title of the game -->
+      <h1>Hammurabi</h1>
+      <!-- Navigation menu -->
+      <nav class="top-nav">
+        <a href="#om-spelet">Om spelet</a>
+        <a href="#om-kungen">Om Hammurabi</a>
+        <a href="#regler">Regler</a>
+        <a href="#kallor">Källor</a>
+      </nav>
+    </div>
+  </header>
+
+  <!--
+    Main content area.
+    Uses a two-column layout:
+    - Left: the game controls and status
+    - Right: information and instructions
+  -->
+  <main class="container layout">
+    
+    <!--
+      Spelkontroller
+    -->
+    <section aria-label="Spelkontroller" class="card card--accent-blue">
+        
+    
+      <h2 id="year" aria-live="polite">TEXT-SOM-BYTS-UT-AV-JS-FILEN</h2>
+
+      <ul id="people" class="panel card card--accent-green">
+        <li id="starved">TEXT-SOM-BYTS-UT-AV-JS-FILEN</li>
+        <li id="newcomers">TEXT-SOM-BYTS-UT-AV-JS-FILEN</li>
+        <li id="population">TEXT-SOM-BYTS-UT-AV-JS-FILEN</li>
+      </ul>
+
+      <ul id="economy" class="panel card card--accent-purple">
+        <li id="acres">TEXT-SOM-BYTS-UT-AV-JS-FILEN</li>
+        <li id="bushels">TEXT-SOM-BYTS-UT-AV-JS-FILEN</li>
+        <li id="harvest">TEXT-SOM-BYTS-UT-AV-JS-FILEN</li>
+        <li id="rats">TEXT-SOM-BYTS-UT-AV-JS-FILEN</li>
+        <li id="price">TEXT-SOM-BYTS-UT-AV-JS-FILEN</li>
+      </ul>
+
+      <form onsubmit="return false"> 
+        
+        <fieldset>
+          <legend>
+            Tunnland sälja/köpa:
+            
+            <span class="value" id="outputAcrestosellbuy"></span>
+          </legend>
+          <div class="row">
+            
+            <button class="button red" id="minusbuttonAcrestosellbuy"
+              onclick="onChangeAcres('minusbuttonAcrestosellbuy')" type="button"
+                aria-label="Minska">
+            
+              <svg width="20" height="20" viewBox="0 0 20 20" 
+                    aria-hidden="true">
+                <rect x="4" y="9" width="12" height="2" rx="1" />
+              </svg>
+            </button>
+
+            <input type="range" id="sliderAcrestosellbuy"
+              min="-1000" max="1000" step="1" value="0"
+              onchange="onChangeAcres('sliderAcrestosellbuy')">
+
+
+            <button class="button blue" id="plusbuttonAcrestosellbuy"
+              onclick="onChangeAcres('plusbuttonAcrestosellbuy')" 
+                type="button" aria-label="Öka">
+
+              <svg width="20" height="20" viewBox="0 0 20 20" 
+                    aria-hidden="true">
+                <rect x="9" y="4" width="2" height="12" rx="1" />
+                <rect x="4" y="9" width="12" height="2" rx="1" />
+              </svg>
+            </button>
+          </div>
+        </fieldset>
+
+        <!--
+          Slider for how much food to give the people.
+        -->
+        <fieldset>
+          <legend>
+            Mat till folket:
+            
+            <span class="value" id="outputFeedpeople"></span>
+          </legend>
+          <div class="row">
+            
+            <button class="button red" id="minusbuttonFeedpeople"
+              onclick="onChangeFeeding('minusbuttonFeedpeople')" 
+              type="button">-</button>
+
+            
+            <input type="range" id="sliderFeedpeople"
+              min="0" max="2800" step="1" value="0"
+              onchange="onChangeFeeding('sliderFeedpeople')">
+
+            <!-- Button to increase food amount -->
+            <button class="button blue" id="plusbuttonFeedpeople"
+              onclick="onChangeFeeding('plusbuttonFeedpeople')" type="button">+
+            </button>
+          </div>
+        </fieldset>
+
+        
+        <fieldset>
+          <legend>
+            Sådd:
+            
+            <span class="value" id="outputPlantwithseed"></span>
+          </legend>
+          <div class="row">
+            
+            <button class="button red" id="minusbuttonPlantwithseed"
+              onclick="onChangePlanting('minusbuttonPlantwithseed')" 
+              type="button">-
+            </button>
+
+            
+            <input type="range" id="sliderPlantwithseed"
+              min="0" max="1000" step="1" value="0"
+              onchange="onChangePlanting('sliderPlantwithseed')">
+
+            <button class="button blue" id="plusbuttonPlantwithseed"
+              onclick="onChangePlanting('plusbuttonPlantwithseed')" 
+              type="button">+
+            </button>
+          </div>
+        </fieldset>
+
+        
+        <div class="actions-row">
+          <!-- Button to restart the game -->
+          <button class="button yellow" type="button" onclick="gameStart()">
+            Starta om</button>
+          <!-- Button to finish and send orders -->
+          <button class="button green" type="button" onclick="finishTurn()">
+            Detta är min order!
+          </button>
+
+          <!--
+            Hjälp knappen.
+          -->
+          <details class="help-pop">
+            <!-- Looks like a button, opens the help -->
+            <summary class="button neutral" aria-label="Hur funkar spelet?">
+              Hjälp
+            </summary>
+            <div class="help-pop__card card">
+              <h3 class="help-pop__title">Snabbguide</h3>
+              <ul class="bullets">
+                <li>Spelet pågår i <strong>10 år</strong> (10 rundor).</li>
+                <li><strong>Mat:</strong> 20 skäppor behövs per person/år.</li>
+                <li><strong>Sådd:</strong> 1 skäppa per tunnland. Max sådd = 
+                  <em>min</em>(tunnland, 10×befolkning, skäppor).</li>
+                <li><strong>Landpris</strong> varierar varje år.</li>
+                <li><strong>Råttor/pest</strong> kan slå till vissa år.</li>
+                <li>Försök hålla folket mätta och så all mark om möjligt.</li>
+              </ul>
+              <p class="small">
+                Vill du läsa mer? Se 
+                <a href="Hammurabi Game - Play Hammurabi Online-1.pdf" 
+                target="_blank" rel="noopener">Regler</a>.
+              </p>
+            </div>
+          </details>
+        </div>
+      </form>
+    </section>
+
+    <!--
+      RIGHT COLUMN: Info and instructions
+      These sections do not change during the game.
+      They explain the rules, background, and sources.
+    -->
+    <aside aria-label="Rapport och info" class="stack">
+
+      <!-- Section about the game itself -->
+      <section id="om-spelet" class="info card card--tint-blue">
+        <h2>Om spelet</h2>
+        <p>
+          Hammurabi är ett av de första spelen som gjordes år 1968, du har i 
+          uppgift att ta över en stad och vägleda den genom 10 år av skörd,
+          svält, och pest. Ditt mål är att hålla så många av dina invånare vid
+          liv som möjligt och att maximera mängden land du äger vid slutet av 
+          de 10 åren.
+          Lycka till!
+        </p>
+      </section>
+
+      <!-- Section about King Hammurabi -->
+      <section id="om-kungen" class="info card card--tint-amber">
+        <h2>Om Hammurabi (kungen)</h2>
+        <p>
+          Hammurabi var den sjätte kungen av Babylon, som regerade från cirka
+          1792 f.Kr. till 1750 f.Kr. Han är mest känd för sin lagkodex, en av de
+          äldsta och mest kompletta lagkoderna som har bevarats från den antika
+          världen.
+        </p>
+      </section>
+
+      <!-- Section with the rules of the game -->
+      <section id="regler" class="info card card--tint-green">
+        <h2>Regler</h2>
+        <ul class="bullets">
+          <li>Varje år: gör dina val och klicka <em>Detta är min order!</em>
+          </li>
+          <li>Mat: <strong>20 skäppor</strong> föder <strong>1 person</strong>
+            per år.</li>
+          <li>Sådd: Du kan högst så
+            <strong>min(tunnland, 10 × befolkning, skäppor i lager)</strong>.
+          </li>
+          <li>Pris per tunnland varierar (slump inom spelet).</li>
+          <li>Råttor kan äta upp spannmål vissa år; pest kan halvera
+            befolkningen.</li>
+          <li>Om för många svälter ett år blir du avsatt.</li>
+          <li>Efter år 10 får du en sammanfattning av din prestation.</li>
+        </ul>
+      </section>
+
+      <!-- Section with sources and links -->
+      <section id="kallor" class="info card card--tint-purple">
+        <h2>Källor</h2>
+        <ul class="bullets">
+          <li><a href="https://en.wikipedia.org/wiki/Hammurabi" target= 
+            rel >Wikipedia: Om Hammurabi</a></li>
+          <li><a href="Hammurabi Game - Play Hammurabi Online-1.pdf" target=
+            rel >Regler</a></li>
+            <li><a href=
+              "https://www.nationalgeographic.com/culture/article/hammurabi" 
+              target=  rel >Logo Image</a></li>
+            <li><a href=
+            "https://warhistory.org/es/@msw/article/babylonia-enemy-of-assyria" 
+            target=  rel >Standing Image</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+  
+  <footer class="site-footer">
+    <div class="container small">&copy; 2025 – Studentprojekt för LTU</div>
+  </footer>
+</body>
+</html>
+
+<!--
+1-change colors on the right boxes --- Done
+2- fix the information --- dome
+3- change buttons --- Done
+4- fix footer --- Done
+5- max 80 char/line --- Done
+6- add pictures (optional) --- Done
+7- add comments to the code --- Done
+8- fix any other issues --- Done
+9- Understand the code
+10. Ref img --- done
+-->

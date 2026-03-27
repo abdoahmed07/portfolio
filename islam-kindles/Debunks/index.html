@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debunks — Islam Kindles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared.css">
+    <style>
+        .search-bar {
+            width: 100%;
+            padding: 13px 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: var(--font-m);
+            font-size: 0.92rem;
+            outline: none;
+            transition: border-color 0.2s;
+            margin-bottom: 12px;
+        }
+        .search-bar:focus { border-color: var(--accent); }
+        .search-bar::placeholder { color: var(--muted); }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .filter-pill {
+            font-family: var(--font-m);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .filter-pill.active {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── DEBUNK CARD ── */
+        .debunk-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .debunk-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .debunk-card:hover { border-color: rgba(16,185,129,0.25); }
+
+        /* Question row — always visible, clickable */
+        .debunk-question-row {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 22px 26px;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .debunk-question-row:hover { background: rgba(255,255,255,0.02); }
+
+        .debunk-q-left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .debunk-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .debunk-category {
+            font-family: var(--font-m);
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 100px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border: 1px solid rgba(16,185,129,0.25);
+        }
+
+        .debunk-topic-tag {
+            font-family: var(--font-m);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 100px;
+        }
+
+        .debunk-question {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.4;
+            color: var(--text);
+            text-align: left;
+        }
+
+        .debunk-toggle-icon {
+            font-size: 1.1rem;
+            color: var(--muted);
+            flex-shrink: 0;
+            margin-top: 4px;
+            transition: transform 0.25s ease, color 0.2s;
+            line-height: 1;
+        }
+
+        .debunk-question-row.open .debunk-toggle-icon {
+            transform: rotate(45deg);
+            color: var(--accent);
+        }
+
+        /* Answer body — hidden by default */
+        .debunk-answer-body {
+            display: none;
+            border-top: 1px solid var(--border);
+            padding: 24px 26px;
+            animation: answerIn 0.25s ease both;
+        }
+
+        @keyframes answerIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .debunk-answer-label {
+            font-family: var(--font-m);
+            font-size: 0.6rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .debunk-answer-label::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .debunk-answer {
+            font-family: var(--font-m);
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.9;
+            font-weight: 300;
+            white-space: pre-line;
+        }
+
+        /* References section inside answer */
+        .debunk-refs {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .debunk-refs-label {
+            font-family: var(--font-m);
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .debunk-ref-item {
+            font-family: var(--font-m);
+            font-size: 0.78rem;
+            color: var(--muted);
+            font-weight: 300;
+            line-height: 1.6;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .debunk-ref-item:last-child { border-bottom: none; }
+
+        .debunk-ref-item span {
+            color: var(--accent);
+            margin-right: 8px;
+        }
+
+        /* No results */
+        .no-results {
+            font-family: var(--font-m);
+            font-size: 0.88rem;
+            color: var(--muted);
+            text-align: center;
+            padding: 48px 0;
+            display: none;
+        }
+
+        /* ── ADD GUIDE ── */
+        .add-guide {
+            background: var(--surface);
+            border: 1px dashed rgba(16,185,129,0.3);
+            border-radius: 16px;
+            padding: 24px 26px;
+            margin-top: 40px;
+        }
+
+        .add-guide h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .add-guide p {
+            font-family: var(--font-m);
+            font-size: 0.78rem;
+            color: var(--muted);
+            line-height: 1.7;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .add-guide code {
+            display: block;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 0.72rem;
+            color: var(--text);
+            line-height: 1.9;
+            white-space: pre;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+<header class="top-bar">
+    <div class="logo"><a href="../index.html">Islam<span> Kindles</span></a></div>
+        <nav class="nav-links" id="navLinks">
+        <a href="../quran/index.html">Quran</a>
+        <a href="../hadith/index.html">Hadith</a>
+        <a href="../debunks/index.html" class="active">Debunks</a>
+        <a href="../about/index.html">About</a>
+        <a href="../support/index.html">Support</a>
+        <a href="../search.html" class="nav-search">✦ Search</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+</header>
+
+<div class="page-shell">
+    <span class="section-eyebrow fade-up">Common Questions & Misconceptions</span>
+    <h1 class="section-title fade-up-2">De<span class="acc">bunks</span></h1>
+    <p class="section-sub fade-up-3">Click any question to read the full answer. Filter by topic or search for keywords.</p>
+
+    <input class="search-bar" id="searchBar" type="text"
+        placeholder="Search questions…" autocomplete="off">
+
+    <div class="filter-row" id="filterRow">
+        <button class="filter-pill active" data-filter="all">All</button>
+    </div>
+
+    <div class="debunk-list" id="debunkList"></div>
+    <p class="no-results" id="noResults">No results match your search.</p>
+
+    <!-- HOW TO ADD MORE -->
+    <div class="add-guide">
+        <h3>How to add more debunks</h3>
+        <p>Open <strong>debunks/index.html</strong>, find the <code>DEBUNKS</code> array, and paste a new entry using the template below.</p>
+        <code>{
+  id: 3,
+  category: "Misconception",       // Misconception | Common Question | Historical
+  topics: ["Prayer", "Faith"],     // used for filter pills
+  question: "Is music haram?",
+  answer: `Write the full answer here.
+
+You can use multiple paragraphs — just press Enter twice.
+Keep it clear and accessible.`,
+  references: [                    // optional — leave as [] if none
+    { source: "Surah Al-Luqman 31:6", note: "Often cited in discussions on this topic" },
+    { source: "Sahih al-Bukhari 5590", note: "Related hadith on permissible sounds" }
+  ]
+}</code>
+    </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  DEBUNKS DATA
+//  To add: copy the template above, increment id, fill in your
+//  content, and add it to this array.
+// ══════════════════════════════════════════════════════════════
+const DEBUNKS = [
+    {
+        id: 1,
+        category: "Common Question",
+        topics: ["Prayer", "Purification"],
+        question: "Do I have to perform wudu before every prayer even if I haven't done anything to break it?",
+        answer: `No — you do not need to repeat wudu before every prayer if your previous wudu is still valid. Wudu remains valid until something breaks it.
+
+Things that break wudu include: using the toilet, passing wind, falling asleep (lying down), losing consciousness, and certain other conditions. If none of these have occurred since your last wudu, you may pray with it.
+
+This is agreed upon by all four major schools of Islamic jurisprudence (Hanafi, Maliki, Shafi'i, and Hanbali). In fact, the Prophet ﷺ sometimes prayed multiple prayers with a single wudu.
+
+It is however recommended (mustahabb) to renew wudu before each prayer if it is easy to do so, as it brings additional reward — but it is not obligatory unless your wudu has been broken.`,
+        references: [
+            { source: "Surah Al-Maidah 5:6", note: "The Quranic verse on wudu and its conditions" },
+            { source: "Sahih Muslim 277", note: "The Prophet ﷺ prayed multiple prayers with one wudu" }
+        ]
+    },
+    {
+        id: 2,
+        category: "Misconception",
+        topics: ["Faith", "Character"],
+        question: "Is Islam only about rituals like prayer and fasting?",
+        answer: `This is a common misunderstanding. While prayer (salah), fasting (sawm), and other acts of worship are pillars of Islam, the religion addresses every aspect of life — including how you treat people, conduct business, raise a family, and interact with society.
+
+The Prophet ﷺ said: "The best of you are those who are best in character." (Sahih al-Bukhari) This shows that personal conduct and moral character are central to being a good Muslim — not just performing rituals.
+
+Islam covers ethics, justice, family relations, economic dealings, environmental responsibility, and more. The Quran itself dedicates large portions to stories of the prophets, lessons on human nature, and guidance for social life.
+
+Rituals like prayer are the foundation — but they are meant to build a person who then acts righteously in the world. As Surah Al-Ankabut (29:45) states: "Indeed, prayer prohibits immorality and wrongdoing."`,
+        references: [
+            { source: "Sahih al-Bukhari 3559", note: "Hadith on the best of people being best in character" },
+            { source: "Surah Al-Ankabut 29:45", note: "Prayer as a means of preventing wrongdoing" },
+            { source: "Surah Al-Baqarah 2:177", note: "A comprehensive definition of righteousness in Islam" }
+        ]
+    },
+    {
+        id: 3,
+        category: "Historical",
+        topics: ["Knowledge", "History"],
+        question: "Did Islam spread only by the sword?",
+        answer: `This claim does not hold up to historical scrutiny. The spread of Islam was driven primarily by trade, migration, scholarship, and the persuasive nature of its message — not forced conversion.
+
+Large Muslim populations exist in Indonesia, Malaysia, West Africa, and parts of East Africa — regions that were never conquered by Muslim armies. Islam reached these areas through merchants, scholars, and Sufi missionaries.
+
+The Quran explicitly states: "There is no compulsion in religion. The right course has become clear from the wrong." (Al-Baqarah 2:256). Forced conversion is not permissible in Islamic law.
+
+Historically, non-Muslim communities (Jews, Christians, Zoroastrians) lived under Muslim rule for centuries with their own legal systems, places of worship, and religious freedom as protected peoples (dhimmi). This was not a perfect system, but it was remarkably different from forced conversion.
+
+Academic historians — including non-Muslim scholars — largely reject the "spread by the sword" narrative as an oversimplification that ignores the complex social, economic, and intellectual factors behind Islam's growth.`,
+        references: [
+            { source: "Surah Al-Baqarah 2:256", note: "No compulsion in religion" },
+            { source: "Surah Al-Kafirun 109:6", note: "To you your religion, to me mine" }
+        ]
+    }
+];
+
+// ── RENDER ──────────────────────────────────────────────────
+const listEl    = document.getElementById("debunkList");
+const noResults = document.getElementById("noResults");
+const filterRow = document.getElementById("filterRow");
+
+// Build topic filter pills from data
+const allTopics = [...new Set(DEBUNKS.flatMap(d => d.topics))].sort();
+allTopics.forEach(topic => {
+    const btn = document.createElement("button");
+    btn.className = "filter-pill";
+    btn.dataset.filter = topic;
+    btn.textContent = topic;
+    filterRow.appendChild(btn);
+});
+
+let activeFilter = "all";
+let searchQuery  = "";
+
+function renderDebunks() {
+    const q = searchQuery.toLowerCase();
+
+    const filtered = DEBUNKS.filter(d => {
+        const matchFilter = activeFilter === "all" || d.topics.includes(activeFilter);
+        const matchSearch = !q ||
+            d.question.toLowerCase().includes(q) ||
+            d.answer.toLowerCase().includes(q) ||
+            d.topics.some(t => t.toLowerCase().includes(q)) ||
+            d.category.toLowerCase().includes(q);
+        return matchFilter && matchSearch;
+    });
+
+    listEl.innerHTML = "";
+    noResults.style.display = filtered.length === 0 ? "block" : "none";
+
+    filtered.forEach(d => {
+        const card = document.createElement("div");
+        card.className = "debunk-card";
+
+        const refsHTML = d.references?.length ? `
+            <div class="debunk-refs">
+                <span class="debunk-refs-label">References</span>
+                ${d.references.map(r => `
+                    <div class="debunk-ref-item">
+                        <span>→</span>${r.source}${r.note ? ` — ${r.note}` : ""}
+                    </div>
+                `).join("")}
+            </div>
+        ` : "";
+
+        card.innerHTML = `
+            <button class="debunk-question-row" onclick="toggleDebunk(this)">
+                <div class="debunk-q-left">
+                    <div class="debunk-tags">
+                        <span class="debunk-category">${d.category}</span>
+                        ${d.topics.map(t => `<span class="debunk-topic-tag">${t}</span>`).join("")}
+                    </div>
+                    <div class="debunk-question">${d.question}</div>
+                </div>
+                <span class="debunk-toggle-icon">+</span>
+            </button>
+            <div class="debunk-answer-body">
+                <div class="debunk-answer-label">Answer</div>
+                <div class="debunk-answer">${escapeHTML(d.answer)}</div>
+                ${refsHTML}
+            </div>
+        `;
+
+        listEl.appendChild(card);
+    });
+}
+
+function toggleDebunk(btn) {
+    const body   = btn.nextElementSibling;
+    const isOpen = btn.classList.contains("open");
+
+    // close all others
+    document.querySelectorAll(".debunk-question-row.open").forEach(b => {
+        b.classList.remove("open");
+        b.nextElementSibling.style.display = "none";
+    });
+
+    if (!isOpen) {
+        btn.classList.add("open");
+        body.style.display = "block";
+        body.style.animation = "none";
+        void body.offsetWidth;
+        body.style.animation = "";
+    }
+}
+
+function escapeHTML(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+// filter pills
+filterRow.addEventListener("click", e => {
+    const pill = e.target.closest(".filter-pill");
+    if (!pill) return;
+    document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+    pill.classList.add("active");
+    activeFilter = pill.dataset.filter;
+    renderDebunks();
+});
+
+// search
+document.getElementById("searchBar").addEventListener("input", function() {
+    searchQuery = this.value.trim();
+    renderDebunks();
+});
+
+document.getElementById("menuToggle").addEventListener("click", () => {
+    document.getElementById("navLinks").classList.toggle("open");
+});
+
+renderDebunks();
+</script>
+</body>
+</html>

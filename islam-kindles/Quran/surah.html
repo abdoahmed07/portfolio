@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surah — Islam Kindles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared.css">
+    <style>
+        /* ── SURAH HEADER ── */
+        .surah-hero {
+            text-align: center;
+            padding: 48px 0 40px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .surah-hero-num {
+            font-family: var(--font-m);
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .surah-hero-arabic {
+            font-family: 'Amiri', serif;
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            color: var(--accent);
+            direction: rtl;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .surah-hero-name {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 6px;
+        }
+
+        .surah-hero-english {
+            font-family: var(--font-m);
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-weight: 300;
+        }
+
+        .surah-hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .meta-pill {
+            font-family: var(--font-m);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: 100px;
+        }
+
+        /* ── BISMILLAH ── */
+        .bismillah {
+            font-family: 'Amiri', serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--muted);
+            direction: rtl;
+            text-align: center;
+            padding: 24px 0 32px;
+            letter-spacing: 0.02em;
+        }
+
+        /* ── VIEW TOGGLE ── */
+        .view-toggle {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 36px;
+        }
+
+        .view-btn {
+            font-family: var(--font-m);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 7px 16px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .view-btn.active {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── VERSES ── */
+        .verses-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .verse {
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 20px;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: start;
+            animation: fadeUp 0.3s ease both;
+        }
+
+        .verse:last-child { border-bottom: none; }
+
+        .verse-num {
+            font-family: var(--font-m);
+            font-size: 0.65rem;
+            color: var(--accent);
+            background: var(--accent-dim);
+            border-radius: 6px;
+            padding: 5px 4px;
+            text-align: center;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .verse-content { display: flex; flex-direction: column; gap: 14px; }
+
+        .verse-arabic {
+            font-family: 'Amiri', serif;
+            font-size: clamp(1.4rem, 3vw, 1.9rem);
+            direction: rtl;
+            text-align: right;
+            line-height: 2;
+            color: var(--text);
+        }
+
+        .verse-translation {
+            font-family: var(--font-m);
+            font-size: 0.9rem;
+            color: var(--muted);
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        /* view modes */
+        body.arabic-only .verse-translation { display: none; }
+        body.translation-only .verse-arabic { display: none; }
+
+        /* ── NAV ARROWS ── */
+        .surah-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
+
+        .surah-nav-btn {
+            font-family: var(--font-m);
+            font-size: 0.75rem;
+            color: var(--muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: border-color 0.2s, color 0.2s;
+            letter-spacing: 0.04em;
+        }
+
+        .surah-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .surah-nav-btn.hidden { visibility: hidden; }
+
+        /* ── LOADING / ERROR ── */
+        .loading-state {
+            text-align: center;
+            padding: 80px 0;
+            font-family: var(--font-m);
+            font-size: 0.88rem;
+            color: var(--muted);
+        }
+
+        .loading-dot {
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: blink 1s ease infinite;
+            margin: 0 2px;
+        }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes blink {
+            0%,100% { opacity: 0.2; }
+            50%      { opacity: 1; }
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 60px 0;
+            font-family: var(--font-m);
+            font-size: 0.88rem;
+            color: var(--muted);
+        }
+
+        @media (max-width: 600px) {
+            .verse { grid-template-columns: 28px 1fr; gap: 12px; }
+            .verse-arabic { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="top-bar">
+    <div class="logo"><a href="../index.html">Islam<span> Kindles</span></a></div>
+        <nav class="nav-links" id="navLinks">
+        <a href="../quran/index.html" class="active">Quran</a>
+        <a href="../hadith/index.html">Hadith</a>
+        <a href="../debunks/index.html">Debunks</a>
+        <a href="../about/index.html">About</a>
+        <a href="../support/index.html">Support</a>
+        <a href="../search.html" class="nav-search">✦ Search</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+</header>
+
+<div class="page-shell">
+    <div id="surahContent">
+        <div class="loading-state">
+            <span class="loading-dot"></span>
+            <span class="loading-dot"></span>
+            <span class="loading-dot"></span>
+            <p style="margin-top:16px">Loading surah…</p>
+        </div>
+    </div>
+</div>
+
+<script>
+const SURAH_META = {
+  1:["Al-Fatihah","الفاتحة","The Opening",7,"Meccan"],
+  2:["Al-Baqarah","البقرة","The Cow",286,"Medinan"],
+  3:["Aal-E-Imran","آل عمران","Family of Imran",200,"Medinan"],
+  4:["An-Nisa","النساء","The Women",176,"Medinan"],
+  5:["Al-Maidah","المائدة","The Table Spread",120,"Medinan"],
+  6:["Al-Anam","الأنعام","The Cattle",165,"Meccan"],
+  7:["Al-Araf","الأعراف","The Heights",206,"Meccan"],
+  8:["Al-Anfal","الأنفال","The Spoils of War",75,"Medinan"],
+  9:["At-Tawbah","التوبة","The Repentance",129,"Medinan"],
+  10:["Yunus","يونس","Jonah",109,"Meccan"],
+  11:["Hud","هود","Hud",123,"Meccan"],
+  12:["Yusuf","يوسف","Joseph",111,"Meccan"],
+  13:["Ar-Rad","الرعد","The Thunder",43,"Medinan"],
+  14:["Ibrahim","إبراهيم","Abraham",52,"Meccan"],
+  15:["Al-Hijr","الحجر","The Rocky Tract",99,"Meccan"],
+  16:["An-Nahl","النحل","The Bee",128,"Meccan"],
+  17:["Al-Isra","الإسراء","The Night Journey",111,"Meccan"],
+  18:["Al-Kahf","الكهف","The Cave",110,"Meccan"],
+  19:["Maryam","مريم","Mary",98,"Meccan"],
+  20:["Ta-Ha","طه","Ta-Ha",135,"Meccan"],
+  21:["Al-Anbiya","الأنبياء","The Prophets",112,"Meccan"],
+  22:["Al-Hajj","الحج","The Pilgrimage",78,"Medinan"],
+  23:["Al-Muminun","المؤمنون","The Believers",118,"Meccan"],
+  24:["An-Nur","النور","The Light",64,"Medinan"],
+  25:["Al-Furqan","الفرقان","The Criterion",77,"Meccan"],
+  26:["Ash-Shuara","الشعراء","The Poets",227,"Meccan"],
+  27:["An-Naml","النمل","The Ant",93,"Meccan"],
+  28:["Al-Qasas","القصص","The Stories",88,"Meccan"],
+  29:["Al-Ankabut","العنكبوت","The Spider",69,"Meccan"],
+  30:["Ar-Rum","الروم","The Romans",60,"Meccan"],
+  31:["Luqman","لقمان","Luqman",34,"Meccan"],
+  32:["As-Sajdah","السجدة","The Prostration",30,"Meccan"],
+  33:["Al-Ahzab","الأحزاب","The Confederates",73,"Medinan"],
+  34:["Saba","سبأ","Sheba",54,"Meccan"],
+  35:["Fatir","فاطر","Originator",45,"Meccan"],
+  36:["Ya-Sin","يس","Ya Sin",83,"Meccan"],
+  37:["As-Saffat","الصافات","Those Ranged in Ranks",182,"Meccan"],
+  38:["Sad","ص","The Letter Sad",88,"Meccan"],
+  39:["Az-Zumar","الزمر","The Groups",75,"Meccan"],
+  40:["Ghafir","غافر","The Forgiver",85,"Meccan"],
+  41:["Fussilat","فصلت","Explained in Detail",54,"Meccan"],
+  42:["Ash-Shura","الشورى","The Consultation",53,"Meccan"],
+  43:["Az-Zukhruf","الزخرف","The Gold Adornments",89,"Meccan"],
+  44:["Ad-Dukhan","الدخان","The Smoke",59,"Meccan"],
+  45:["Al-Jathiyah","الجاثية","The Crouching",37,"Meccan"],
+  46:["Al-Ahqaf","الأحقاف","The Wind-Curved Sandhills",35,"Meccan"],
+  47:["Muhammad","محمد","Muhammad",38,"Medinan"],
+  48:["Al-Fath","الفتح","The Victory",29,"Medinan"],
+  49:["Al-Hujurat","الحجرات","The Rooms",18,"Medinan"],
+  50:["Qaf","ق","The Letter Qaf",45,"Meccan"],
+  51:["Adh-Dhariyat","الذاريات","The Winnowing Winds",60,"Meccan"],
+  52:["At-Tur","الطور","The Mount",49,"Meccan"],
+  53:["An-Najm","النجم","The Star",62,"Meccan"],
+  54:["Al-Qamar","القمر","The Moon",55,"Meccan"],
+  55:["Ar-Rahman","الرحمن","The Beneficent",78,"Medinan"],
+  56:["Al-Waqiah","الواقعة","The Inevitable",96,"Meccan"],
+  57:["Al-Hadid","الحديد","The Iron",29,"Medinan"],
+  58:["Al-Mujadila","المجادلة","The Pleading Woman",22,"Medinan"],
+  59:["Al-Hashr","الحشر","The Exile",24,"Medinan"],
+  60:["Al-Mumtahanah","الممتحنة","She That is to be Examined",13,"Medinan"],
+  61:["As-Saf","الصف","The Ranks",14,"Medinan"],
+  62:["Al-Jumuah","الجمعة","Friday",11,"Medinan"],
+  63:["Al-Munafiqun","المنافقون","The Hypocrites",11,"Medinan"],
+  64:["At-Taghabun","التغابن","Mutual Disillusion",18,"Medinan"],
+  65:["At-Talaq","الطلاق","Divorce",12,"Medinan"],
+  66:["At-Tahrim","التحريم","The Prohibition",12,"Medinan"],
+  67:["Al-Mulk","الملك","The Sovereignty",30,"Meccan"],
+  68:["Al-Qalam","القلم","The Pen",52,"Meccan"],
+  69:["Al-Haqqah","الحاقة","The Reality",52,"Meccan"],
+  70:["Al-Maarij","المعارج","The Ascending Stairways",44,"Meccan"],
+  71:["Nuh","نوح","Noah",28,"Meccan"],
+  72:["Al-Jinn","الجن","The Jinn",28,"Meccan"],
+  73:["Al-Muzzammil","المزمل","The Enshrouded One",20,"Meccan"],
+  74:["Al-Muddaththir","المدثر","The Cloaked One",56,"Meccan"],
+  75:["Al-Qiyamah","القيامة","The Resurrection",40,"Meccan"],
+  76:["Al-Insan","الإنسان","The Human",31,"Medinan"],
+  77:["Al-Mursalat","المرسلات","The Emissaries",50,"Meccan"],
+  78:["An-Naba","النبأ","The Tidings",40,"Meccan"],
+  79:["An-Naziat","النازعات","Those Who Drag Forth",46,"Meccan"],
+  80:["Abasa","عبس","He Frowned",42,"Meccan"],
+  81:["At-Takwir","التكوير","The Overthrowing",29,"Meccan"],
+  82:["Al-Infitar","الانفطار","The Cleaving",19,"Meccan"],
+  83:["Al-Mutaffifin","المطففين","The Defrauding",36,"Meccan"],
+  84:["Al-Inshiqaq","الانشقاق","The Sundering",25,"Meccan"],
+  85:["Al-Buruj","البروج","The Mansions of the Stars",22,"Meccan"],
+  86:["At-Tariq","الطارق","The Morning Star",17,"Meccan"],
+  87:["Al-Ala","الأعلى","The Most High",19,"Meccan"],
+  88:["Al-Ghashiyah","الغاشية","The Overwhelming",26,"Meccan"],
+  89:["Al-Fajr","الفجر","The Dawn",30,"Meccan"],
+  90:["Al-Balad","البلد","The City",20,"Meccan"],
+  91:["Ash-Shams","الشمس","The Sun",15,"Meccan"],
+  92:["Al-Layl","الليل","The Night",21,"Meccan"],
+  93:["Ad-Duha","الضحى","The Morning Hours",11,"Meccan"],
+  94:["Ash-Sharh","الشرح","The Relief",8,"Meccan"],
+  95:["At-Tin","التين","The Fig",8,"Meccan"],
+  96:["Al-Alaq","العلق","The Clot",19,"Meccan"],
+  97:["Al-Qadr","القدر","The Power",5,"Meccan"],
+  98:["Al-Bayyinah","البينة","The Clear Proof",8,"Medinan"],
+  99:["Az-Zalzalah","الزلزلة","The Earthquake",8,"Medinan"],
+  100:["Al-Adiyat","العاديات","The Courser",11,"Meccan"],
+  101:["Al-Qariah","القارعة","The Calamity",11,"Meccan"],
+  102:["At-Takathur","التكاثر","The Rivalry in World Increase",8,"Meccan"],
+  103:["Al-Asr","العصر","The Declining Day",3,"Meccan"],
+  104:["Al-Humazah","الهمزة","The Traducer",9,"Meccan"],
+  105:["Al-Fil","الفيل","The Elephant",5,"Meccan"],
+  106:["Quraysh","قريش","Quraysh",4,"Meccan"],
+  107:["Al-Maun","الماعون","The Small Kindnesses",7,"Meccan"],
+  108:["Al-Kawthar","الكوثر","The Abundance",3,"Meccan"],
+  109:["Al-Kafirun","الكافرون","The Disbelievers",6,"Meccan"],
+  110:["An-Nasr","النصر","The Divine Support",3,"Medinan"],
+  111:["Al-Masad","المسد","The Palm Fibre",5,"Meccan"],
+  112:["Al-Ikhlas","الإخلاص","The Sincerity",4,"Meccan"],
+  113:["Al-Falaq","الفلق","The Daybreak",5,"Meccan"],
+  114:["An-Nas","الناس","Mankind",6,"Meccan"]
+};
+
+const params = new URLSearchParams(window.location.search);
+const surahId = parseInt(params.get("id")) || 1;
+const meta = SURAH_META[surahId];
+
+if (meta) document.title = `${meta[0]} — Islam Kindles`;
+
+let viewMode = "both"; // both | arabic | translation
+
+async function loadSurah(id) {
+    const content = document.getElementById("surahContent");
+
+    try {
+        // Fetch Arabic and English in parallel
+        const [arRes, enRes] = await Promise.all([
+            fetch(`https://api.alquran.cloud/v1/surah/${id}`),
+            fetch(`https://api.alquran.cloud/v1/surah/${id}/en.sahih`)
+        ]);
+
+        if (!arRes.ok || !enRes.ok) throw new Error("API error");
+
+        const [arData, enData] = await Promise.all([arRes.json(), enRes.json()]);
+
+        const arAyahs = arData.data.ayahs;
+        const enAyahs = enData.data.ayahs;
+        const [name, arabic, english, verses, type] = meta;
+
+        // Build page
+        const showBismillah = id !== 1 && id !== 9;
+
+        content.innerHTML = `
+            <a href="index.html" style="
+                font-family: var(--font-m);
+                font-size: 0.72rem;
+                color: var(--muted);
+                text-decoration: none;
+                letter-spacing: 0.05em;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                margin-bottom: 32px;
+                transition: color 0.2s;
+            " onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">
+                ← All Surahs
+            </a>
+
+            <div class="surah-hero">
+                <span class="surah-hero-num">Surah ${id} · ${type} · ${verses} verses</span>
+                <div class="surah-hero-arabic">${arabic}</div>
+                <h1 class="surah-hero-name">${name}</h1>
+                <div class="surah-hero-english">${english}</div>
+            </div>
+
+            <div class="view-toggle">
+                <button class="view-btn ${viewMode==='both'?'active':''}" onclick="setView('both')">Arabic + Translation</button>
+                <button class="view-btn ${viewMode==='arabic'?'active':''}" onclick="setView('arabic')">Arabic Only</button>
+                <button class="view-btn ${viewMode==='translation'?'active':''}" onclick="setView('translation')">Translation Only</button>
+            </div>
+
+            ${showBismillah ? '<div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>' : ''}
+
+            <div class="verses-list" id="versesList">
+                ${arAyahs.map((ayah, i) => `
+                    <div class="verse" style="animation-delay:${Math.min(i*0.02,0.5)}s">
+                        <span class="verse-num">${ayah.numberInSurah}</span>
+                        <div class="verse-content">
+                            <div class="verse-arabic">${ayah.text}</div>
+                            <div class="verse-translation">${enAyahs[i]?.text || ""}</div>
+                        </div>
+                    </div>
+                `).join("")}
+            </div>
+
+            <div class="surah-nav">
+                ${id > 1
+                    ? `<a class="surah-nav-btn" href="surah.html?id=${id-1}">← ${SURAH_META[id-1][0]}</a>`
+                    : `<span class="surah-nav-btn hidden"></span>`
+                }
+                <a href="index.html" style="font-family:var(--font-m);font-size:0.7rem;color:var(--muted);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">All Surahs</a>
+                ${id < 114
+                    ? `<a class="surah-nav-btn" href="surah.html?id=${id+1}">${SURAH_META[id+1][0]} →</a>`
+                    : `<span class="surah-nav-btn hidden"></span>`
+                }
+            </div>
+        `;
+
+        applyViewMode();
+
+    } catch (e) {
+        content.innerHTML = `
+            <div class="error-state">
+                <p style="margin-bottom:12px">Could not load surah. Please check your internet connection.</p>
+                <a href="index.html" style="color:var(--accent);font-family:var(--font-m);font-size:0.8rem;">← Back to Quran</a>
+            </div>
+        `;
+    }
+}
+
+function setView(mode) {
+    viewMode = mode;
+    document.querySelectorAll(".view-btn").forEach(b => b.classList.remove("active"));
+    event.target.classList.add("active");
+    applyViewMode();
+}
+
+function applyViewMode() {
+    document.body.classList.remove("arabic-only", "translation-only");
+    if (viewMode === "arabic")      document.body.classList.add("arabic-only");
+    if (viewMode === "translation") document.body.classList.add("translation-only");
+}
+
+document.getElementById("menuToggle").addEventListener("click", () => {
+    document.getElementById("navLinks").classList.toggle("open");
+});
+
+loadSurah(surahId);
+</script>
+</body>
+</html>
