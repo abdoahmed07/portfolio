@@ -1,0 +1,2411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D0010E — Abdalla</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <a href="../portfolio-site/index.html" class="back-link">← Portfolio</a>
+    <span class="top-bar-left">Luleå University of Technology</span>
+    <span class="nav-course">D0010E</span>
+</header>
+
+<div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+        <span class="hero-eyebrow">Object-Oriented Programming in Java</span>
+        <h1 class="hero-title">Course <span class="acc">D0010E</span></h1>
+        <p class="hero-desc">
+            Advanced programming in Java — object-oriented design, algorithms, data structures,
+            and software engineering. Labs added progressively as the course continues.
+        </p>
+        <div class="hero-meta">
+            <span class="meta-pill">Java</span>
+            <span class="meta-pill">OOP</span>
+            <span class="meta-pill">Algorithms</span>
+            <span class="meta-pill">Data Structures</span>
+            <span class="meta-pill">Lab 1 of many</span>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ LAB 1 ═══════════════════ -->
+    <span class="section-label">Lab 1 — Arithmetic Quiz & Spellchecker</span>
+
+    <div class="lab-intro">
+        <h3>Two programs, one launcher</h3>
+        <p>
+            <code class="ic">Main.java</code> presents a menu to launch either the
+            <strong>Arithmetic Quiz</strong> or the <strong>Spellchecker</strong>.
+            Both are fully interactive — try them live below.
+        </p>
+    </div>
+
+    <div class="projects">
+
+        <!-- ─── ARITHMETIC QUIZ ─── -->
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Lab 1 · Part A</span>
+                    <div class="card-title">Arithmetic Quiz</div>
+                    <p class="card-desc">
+                        10 random questions covering +, −, ×, ÷.
+                        First correct answer earns 10 points, second attempt earns 5.
+                        Max score: 100.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">ArithmeticProblem.java</span>
+                        <span class="tag">ArithmeticQuiz.java</span>
+                        <span class="tag">Random</span>
+                        <span class="tag">Scoring</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+
+            <!-- LIVE DEMO -->
+            <div class="demo-panel" id="quizPanel">
+                <div class="demo-label">Live Demo</div>
+
+                <!-- Start screen -->
+                <div id="quizStart">
+                    <p class="demo-desc">10 questions, random operators. Answer correctly first try for 10 pts, second try for 5 pts.</p>
+                    <button class="demo-btn" onclick="startQuiz()">Start Quiz →</button>
+                </div>
+
+                <!-- Question screen -->
+                <div id="quizGame" class="hidden">
+                    <div class="quiz-progress">
+                        <div class="quiz-progress-bar">
+                            <div class="quiz-progress-fill" id="quizProgressFill"></div>
+                        </div>
+                        <span class="quiz-progress-label" id="quizProgressLabel">Question 1 / 10</span>
+                    </div>
+                    <div class="quiz-score-row">
+                        <span class="quiz-score-label">Score</span>
+                        <span class="quiz-score-val" id="quizScore">0</span>
+                        <span class="quiz-score-label">/ 100</span>
+                    </div>
+                    <div class="quiz-question" id="quizQuestion"></div>
+                    <div class="quiz-attempt-label" id="quizAttemptLabel"></div>
+                    <div class="quiz-input-row">
+                        <input class="demo-input quiz-input" type="number" id="quizAnswer"
+                            placeholder="Your answer…" autocomplete="off"
+                            onkeydown="if(event.key==='Enter') submitAnswer()">
+                        <button class="demo-btn demo-btn-sm" onclick="submitAnswer()">Submit</button>
+                    </div>
+                    <div class="quiz-feedback hidden" id="quizFeedback"></div>
+                </div>
+
+                <!-- Results screen -->
+                <div id="quizResults" class="hidden">
+                    <div class="quiz-final">
+                        <div class="quiz-final-score" id="quizFinalScore"></div>
+                        <div class="quiz-final-msg" id="quizFinalMsg"></div>
+                        <div class="quiz-breakdown" id="quizBreakdown"></div>
+                        <button class="demo-btn" onclick="startQuiz()" style="margin-top:16px">Play Again →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code -->
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this, 'codeAP')">ArithmeticProblem.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this, 'codeAQ')">ArithmeticQuiz.java</button>
+                </div>
+                <div id="codeAP">
+                    <div class="code-filename">ArithmeticProblem.java</div>
+                    <pre><code class="language-java">public class ArithmeticProblem {
+    private final int operand1, operand2;
+    private final char operator;
+
+    public ArithmeticProblem(char op) {
+        if (op != '+' && op != '-' && op != '*' && op != '/')
+            throw new IllegalArgumentException("Operator is not legal.");
+        operator = op;
+        switch (operator) {
+            case '+':
+                operand1 = (int)(101 * Math.random());
+                operand2 = (int)((101 - operand1) * Math.random());
+                break;
+            case '-':
+                operand1 = 9 + (int)(92 * Math.random());
+                operand2 = (int)((1 + operand1) * Math.random());
+                break;
+            case '*':
+                operand1 = (int)(51 * Math.random());
+                operand2 = (int)(13 * Math.random());
+                break;
+            default: // '/'
+                int answer = (int)(13 * Math.random());
+                operand2 = 1 + (int)(12 * Math.random());
+                operand1 = operand2 * answer;
+                break;
+        }
+    }
+
+    public String getQuestion() {
+        return String.format("What is %d %s %d ?", operand1, operator, operand2);
+    }
+
+    public int getAnswer() {
+        switch (operator) {
+            case '+': return operand1 + operand2;
+            case '-': return operand1 - operand2;
+            case '*': return operand1 * operand2;
+            default:  return operand1 / operand2;
+        }
+    }
+}</code></pre>
+                </div>
+                <div id="codeAQ" class="hidden">
+                    <div class="code-filename">ArithmeticQuiz.java</div>
+                    <pre><code class="language-java">public class ArithmeticQuiz {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Welcome to the Arithmetic Quiz!");
+        int points = 0;
+
+        for (int i = 0; i &lt; 10; i++) {
+            char[] ops = {'+', '-', '*', '/'};
+            char op = ops[(int)(Math.random() * 4)];
+            ArithmeticProblem problem = new ArithmeticProblem(op);
+
+            System.out.println("Question " + (i + 1) + ":");
+            System.out.println(problem.getQuestion());
+            int userAnswer = in.nextInt();
+
+            if (userAnswer == problem.getAnswer()) {
+                System.out.println("Correct! You get 10 points.");
+                points += 10;
+            } else {
+                System.out.println("Incorrect. Try again.");
+                System.out.println(problem.getQuestion());
+                userAnswer = in.nextInt();
+                if (userAnswer == problem.getAnswer()) {
+                    System.out.println("Correct! You get 5 points.");
+                    points += 5;
+                } else {
+                    System.out.println("Incorrect. The correct answer is "
+                        + problem.getAnswer() + ".");
+                }
+            }
+        }
+        System.out.println("Your total points: " + points + " out of 100.");
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SPELLCHECK ─── -->
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Lab 1 · Part B</span>
+                    <div class="card-title">Spellchecker</div>
+                    <p class="card-desc">
+                        Checks words against a 72,875-word dictionary. If misspelled,
+                        suggests corrections using five different algorithms.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Spellcheck.java</span>
+                        <span class="tag">WordList.java</span>
+                        <span class="tag">5 algorithms</span>
+                        <span class="tag">72,875 words</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+
+            <!-- LIVE DEMO -->
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo
+                    <span id="dictStatus" class="dict-status">Loading dictionary…</span>
+                </div>
+
+                <div class="spell-input-row">
+                    <input class="demo-input" type="text" id="spellInput"
+                        placeholder="Type a word to check…"
+                        autocomplete="off" spellcheck="false"
+                        onkeydown="if(event.key==='Enter') checkSpelling()"
+                        oninput="clearSpellResult()">
+                    <button class="demo-btn demo-btn-sm" id="spellBtn" onclick="checkSpelling()" disabled>Check</button>
+                </div>
+
+                <div class="spell-examples">
+                    Try: <span class="spell-chip" onclick="tryWord(this)">recieve</span>
+                    <span class="spell-chip" onclick="tryWord(this)">speling</span>
+                    <span class="spell-chip" onclick="tryWord(this)">helo</span>
+                    <span class="spell-chip" onclick="tryWord(this)">teh</span>
+                    <span class="spell-chip" onclick="tryWord(this)">javascript</span>
+                    <span class="spell-chip" onclick="tryWord(this)">hellp</span>
+                </div>
+
+                <div id="spellResult" class="hidden">
+                    <div class="spell-verdict" id="spellVerdict"></div>
+                    <div class="spell-suggestions" id="spellSuggestions"></div>
+                </div>
+            </div>
+
+            <!-- Code -->
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this, 'codeSC')">Spellcheck.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this, 'codeWL')">WordList.java</button>
+                </div>
+                <div id="codeSC">
+                    <div class="code-filename">Spellcheck.java</div>
+                    <pre><code class="language-java">public class Spellcheck {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        WordList wordList = new WordList();
+        System.out.println("Word list contains " + wordList.size() + " words.");
+
+        while (true) {
+            System.out.print("Enter a word (or 'exit'): ");
+            String input = in.nextLine().trim().toLowerCase();
+            if (input.equals("exit")) break;
+
+            if (wordList.contains(input))
+                System.out.println("'" + input + "' is spelled correctly.");
+            else {
+                System.out.println("'" + input + "' is NOT spelled correctly.");
+                System.out.println("Did you mean:");
+                delete_suggestion(input, wordList);
+                insert_suggestion(input, wordList);
+                swap_suggestion(input, wordList);
+                swap_suggestion2(input, wordList);
+                insert_space_suggestion(input, wordList);
+            }
+        }
+    }
+
+    // Delete one character at each position
+    static void delete_suggestion(String input, WordList wl) {
+        for (int i = 0; i &lt; input.length(); i++) {
+            String s = input.substring(0,i) + input.substring(i+1);
+            if (wl.contains(s)) System.out.println("  - " + s);
+        }
+    }
+
+    // Insert every letter at every position
+    static void insert_suggestion(String input, WordList wl) {
+        for (char c = 'a'; c &lt;= 'z'; c++)
+            for (int i = 0; i &lt;= input.length(); i++) {
+                String s = input.substring(0,i) + c + input.substring(i);
+                if (wl.contains(s)) System.out.println("  - " + s);
+            }
+    }
+
+    // Replace each character with every other letter
+    static void swap_suggestion(String input, WordList wl) {
+        for (int i = 0; i &lt; input.length(); i++)
+            for (char c = 'a'; c &lt;= 'z'; c++) {
+                if (c == input.charAt(i)) continue;
+                String s = input.substring(0,i) + c + input.substring(i+1);
+                if (wl.contains(s)) System.out.println("  - " + s);
+            }
+    }
+
+    // Swap adjacent characters
+    static void swap_suggestion2(String input, WordList wl) {
+        for (int i = 0; i &lt; input.length() - 1; i++) {
+            char[] arr = input.toCharArray();
+            char tmp = arr[i]; arr[i] = arr[i+1]; arr[i+1] = tmp;
+            String s = new String(arr);
+            if (wl.contains(s)) System.out.println("  - " + s);
+        }
+    }
+
+    // Split into two valid words
+    static void insert_space_suggestion(String input, WordList wl) {
+        for (int i = 1; i &lt; input.length(); i++) {
+            String a = input.substring(0,i), b = input.substring(i);
+            if (wl.contains(a) && wl.contains(b))
+                System.out.println("  - " + a + " " + b);
+        }
+    }
+}</code></pre>
+                </div>
+                <div id="codeWL" class="hidden">
+                    <div class="code-filename">WordList.java</div>
+                    <pre><code class="language-java">public class WordList {
+    private final String[] words;
+
+    public WordList() {
+        try {
+            URL listLocation = WordList.class.getClassLoader()
+                                             .getResource("unsorted_words.txt");
+            Scanner in = new Scanner(listLocation.openStream());
+            ArrayList&lt;String&gt; wordList = new ArrayList&lt;&gt;();
+            while (in.hasNextLine())
+                wordList.add(in.nextLine());
+            words = wordList.toArray(new String[0]);
+            in.close();
+        } catch (Exception e) {
+            throw new IllegalStateException("Can't load word list.");
+        }
+    }
+
+    public boolean contains(String lowerCaseWord) {
+        for (String s : words)
+            if (s.equals(lowerCaseWord)) return true;
+        return false;
+    }
+
+    public int size()            { return words.length; }
+    public String get(int index) { return words[index]; }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end .projects -->
+
+    <!-- ═══════════════════ LAB 2 ═══════════════════ -->
+    <span class="section-label" style="margin-top:56px">Lab 2 — Custom ArrayList Implementation</span>
+
+    <div class="lab-intro">
+        <h3>Building ArrayList from scratch</h3>
+        <p>
+            <code class="ic">MyArrayList&lt;E&gt;</code> is a generic, resizable array list built to match Java's
+            real <code class="ic">ArrayList</code> API — without using it. Implements
+            <code class="ic">List&lt;E&gt;</code>, <code class="ic">Cloneable</code>,
+            <code class="ic">Serializable</code>, and <code class="ic">RandomAccess</code>.
+            All 15 unit tests in <code class="ic">MyArrayListTest.java</code> pass.
+        </p>
+    </div>
+
+    <!-- Method map overview -->
+    <div class="method-map">
+        <div class="method-group">
+            <span class="method-group-label">§1 — Basic info</span>
+            <span class="method-chip">size()</span>
+            <span class="method-chip">isEmpty()</span>
+            <span class="method-chip">clear()</span>
+        </div>
+        <div class="method-group">
+            <span class="method-group-label">§2 — Capacity</span>
+            <span class="method-chip">ensureCapacity()</span>
+            <span class="method-chip">trimToSize()</span>
+        </div>
+        <div class="method-group">
+            <span class="method-group-label">§3 — Add</span>
+            <span class="method-chip">add(index, e)</span>
+            <span class="method-chip">add(e)</span>
+        </div>
+        <div class="method-group">
+            <span class="method-group-label">§4 — Read</span>
+            <span class="method-chip">get(index)</span>
+            <span class="method-chip">set(index, e)</span>
+        </div>
+        <div class="method-group">
+            <span class="method-group-label">§5 — Remove</span>
+            <span class="method-chip">remove(index)</span>
+            <span class="method-chip">removeRange(from, to)</span>
+        </div>
+        <div class="method-group">
+            <span class="method-group-label">§6 — Search</span>
+            <span class="method-chip">indexOf(o)</span>
+            <span class="method-chip">remove(o)</span>
+            <span class="method-chip">contains(o)</span>
+        </div>
+        <div class="method-group">
+            <span class="method-group-label">§7 — Copy</span>
+            <span class="method-chip">clone()</span>
+            <span class="method-chip">toArray()</span>
+        </div>
+    </div>
+
+    <div class="projects lab2-projects">
+
+        <!-- ─── ARRAYLIST INTERACTIVE ─── -->
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Lab 2 · MyArrayList&lt;E&gt;</span>
+                    <div class="card-title">Generic Resizable Array List <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <p class="card-desc">
+                        Try the full implementation live — add, get, set, remove, indexOf, contains, clone, and more.
+                        Internally uses a dynamic array that doubles in size when full, exactly like the real Java ArrayList.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Generic &lt;E&gt;</span>
+                        <span class="tag">Dynamic array</span>
+                        <span class="tag">O(1) amortized add</span>
+                        <span class="tag">O(n) insert/remove</span>
+                        <span class="tag">Shallow clone</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+
+            <!-- LIVE DEMO -->
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo — MyArrayList&lt;Integer&gt;</div>
+
+                <!-- Quick action buttons -->
+                <div class="pb-quick-btns">
+                    <button class="pb-quick" onclick="alSetAction('add')">+ add(e)</button>
+                    <button class="pb-quick" onclick="alSetAction('addAt')">+ add(i,e)</button>
+                    <button class="pb-quick" onclick="alSetAction('get')">get(i)</button>
+                    <button class="pb-quick" onclick="alSetAction('set')">set(i,e)</button>
+                    <button class="pb-quick" onclick="alSetAction('removeIdx')">remove(i)</button>
+                    <button class="pb-quick" onclick="alSetAction('removeObj')">remove(val)</button>
+                    <button class="pb-quick" onclick="alSetAction('indexOf')">indexOf(val)</button>
+                    <button class="pb-quick" onclick="alSetAction('contains')">contains(val)</button>
+                    <button class="pb-quick" onclick="alRunCmd('size')">size()</button>
+                    <button class="pb-quick" onclick="alRunCmd('clear')">clear()</button>
+                    <button class="pb-quick" onclick="alRunCmd('clone')">clone()</button>
+                    <button class="pb-quick" onclick="alRunCmd('toArray')">toArray()</button>
+                </div>
+
+                <!-- Dynamic input area -->
+                <div id="alInputArea"></div>
+
+                <!-- Visual array display -->
+                <div class="al-visual-wrap">
+                    <div class="al-visual-label">
+                        <span>Array state</span>
+                        <span id="alSizeLabel" class="al-size-label">size: 0 · capacity: 10</span>
+                    </div>
+                    <div class="al-cells" id="alCells">
+                        <div class="al-empty-msg">List is empty. Add some elements.</div>
+                    </div>
+                </div>
+
+                <!-- Terminal -->
+                <div class="pb-terminal" id="alTerminal">
+                    <div class="pb-line pb-muted">MyArrayList ready. Select an operation above.</div>
+                </div>
+
+                <!-- Direct command -->
+                <div class="pb-cmd-row">
+                    <span class="pb-prompt" style="color:var(--accent)">list&gt;</span>
+                    <input class="pb-cmd-input" type="text" id="alCmd"
+                        placeholder="or type: add 5 · get 0 · remove 0 · size · clear…"
+                        autocomplete="off"
+                        onkeydown="if(event.key==='Enter') alRunRawCmd()">
+                    <button class="demo-btn demo-btn-sm" onclick="alRunRawCmd()">Run</button>
+                </div>
+            </div>
+
+            <!-- Code -->
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this, 'codeMAL')">MyArrayList.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this, 'codeMALT')">MyArrayListTest.java</button>
+                </div>
+                <div id="codeMAL">
+                    <div class="code-filename">MyArrayList.java</div>
+                    <pre><code class="language-java">public class MyArrayList&lt;E&gt; implements List&lt;E&gt;, Cloneable, Serializable, RandomAccess {
+
+    private E[] array;
+    private int size;
+    private static final int DEFAULT_CAPACITY = 10;
+
+    // ── CONSTRUCTORS ──────────────────────────────────────────
+    public MyArrayList(int initialCapacity) {
+        if (initialCapacity &lt; 0)
+            throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
+        array = (E[]) new Object[initialCapacity];
+        size = 0;
+    }
+
+    public MyArrayList() { this(DEFAULT_CAPACITY); }
+
+    // ── §1: BASIC INFO ────────────────────────────────────────
+    public int size()      { return size; }
+    public boolean isEmpty() { return size == 0; }
+
+    public void clear() {
+        for (int i = 0; i &lt; size; i++) array[i] = null;
+        size = 0;
+    }
+
+    // ── §2: CAPACITY ──────────────────────────────────────────
+    public void ensureCapacity(int minCapacity) {
+        if (minCapacity &gt; array.length) {
+            int newCap = Math.max(array.length * 2 + 1, minCapacity);
+            E[] newArr = (E[]) new Object[newCap];
+            for (int i = 0; i &lt; size; i++) newArr[i] = array[i];
+            array = newArr;
+        }
+    }
+
+    public void trimToSize() {
+        if (size &lt; array.length) {
+            E[] newArr = (E[]) new Object[size];
+            for (int i = 0; i &lt; size; i++) newArr[i] = array[i];
+            array = newArr;
+        }
+    }
+
+    // ── §3: ADD ───────────────────────────────────────────────
+    public void add(int index, E element) {
+        if (index &lt; 0 || index &gt; size)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        ensureCapacity(size + 1);
+        for (int i = size; i &gt; index; i--) array[i] = array[i - 1];
+        array[index] = element;
+        size++;
+    }
+
+    public boolean add(E e) { add(size, e); return true; }
+
+    // ── §4: READ / REPLACE ────────────────────────────────────
+    public E get(int index) {
+        if (index &lt; 0 || index &gt;= size)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        return array[index];
+    }
+
+    public E set(int index, E element) {
+        if (index &lt; 0 || index &gt;= size)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        E old = array[index];
+        array[index] = element;
+        return old;
+    }
+
+    // ── §5: REMOVE ────────────────────────────────────────────
+    public E remove(int index) {
+        if (index &lt; 0 || index &gt;= size)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        E removed = array[index];
+        removeRange(index, index + 1);
+        return removed;
+    }
+
+    protected void removeRange(int fromIndex, int toIndex) {
+        if (fromIndex &lt; 0 || toIndex &gt; size || fromIndex &gt; toIndex)
+            throw new IndexOutOfBoundsException();
+        int count = toIndex - fromIndex;
+        for (int i = toIndex; i &lt; size; i++) array[i - count] = array[i];
+        for (int i = size - count; i &lt; size; i++) array[i] = null;
+        size -= count;
+    }
+
+    // ── §6: SEARCH ────────────────────────────────────────────
+    public int indexOf(Object o) {
+        for (int i = 0; i &lt; size; i++)
+            if (o == null ? array[i] == null : o.equals(array[i])) return i;
+        return -1;
+    }
+
+    public boolean remove(Object o) {
+        int idx = indexOf(o);
+        if (idx == -1) return false;
+        remove(idx);
+        return true;
+    }
+
+    public boolean contains(Object o) { return indexOf(o) != -1; }
+
+    // ── §7: COPY ──────────────────────────────────────────────
+    public Object clone() {
+        MyArrayList&lt;E&gt; copy = new MyArrayList&lt;&gt;(size);
+        for (int i = 0; i &lt; size; i++) copy.array[i] = array[i];
+        copy.size = this.size;
+        return copy;
+    }
+
+    public Object[] toArray() {
+        Object[] out = new Object[size];
+        for (int i = 0; i &lt; size; i++) out[i] = array[i];
+        return out;
+    }
+}</code></pre>
+                </div>
+                <div id="codeMALT" class="hidden">
+                    <div class="code-filename">MyArrayListTest.java (selected tests)</div>
+                    <pre><code class="language-java">// Tests run with: java -ea Lab2.MyArrayListTest
+// -ea enables Java assertions
+
+public static void testAvAddindex() {
+    data = new MyArrayList&lt;Integer&gt;(100);
+    // negative index must throw
+    try { data.add(-1, null); }
+    catch (IndexOutOfBoundsException e) { /* expected */ }
+
+    data.add(0, 10); data.add(1, 11); data.add(2, 12);
+    data.add(1, 21); data.add(0, 20);
+    // list is now: [20, 10, 21, 11, 12]
+    assert data.get(0) == 20;
+    assert data.get(1) == 10;
+    assert data.get(2) == 21;
+}
+
+public static void testAvRemoveRange() {
+    data = new MyArrayList&lt;Integer&gt;();
+    insert(6); // [0, 1, 2, 3, 4, 5]
+    data.removeRange(2, 4); // removes 2, 3
+    // list is now: [0, 1, 4, 5]
+    assert data.contains(0) &amp;&amp; data.contains(1);
+    assert !data.contains(2) &amp;&amp; !data.contains(3);
+    assert data.contains(4) &amp;&amp; data.contains(5);
+}
+
+public static void testAvClone() {
+    data = new MyArrayList&lt;Integer&gt;();
+    insert(3); // [0, 1, 2]
+    MyArrayList&lt;Integer&gt; clone = (MyArrayList&lt;Integer&gt;) data.clone();
+    // clone has same values
+    assert clone.get(0).equals(data.get(0));
+    // changing clone does NOT affect original (own array)
+    clone.set(1, 99);
+    assert !data.get(1).equals(99);
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end lab2-projects -->
+
+    <!-- ═══════════════════ LAB 3 ═══════════════════ -->
+    <span class="section-label" style="margin-top:56px">Lab 3 — Room Navigation Game (MVC + Observer)</span>
+
+    <div class="lab-intro">
+        <h3>A Swing game with full MVC architecture</h3>
+        <p>
+            Navigate between coloured rooms connected by corridors using WASD keys.
+            Built with clean MVC: <code class="ic">Nivå</code> (model) extends <code class="ic">Observable</code>,
+            <code class="ic">Målarduk</code> (view) renders on a <code class="ic">JPanel</code>,
+            <code class="ic">Tangentbordslyssnare</code> (controller) handles keyboard input,
+            and <code class="ic">GUI</code> implements <code class="ic">Observer</code> to repaint on every move.
+            The canvas below is a pixel-accurate recreation of the actual Java Swing game.
+        </p>
+    </div>
+
+    <div class="arch-diagram">
+        <div class="arch-layer">
+            <span class="arch-layer-label">Model</span>
+            <div class="arch-boxes">
+                <div class="arch-box arch-model">Nivå<span>Observable</span></div>
+                <div class="arch-box arch-model">Rum<span>Room data</span></div>
+                <div class="arch-box arch-model">Gång<span>Corridor</span></div>
+                <div class="arch-box arch-model">Väderstreck<span>Enum N/E/S/W</span></div>
+            </div>
+        </div>
+        <div class="arch-layer">
+            <span class="arch-layer-label">View</span>
+            <div class="arch-boxes">
+                <div class="arch-box arch-view">GUI<span>JFrame + Observer</span></div>
+                <div class="arch-box arch-view">Målarduk<span>JPanel painter</span></div>
+            </div>
+        </div>
+        <div class="arch-layer">
+            <span class="arch-layer-label">Controller</span>
+            <div class="arch-boxes">
+                <div class="arch-box arch-ctrl">Tangentbords&shy;lyssnare<span>KeyListener WASD</span></div>
+            </div>
+        </div>
+        <div class="arch-layer">
+            <span class="arch-layer-label">Utilities</span>
+            <div class="arch-boxes">
+                <div class="arch-box arch-util">Grafik<span>Draw helpers</span></div>
+                <div class="arch-box arch-util">Punkt<span>Immutable point</span></div>
+                <div class="arch-box arch-util">GlobalaKonstanter<span>Shared constants</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="projects lab2-projects">
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Lab 3 · Rumnavigering</span>
+                    <div class="card-title">Room Navigation Game <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">&#9733; Live Demo</span></div>
+                    <p class="card-desc">
+                        Exact map from <code style="color:var(--accent);font-family:var(--font-m)">Huvudprogram.java</code> — 8 rooms, 10 corridors.
+                        Click the map then use <kbd class="kbd">W</kbd><kbd class="kbd">A</kbd><kbd class="kbd">S</kbd><kbd class="kbd">D</kbd> to navigate. Black dot = your position.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">MVC</span><span class="tag">Observer pattern</span>
+                        <span class="tag">Java Swing</span><span class="tag">8 rooms</span>
+                        <span class="tag">10 corridors</span><span class="tag">WASD</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo — Exact Java Swing Recreation</div>
+                <p id="gameDesc" style="font-family:var(--font-m);font-size:0.75rem;color:var(--muted);margin-bottom:12px;font-weight:300">
+                    Click the canvas to focus it, then use <kbd class="kbd">W</kbd><kbd class="kbd">A</kbd><kbd class="kbd">S</kbd><kbd class="kbd">D</kbd> to move between rooms.
+                </p>
+                <div class="map-wrap" id="mapWrap" tabindex="0">
+                    <canvas id="gameCanvas" width="660" height="480"></canvas>
+                </div>
+                <div class="game-status">
+                    <span class="status-room" id="statusRoom">Current room: Orange</span>
+                    <span class="status-exits" id="statusExits"></span>
+                    <button class="demo-btn demo-btn-sm" onclick="openRoomEditor()" style="margin-left:auto">✎ Edit Rooms</button>
+                </div>
+            </div>
+
+            <!-- ROOM EDITOR OVERLAY -->
+            <div class="re-overlay re-hidden" id="roomEditorOverlay">
+                <div class="re-panel">
+                    <div class="re-header">
+                        <span class="re-title">Edit Rooms</span>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <span style="font-family:var(--font-m);font-size:0.62rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase">Corridor</span>
+                            <div class="re-room-swatch" id="corridorSwatch" style="background:rgb(123,63,0)" onclick="toggleCorridorPicker()" title="Corridor colour"></div>
+                            <div class="re-color-picker re-hidden" id="corridorPicker" style="top:36px;left:auto;right:0">
+                                <div class="re-color-swatch" style="background:rgb(123,63,0)" title="Brown (default)" onclick="setCorridorColor('rgb(123,63,0)')"></div>
+                                <div class="re-color-swatch" style="background:#555555" title="Dark grey" onclick="setCorridorColor('#555555')"></div>
+                                <div class="re-color-swatch" style="background:#1a1a1a" title="Almost black" onclick="setCorridorColor('#1a1a1a')"></div>
+                                <div class="re-color-swatch" style="background:#8B4513" title="Saddle brown" onclick="setCorridorColor('#8B4513')"></div>
+                                <div class="re-color-swatch" style="background:#D2691E" title="Chocolate" onclick="setCorridorColor('#D2691E')"></div>
+                                <div class="re-color-swatch" style="background:#4a90d9" title="Blue" onclick="setCorridorColor('#4a90d9')"></div>
+                                <div class="re-color-swatch" style="background:#e74c3c" title="Red" onclick="setCorridorColor('#e74c3c')"></div>
+                                <div class="re-color-swatch" style="background:#2ecc71" title="Green" onclick="setCorridorColor('#2ecc71')"></div>
+                                <input type="color" class="re-color-custom" value="#7b3f00" oninput="setCorridorColor(this.value)" title="Custom">
+                            </div>
+                            <span style="font-family:var(--font-m);font-size:0.62rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-left:12px">Background</span>
+                            <div class="re-room-swatch" id="bgSwatch" style="background:#00CC00" onclick="toggleBgPicker()" title="Background colour"></div>
+                            <div class="re-color-picker re-hidden" id="bgPicker" style="top:36px;left:auto;right:0">
+                                <div class="re-color-swatch" style="background:#00CC00" title="Green (default)" onclick="setBgColor('#00CC00')"></div>
+                                <div class="re-color-swatch" style="background:#1a472a" title="Dark green" onclick="setBgColor('#1a472a')"></div>
+                                <div class="re-color-swatch" style="background:#2c2c2c" title="Dark grey" onclick="setBgColor('#2c2c2c')"></div>
+                                <div class="re-color-swatch" style="background:#0a0a0a" title="Almost black" onclick="setBgColor('#0a0a0a')"></div>
+                                <div class="re-color-swatch" style="background:#1a1a2e" title="Dark navy" onclick="setBgColor('#1a1a2e')"></div>
+                                <div class="re-color-swatch" style="background:#3d2b1f" title="Dark brown" onclick="setBgColor('#3d2b1f')"></div>
+                                <div class="re-color-swatch" style="background:#e8e8e8" title="Light grey" onclick="setBgColor('#e8e8e8')"></div>
+                                <div class="re-color-swatch" style="background:#c8e6c9" title="Soft green" onclick="setBgColor('#c8e6c9')"></div>
+                                <input type="color" class="re-color-custom" value="#00CC00" oninput="setBgColor(this.value)" title="Custom">
+                            </div>
+                            <button class="demo-btn demo-btn-sm" onclick="resetRooms()" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);margin-left:8px">Reset</button>
+                            <button class="demo-btn demo-btn-sm" onclick="closeRoomEditor()">Done ✓</button>
+                        </div>
+                    </div>
+                    <div class="re-col-labels">
+                        <span class="re-col-color">Colour</span>
+                        <span class="re-col-name">Name</span>
+                        <span class="re-col-w">W</span>
+                        <span class="re-col-x">×</span>
+                        <span class="re-col-h">H</span>
+                        <span class="re-col-at">X</span>
+                        <span class="re-col-comma">,</span>
+                        <span class="re-col-y">Y</span>
+                    </div>
+                    <div id="reRoomList"></div>
+                </div>
+            </div>
+
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this,'cL3GUI')">GUI.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL3NIV')">Nivå.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL3RUM')">Rum.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL3GANG')">Gång.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL3MAL')">Målarduk.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL3KEY')">Tangentbordslyssnare.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL3HUV')">Huvudprogram.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL3GRAFIK')">Grafik.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL3PUNKT')">Punkt.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL3GLOBAL')">GlobalaKonstanter.java</button>
+                </div>
+                <div id="cL3GUI"><div class="code-filename">GUI.java</div>
+<pre><code class="language-java">public class GUI extends JFrame implements Observer {
+    private Målarduk målarduk;
+
+    public GUI(Nivå enNivå) {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        enNivå.addObserver(this); // register so we repaint on level change
+
+        målarduk = new Målarduk(enNivå);
+        målarduk.setPreferredSize(new Dimension(800, 600));
+        målarduk.addKeyListener(new Tangentbordslyssnare(enNivå));
+
+        setContentPane(målarduk);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        målarduk.requestFocusInWindow();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        this.målarduk.repaint(); // called whenever Nivå.notifyObservers() fires
+    }
+}</code></pre></div>
+                <div id="cL3NIV" class="hidden"><div class="code-filename">Nivå.java</div>
+<pre><code class="language-java">public class Nivå extends Observable {
+    private ArrayList&lt;Rum&gt; rum;
+    private Rum nuvarandeRum;
+
+    public Nivå(Rum startrum, ArrayList&lt;Rum&gt; rum) {
+        if (startrum == null || rum == null)
+            throw new IllegalArgumentException("Start room and rooms cannot be null");
+        this.rum = rum;
+        this.nuvarandeRum = startrum;
+        if (!this.rum.contains(startrum))
+            throw new IllegalArgumentException("Start room is not included in the rooms");
+        // Validate no overlap
+        for (int i = 0; i &lt; rum.size(); i++)
+            for (int j = i + 1; j &lt; rum.size(); j++)
+                if (rum.get(i).getX() &lt; rum.get(j).getX() + rum.get(j).getWall_width()
+                    &amp;&amp; rum.get(i).getX() + rum.get(i).getWall_width() &gt; rum.get(j).getX()
+                    &amp;&amp; rum.get(i).getY() &lt; rum.get(j).getY() + rum.get(j).getWall_height()
+                    &amp;&amp; rum.get(i).getY() + rum.get(i).getWall_height() &gt; rum.get(j).getY())
+                        throw new IllegalArgumentException("Two rooms overlap");
+    }
+
+    public ArrayList&lt;Rum&gt; getRum()  { return rum; }
+    public Rum getNuvarandeRum()     { return nuvarandeRum; }
+
+    public void hoppaÅt(Väderstreck v) {
+        if (nuvarandeRum.finnsUtgångÅt(v)) {
+            nuvarandeRum = nuvarandeRum.gångenÅt(v).getTill();
+            setChanged();
+            notifyObservers(); // triggers GUI.update() → repaint
+        }
+    }
+}</code></pre></div>
+                <div id="cL3RUM" class="hidden"><div class="code-filename">Rum.java</div>
+<pre><code class="language-java">public class Rum {
+    private int x, y, höjd, bredd;
+    private Color golvfärg;
+    private Gång[] gångar = new Gång[GlobalaKonstanter.ANTAL_VÄDERSTRECK];
+
+    public Rum(Color golvfärg, int bredd, int höjd, int övX, int övY) {
+        this.golvfärg = golvfärg;
+        this.höjd = höjd; this.bredd = bredd;
+        this.x = övX;     this.y = övY;
+    }
+
+    public int getX()             { return x; }
+    public int getY()             { return y; }
+    public int getWall_height()   { return höjd; }
+    public int getWall_width()    { return bredd; }
+    public Color getFloor_color() { return golvfärg; }
+
+    public boolean finnsUtgångÅt(Väderstreck v) {
+        return gångar[v.index()] != null;
+    }
+
+    public Gång gångenÅt(Väderstreck v) {
+        if (gångar[v.index()] == null)
+            throw new IllegalArgumentException("No passage in that direction");
+        return gångar[v.index()];
+    }
+
+    public static void kopplaIhop(Rum från, Väderstreck ut, Rum till, Väderstreck in) {
+        if (från == null || till == null || ut == null || in == null)
+            throw new IllegalArgumentException("Params cannot be null");
+        if (från == till) throw new IllegalArgumentException("Same room");
+        if (från.finnsUtgångÅt(ut)) throw new IllegalArgumentException("Already connected (från)");
+        if (till.finnsUtgångÅt(in)) throw new IllegalArgumentException("Already connected (till)");
+        från.gångar[ut.index()] = new Gång(från, ut, till, in);
+        till.gångar[in.index()] = new Gång(till, in, från, ut);
+    }
+}</code></pre></div>
+                <div id="cL3GANG" class="hidden"><div class="code-filename">Gång.java</div>
+<pre><code class="language-java">public class Gång {
+    private final Rum från;
+    private final Väderstreck riktningUtUrFrån;
+    private final Rum till;
+    private final Väderstreck riktningInITill;
+
+    public Gång(Rum från, Väderstreck riktningUtUrFrån,
+                Rum till,  Väderstreck riktningInITill) {
+        this.från             = från;
+        this.riktningUtUrFrån = riktningUtUrFrån;
+        this.till             = till;
+        this.riktningInITill  = riktningInITill;
+    }
+
+    public Rum         getFrån()             { return från; }
+    public Väderstreck getRiktningUtUrFrån() { return riktningUtUrFrån; }
+    public Rum         getTill()             { return till; }
+    public Väderstreck getRiktningInITill()  { return riktningInITill; }
+}</code></pre></div>
+                <div id="cL3MAL" class="hidden"><div class="code-filename">Målarduk.java</div>
+<pre><code class="language-java">public class Målarduk extends JPanel {
+    private final Nivå enNivå;
+
+    public Målarduk(Nivå enNivå) {
+        this.enNivå = enNivå;
+        setBackground(MARKFÄRG);  // green background (Color.GREEN)
+        setFocusable(true);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (Rum r : enNivå.getRum()) ritaRum(g, r);
+        for (Rum r : enNivå.getRum()) ritaGångarFrånRum(g, r);
+        ritaMarkörFörVarAnvändarenÄr(g);
+    }
+
+    private void ritaRum(Graphics g, Rum r) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(r.getFloor_color());
+        g2.fillRect(r.getX(), r.getY(), r.getWall_width(), r.getWall_height());
+        g2.setColor(VÄGGFÄRG); // black
+        g2.setStroke(new BasicStroke(VÄGGTJOCKLEK)); // 8px walls
+        g2.drawRect(r.getX(), r.getY(), r.getWall_width(), r.getWall_height());
+    }
+
+    private void ritaGångarFrånRum(Graphics g, Rum r) {
+        for (Väderstreck v : Väderstreck.values())
+            if (r.finnsUtgångÅt(v)) {
+                Gång gång = r.gångenÅt(v);
+                if (gång.getFrån() == r) ritaGång(g, gång); // draw each once
+            }
+    }
+
+    private Punkt baspunkt(Rum r, Väderstreck v) {
+        int midX = r.getX() + r.getWall_width() / 2;
+        int midY = r.getY() + r.getWall_height() / 2;
+        switch (v) {
+            case NORR:   return new Punkt(midX, r.getY());
+            case SÖDER:  return new Punkt(midX, r.getY() + r.getWall_height());
+            case ÖSTER:  return new Punkt(r.getX() + r.getWall_width(), midY);
+            case VÄSTER: return new Punkt(r.getX(), midY);
+            default: throw new IllegalArgumentException();
+        }
+    }
+
+    private Punkt pivotpunkt(Rum r, Väderstreck v) {
+        Punkt b = baspunkt(r, v); int o = 7;
+        switch (v) {
+            case NORR:   return new Punkt(b.x(), b.y() - o);
+            case SÖDER:  return new Punkt(b.x(), b.y() + o);
+            case ÖSTER:  return new Punkt(b.x() + o, b.y());
+            case VÄSTER: return new Punkt(b.x() - o, b.y());
+            default: throw new IllegalArgumentException();
+        }
+    }
+
+    private void ritaGång(Graphics g, Gång gång) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(GÅNGFÄRG); // brown
+        g2.setStroke(new BasicStroke(VÄGGTJOCKLEK, CAP_ROUND, JOIN_ROUND));
+        Punkt bf = baspunkt(gång.getFrån(), gång.getRiktningUtUrFrån());
+        Punkt pf = pivotpunkt(gång.getFrån(), gång.getRiktningUtUrFrån());
+        Punkt pt = pivotpunkt(gång.getTill(), gång.getRiktningInITill());
+        Punkt bt = baspunkt(gång.getTill(), gång.getRiktningInITill());
+        g2.drawLine(bf.x(), bf.y(), pf.x(), pf.y());
+        g2.drawLine(pf.x(), pf.y(), pt.x(), pt.y());
+        g2.drawLine(pt.x(), pt.y(), bt.x(), bt.y());
+    }
+
+    private void ritaMarkörFörVarAnvändarenÄr(Graphics g) {
+        Rum r = enNivå.getNuvarandeRum();
+        int cx = r.getX() + r.getWall_width() / 2;
+        int cy = r.getY() + r.getWall_height() / 2;
+        g.setColor(ANVÄNDARFÄRG); // black
+        g.fillOval(cx - ANVÄNDARRADIE, cy - ANVÄNDARRADIE,
+                   ANVÄNDARRADIE * 2, ANVÄNDARRADIE * 2);
+    }
+}</code></pre></div>
+                <div id="cL3KEY" class="hidden"><div class="code-filename">Tangentbordslyssnare.java</div>
+<pre><code class="language-java">public class Tangentbordslyssnare implements KeyListener {
+    private Nivå enNivå;
+
+    public Tangentbordslyssnare(Nivå enNivå) { this.enNivå = enNivå; }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+        if      (key == KeyEvent.VK_W) enNivå.hoppaÅt(Väderstreck.NORR);
+        else if (key == KeyEvent.VK_D) enNivå.hoppaÅt(Väderstreck.ÖSTER);
+        else if (key == KeyEvent.VK_S) enNivå.hoppaÅt(Väderstreck.SÖDER);
+        else if (key == KeyEvent.VK_A) enNivå.hoppaÅt(Väderstreck.VÄSTER);
+    }
+
+    @Override public void keyTyped(KeyEvent e)    {} // required by interface
+    @Override public void keyReleased(KeyEvent e) {} // required by interface
+}</code></pre></div>
+                <div id="cL3HUV" class="hidden"><div class="code-filename">Huvudprogram.java</div>
+<pre><code class="language-java">public class Huvudprogram {
+    public static void main(String[] args) {
+        ArrayList&lt;Rum&gt; rum = new ArrayList&lt;Rum&gt;();
+
+        // new Rum(color, bredd, höjd, x, y)
+        rum.add(new Rum(Color.RED,     75,  75,  25,  25)); // 0
+        rum.add(new Rum(Color.BLUE,    75,  50,  50, 150)); // 1
+        rum.add(new Rum(Color.MAGENTA,100,  50, 175, 100)); // 2
+        rum.add(new Rum(Color.YELLOW, 100,  75, 200, 200)); // 3
+        rum.add(new Rum(Color.CYAN,   100,  75, 325,  50)); // 4
+        rum.add(new Rum(Color.ORANGE,  75,  75, 450, 125)); // 5 &larr; start
+        rum.add(new Rum(Color.PINK,   100,  50, 275, 325)); // 6
+        rum.add(new Rum(Color.GREEN,   75, 100,  75, 275)); // 7
+
+        Rum.kopplaIhop(rum.get(0), SÖDER,  rum.get(1), NORR);
+        Rum.kopplaIhop(rum.get(0), ÖSTER,  rum.get(2), NORR);
+        Rum.kopplaIhop(rum.get(1), SÖDER,  rum.get(3), VÄSTER);
+        Rum.kopplaIhop(rum.get(2), SÖDER,  rum.get(3), NORR);
+        Rum.kopplaIhop(rum.get(2), ÖSTER,  rum.get(4), VÄSTER);
+        Rum.kopplaIhop(rum.get(4), ÖSTER,  rum.get(5), NORR);
+        Rum.kopplaIhop(rum.get(5), SÖDER,  rum.get(6), ÖSTER);
+        Rum.kopplaIhop(rum.get(3), ÖSTER,  rum.get(5), VÄSTER);
+        Rum.kopplaIhop(rum.get(3), SÖDER,  rum.get(6), NORR);
+        Rum.kopplaIhop(rum.get(7), ÖSTER,  rum.get(6), VÄSTER);
+
+        Nivå nivå = new Nivå(rum.get(5), rum); // start at Orange (index 5)
+        new GUI(nivå);
+    }
+}</code></pre></div>
+                <div id="cL3GRAFIK" class="hidden"><div class="code-filename">Grafik.java</div>
+<pre><code class="language-java">package labb3.verktyg;
+
+// Static utility methods for drawing on a Graphics context
+public class Grafik {
+
+    // Draw a thick line between two points
+    public static void drawThickLine(Graphics g, Punkt start, Punkt slut,
+                                     int width, Color c) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(c);
+        g2d.setStroke(new BasicStroke((float) width,
+                      BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+        g2d.drawLine(start.x(), start.y(), slut.x(), slut.y());
+        g2d.setStroke(new BasicStroke(1));
+    }
+
+    // Draw a filled circle centered at a point with given radius
+    public static void fillCircle(Graphics g, Punkt mittpunkt,
+                                  int radie, Color c) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(c);
+        g2d.setStroke(new BasicStroke(1));
+        g2d.fillOval(mittpunkt.x() - radie, mittpunkt.y() - radie,
+                     2 * radie, 2 * radie);
+    }
+}</code></pre></div>
+
+                <div id="cL3PUNKT" class="hidden"><div class="code-filename">Punkt.java</div>
+<pre><code class="language-java">package labb3.verktyg;
+
+// Immutable point — used for corridor base/pivot calculations
+public class Punkt {
+    private final int x, y;
+
+    public Punkt(int x, int y) { this.x = x; this.y = y; }
+    public int x()  { return x; }
+    public int y()  { return y; }
+
+    public String toString() { return "(" + x() + "," + y() + ")"; }
+}
+// Immutable so it can safely be shared between methods without defensive copies</code></pre></div>
+
+                <div id="cL3GLOBAL" class="hidden"><div class="code-filename">GlobalaKonstanter.java</div>
+<pre><code class="language-java">package labb3;
+
+// Shared constants used across all drawing classes
+abstract public class GlobalaKonstanter {
+    // Wall appearance
+    public static final int   VÄGGTJOCKLEK       = 8;
+    public static final int   HALV_VÄGGTJOCKLEK  = VÄGGTJOCKLEK / 2;
+    public static final int   DUBBEL_VÄGGTJOCKLEK= VÄGGTJOCKLEK * 2;
+    public static final Color VÄGGFÄRG           = Color.BLACK;
+
+    // Corridor appearance
+    public static final Color GÅNGFÄRG = new Color(123, 63, 0); // brown
+
+    // Background (the "ground" between rooms)
+    public static final Color MARKFÄRG = Color.GREEN;
+
+    // Player marker
+    public static final Color ANVÄNDARFÄRG  = Color.BLACK;
+    public static final int   ANVÄNDARRADIE = HALV_VÄGGTJOCKLEK; // = 4
+
+    // Direction count (N, E, S, W)
+    public static final int ANTAL_VÄDERSTRECK = 4;
+}</code></pre></div>>
+            </div>
+        </div>
+    </div><!-- end lab3-projects -->
+
+    <!-- ═══════════════════ LAB 4 ═══════════════════ -->
+    <span class="section-label" style="margin-top:56px">Lab 4 — FIFO Queue & Breadth-First Traversal</span>
+
+    <div class="lab-intro">
+        <h3>Two data structures working together</h3>
+        <p>
+            <code class="ic">FIFO.java</code> implements a circular-buffer queue.
+            <code class="ic">GraphIO.java</code> reads a graph from a file.
+            The <strong>BFS algorithm</strong> uses the FIFO queue to visit every node
+            in the graph level by level — nearest nodes first.
+            Click any node below to watch BFS spread outward, and see the queue state at each step.
+        </p>
+    </div>
+
+    <!-- How BFS works explainer -->
+    <div class="bfs-explainer">
+        <div class="bfs-step-card">
+            <span class="bfs-step-num">1</span>
+            <div>
+                <div class="bfs-step-title">Pick a start</div>
+                <span class="bfs-step-text">Add your chosen node to the queue. Mark it so we don't visit it twice.</span>
+            </div>
+        </div>
+        <div class="bfs-arrow">→</div>
+        <div class="bfs-step-card">
+            <span class="bfs-step-num">2</span>
+            <div>
+                <div class="bfs-step-title">Spread outward</div>
+                <span class="bfs-step-text">Take the front node out of the queue. Add all its unvisited neighbours to the back.</span>
+            </div>
+        </div>
+        <div class="bfs-arrow">→</div>
+        <div class="bfs-step-card">
+            <span class="bfs-step-num">3</span>
+            <div>
+                <div class="bfs-step-title">Keep going</div>
+                <span class="bfs-step-text">Repeat step 2 until the queue is empty. Every node gets visited exactly once, closest first.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="projects lab2-projects">
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Lab 4 · BFS on a Grid Graph</span>
+                    <div class="card-title">Breadth-First Traversal <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <p class="card-desc">
+                        Click any node to start BFS from there. Watch it sweep outward level by level.
+                        The FIFO queue state is shown live — each level gets a new colour.
+                        Switch between the two graph files from class.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">FIFO.java</span>
+                        <span class="tag">GraphIO.java</span>
+                        <span class="tag">Circular buffer</span>
+                        <span class="tag">BFS</span>
+                        <span class="tag">Grid graph</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo</div>
+
+                <!-- Graph selector + controls -->
+                <div class="bfs-controls">
+                    <div class="bfs-graph-pills">
+                        <button class="bfs-pill active" onclick="loadGraph(0,this)">gridgraph (100 nodes)</button>
+                        <button class="bfs-pill" onclick="loadGraph(1,this)">gridgraph2 (16 nodes)</button>
+                    </div>
+                    <button class="demo-btn demo-btn-sm" onclick="bfsReset()">↺ Reset</button>
+                    <button class="demo-btn demo-btn-sm" id="bfsStepBtn" onclick="bfsStep()">Step →</button>
+                    <button class="demo-btn demo-btn-sm" id="bfsRunBtn" onclick="bfsRun()">▶ Run All</button>
+                </div>
+
+                <p style="font-family:var(--font-m);font-size:0.73rem;color:var(--muted);margin-bottom:10px;font-weight:300">
+                    Click any dot on the graph to start — or just hit <strong style="color:var(--accent)">Step</strong> or <strong style="color:var(--accent)">Run</strong> to pick a random start automatically.
+                </p>
+
+                <!-- Main demo area -->
+                <div class="bfs-demo-wrap">
+                    <div class="bfs-graph-panel">
+                        <canvas id="bfsCanvas" width="440" height="380"></canvas>
+                    </div>
+                    <div class="bfs-info-panel">
+                        <div class="bfs-info-section">
+                            <span class="bfs-info-label">FIFO Queue</span>
+                            <div class="bfs-queue-vis" id="bfsQueue">
+                                <span class="bfs-queue-empty">Queue empty — click a node to start</span>
+                            </div>
+                        </div>
+                        <div class="bfs-info-section">
+                            <span class="bfs-info-label">BFS Log</span>
+                            <div class="bfs-log" id="bfsLog">
+                                <div class="bfs-log-line bfs-log-muted">Select a start node...</div>
+                            </div>
+                        </div>
+                        <div class="bfs-info-section">
+                            <span class="bfs-info-label">Progress</span>
+                            <div class="bfs-progress-row">
+                                <div class="bfs-progress-bar"><div id="bfsProgressFill" style="width:0%"></div></div>
+                                <span class="bfs-progress-label" id="bfsProgressLabel">0 / 0 visited</span>
+                            </div>
+                            <div class="bfs-legend" id="bfsLegend"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code tabs -->
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this,'cL4FIFO')">FIFO.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL4GIO')">GraphIO.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL4BFS')">BFS algorithm</button>
+                </div>
+                <div id="cL4FIFO"><div class="code-filename">FIFO.java</div>
+<pre><code class="language-java">public class FIFO implements Queue {
+    private Object[] data;
+    private int size, front, back;
+
+    public FIFO(int capacity) {
+        data  = new Object[capacity];
+        size  = 0; front = 0; back = 0;
+    }
+
+    public int size()    { return size; }
+    public boolean isEmpty() { return size == 0; }
+    public int maxSize() { return data.length; }
+
+    public Object first() {
+        if (isEmpty()) throw new NoSuchElementException("Queue is empty");
+        return data[front];
+    }
+
+    // Circular buffer: wrap index with modulo instead of shifting elements
+    public void removeFirst() {
+        if (isEmpty()) throw new NoSuchElementException("Queue is empty");
+        data[front] = null;
+        front = (front + 1) % data.length; // wrap around
+        size--;
+    }
+
+    public void add(Object o) {
+        if (size == data.length) throw new IllegalStateException("Queue is full");
+        data[back] = o;
+        back = (back + 1) % data.length;   // wrap around
+        size++;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof FIFO)) return false;
+        FIFO other = (FIFO) obj;
+        if (this.size != other.size) return false;
+        for (int i = 0; i &lt; size; i++) {
+            Object a = this.data[(front + i) % data.length];
+            Object b = other.data[(other.front + i) % other.data.length];
+            if (a == null ? b != null : !a.equals(b)) return false;
+        }
+        return true;
+    }
+}</code></pre></div>
+                <div id="cL4GIO" class="hidden"><div class="code-filename">GraphIO.java</div>
+<pre><code class="language-java">public class GraphIO {
+    public static void readFile(Graph graph, String filename) {
+        try (Scanner sc = new Scanner(new File(filename))) {
+
+            int n = sc.nextInt(); // number of nodes
+
+            for (int i = 0; i &lt; n; i++) {
+                int id = sc.nextInt();
+                int x  = sc.nextInt();
+                int y  = sc.nextInt();
+                graph.addNode(id, x, y);
+            }
+
+            // edges: from → to with weight
+            while (sc.hasNextInt()) {
+                int from = sc.nextInt();
+                int to   = sc.nextInt();
+                int w    = sc.nextInt();
+                graph.addEdge(from, to, w);
+            }
+
+        } catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("Bad file format: " + filename);
+        }
+    }
+}
+
+// gridgraph file format:
+// Line 1:      100          (number of nodes)
+// Lines 2-101: id  x  y    (node id and coordinates)
+// Rest:        from  to  w  (edges with weight)</code></pre></div>
+                <div id="cL4BFS" class="hidden"><div class="code-filename">BFS using FIFO queue (pseudocode → Java)</div>
+<pre><code class="language-java">// Breadth-First Traversal using our FIFO queue
+void bft(Graph graph, int startId) {
+    FIFO queue = new FIFO(graph.nodeCount());
+    boolean[] visited = new boolean[graph.nodeCount()];
+
+    queue.add(startId);
+    visited[startId] = true;
+
+    while (!queue.isEmpty()) {
+        int current = (int) queue.first();
+        queue.removeFirst();               // dequeue front (FIFO order)
+
+        System.out.println("Visiting node " + current);
+
+        // enqueue all unvisited neighbours
+        for (int neighbour : graph.neighbours(current)) {
+            if (!visited[neighbour]) {
+                visited[neighbour] = true;
+                queue.add(neighbour);      // visit nearest nodes first
+            }
+        }
+    }
+}
+
+// Key insight: FIFO order guarantees BFS visits nodes
+// level by level — all distance-1 nodes before distance-2, etc.
+// A Stack (LIFO) here would give DFS instead.</code></pre></div>
+            </div>
+        </div>
+    </div><!-- end lab4-projects -->
+
+    <!-- ═══════════════════ LAB 5 ═══════════════════ -->
+    <span class="section-label" style="margin-top:56px">Lab 5 — Calculator (State Machine + OOP)</span>
+
+    <div class="lab-intro">
+        <h3>A state machine disguised as a calculator</h3>
+        <p>
+            The calculator is built around four states: <code class="ic">Input1</code> → <code class="ic">OpReady</code> → <code class="ic">Input2</code> → <code class="ic">HasResult</code>.
+            Each button type is its own class extending the abstract <code class="ic">CalculatorButton</code>, and each implements a <code class="ic">transition()</code> method that changes the state.
+            The <code class="ic">Situation</code> object holds all shared state — display, operands, current operator.
+        </p>
+    </div>
+
+    <!-- State machine diagram -->
+    <div class="calc-states">
+        <div class="calc-state-card cs-input1">
+            <span class="cs-name">Input1</span>
+            <span class="cs-desc">Entering first number</span>
+        </div>
+        <div class="cs-arrow">→ op →</div>
+        <div class="calc-state-card cs-opready">
+            <span class="cs-name">OpReady</span>
+            <span class="cs-desc">Operator chosen, waiting for second number</span>
+        </div>
+        <div class="cs-arrow">→ digit →</div>
+        <div class="calc-state-card cs-input2">
+            <span class="cs-name">Input2</span>
+            <span class="cs-desc">Entering second number</span>
+        </div>
+        <div class="cs-arrow">→ = →</div>
+        <div class="calc-state-card cs-result">
+            <span class="cs-name">HasResult</span>
+            <span class="cs-desc">Result shown, ready for next calculation</span>
+        </div>
+    </div>
+
+    <div class="projects lab2-projects">
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Lab 5 · Calculator</span>
+                    <div class="card-title">Integer Calculator <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <p class="card-desc">
+                        Fully functional calculator — exact port of the Java Swing version.
+                        The current state is shown live so you can see the state machine in action as you type.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">State machine</span>
+                        <span class="tag">Abstract class</span>
+                        <span class="tag">Polymorphism</span>
+                        <span class="tag">Java Swing</span>
+                        <span class="tag">OOP</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo</div>
+                <div class="calc-demo-wrap">
+                    <!-- Calculator -->
+                    <div class="calc-ui">
+                        <div class="calc-display" id="calcDisplay">0</div>
+                        <div class="calc-grid">
+                            <button class="calc-btn calc-digit" onclick="calcDigit(7)">7</button>
+                            <button class="calc-btn calc-digit" onclick="calcDigit(8)">8</button>
+                            <button class="calc-btn calc-digit" onclick="calcDigit(9)">9</button>
+                            <button class="calc-btn calc-op"    onclick="calcOp('/')">÷</button>
+
+                            <button class="calc-btn calc-digit" onclick="calcDigit(4)">4</button>
+                            <button class="calc-btn calc-digit" onclick="calcDigit(5)">5</button>
+                            <button class="calc-btn calc-digit" onclick="calcDigit(6)">6</button>
+                            <button class="calc-btn calc-op"    onclick="calcOp('*')">×</button>
+
+                            <button class="calc-btn calc-digit" onclick="calcDigit(1)">1</button>
+                            <button class="calc-btn calc-digit" onclick="calcDigit(2)">2</button>
+                            <button class="calc-btn calc-digit" onclick="calcDigit(3)">3</button>
+                            <button class="calc-btn calc-op"    onclick="calcOp('-')">−</button>
+
+                            <button class="calc-btn calc-digit" onclick="calcDigit(0)">0</button>
+                            <button class="calc-btn calc-equals" onclick="calcEquals()">=</button>
+                            <button class="calc-btn calc-cancel" onclick="calcCancel()">C</button>
+                            <button class="calc-btn calc-op"    onclick="calcOp('+')">+</button>
+                        </div>
+                    </div>
+
+                    <!-- State inspector -->
+                    <div class="calc-inspector">
+                        <div class="calc-insp-title">State Machine Inspector</div>
+
+                        <div class="calc-insp-states">
+                            <div class="calc-insp-state" id="csInput1">
+                                <span class="cis-dot"></span>Input1
+                            </div>
+                            <div class="calc-insp-state" id="csOpReady">
+                                <span class="cis-dot"></span>OpReady
+                            </div>
+                            <div class="calc-insp-state" id="csInput2">
+                                <span class="cis-dot"></span>Input2
+                            </div>
+                            <div class="calc-insp-state" id="csHasResult">
+                                <span class="cis-dot"></span>HasResult
+                            </div>
+                        </div>
+
+                        <div class="calc-insp-field">
+                            <span class="cif-label">Left operand</span>
+                            <span class="cif-val" id="cifLeft">0</span>
+                        </div>
+                        <div class="calc-insp-field">
+                            <span class="cif-label">Operator</span>
+                            <span class="cif-val" id="cifOp">—</span>
+                        </div>
+                        <div class="calc-insp-field">
+                            <span class="cif-label">Display</span>
+                            <span class="cif-val" id="cifDisplay">0</span>
+                        </div>
+
+                        <div class="calc-insp-log" id="calcLog">
+                            <div class="calc-log-line calc-log-muted">Press a button to see transitions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code tabs -->
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this,'cL5STATE')">State.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL5SIT')">Situation.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL5BTN')">CalculatorButton.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL5DIGIT')">DigitButton.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL5BINOP')">BinOpButton.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL5EQ')">EqualsButton.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL5GUI')">GUI.java</button>
+                </div>
+                <div id="cL5STATE"><div class="code-filename">State.java</div>
+<pre><code class="language-java">// The 4 states of the calculator state machine
+public enum State {
+    Input1,    // entering first number
+    OpReady,   // operator selected, waiting for second number
+    Input2,    // entering second number
+    HasResult  // result shown, ready for next calc
+}</code></pre></div>
+                <div id="cL5SIT" class="hidden"><div class="code-filename">Situation.java</div>
+<pre><code class="language-java">// Holds all shared mutable state — passed to every button
+public class Situation {
+    public State state;
+    public int leftOperand;
+    public JLabel display;
+    public BinOpButton binaryOperator;
+
+    public Situation(JLabel display) {
+        this.display = display;
+        this.state = State.Input1;
+        this.leftOperand = 0;
+        this.binaryOperator = null;
+        this.display.setText("0");
+    }
+}</code></pre></div>
+                <div id="cL5BTN" class="hidden"><div class="code-filename">CalculatorButton.java</div>
+<pre><code class="language-java">// Abstract base — all buttons share a Situation reference
+// and fire transition() when clicked
+public abstract class CalculatorButton extends JButton {
+    protected final Situation situation;
+
+    public CalculatorButton(String text, Situation situation) {
+        super(text);
+        this.situation = situation;
+        addActionListener(e -> transition()); // wires click to state change
+    }
+
+    protected abstract void transition(); // each subclass defines its own
+}</code></pre></div>
+                <div id="cL5DIGIT" class="hidden"><div class="code-filename">DigitButton.java</div>
+<pre><code class="language-java">public class DigitButton extends CalculatorButton {
+    private final int digit;
+
+    @Override
+    protected void transition() {
+        String current = situation.display.getText();
+        switch (situation.state) {
+            case Input1:
+                // append digit (replace if showing 0)
+                if (current.equals("0")) situation.display.setText("" + digit);
+                else situation.display.setText(current + digit);
+                break;
+            case OpReady:
+                // first digit of second number — switch state
+                situation.display.setText("" + digit);
+                situation.state = State.Input2;
+                break;
+            case Input2:
+                if (current.equals("0")) situation.display.setText("" + digit);
+                else situation.display.setText(current + digit);
+                break;
+            case HasResult:
+                // start fresh after seeing result
+                situation.leftOperand = 0;
+                situation.binaryOperator = null;
+                situation.display.setText("" + digit);
+                situation.state = State.Input1;
+                break;
+        }
+    }
+}</code></pre></div>
+                <div id="cL5BINOP" class="hidden"><div class="code-filename">BinOpButton.java</div>
+<pre><code class="language-java">public class BinOpButton extends CalculatorButton {
+    private final char op;
+
+    public int apply(int a, int b) {
+        switch (op) {
+            case '+': return a + b;
+            case '-': return a - b;
+            case '*': return a * b;
+            case '/':
+                if (b == 0) throw new ArithmeticException("Division by zero");
+                return a / b; // integer division
+            default: throw new IllegalStateException("Unknown operator: " + op);
+        }
+    }
+
+    @Override
+    protected void transition() {
+        try {
+            int current = Integer.parseInt(situation.display.getText());
+            switch (situation.state) {
+                case Input1:
+                case HasResult:
+                    // save left operand, set operator, wait for second number
+                    situation.leftOperand = current;
+                    situation.binaryOperator = this;
+                    situation.state = State.OpReady;
+                    break;
+                case OpReady:
+                    // just changing mind about operator
+                    situation.binaryOperator = this;
+                    break;
+                case Input2:
+                    // chain operation: compute first, then set new op
+                    int result = situation.binaryOperator.apply(situation.leftOperand, current);
+                    situation.display.setText("" + result);
+                    situation.leftOperand = result;
+                    situation.binaryOperator = this;
+                    situation.state = State.OpReady;
+                    break;
+            }
+        } catch (ArithmeticException ex) {
+            situation.display.setText("0");
+            situation.leftOperand = 0;
+            situation.binaryOperator = null;
+            situation.state = State.Input1;
+        }
+    }
+}</code></pre></div>
+                <div id="cL5EQ" class="hidden"><div class="code-filename">EqualsButton.java</div>
+<pre><code class="language-java">public class EqualsButton extends CalculatorButton {
+    @Override
+    protected void transition() {
+        try {
+            int current = Integer.parseInt(situation.display.getText());
+            switch (situation.state) {
+                case Input2:
+                    // only state where = does something
+                    int result = situation.binaryOperator.apply(situation.leftOperand, current);
+                    situation.display.setText("" + result);
+                    situation.leftOperand = result;
+                    situation.state = State.HasResult;
+                    break;
+                case Input1:
+                case OpReady:
+                case HasResult:
+                    break; // do nothing
+            }
+        } catch (Exception ex) {
+            situation.display.setText("0");
+            situation.state = State.Input1;
+        }
+    }
+}</code></pre></div>
+                <div id="cL5GUI" class="hidden"><div class="code-filename">GUI.java</div>
+<pre><code class="language-java">public class GUI extends JFrame {
+    public GUI(Situation situation) {
+        setLayout(new BorderLayout());
+
+        // Display — right-aligned, large font
+        situation.display.setHorizontalAlignment(SwingConstants.RIGHT);
+        situation.display.setFont(new Font("Arial", Font.BOLD, 24));
+        add(situation.display, BorderLayout.NORTH);
+
+        // 4×4 button grid
+        JPanel panel = new JPanel(new GridLayout(4, 4, 5, 5));
+
+        panel.add(new DigitButton(7, situation));
+        panel.add(new DigitButton(8, situation));
+        panel.add(new DigitButton(9, situation));
+        panel.add(new BinOpButton('/', situation));
+
+        panel.add(new DigitButton(4, situation));
+        panel.add(new DigitButton(5, situation));
+        panel.add(new DigitButton(6, situation));
+        panel.add(new BinOpButton('*', situation));
+
+        panel.add(new DigitButton(1, situation));
+        panel.add(new DigitButton(2, situation));
+        panel.add(new DigitButton(3, situation));
+        panel.add(new BinOpButton('-', situation));
+
+        panel.add(new DigitButton(0, situation));
+        panel.add(new EqualsButton(situation));
+        panel.add(new CancelButton(situation));
+        panel.add(new BinOpButton('+', situation));
+
+        add(panel, BorderLayout.CENTER);
+        setSize(300, 400);
+        setVisible(true);
+    }
+}</code></pre></div>
+            </div>
+        </div>
+    </div><!-- end lab5-projects -->
+
+    <!-- ═══════════════════ LAB 6 ═══════════════════ -->
+    <span class="section-label" style="margin-top:56px">Lab 6 — Discrete Event Simulation (Car Wash)</span>
+
+    <div class="lab-intro">
+        <h3>A full simulation engine from scratch</h3>
+        <p>
+            A car wash with fast and slow machines. Cars arrive randomly (exponential distribution),
+            wait in a bounded queue, and depart after being washed (uniform distribution).
+            Built on a reusable simulation framework: <code class="ic">Simulator</code> drives an
+            <code class="ic">EventQueue</code> (priority queue), each <code class="ic">Event</code>
+            modifies the <code class="ic">State</code> and may schedule new events.
+            The <code class="ic">random</code> package was provided by the course.
+        </p>
+    </div>
+
+    <!-- Package architecture overview -->
+    <div class="cw-packages">
+        <div class="cw-pkg cw-pkg-random">
+            <span class="cw-pkg-name">random</span>
+            <span class="cw-pkg-class">ExponentialRandomStream</span>
+            <span class="cw-pkg-class">UniformRandomStream</span>
+            <span class="cw-pkg-note">Provided by course</span>
+        </div>
+        <div class="cw-pkg-arrow">→ used by →</div>
+        <div class="cw-pkg cw-pkg-sim">
+            <span class="cw-pkg-name">simulation</span>
+            <span class="cw-pkg-class">Simulator</span>
+            <span class="cw-pkg-class">Event</span>
+            <span class="cw-pkg-class">EventQueue</span>
+            <span class="cw-pkg-class">State</span>
+        </div>
+        <div class="cw-pkg-arrow">↑ extends</div>
+        <div class="cw-pkg cw-pkg-cw">
+            <span class="cw-pkg-name">carwash</span>
+            <span class="cw-pkg-class">CarWashState</span>
+            <span class="cw-pkg-class">ArrivalEvent</span>
+            <span class="cw-pkg-class">DepartureEvent</span>
+            <span class="cw-pkg-class">CloseEvent · StopEvent</span>
+            <span class="cw-pkg-class">EventFactory · Car</span>
+        </div>
+    </div>
+
+    <div class="projects lab2-projects">
+        <div class="project-card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-num">Lab 6 · Car Wash Simulation</span>
+                    <div class="card-title">Discrete Event Simulation <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <p class="card-desc">
+                        Run the exact simulation from <code style="color:var(--accent);font-family:var(--font-m)">Main.java</code> — 2 fast machines, 2 slow machines, queue of 5, λ=2, seed=1234.
+                        Step through each event or run the full simulation and see the event log, machine states, and queue live.
+                        Adjust the parameters and re-run for different results.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Discrete event sim</span>
+                        <span class="tag">Priority queue</span>
+                        <span class="tag">Exponential distribution</span>
+                        <span class="tag">Uniform distribution</span>
+                        <span class="tag">Observer pattern</span>
+                        <span class="tag">3 packages</span>
+                    </div>
+                </div>
+                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+            </div>
+
+            <div class="demo-panel">
+                <div class="demo-label">Live Demo — Interactive Simulation</div>
+
+                <!-- Config + controls -->
+                <div class="cw-config-row">
+                    <div class="cw-config-group">
+                        <label class="cw-config-label">Fast machines</label>
+                        <input class="demo-input cw-num" type="number" id="cwFast" value="2" min="0" max="8">
+                    </div>
+                    <div class="cw-config-group">
+                        <label class="cw-config-label">Slow machines</label>
+                        <input class="demo-input cw-num" type="number" id="cwSlow" value="2" min="0" max="8">
+                    </div>
+                    <div class="cw-config-group">
+                        <label class="cw-config-label">Max queue</label>
+                        <input class="demo-input cw-num" type="number" id="cwMaxQ" value="5" min="0" max="20">
+                    </div>
+                    <div class="cw-config-group">
+                        <label class="cw-config-label">Close time</label>
+                        <input class="demo-input cw-num" type="number" id="cwClose" value="15" min="1" max="100">
+                    </div>
+                    <div class="cw-config-group">
+                        <label class="cw-config-label">λ (arrival rate)</label>
+                        <input class="demo-input cw-num" type="number" id="cwLambda" value="2" min="0.1" max="10" step="0.1">
+                    </div>
+                    <div class="cw-config-group">
+                        <label class="cw-config-label">Seed</label>
+                        <input class="demo-input cw-num" type="number" id="cwSeed" value="1234">
+                    </div>
+                </div>
+
+                <div class="cw-controls">
+                    <button class="demo-btn demo-btn-sm" onclick="cwInit()">↺ Reset</button>
+                    <button class="demo-btn demo-btn-sm" id="cwStepBtn" onclick="cwStep()">Step →</button>
+                    <button class="demo-btn demo-btn-sm" id="cwRunBtn" onclick="cwToggleRun()">▶ Run</button>
+                </div>
+
+                <!-- Main demo area -->
+                <div class="cw-demo-wrap">
+                    <!-- Left: visual machine state -->
+                    <div class="cw-visual">
+                        <div class="cw-visual-section">
+                            <span class="cw-vis-label">Fast Machines</span>
+                            <div class="cw-machines" id="cwFastMachines"></div>
+                        </div>
+                        <div class="cw-visual-section">
+                            <span class="cw-vis-label">Slow Machines</span>
+                            <div class="cw-machines" id="cwSlowMachines"></div>
+                        </div>
+                        <div class="cw-visual-section">
+                            <span class="cw-vis-label">Waiting Queue</span>
+                            <div class="cw-queue-vis" id="cwQueueVis"></div>
+                        </div>
+                        <div class="cw-stats-grid" id="cwStatsGrid">
+                            <div class="cw-stat"><span class="cw-stat-label">Time</span><span class="cw-stat-val" id="cwTime">0.00</span></div>
+                            <div class="cw-stat"><span class="cw-stat-label">Arrived</span><span class="cw-stat-val" id="cwArrived">0</span></div>
+                            <div class="cw-stat"><span class="cw-stat-label">Served</span><span class="cw-stat-val" id="cwServed">0</span></div>
+                            <div class="cw-stat"><span class="cw-stat-label">Rejected</span><span class="cw-stat-val cw-rejected" id="cwRejected">0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Right: event log -->
+                    <div class="cw-log-panel">
+                        <span class="cw-vis-label">Event Log</span>
+                        <div class="cw-log-header">
+                            <span>Time</span><span>Event</span><span>Car</span><span>FF</span><span>FS</span><span>Q</span><span>Rej</span>
+                        </div>
+                        <div class="cw-log" id="cwLog"></div>
+                        <div class="cw-summary re-hidden" id="cwSummary"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UML diagram + README as tabs -->
+            <div class="code-body">
+                <div class="code-tabs">
+                    <button class="code-tab active" onclick="switchCodeTab(this,'cL6UML')">UML Diagram</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6README')">Design Notes</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6EVENT')">Event.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6SIM')">Simulator.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6ARR')">ArrivalEvent.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6DEP')">DepartureEvent.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6CWS')">CarWashState.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6CLOSE')">CloseEvent.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6STOP')">StopEvent.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6EF')">EventFactory.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6CAR')">Car.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6STATE')">State.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6EQ')">EventQueue.java</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6MAIN')">Main.java</button>
+                </div>
+
+                <div id="cL6UML" style="padding:20px;background:#0d1117">
+                    <p style="font-family:var(--font-m);font-size:0.75rem;color:var(--muted);margin-bottom:12px;font-weight:300">
+                        UML class diagram showing the architecture — inheritance, composition, and dependencies between the three packages.
+                    </p>
+                    <img src="UML-Diagram.png" alt="UML Class Diagram" style="max-width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.08)">
+                </div>
+
+                <div id="cL6README" class="hidden" style="padding:20px 24px;background:#0d1117">
+                    <div class="readme-body">
+                        <h2>Lab 6 — Design Notes</h2>
+                        <p>This document describes the initial design plan for the simulation. The UML diagram represents the intended architecture before implementation.</p>
+                        <h3>Package Structure</h3>
+                        <div class="readme-pkg-grid">
+                            <div class="readme-pkg">
+                                <span class="readme-pkg-name">random</span>
+                                <p>Generates random numbers. <strong>Provided by course instructors.</strong> ExponentialRandomStream for inter-arrival times. UniformRandomStream for service times.</p>
+                            </div>
+                            <div class="readme-pkg">
+                                <span class="readme-pkg-name">simulation</span>
+                                <p>Generic reusable simulation engine — not specific to car wash. Simulator drives the event loop. EventQueue uses a PriorityQueue ordered by time. Event is abstract with compareTo() for ordering. State holds time and stop flag.</p>
+                            </div>
+                            <div class="readme-pkg">
+                                <span class="readme-pkg-name">carwash</span>
+                                <p>Car wash–specific logic. CarWashState extends State. Each event type (Arrival, Departure, Close, Stop) extends Event and implements execute(). EventFactory centralises event creation to reduce coupling.</p>
+                            </div>
+                        </div>
+                        <h3>Key Design Decisions</h3>
+                        <ul class="readme-list">
+                            <li><strong>EventFactory</strong> centralises event creation instead of letting events create each other directly — reduces coupling and keeps responsibilities clear.</li>
+                            <li><strong>Event implements Comparable&lt;Event&gt;</strong> so the PriorityQueue orders events by time automatically.</li>
+                            <li><strong>CarWashState extends State</strong> — the generic framework knows nothing about car washing; only the carwash package does.</li>
+                            <li><strong>SimulationView</strong> separates display from logic — state delegates printing to the view.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="cL6EVENT" class="hidden"><div class="code-filename">Event.java</div>
+<pre><code class="language-java">// Abstract base — all events share a time and an execute() method
+public abstract class Event implements Comparable&lt;Event&gt; {
+    private final double time;
+
+    protected Event(double time) { this.time = time; }
+    protected double getTime()   { return time; }
+
+    // Each subclass defines what happens when the event fires
+    public abstract void execute(State state, EventQueue queue);
+
+    // Natural ordering by time — used by PriorityQueue in EventQueue
+    @Override
+    public int compareTo(Event other) {
+        return Double.compare(this.time, other.time);
+    }
+}</code></pre></div>
+
+                <div id="cL6SIM" class="hidden"><div class="code-filename">Simulator.java</div>
+<pre><code class="language-java">public class Simulator {
+    private final EventQueue eventQueue;
+    private final State state;
+
+    public void run() {
+        // Core simulation loop — process events in time order
+        while (!state.isStopped() &amp;&amp; !eventQueue.isEmpty()) {
+            Event e = eventQueue.next();     // always the earliest event
+            state.setTime(e.getTime());      // advance simulation clock
+            e.execute(state, eventQueue);    // fire the event
+        }
+    }
+}
+
+// EventQueue uses PriorityQueue&lt;Event&gt; — Event.compareTo() ensures
+// the minimum-time event is always returned by next()</code></pre></div>
+
+                <div id="cL6ARR" class="hidden"><div class="code-filename">ArrivalEvent.java</div>
+<pre><code class="language-java">class ArrivalEvent extends Event {
+    private final EventFactory factory;
+
+    @Override
+    public void execute(State s, EventQueue q) {
+        CarWashState state = (CarWashState) s;
+        state.updateTimes(getTime()); // accumulate idle + queue times
+
+        if (state.isClosed()) return; // car wash closed, ignore arrival
+        state.incArrived();
+        Car car = factory.newCar(getTime());
+
+        // Priority: fast machine first, then slow, then queue, then reject
+        if (state.getFreeFast() &gt; 0) {
+            state.takeFast();
+            factory.scheduleDeparture(getTime(), car, true);
+        } else if (state.getFreeSlow() &gt; 0) {
+            state.takeSlow();
+            factory.scheduleDeparture(getTime(), car, false);
+        } else if (state.getQueue().size() &lt; state.getMaxQueue()) {
+            state.getQueue().add(car);      // join the queue
+        } else {
+            state.incRejected();            // queue full → turned away
+        }
+
+        state.printRow(getTime(), "Arrive", String.valueOf(car.getId()));
+        factory.scheduleNextArrival(getTime()); // schedule next car
+    }
+}</code></pre></div>
+
+                <div id="cL6DEP" class="hidden"><div class="code-filename">DepartureEvent.java</div>
+<pre><code class="language-java">class DepartureEvent extends Event {
+    private final Car car;
+    private final boolean fast; // which machine type was used
+    private final EventFactory factory;
+
+    @Override
+    public void execute(State s, EventQueue q) {
+        CarWashState state = (CarWashState) s;
+        state.updateTimes(getTime());
+        state.incServed();
+        state.printRow(getTime(), "Leave", String.valueOf(car.getId()));
+
+        // Free the machine that was used
+        if (fast) state.releaseFast();
+        else      state.releaseSlow();
+
+        // Immediately serve the next waiting car (if any)
+        if (!state.getQueue().isEmpty()) {
+            Car next = state.getQueue().poll();
+            if (fast) state.takeFast();
+            else      state.takeSlow();
+            factory.scheduleDeparture(getTime(), next, fast);
+        }
+    }
+}</code></pre></div>
+
+                <div id="cL6CWS" class="hidden"><div class="code-filename">CarWashState.java (key methods)</div>
+<pre><code class="language-java">class CarWashState extends State {
+    private int freeFast, freeSlow;
+    private final Queue&lt;Car&gt; queue = new ArrayDeque&lt;&gt;();
+                <div id="cL6CLOSE" class="hidden"><div class="code-filename">CloseEvent.java</div>
+<pre><code class="language-java">package carwash;
+
+import simulation.Event;
+import simulation.EventQueue;
+import simulation.State;
+
+/**
+ * Represents the event when the car wash stops accepting new arrivals.
+ * This event marks the closing time - no new cars will be accepted after this.
+ */
+class CloseEvent extends Event {
+    /**
+     * Creates a close event at a specific time.
+     * 
+     * @param time The time when the car wash should stop accepting arrivals
+     */
+    CloseEvent(double time) {
+        super(time);
+    }
+
+    /**
+     * Executes the close event by marking the car wash as closed.
+     * After this, no new cars will be accepted into the system.
+     * 
+     * @param s The current state of the car wash
+     * @param q The event queue
+     */
+    @Override
+    public void execute(State s, EventQueue q) {
+        CarWashState state = (CarWashState) s;
+        state.updateTimes(getTime());
+
+        // Mark the car wash as closed to new arrivals
+        state.closeArrivals();
+    }
+}</code></pre></div>
+                <div id="cL6STOP" class="hidden"><div class="code-filename">StopEvent.java</div>
+<pre><code class="language-java">package carwash;
+
+import simulation.Event;
+import simulation.EventQueue;
+import simulation.State;
+
+/**
+ * Represents the event that stops the entire simulation.
+ * This is the final event that terminates the simulation and prints the
+ * summary.
+ */
+class StopEvent extends Event {
+    /**
+     * Creates a stop event at a specific time.
+     * 
+     * @param time The time when the simulation should stop
+     */
+    StopEvent(double time) {
+        super(time);
+    }
+
+    /**
+     * Executes the stop event by ending the simulation and printing the final
+     * summary.
+     * 
+     * @param state The current state of the car wash
+     * @param queue The event queue
+     */
+    @Override
+    public void execute(State state, EventQueue queue) {
+        CarWashState s = (CarWashState) state;
+        s.updateTimes(getTime());
+
+        s.printRow(getTime(), "Stop", "");
+        state.stop();
+        s.printSummary();
+    }
+}</code></pre></div>
+                <div id="cL6EF" class="hidden"><div class="code-filename">EventFactory.java</div>
+<pre><code class="language-java">package carwash;
+
+import random.ExponentialRandomStream;
+import random.UniformRandomStream;
+import simulation.EventQueue;
+
+/**
+ * Factory class responsible for creating and scheduling all events in the
+ * simulation.
+ * Handles arrivals, departures, closing, and stopping the simulation.
+ */
+class EventFactory {
+    // Random stream for car arrival times (exponential distribution)
+    private final ExponentialRandomStream arrivalStream;
+    // Random stream for fast machine wash times (uniform distribution)
+    private final UniformRandomStream fastWashStream;
+    // Random stream for slow machine wash times (uniform distribution)
+    private final UniformRandomStream slowWashStream;
+
+    // The event queue where all events are stored
+    private EventQueue queue;
+
+    // Counter for assigning unique IDs to cars
+    private int nextCarId = 0;
+
+    // The time when the car wash stops accepting new arrivals
+    private final double closeTime;
+    // The time when the entire simulation stops
+    private final double stopTime;
+
+    /**
+     * Creates a new event factory with the specified random streams and time
+     * settings.
+     * 
+     * @param arrivalStream  Random stream for car arrivals
+     * @param fastWashStream Random stream for fast machine wash times
+     * @param slowWashStream Random stream for slow machine wash times
+     * @param closeTime      Time when the car wash stops accepting arrivals
+     * @param stopTime       Time when the simulation stops
+     */
+    EventFactory(
+            ExponentialRandomStream arrivalStream,
+            UniformRandomStream fastWashStream,
+            UniformRandomStream slowWashStream,
+            double closeTime,
+            double stopTime) {
+        this.arrivalStream = arrivalStream;
+        this.fastWashStream = fastWashStream;
+        this.slowWashStream = slowWashStream;
+        this.closeTime = closeTime;
+        this.stopTime = stopTime;
+    }
+
+    /**
+     * Initializes the factory with the event queue and state.
+     * Schedules the initial events: first arrival, closing event, and stop event.
+     * 
+     * @param queue The event queue
+     * @param state The car wash state
+     */
+    void init(EventQueue queue, CarWashState state) {
+        this.queue = queue;
+
+        // Schedule the first arrival
+        scheduleNextArrival(0.0);
+        // Schedule when the car wash closes to new arrivals
+        queue.add(new CloseEvent(closeTime));
+        // Schedule when the simulation stops
+        queue.add(new StopEvent(stopTime));
+    }
+
+    /**
+     * Schedules the next car arrival.
+     * The time is determined by the arrival random stream.
+     * 
+     * @param currentTime The current simulation time
+     */
+    void scheduleNextArrival(double currentTime) {
+        // Generate the time until the next arrival
+        double dt = arrivalStream.next();
+        double nextTime = currentTime + dt;
+
+        // Only schedule if it happens before closing time
+        if (nextTime &lt; closeTime)
+            queue.add(new ArrivalEvent(nextTime, this));
+    }
+
+    /**
+     * Schedules a departure event for a car after it finishes washing.
+     * 
+     * @param currentTime The current simulation time
+     * @param car         The car to wash
+     * @param fast        True for fast machine, false for slow
+     * @return The wash time that was generated
+     */
+    void scheduleDeparture(double currentTime, Car car, boolean fast) {
+        // Generate a random wash time based on the machine type
+        double washTime = fast ? fastWashStream.next() : slowWashStream.next();
+        // Schedule the departure event
+        queue.add(new DepartureEvent(currentTime + washTime, car, fast, this));
+    }
+
+    /**
+     * Creates a new car with a unique ID.
+     * 
+     * @param arrivalTime The time this car arrived
+     * @return A new Car object
+     */
+    Car newCar(double arrivalTime) {
+        return new Car(nextCarId++, arrivalTime);
+    }
+}</code></pre></div>
+                <div id="cL6CAR" class="hidden"><div class="code-filename">Car.java</div>
+<pre><code class="language-java">package carwash;
+
+/**
+ * Represents a car that arrives at the car wash.
+ * Stores the car's unique ID and the time it arrived.
+ */
+class Car {
+    // Unique identifier for this car
+    private final int id;
+    // The time when this car arrived at the car wash
+    private final double arrivalTime;
+
+    /**
+     * Creates a new car with a unique ID and arrival time.
+     * 
+     * @param id          Unique identifier for this car
+     * @param arrivalTime The time this car arrived
+     */
+    Car(int id, double arrivalTime) {
+        this.id = id;
+        this.arrivalTime = arrivalTime;
+    }
+
+    /**
+     * Gets the car's unique ID.
+     * 
+     * @return The car's ID
+     */
+    int getId() {
+        return id;
+    }
+
+    /**
+     * Gets the time this car arrived.
+     * 
+     * @return The arrival time
+     */
+    double getArrivalTime() {
+        return arrivalTime;
+    }
+}</code></pre></div>
+                <div id="cL6STATE" class="hidden"><div class="code-filename">State.java</div>
+<pre><code class="language-java">package simulation;
+
+/**
+ * Base class for simulation state.
+ * Tracks the current simulation time and whether the simulation is running.
+ */
+public class State {
+    // Current simulation time
+    private double time;
+    // Flag indicating if the simulation should stop
+    private boolean stopFlag;
+
+    /**
+     * Gets the current simulation time.
+     * 
+     * @return The current time
+     */
+    protected double getTime() {
+        return time;
+    }
+
+    /**
+     * Sets the current simulation time.
+     * 
+     * @param t The new time
+     */
+    protected void setTime(double t) {
+        this.time = t;
+    }
+
+    /**
+     * Signals the simulation to stop.
+     */
+    public void stop() {
+        this.stopFlag = true;
+    }
+
+    /**
+     * Checks if the simulation has been stopped.
+     * 
+     * @return true if simulation is stopped, false otherwise
+     */
+    protected boolean isStopped() {
+        return stopFlag;
+    }
+}</code></pre></div>
+                <div id="cL6EQ" class="hidden"><div class="code-filename">EventQueue.java</div>
+<pre><code class="language-java">package simulation;
+
+import java.util.PriorityQueue;
+
+/**
+ * A queue that stores events in chronological order.
+ * Events are always retrieved in order of their occurrence time.
+ */
+public class EventQueue {
+    // Priority queue that orders events by time
+    private final PriorityQueue&lt;Event&gt; pq = new PriorityQueue&lt;&gt;();
+
+    /**
+     * Adds an event to the queue.
+     * The event will be stored in chronological order.
+     * 
+     * @param e The event to add
+     */
+    public void add(Event e) {
+        pq.add(e);
+    }
+
+    /**
+     * Gets and removes the next event from the queue.
+     * 
+     * @return The event that occurs next in time
+     */
+    protected Event next() {
+        return pq.poll();
+    }
+
+    /**
+     * Checks if the queue is empty.
+     * 
+     * @return true if no events are scheduled, false otherwise
+     */
+    protected boolean isEmpty() {
+        return pq.isEmpty();
+    }
+}</code></pre></div>
+                <div id="cL6MAIN" class="hidden"><div class="code-filename">Main.java</div>
+<pre><code class="language-java">package carwash;
+
+import random.ExponentialRandomStream;
+import random.UniformRandomStream;
+import simulation.EventQueue;
+import simulation.Simulator;
+
+/**
+ * Main entry point for the car wash simulation.
+ * This program simulates a car wash facility with two types of machines (fast
+ * and slow).
+ * Cars arrive randomly, wait in a queue if necessary, and leave after being
+ * washed.
+ * 
+ * To run and compile:
+ * javac carwash/*.java simulation/*.java random/*.java
+ * java carwash.Main
+ */
+public class Main {
+    /**
+     * Runs the car wash simulation with predefined parameters.
+     */
+    public static void main(String[] args) {
+        // Configuration: number of washing machines
+        int fastStations = 2; // Number of fast machines
+        int slowStations = 2; // Number of slow machines
+        int maxQueue = 5; // Maximum queue size
+
+        // Configuration: simulation timing
+        double closeTime = 15.0; // When to stop accepting new arrivals
+        double stopTime = 15.0; // When to end the simulation
+
+        // Configuration: random distributions
+        double lambda = 2.0; // Rate parameter for exponential arrivals
+        int seed = 1234; // Seed for random number generation
+
+        // Configuration: wash time ranges (minutes)
+        double fastMin = 2.8, fastMax = 4.6; // Fast machine wash time range
+        double slowMin = 3.5, slowMax = 6.7; // Slow machine wash time range
+
+        // Create random streams for generating random numbers
+        ExponentialRandomStream arrival = new ExponentialRandomStream(lambda, seed);
+        UniformRandomStream fastWash = new UniformRandomStream(fastMin, fastMax, seed);
+        UniformRandomStream slowWash = new UniformRandomStream(slowMin, slowMax, seed);
+
+        // Create the simulation components
+        EventQueue q = new EventQueue(); // Event queue
+        CarWashState state = new CarWashState(fastStations, slowStations, maxQueue); // State
+
+        // Create the simulation view and link it to the state
+        SimulationView view = new SimulationView(); 
+        state.setView(view); // Set the view in the state for updates
+
+        // Create factory and initialize with first events
+        EventFactory factory = new EventFactory(arrival, fastWash, slowWash, closeTime, stopTime);
+        factory.init(q, state);
+
+        // Print configuration information
+        System.out.println("Fast machines: " + fastStations);
+        System.out.println("Slow machines: " + slowStations);
+        System.out.println("Fast distribution: (" + fastMin + ", " + fastMax + ")");
+        System.out.println("Slow distribution: (" + slowMin + ", " + slowMax + ")");
+        System.out.println("Exponential distribution with lambda = " + lambda);
+        System.out.println("seed = " + seed);
+        System.out.println("Max Queue size: " + maxQueue);
+
+        // Print the header and start row
+        view.printHeader();
+        view.printRow(0.0, "Start", "",
+            state.getFreeFast(),
+            state.getFreeSlow(),
+            state.getTotalIdleTime(),
+            state.getTotalQueueTime(),
+            state.getQueue().size(),
+            state.getTotalRejected());
+
+        // Run the simulation
+        Simulator sim = new Simulator(q, state);
+        sim.run();
+    }
+}</code></pre></div>
+    private double totalIdleTime, totalQueueTime, lastEventTime;
+
+    // Called at the start of every event to accumulate statistics
+    void updateTimes(double now) {
+        double dt = now - lastEventTime;
+        // Every idle machine accumulates idle time
+        totalIdleTime  += dt * (getFreeFast() + getFreeSlow());
+        // Every waiting car accumulates queue time
+        totalQueueTime += dt * queue.size();
+        lastEventTime   = now;
+    }
+
+    // Final statistics output
+    void printSummary() {
+        int entered = totalArrived - totalRejected;
+        double meanQ = (entered == 0) ? 0.0 : (totalQueueTime / entered);
+        view.printSummary(totalIdleTime, totalQueueTime, meanQ, totalRejected);
+    }
+}</code></pre></div>
+
+            </div>
+        </div>
+    </div><!-- end lab6-projects -->
+
+
+</div><!-- end .page -->
+
+<!-- Load word list async -->
+<script src="wordlist.js" defer></script>
+
+<script src="script.js"></script>
+</body>
+</html

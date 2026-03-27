@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Abdalla</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+
+    <div class="bg-glow"></div>
+
+    <main class="page">
+
+        <div class="logo fade-up">Welcome.</div>
+
+        <div class="card fade-up-2">
+
+            <!-- TABS -->
+            <div class="tab-row">
+                <button class="tab active" id="tabLogin" onclick="switchTab('login')">Login</button>
+                <button class="tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div class="form-panel" id="loginPanel">
+                <p class="form-desc">Welcome back. Enter your credentials to continue.</p>
+
+                <div class="alert hidden" id="loginAlert"></div>
+
+                <form id="loginForm" novalidate>
+                    <div class="field-group">
+                        <label class="field-label" for="loginUser">Username or Email</label>
+                        <input class="field-input" type="text" id="loginUser"
+                            name="username" placeholder="you@example.com"
+                            autocomplete="username">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="loginPass">Password</label>
+                        <div class="password-wrap">
+                            <input class="field-input" type="password" id="loginPass"
+                                name="password" placeholder="••••••••"
+                                autocomplete="current-password">
+                            <button type="button" class="eye-btn"
+                                onclick="togglePass('loginPass', this)" tabindex="-1">
+                                <svg class="eye-icon" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="1.8">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="submit-btn" type="submit" id="loginBtn">Login →</button>
+                </form>
+
+                <p class="switch-text">Don't have an account?
+                    <button class="switch-link" onclick="switchTab('signup')">Sign up</button>
+                </p>
+            </div>
+
+            <!-- SIGNUP FORM -->
+            <div class="form-panel hidden" id="signupPanel">
+                <p class="form-desc">Create an account to get started.</p>
+
+                <div class="alert hidden" id="signupAlert"></div>
+
+                <form id="signupForm" novalidate>
+                    <div class="field-group">
+                        <label class="field-label" for="signupUser">Username</label>
+                        <input class="field-input" type="text" id="signupUser"
+                            name="username" placeholder="Choose a username"
+                            autocomplete="username">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="signupEmail">Email</label>
+                        <input class="field-input" type="email" id="signupEmail"
+                            name="email" placeholder="you@example.com"
+                            autocomplete="email">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="signupPass">Password</label>
+                        <div class="password-wrap">
+                            <input class="field-input" type="password" id="signupPass"
+                                name="password" placeholder="••••••••"
+                                autocomplete="new-password">
+                            <button type="button" class="eye-btn"
+                                onclick="togglePass('signupPass', this)" tabindex="-1">
+                                <svg class="eye-icon" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="1.8">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="strength-label" id="strengthLabel"></div>
+                    </div>
+                    <button class="submit-btn" type="submit" id="signupBtn">Create Account →</button>
+                </form>
+
+                <p class="switch-text">Already have an account?
+                    <button class="switch-link" onclick="switchTab('login')">Log in</button>
+                </p>
+            </div>
+
+            <!-- SUCCESS STATE (shown after login/signup) -->
+            <div class="form-panel hidden" id="successPanel">
+                <div class="success-icon">✓</div>
+                <h2 class="success-title" id="successTitle">Logged in!</h2>
+                <p class="success-msg" id="successMsg">Redirecting you now…</p>
+                <div class="redirect-bar">
+                    <div class="redirect-fill" id="redirectFill"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <p class="footer-note fade-up-3">End project — Programming 2</p>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="fly-style.css">
+</head>
+<body>
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+
+    <!-- START SCREEN -->
+    <div id="startScreen" class="overlay-screen">
+        <div class="overlay-content">
+            <p class="overlay-eyebrow">are you fast enough?</p>
+            <h1 class="overlay-title">The Fly</h1>
+            <p class="overlay-sub">Click the fly. Every miss counts.<br>Choose your challenge.</p>
+            <button id="startBtn" class="btn-primary">Pick a Mode →</button>
+        </div>
+    </div>
+
+    <!-- MODE SELECT SCREEN -->
+    <div id="modeScreen" class="overlay-screen hidden">
+        <div class="overlay-content">
+            <p class="overlay-eyebrow">choose your challenge</p>
+            <h2 class="overlay-title" style="font-size: clamp(2rem,6vw,3.5rem)">Select Mode</h2>
+            <div class="mode-grid">
+                <button class="mode-card" data-mode="infinite">
+                    <span class="mode-icon">∞</span>
+                    <span class="mode-name">Infinite</span>
+                    <span class="mode-desc">No limits. Chase your high score forever.</span>
+                </button>
+                <button class="mode-card" data-mode="lives">
+                    <span class="mode-icon">♥ ♥ ♥</span>
+                    <span class="mode-name">3 Lives</span>
+                    <span class="mode-desc">3 misses and it's over. Stay sharp.</span>
+                </button>
+                <button class="mode-card" data-mode="time">
+                    <span class="mode-icon">30s</span>
+                    <span class="mode-name">Time Attack</span>
+                    <span class="mode-desc">Hit as many as you can before time runs out.</span>
+                </button>
+                <button class="mode-card" data-mode="precision">
+                    <span class="mode-icon">◎</span>
+                    <span class="mode-name">Precision</span>
+                    <span class="mode-desc">One miss. That's all you get. No mercy.</span>
+                </button>
+            </div>
+            <button id="playModeBtn" class="btn-primary">Play →</button>
+        </div>
+    </div>
+
+    <!-- GAME OVER SCREEN -->
+    <div id="gameOverScreen" class="overlay-screen hidden">
+        <div class="overlay-content">
+            <p class="overlay-eyebrow" id="goMode">game over</p>
+            <h1 class="overlay-title" id="finalScore">0</h1>
+            <p class="overlay-sub" id="finalMessage">Not bad.</p>
+            <div class="final-stats">
+                <div class="stat"><span class="stat-val" id="finalHits">0</span><span class="stat-label">hits</span></div>
+                <div class="stat"><span class="stat-val" id="finalMisses">0</span><span class="stat-label">misses</span></div>
+                <div class="stat"><span class="stat-val" id="finalBest">0</span><span class="stat-label">best</span></div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+                <button id="restartBtn" class="btn-primary">Play Again</button>
+                <button id="changeModeBtn" class="btn-secondary">Change Mode</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME AREA -->
+    <div id="container">
+        <div id="fly" class="fly" aria-label="fly"></div>
+        <!-- splat particles injected here -->
+    </div>
+
+    <!-- HUD -->
+    <div id="hud">
+        <div class="hud-block">
+            <span class="hud-label">Score</span>
+            <span class="hud-val" id="scoreDisplay">0</span>
+        </div>
+        <div class="hud-center">
+            <div id="timerDisplay" class="hud-timer hidden">30</div>
+            <div id="comboDisplay" class="combo hidden">x2</div>
+        </div>
+        <div class="hud-block hud-right">
+            <span class="hud-label" id="rightLabel">Misses</span>
+            <div id="livesDisplay" class="lives"></div>
+        </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div id="controls">
+        <button id="speedButton" class="ctrl-btn" type="button">
+            <span class="ctrl-icon">⚡</span>
+            <span id="speedLabel">Medium</span>
+        </button>
+        <button id="pauseButton" class="ctrl-btn" type="button">⏸ Pause</button>
+        <button id="giveUpButton" class="ctrl-btn ctrl-btn--danger" type="button">🏳 Give Up</button>
+    </div>
+
+    <script src="fly-script.js"></script>
+</body>
+</html>

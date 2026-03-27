@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+
+    <!-- SETUP SCREEN -->
+    <div id="setupScreen" class="screen active">
+        <div class="screen-content">
+            <p class="eyebrow">classic game</p>
+            <h1 class="big-title">Tic-Tac-<span class="acc">Toe</span></h1>
+
+            <div class="mode-row">
+                <button class="mode-pill active" data-mode="1">vs Bot</button>
+                <button class="mode-pill" data-mode="2">2 Players</button>
+            </div>
+
+            <div class="name-fields">
+                <div class="field-group" id="p1Group">
+                    <label class="field-label">Your name</label>
+                    <input class="field-input" id="p1Name" type="text" placeholder="Player 1" maxlength="16" autocomplete="off">
+                </div>
+                <div class="field-group hidden" id="p2Group">
+                    <label class="field-label">Opponent name</label>
+                    <input class="field-input" id="p2Name" type="text" placeholder="Player 2" maxlength="16" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="error-msg hidden" id="errorMsg">Please enter a name to continue.</div>
+
+            <button class="btn-play" id="playBtn">Play →</button>
+        </div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="gameScreen" class="screen">
+        <div class="screen-content game-layout">
+
+            <!-- Top bar -->
+            <div class="game-topbar">
+                <button class="back-btn" id="backBtn">← Back</button>
+                <p class="game-title-small">Tic-Tac-Toe</p>
+                <div style="width:60px"></div>
+            </div>
+
+            <!-- Score strip -->
+            <div class="score-strip">
+                <div class="score-block" id="scoreX">
+                    <span class="score-name" id="nameX">Player 1</span>
+                    <span class="score-sym x-sym">X</span>
+                    <span class="score-num" id="winsX">0</span>
+                </div>
+                <div class="score-block score-center">
+                    <span class="score-draws" id="drawCount">0</span>
+                    <span class="score-draws-label">draws</span>
+                </div>
+                <div class="score-block score-right" id="scoreO">
+                    <span class="score-num" id="winsO">0</span>
+                    <span class="score-sym o-sym">O</span>
+                    <span class="score-name" id="nameO">Bot</span>
+                </div>
+            </div>
+
+            <!-- Turn indicator -->
+            <div class="turn-bar">
+                <div class="turn-indicator" id="turnIndicator">
+                    <span class="turn-dot" id="turnDot"></span>
+                    <span id="turnText">Player 1's turn</span>
+                </div>
+            </div>
+
+            <!-- Board -->
+            <div class="board" id="board" aria-label="Tic Tac Toe Board">
+                <!-- 9 cells injected by JS -->
+            </div>
+
+            <!-- Result banner -->
+            <div class="result-banner hidden" id="resultBanner">
+                <span id="resultText">Player 1 wins!</span>
+                <button class="btn-next" id="nextRoundBtn">Next Round →</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- LEADERBOARD SCREEN -->
+    <div id="lbScreen" class="screen">
+        <div class="screen-content">
+            <p class="eyebrow">all-time records</p>
+            <h2 class="big-title" style="font-size:clamp(2.5rem,7vw,4.5rem)">Leader<span class="acc">board</span></h2>
+            <ol id="lbList" class="lb-list">
+                <li class="lb-empty">No entries yet.</li>
+            </ol>
+            <button class="btn-play" id="lbBackBtn" style="margin-top:32px">← Back to Game</button>
+        </div>
+    </div>
+
+    <!-- Leaderboard toggle (fixed) -->
+    <button class="lb-toggle" id="lbToggle" title="Leaderboard">🏆</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
