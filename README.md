@@ -38,6 +38,7 @@ Each folder is self-contained. Open the `index.html` inside any folder to run it
 ## Projects
 
 ### 01 — Name Checker
+
 The very first website I ever made. A simple tool that checks a name against some rules. Not impressive technically, but it's where everything started.
 
 **Tech:** HTML, CSS, JavaScript
@@ -45,6 +46,7 @@ The very first website I ever made. A simple tool that checks a name against som
 ---
 
 ### 02 — The Fly Game
+
 A reflex game where you try to click a fly before it moves. Sounds simple, gets surprisingly hard. Has four modes: Infinite, 3 Lives, Time Attack, and Precision. Best scores are saved locally.
 
 **Tech:** HTML, CSS, JavaScript · `localStorage` for scores
@@ -52,6 +54,7 @@ A reflex game where you try to click a fly before it moves. Sounds simple, gets 
 ---
 
 ### 03 — Islam Kindles
+
 A practice web project I built to get comfortable with multi-page layouts, navigation, and consistent styling across pages. Content is about Islamic topics.
 
 **Tech:** HTML, CSS · shared stylesheet across 8 pages
@@ -59,6 +62,7 @@ A practice web project I built to get comfortable with multi-page layouts, navig
 ---
 
 ### 04 — Login / Signup System
+
 The end project for Programming 2 (high school). A full authentication flow with two access methods — username/password login and a separate signup path. Built entirely from scratch without any libraries.
 
 **Tech:** HTML, CSS, JavaScript, PHP · demo mode works without a server
@@ -66,6 +70,7 @@ The end project for Programming 2 (high school). A full authentication flow with
 ---
 
 ### 05 — Tic-Tac-Toe
+
 The other end project for Programming 2. Classic game with a leaderboard stored in the browser. Two-player on the same screen.
 
 **Tech:** HTML, CSS, JavaScript · `localStorage` for the leaderboard
@@ -78,14 +83,14 @@ The other end project for Programming 2. Classic game with a leaderboard stored 
 
 Six interactive labs, each with a live demo you can run in the browser:
 
-| Lab | What it is |
-|-----|-----------|
-| L1·T1 | Loan calculator — computes total cost, interest, monthly payment |
-| L1·T2 | Recipe scaler — slider adjusts ingredients for 1–20 people |
-| L3·A1 | Word book using two parallel lists |
-| L3·A2 | Word book using tuples |
-| L3·A3 | Word book using a dictionary — live insert / lookup / delete demo |
-| L4 | Phonebook OOP — full terminal with commands like `add`, `search`, `delete` |
+| Lab   | What it is                                                                 |
+| ----- | -------------------------------------------------------------------------- |
+| L1·T1 | Loan calculator — computes total cost, interest, monthly payment           |
+| L1·T2 | Recipe scaler — slider adjusts ingredients for 1–20 people                 |
+| L3·A1 | Word book using two parallel lists                                         |
+| L3·A2 | Word book using tuples                                                     |
+| L3·A3 | Word book using a dictionary — live insert / lookup / delete demo          |
+| L4    | Phonebook OOP — full terminal with commands like `add`, `search`, `delete` |
 
 **Tech:** Python concepts ported to JavaScript for the browser demos · Syne + DM Mono fonts · unified dark design system
 
@@ -97,14 +102,14 @@ Six interactive labs, each with a live demo you can run in the browser:
 
 Six labs, all with live interactive demos:
 
-| Lab | What it is |
-|-----|-----------|
-| Lab 1 | Arithmetic quiz + spellchecker with 5 correction algorithms |
-| Lab 2 | Custom `MyArrayList<E>` — full ArrayList reimplemented from scratch |
-| Lab 3 | Room navigation game — MVC + Observer pattern, canvas-drawn rooms |
-| Lab 4 | BFS graph traversal — click a node, watch it spread level by level |
+| Lab   | What it is                                                             |
+| ----- | ---------------------------------------------------------------------- |
+| Lab 1 | Arithmetic quiz + spellchecker with 5 correction algorithms            |
+| Lab 2 | Custom `MyArrayList<E>` — full ArrayList reimplemented from scratch    |
+| Lab 3 | Room navigation game — MVC + Observer pattern, canvas-drawn rooms      |
+| Lab 4 | BFS graph traversal — click a node, watch it spread level by level     |
 | Lab 5 | Integer calculator — state machine with 4 states, live state inspector |
-| Lab 6 | Discrete event simulation — car wash with configurable parameters |
+| Lab 6 | Discrete event simulation — car wash with configurable parameters      |
 
 The room navigation game (Lab 3) includes an editor where you can change room colours, sizes, positions, and the corridor and background colours. Lab 6 runs the full simulation step by step and shows the event log, machine states, and queue live.
 
@@ -116,12 +121,12 @@ The room navigation game (Lab 3) includes an editor where you can change room co
 
 **Course:** D0015E at LTU — a broad survey course covering five very different modules in one semester.
 
-| Module | What it is |
-|--------|-----------|
-| A — Hammurabi | Classic 1973 strategy game. Govern ancient Sumeria for 10 years. Resource allocation, random events, plague. Fully playable in the browser. |
-| B — Arduino | Four circuits: LED blink timing, potentiometer-controlled blink rate, LDR ambient light sensor, and a melody-playing buzzer that syncs with LEDs. |
-| C — LaTeX | Two academic papers typeset in LaTeX — a proof that the Koch snowflake has infinite perimeter but finite area, and a calculus analysis of a ski slope. |
-| D — Algorithm Analysis | Three implementations of maximum subarray sum — O(n³), O(n²), and O(n²) with prefix sums — analysed in a LaTeX report. |
+| Module                 | What it is                                                                                                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A — Hammurabi          | Classic 1973 strategy game. Govern ancient Sumeria for 10 years. Resource allocation, random events, plague. Fully playable in the browser.                               |
+| B — Arduino            | Four circuits: LED blink timing, potentiometer-controlled blink rate, LDR ambient light sensor, and a melody-playing buzzer that syncs with LEDs.                         |
+| C — LaTeX              | Two academic papers typeset in LaTeX — a proof that the Koch snowflake has infinite perimeter but finite area, and a calculus analysis of a ski slope.                    |
+| D — Algorithm Analysis | Three implementations of maximum subarray sum — O(n³), O(n²), and O(n²) with prefix sums — analysed in a LaTeX report.                                                    |
 | E — Engineering Ethics | Written assignment on gender equality in tech, engineering virtues, professional licensing, and the ethics of refusing clients. Co-authored in LaTeX, written in Swedish. |
 
 **Tech:** HTML, CSS, JavaScript · PDF generation with ReportLab · original Hammurabi game files included
@@ -132,14 +137,14 @@ The room navigation game (Lab 3) includes an editor where you can change room co
 
 The whole portfolio is plain web — no frameworks, no build tools, no bundlers. Just files you can open in a browser.
 
-| Thing | What I used |
-|-------|------------|
-| Languages | HTML, CSS, JavaScript, Python, Java, Arduino C++ |
-| Fonts | Syne (headings) + DM Mono (code/mono) via Google Fonts |
-| Syntax highlighting | highlight.js |
-| PDF generation | ReportLab (Python) |
-| Storage | `localStorage` for game scores and leaderboards |
-| Hosting | Static — any server or just open the files locally |
+| Thing               | What I used                                            |
+| ------------------- | ------------------------------------------------------ |
+| Languages           | HTML, CSS, JavaScript, Python, Java, Arduino C++       |
+| Fonts               | Syne (headings) + DM Mono (code/mono) via Google Fonts |
+| Syntax highlighting | highlight.js                                           |
+| PDF generation      | ReportLab (Python)                                     |
+| Storage             | `localStorage` for game scores and leaderboards        |
+| Hosting             | Static — any server or just open the files locally     |
 
 ---
 
@@ -148,8 +153,8 @@ The whole portfolio is plain web — no frameworks, no build tools, no bundlers.
 No installation needed. Just clone the repo and open files directly in your browser.
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/abdoahmed07/portfolio.git
+cd portfolio
 ```
 
 Then open any `index.html` in your browser. Start here:
@@ -169,6 +174,7 @@ D0015E/index.html
 **One exception:** the Login/Signup system (`login-system/`) uses PHP for the real backend. Opening it locally activates demo mode automatically — login and signup show success messages without writing to a database.
 
 **D0015E extras needed in the folder:**
+
 - `Babylonian.png` — the standing warrior image used in the Hammurabi standalone page
 - PDF files (`D1_Snowflake.pdf`, `D2_SkiSlope.pdf`, `L_Yrkesrollen.pdf`) are already included
 
@@ -183,4 +189,4 @@ D0015E/index.html
 
 ---
 
-*Abdalla · Computer Engineering Year 1 · Luleå University of Technology · 2025–2026*
+_Abdalla · Computer Engineering Year 1 · Luleå University of Technology · 2025–2026_
