@@ -7,169 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&family=DM+Serif+Display&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="shared.css">
-    <style>
-        /* ── HERO ── */
-        .hero {
-            position: relative;
-            min-height: calc(100vh - 64px);
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url("images/home-top.jpg");
-            background-size: cover;
-            background-position: center;
-            opacity: 0.08;
-            filter: grayscale(40%);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 80px 32px;
-            width: 100%;
-        }
-
-        .hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-m);
-            font-size: 0.72rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 28px;
-        }
-
-        .hero-tag::before {
-            content: '';
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
-            animation: pulse 2s ease infinite;
-        }
-
-        @keyframes pulse {
-            0%,100% { opacity:1; transform:scale(1); }
-            50%      { opacity:0.4; transform:scale(0.65); }
-        }
-
-        .hero-title {
-            font-size: clamp(3.5rem, 9vw, 7rem);
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            line-height: 0.9;
-            margin-bottom: 28px;
-        }
-
-        .hero-title .acc { color: var(--accent); }
-
-        .hero-sub {
-            font-family: var(--font-m);
-            font-size: 1rem;
-            color: var(--muted);
-            font-weight: 300;
-            max-width: 480px;
-            line-height: 1.7;
-            margin-bottom: 44px;
-        }
-
-        .hero-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .hero-link {
-            font-family: var(--font-m);
-            font-size: 0.8rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: var(--text);
-            padding: 11px 22px;
-            border-radius: 100px;
-            border: 1px solid var(--border);
-            transition: border-color 0.2s, color 0.2s, background 0.2s;
-        }
-
-        .hero-link:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: var(--accent-dim);
-        }
-
-        .hero-link.primary {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            font-weight: 700;
-        }
-
-        .hero-link.primary:hover {
-            background: #0ea572;
-            color: #000;
-        }
-
-        /* ── INFO STRIP ── */
-        .info-strip {
-            border-top: 1px solid var(--border);
-            padding: 60px 32px 80px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-            margin-top: 32px;
-        }
-
-        .info-tile {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            transition: border-color 0.2s;
-        }
-
-        .info-tile:hover { border-color: rgba(16,185,129,0.3); }
-
-        .info-tile-icon {
-            font-size: 1.4rem;
-            margin-bottom: 12px;
-        }
-
-        .info-tile h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            margin-bottom: 8px;
-        }
-
-        .info-tile p {
-            font-family: var(--font-m);
-            font-size: 0.82rem;
-            color: var(--muted);
-            font-weight: 300;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 700px) {
-            .hero-content { padding: 60px 18px; }
-            .info-strip { padding: 40px 18px 60px; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="home.css">
 </head>
 <body>
 
@@ -206,22 +45,22 @@
         <span class="section-eyebrow">What you'll find</span>
         <h2 class="section-title">Explore the <span class="acc">sections</span></h2>
         <div class="info-grid">
-            <a href="quran/index.html" class="info-tile" style="text-decoration:none;color:inherit">
+            <a href="quran/index.html" class="info-tile" class="info-tile-link">
                 <div class="info-tile-icon">📖</div>
                 <h3>Quran</h3>
                 <p>Browse selected Surahs organized by group, with names and numbers.</p>
             </a>
-            <a href="hadith/index.html" class="info-tile" style="text-decoration:none;color:inherit">
+            <a href="hadith/index.html" class="info-tile" class="info-tile-link">
                 <div class="info-tile-icon">📜</div>
                 <h3>Hadith</h3>
                 <p>Sayings, narrations, and topics organized clearly by subject.</p>
             </a>
-            <a href="debunks/index.html" class="info-tile" style="text-decoration:none;color:inherit">
+            <a href="debunks/index.html" class="info-tile" class="info-tile-link">
                 <div class="info-tile-icon">💬</div>
                 <h3>Debunks</h3>
                 <p>Answers to common claims and misunderstandings explained simply.</p>
             </a>
-            <a href="about/index.html" class="info-tile" style="text-decoration:none;color:inherit">
+            <a href="about/index.html" class="info-tile" class="info-tile-link">
                 <div class="info-tile-icon">ℹ️</div>
                 <h3>About</h3>
                 <p>The story and mission behind this student project.</p>
@@ -229,10 +68,6 @@
         </div>
     </div>
 
-    <script>
-        document.getElementById("menuToggle").addEventListener("click", () => {
-            document.getElementById("navLinks").classList.toggle("open");
-        });
-    </script>
+    <script src="home.js"></script>
 </body>
 </html>

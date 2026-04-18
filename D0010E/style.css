@@ -1985,3 +1985,24 @@ kbd.kbd {
 
 .tab-scroll-btn:hover { color: var(--accent); }
 .tab-scroll-left { border-left: none; border-right: 1px solid var(--border); order: -1; }
+
+/* ── Extracted from inline styles ─────────────────────────── */
+.btn-play-again       { margin-top: 16px; }
+.section-label-gap    { margin-top: 56px; }
+.card-title-badge     { color: var(--accent); font-size: 0.75rem; font-family: var(--font-m); font-weight: 400; margin-left: 8px; }
+.inline-code          { color: var(--accent); font-family: var(--font-m); }
+.accent-code          { color: var(--accent); }
+.accent-strong        { color: var(--accent); }
+.accent-prompt        { color: var(--accent); }
+.game-desc-text       { font-family: var(--font-m); font-size: 0.75rem; color: var(--muted); margin-bottom: 12px; font-weight: 300; }
+.btn-ml-auto          { margin-left: auto; }
+.btn-reset            { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); margin-left: 8px; }
+.re-color-row         { display: flex; gap: 8px; align-items: center; }
+.re-color-label       { font-family: var(--font-m); font-size: 0.62rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.re-color-label--gap  { margin-left: 12px; }
+.re-picker-anchored   { top: 36px; left: auto; right: 0; }
+.bfs-hint-text        { font-family: var(--font-m); font-size: 0.73rem; color: var(--muted); margin-bottom: 10px; font-weight: 300; }
+.code-panel-dark      { padding: 20px; background: #0d1117; }
+.code-panel-dark--padded { padding: 20px 24px; }
+.uml-caption          { font-family: var(--font-m); font-size: 0.75rem; color: var(--muted); margin-bottom: 12px; font-weight: 300; }
+.uml-img              { max-width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); }

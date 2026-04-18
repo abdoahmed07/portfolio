@@ -114,7 +114,7 @@
                         <div class="quiz-final-score" id="quizFinalScore"></div>
                         <div class="quiz-final-msg" id="quizFinalMsg"></div>
                         <div class="quiz-breakdown" id="quizBreakdown"></div>
-                        <button class="demo-btn" onclick="startQuiz()" style="margin-top:16px">Play Again →</button>
+                        <button class="demo-btn btn-play-again" onclick="startQuiz()">Play Again →</button>
                     </div>
                 </div>
             </div>
@@ -376,7 +376,7 @@
     </div><!-- end .projects -->
 
     <!-- ═══════════════════ LAB 2 ═══════════════════ -->
-    <span class="section-label" style="margin-top:56px">Lab 2 — Custom ArrayList Implementation</span>
+    <span class="section-label section-label-gap">Lab 2 — Custom ArrayList Implementation</span>
 
     <div class="lab-intro">
         <h3>Building ArrayList from scratch</h3>
@@ -437,7 +437,7 @@
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 2 · MyArrayList&lt;E&gt;</span>
-                    <div class="card-title">Generic Resizable Array List <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <div class="card-title">Generic Resizable Array List <span class="card-title-badge">★ Live Demo</span></div>
                     <p class="card-desc">
                         Try the full implementation live — add, get, set, remove, indexOf, contains, clone, and more.
                         Internally uses a dynamic array that doubles in size when full, exactly like the real Java ArrayList.
@@ -494,7 +494,7 @@
 
                 <!-- Direct command -->
                 <div class="pb-cmd-row">
-                    <span class="pb-prompt" style="color:var(--accent)">list&gt;</span>
+                    <span class="pb-prompt accent-prompt">list&gt;</span>
                     <input class="pb-cmd-input" type="text" id="alCmd"
                         placeholder="or type: add 5 · get 0 · remove 0 · size · clear…"
                         autocomplete="off"
@@ -676,7 +676,7 @@ public static void testAvClone() {
     </div><!-- end lab2-projects -->
 
     <!-- ═══════════════════ LAB 3 ═══════════════════ -->
-    <span class="section-label" style="margin-top:56px">Lab 3 — Room Navigation Game (MVC + Observer)</span>
+    <span class="section-label section-label-gap">Lab 3 — Room Navigation Game (MVC + Observer)</span>
 
     <div class="lab-intro">
         <h3>A Swing game with full MVC architecture</h3>
@@ -728,9 +728,9 @@ public static void testAvClone() {
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 3 · Rumnavigering</span>
-                    <div class="card-title">Room Navigation Game <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">&#9733; Live Demo</span></div>
+                    <div class="card-title">Room Navigation Game <span class="card-title-badge">&#9733; Live Demo</span></div>
                     <p class="card-desc">
-                        Exact map from <code style="color:var(--accent);font-family:var(--font-m)">Huvudprogram.java</code> — 8 rooms, 10 corridors.
+                        Exact map from <code class="inline-code">Huvudprogram.java</code> — 8 rooms, 10 corridors.
                         Click the map then use <kbd class="kbd">W</kbd><kbd class="kbd">A</kbd><kbd class="kbd">S</kbd><kbd class="kbd">D</kbd> to navigate. Black dot = your position.
                     </p>
                     <div class="card-tags">
@@ -744,7 +744,7 @@ public static void testAvClone() {
 
             <div class="demo-panel">
                 <div class="demo-label">Live Demo — Exact Java Swing Recreation</div>
-                <p id="gameDesc" style="font-family:var(--font-m);font-size:0.75rem;color:var(--muted);margin-bottom:12px;font-weight:300">
+                <p id="gameDesc" class="game-desc-text">
                     Click the canvas to focus it, then use <kbd class="kbd">W</kbd><kbd class="kbd">A</kbd><kbd class="kbd">S</kbd><kbd class="kbd">D</kbd> to move between rooms.
                 </p>
                 <div class="map-wrap" id="mapWrap" tabindex="0">
@@ -753,7 +753,7 @@ public static void testAvClone() {
                 <div class="game-status">
                     <span class="status-room" id="statusRoom">Current room: Orange</span>
                     <span class="status-exits" id="statusExits"></span>
-                    <button class="demo-btn demo-btn-sm" onclick="openRoomEditor()" style="margin-left:auto">✎ Edit Rooms</button>
+                    <button class="demo-btn demo-btn-sm btn-ml-auto" onclick="openRoomEditor()">✎ Edit Rooms</button>
                 </div>
             </div>
 
@@ -762,10 +762,10 @@ public static void testAvClone() {
                 <div class="re-panel">
                     <div class="re-header">
                         <span class="re-title">Edit Rooms</span>
-                        <div style="display:flex;gap:8px;align-items:center">
-                            <span style="font-family:var(--font-m);font-size:0.62rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase">Corridor</span>
+                        <div class="re-color-row">
+                            <span class="re-color-label">Corridor</span>
                             <div class="re-room-swatch" id="corridorSwatch" style="background:rgb(123,63,0)" onclick="toggleCorridorPicker()" title="Corridor colour"></div>
-                            <div class="re-color-picker re-hidden" id="corridorPicker" style="top:36px;left:auto;right:0">
+                            <div class="re-color-picker re-hidden" id="corridorPicker" class="re-color-picker re-hidden re-picker-anchored">
                                 <div class="re-color-swatch" style="background:rgb(123,63,0)" title="Brown (default)" onclick="setCorridorColor('rgb(123,63,0)')"></div>
                                 <div class="re-color-swatch" style="background:#555555" title="Dark grey" onclick="setCorridorColor('#555555')"></div>
                                 <div class="re-color-swatch" style="background:#1a1a1a" title="Almost black" onclick="setCorridorColor('#1a1a1a')"></div>
@@ -776,9 +776,9 @@ public static void testAvClone() {
                                 <div class="re-color-swatch" style="background:#2ecc71" title="Green" onclick="setCorridorColor('#2ecc71')"></div>
                                 <input type="color" class="re-color-custom" value="#7b3f00" oninput="setCorridorColor(this.value)" title="Custom">
                             </div>
-                            <span style="font-family:var(--font-m);font-size:0.62rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-left:12px">Background</span>
+                            <span class="re-color-label re-color-label--gap">Background</span>
                             <div class="re-room-swatch" id="bgSwatch" style="background:#00CC00" onclick="toggleBgPicker()" title="Background colour"></div>
-                            <div class="re-color-picker re-hidden" id="bgPicker" style="top:36px;left:auto;right:0">
+                            <div class="re-color-picker re-hidden" id="bgPicker" class="re-color-picker re-hidden re-picker-anchored">
                                 <div class="re-color-swatch" style="background:#00CC00" title="Green (default)" onclick="setBgColor('#00CC00')"></div>
                                 <div class="re-color-swatch" style="background:#1a472a" title="Dark green" onclick="setBgColor('#1a472a')"></div>
                                 <div class="re-color-swatch" style="background:#2c2c2c" title="Dark grey" onclick="setBgColor('#2c2c2c')"></div>
@@ -789,7 +789,7 @@ public static void testAvClone() {
                                 <div class="re-color-swatch" style="background:#c8e6c9" title="Soft green" onclick="setBgColor('#c8e6c9')"></div>
                                 <input type="color" class="re-color-custom" value="#00CC00" oninput="setBgColor(this.value)" title="Custom">
                             </div>
-                            <button class="demo-btn demo-btn-sm" onclick="resetRooms()" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);margin-left:8px">Reset</button>
+                            <button class="demo-btn demo-btn-sm" onclick="resetRooms()" class="demo-btn demo-btn-sm btn-reset">Reset</button>
                             <button class="demo-btn demo-btn-sm" onclick="closeRoomEditor()">Done ✓</button>
                         </div>
                     </div>
@@ -1135,7 +1135,7 @@ abstract public class GlobalaKonstanter {
     </div><!-- end lab3-projects -->
 
     <!-- ═══════════════════ LAB 4 ═══════════════════ -->
-    <span class="section-label" style="margin-top:56px">Lab 4 — FIFO Queue & Breadth-First Traversal</span>
+    <span class="section-label section-label-gap">Lab 4 — FIFO Queue & Breadth-First Traversal</span>
 
     <div class="lab-intro">
         <h3>Two data structures working together</h3>
@@ -1180,7 +1180,7 @@ abstract public class GlobalaKonstanter {
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 4 · BFS on a Grid Graph</span>
-                    <div class="card-title">Breadth-First Traversal <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <div class="card-title">Breadth-First Traversal <span class="card-title-badge">★ Live Demo</span></div>
                     <p class="card-desc">
                         Click any node to start BFS from there. Watch it sweep outward level by level.
                         The FIFO queue state is shown live — each level gets a new colour.
@@ -1211,8 +1211,8 @@ abstract public class GlobalaKonstanter {
                     <button class="demo-btn demo-btn-sm" id="bfsRunBtn" onclick="bfsRun()">▶ Run All</button>
                 </div>
 
-                <p style="font-family:var(--font-m);font-size:0.73rem;color:var(--muted);margin-bottom:10px;font-weight:300">
-                    Click any dot on the graph to start — or just hit <strong style="color:var(--accent)">Step</strong> or <strong style="color:var(--accent)">Run</strong> to pick a random start automatically.
+                <p class="bfs-hint-text">
+                    Click any dot on the graph to start — or just hit <strong class="accent-strong">Step</strong> or <strong class="accent-strong">Run</strong> to pick a random start automatically.
                 </p>
 
                 <!-- Main demo area -->
@@ -1364,7 +1364,7 @@ void bft(Graph graph, int startId) {
     </div><!-- end lab4-projects -->
 
     <!-- ═══════════════════ LAB 5 ═══════════════════ -->
-    <span class="section-label" style="margin-top:56px">Lab 5 — Calculator (State Machine + OOP)</span>
+    <span class="section-label section-label-gap">Lab 5 — Calculator (State Machine + OOP)</span>
 
     <div class="lab-intro">
         <h3>A state machine disguised as a calculator</h3>
@@ -1403,7 +1403,7 @@ void bft(Graph graph, int startId) {
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 5 · Calculator</span>
-                    <div class="card-title">Integer Calculator <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <div class="card-title">Integer Calculator <span class="card-title-badge">★ Live Demo</span></div>
                     <p class="card-desc">
                         Fully functional calculator — exact port of the Java Swing version.
                         The current state is shown live so you can see the state machine in action as you type.
@@ -1685,7 +1685,7 @@ public abstract class CalculatorButton extends JButton {
     </div><!-- end lab5-projects -->
 
     <!-- ═══════════════════ LAB 6 ═══════════════════ -->
-    <span class="section-label" style="margin-top:56px">Lab 6 — Discrete Event Simulation (Car Wash)</span>
+    <span class="section-label section-label-gap">Lab 6 — Discrete Event Simulation (Car Wash)</span>
 
     <div class="lab-intro">
         <h3>A full simulation engine from scratch</h3>
@@ -1731,9 +1731,9 @@ public abstract class CalculatorButton extends JButton {
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 6 · Car Wash Simulation</span>
-                    <div class="card-title">Discrete Event Simulation <span style="color:var(--accent);font-size:0.75rem;font-family:var(--font-m);font-weight:400;margin-left:8px">★ Live Demo</span></div>
+                    <div class="card-title">Discrete Event Simulation <span class="card-title-badge">★ Live Demo</span></div>
                     <p class="card-desc">
-                        Run the exact simulation from <code style="color:var(--accent);font-family:var(--font-m)">Main.java</code> — 2 fast machines, 2 slow machines, queue of 5, λ=2, seed=1234.
+                        Run the exact simulation from <code class="inline-code">Main.java</code> — 2 fast machines, 2 slow machines, queue of 5, λ=2, seed=1234.
                         Step through each event or run the full simulation and see the event log, machine states, and queue live.
                         Adjust the parameters and re-run for different results.
                     </p>
@@ -1841,14 +1841,14 @@ public abstract class CalculatorButton extends JButton {
                     <button class="code-tab" onclick="switchCodeTab(this,'cL6MAIN')">Main.java</button>
                 </div>
 
-                <div id="cL6UML" style="padding:20px;background:#0d1117">
-                    <p style="font-family:var(--font-m);font-size:0.75rem;color:var(--muted);margin-bottom:12px;font-weight:300">
+                <div id="cL6UML" class="code-panel-dark">
+                    <p class="uml-caption">
                         UML class diagram showing the architecture — inheritance, composition, and dependencies between the three packages.
                     </p>
-                    <img src="UML-Diagram.png" alt="UML Class Diagram" style="max-width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.08)">
+                    <img src="UML-Diagram.png" alt="UML Class Diagram" class="uml-img">
                 </div>
 
-                <div id="cL6README" class="hidden" style="padding:20px 24px;background:#0d1117">
+                <div id="cL6README" class="hidden code-panel-dark code-panel-dark--padded">
                     <div class="readme-body">
                         <h2>Lab 6 — Design Notes</h2>
                         <p>This document describes the initial design plan for the simulation. The UML diagram represents the intended architecture before implementation.</p>

@@ -15,16 +15,6 @@ Abdalla Nasreldin --- 20050113-5958
 
   <script src="hammurabi.js" defer></script>
     <link rel="icon" type="image/png" href="logo.png">
-  <!--
-    This script waits until the page is loaded,
-    then starts the game by calling gameStart().
-    It checks if gameStart exists before calling it.
-  -->
-  <script defer>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (typeof gameStart === 'function') gameStart();
-    });
-  </script>
 </head>
 
 <body>

@@ -363,3 +363,6 @@ function finishTurn() {
 		gameStart();
 	}
 }
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof gameStart === "function") gameStart();
+});
