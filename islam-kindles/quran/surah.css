@@ -1,0 +1,222 @@
+
+        /* ── SURAH HEADER ── */
+        .surah-hero {
+            text-align: center;
+            padding: 48px 0 40px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .surah-hero-num {
+            font-family: var(--font-m);
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .surah-hero-arabic {
+            font-family: 'Amiri', serif;
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            color: var(--accent);
+            direction: rtl;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .surah-hero-name {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 6px;
+        }
+
+        .surah-hero-english {
+            font-family: var(--font-m);
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-weight: 300;
+        }
+
+        .surah-hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .meta-pill {
+            font-family: var(--font-m);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: 100px;
+        }
+
+        /* ── BISMILLAH ── */
+        .bismillah {
+            font-family: 'Amiri', serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--muted);
+            direction: rtl;
+            text-align: center;
+            padding: 24px 0 32px;
+            letter-spacing: 0.02em;
+        }
+
+        /* ── VIEW TOGGLE ── */
+        .view-toggle {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 36px;
+        }
+
+        .view-btn {
+            font-family: var(--font-m);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 7px 16px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .view-btn.active {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── VERSES ── */
+        .verses-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .verse {
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 20px;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: start;
+            animation: fadeUp 0.3s ease both;
+        }
+
+        .verse:last-child { border-bottom: none; }
+
+        .verse-num {
+            font-family: var(--font-m);
+            font-size: 0.65rem;
+            color: var(--accent);
+            background: var(--accent-dim);
+            border-radius: 6px;
+            padding: 5px 4px;
+            text-align: center;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .verse-content { display: flex; flex-direction: column; gap: 14px; }
+
+        .verse-arabic {
+            font-family: 'Amiri', serif;
+            font-size: clamp(1.4rem, 3vw, 1.9rem);
+            direction: rtl;
+            text-align: right;
+            line-height: 2;
+            color: var(--text);
+        }
+
+        .verse-translation {
+            font-family: var(--font-m);
+            font-size: 0.9rem;
+            color: var(--muted);
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        /* view modes */
+        body.arabic-only .verse-translation { display: none; }
+        body.translation-only .verse-arabic { display: none; }
+
+        /* ── NAV ARROWS ── */
+        .surah-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
+
+        .surah-nav-btn {
+            font-family: var(--font-m);
+            font-size: 0.75rem;
+            color: var(--muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: border-color 0.2s, color 0.2s;
+            letter-spacing: 0.04em;
+        }
+
+        .surah-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .surah-nav-btn.hidden { visibility: hidden; }
+
+        /* ── LOADING / ERROR ── */
+        .loading-state {
+            text-align: center;
+            padding: 80px 0;
+            font-family: var(--font-m);
+            font-size: 0.88rem;
+            color: var(--muted);
+        }
+
+        .loading-dot {
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: blink 1s ease infinite;
+            margin: 0 2px;
+        }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes blink {
+            0%,100% { opacity: 0.2; }
+            50%      { opacity: 1; }
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 60px 0;
+            font-family: var(--font-m);
+            font-size: 0.88rem;
+            color: var(--muted);
+        }
+
+        @media (max-width: 600px) {
+            .verse { grid-template-columns: 28px 1fr; gap: 12px; }
+            .verse-arabic { font-size: 1.3rem; }
+        }
+    
+
+/* ─── EXTRACTED INLINE STYLES ────────────────────────────── */
+.loading-msg { margin-top: 16px; }

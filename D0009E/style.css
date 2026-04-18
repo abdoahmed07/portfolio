@@ -461,3 +461,13 @@ body::before {
     .demo-dict-row .demo-input { min-width: 0; }
     .pb-quick-btns { gap: 6px; }
 }
+
+/* ── Extracted from inline styles ─────────────────────────── */
+.projects-section-gap { margin-bottom: 56px; }
+.demo-field-narrow    { max-width: 260px; }
+.demo-output-spaced   { margin-top: 16px; }
+.inline-code          { color: var(--accent); font-family: var(--font-m); }
+.card-title-badge     { color: var(--accent); font-size: 0.75rem; font-family: var(--font-m); font-weight: 400; margin-left: 8px; }
+.pb-action-row        { margin-top: 12px; }
+.pb-hint-text         { font-family: var(--font-m); font-size: 0.75rem; color: var(--muted); margin-bottom: 14px; font-weight: 300; }
+.accent-code          { color: var(--accent); }

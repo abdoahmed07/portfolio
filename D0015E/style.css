@@ -2380,3 +2380,35 @@ kbd.kbd {
 .card-header-right .ext-link-btn {
     white-space: nowrap;
 }
+
+/* ─── EXTRACTED INLINE STYLES ────────────────────────────── */
+.section-label-gap      { margin-top: 56px; }
+.card-title-badge       { color: var(--accent); font-size: 0.75rem; font-family: var(--font-m); font-weight: 400; margin-left: 8px; }
+.demo-btn-mt            { margin-top: 16px; }
+.hamm-stats--hidden     { display: none; }
+.algo-input-wide        { flex: 1; min-width: 200px; }
+.algo-array-label--hidden { display: none; }
+
+.content-panel {
+    padding: 20px;
+    font-family: var(--font-m);
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.8;
+    font-weight: 300;
+}
+
+.content-list {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.content-list--lg       { gap: 10px; }
+.content-list--sm       { margin-top: 8px; gap: 6px; }
+
+.text-body              { color: var(--text); }
+.panel-heading          { color: var(--accent); display: block; margin-bottom: 10px; }
+.p-mt-8                 { margin-top: 8px; }
+.p-mt-10                { margin-top: 10px; }
+.p-italic-mb            { font-style: italic; margin-bottom: 8px; }

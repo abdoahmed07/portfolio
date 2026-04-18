@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="fly-style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
@@ -26,7 +26,7 @@
     <div id="modeScreen" class="overlay-screen hidden">
         <div class="overlay-content">
             <p class="overlay-eyebrow">choose your challenge</p>
-            <h2 class="overlay-title" style="font-size: clamp(2rem,6vw,3.5rem)">Select Mode</h2>
+            <h2 class="overlay-title overlay-title--sm">Select Mode</h2>
             <div class="mode-grid">
                 <button class="mode-card" data-mode="infinite">
                     <span class="mode-icon">∞</span>
@@ -64,7 +64,7 @@
                 <div class="stat"><span class="stat-val" id="finalMisses">0</span><span class="stat-label">misses</span></div>
                 <div class="stat"><span class="stat-val" id="finalBest">0</span><span class="stat-label">best</span></div>
             </div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+            <div class="btn-row-centered">
                 <button id="restartBtn" class="btn-primary">Play Again</button>
                 <button id="changeModeBtn" class="btn-secondary">Change Mode</button>
             </div>
@@ -103,6 +103,6 @@
         <button id="giveUpButton" class="ctrl-btn ctrl-btn--danger" type="button">🏳 Give Up</button>
     </div>
 
-    <script src="fly-script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
