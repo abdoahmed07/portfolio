@@ -33,14 +33,113 @@
         <a href="#" class="github-link" target="_blank" rel="noopener">View on GitHub →</a>
     </div>
 
-    <!-- HOW TO RUN -->
-    <span class="section-label">How to Run</span>
-    <div class="run-card">
-        <p>HeroFight is a .NET 10 console application. Clone the repo and run:</p>
-        <pre><code class="language-bash">git clone https://github.com/abdalla/HeroFight
-cd HeroFight/HeroFight
-dotnet run</code></pre>
-    </div>
+    <!-- GAME -->
+    <span class="section-label">Play the Game</span>
+
+    <div class="game-wrap">
+
+        <!-- TITLE SCREEN -->
+        <div class="g-screen g-screen--active" id="g-title">
+            <div class="g-title-content">
+                <p class="g-eyebrow">Turn-Based RPG</p>
+                <h2 class="g-logo">Hero<span class="acc">Fight</span></h2>
+                <p class="g-tagline">3 classes &nbsp;·&nbsp; 7 rooms &nbsp;·&nbsp; 1 dragon</p>
+                <button class="g-btn-primary" id="g-btn-newgame">New Game</button>
+            </div>
+        </div>
+
+        <!-- CHAR SELECT -->
+        <div class="g-screen" id="g-select">
+            <div class="g-select-content">
+                <p class="g-section-title">Choose Your Class</p>
+                <div class="g-name-row">
+                    <input type="text" id="g-name-input" class="g-name-input" placeholder="Enter your hero's name…" maxlength="16" autocomplete="off" spellcheck="false">
+                </div>
+                <div class="g-class-row">
+                    <button class="g-class-card g-class-card--active" data-class="warrior">
+                        <span class="g-class-icon">⚔</span>
+                        <span class="g-class-name">Warrior</span>
+                        <span class="g-class-stats">HP 40 · ATK 7 · DEF 5</span>
+                        <span class="g-class-special">Heavy Strike</span>
+                        <span class="g-class-flavor">Tank. Steady damage. Risky finisher.</span>
+                    </button>
+                    <button class="g-class-card" data-class="mage">
+                        <span class="g-class-icon">✦</span>
+                        <span class="g-class-name">Mage</span>
+                        <span class="g-class-stats">HP 28 · ATK 10 · DEF 2</span>
+                        <span class="g-class-special">Fireball</span>
+                        <span class="g-class-flavor">Glass cannon. Manage gold carefully.</span>
+                    </button>
+                    <button class="g-class-card" data-class="rogue">
+                        <span class="g-class-icon">◈</span>
+                        <span class="g-class-name">Rogue</span>
+                        <span class="g-class-stats">HP 32 · ATK 8 · DEF 3</span>
+                        <span class="g-class-special">Backstab</span>
+                        <span class="g-class-flavor">20% crit. Best escape rate (50%).</span>
+                    </button>
+                </div>
+                <button class="g-btn-primary" id="g-btn-start">Start Adventure →</button>
+            </div>
+        </div>
+
+        <!-- MAIN GAME -->
+        <div class="g-screen" id="g-main">
+            <div class="g-room-bar" id="g-room-bar"></div>
+            <div class="g-main-layout">
+                <!-- Player panel -->
+                <div class="g-player-panel" id="g-player-panel">
+                    <div class="g-panel-header">
+                        <span class="g-player-class" id="g-class-label">Warrior</span>
+                        <span class="g-player-level" id="g-level">Lv. 1</span>
+                    </div>
+                    <p class="g-player-name" id="g-player-name">Hero</p>
+                    <div class="g-hp-section">
+                        <div class="g-hp-label"><span>HP</span><span id="g-hp-text">40 / 40</span></div>
+                        <div class="g-hp-track"><div class="g-hp-fill" id="g-hp-bar" style="width:100%"></div></div>
+                    </div>
+                    <div class="g-stat-grid">
+                        <div class="g-stat"><span class="g-stat-lbl">ATK</span><span class="g-stat-val" id="g-atk">—</span></div>
+                        <div class="g-stat"><span class="g-stat-lbl">DEF</span><span class="g-stat-val" id="g-def">—</span></div>
+                        <div class="g-stat"><span class="g-stat-lbl">Gold</span><span class="g-stat-val" id="g-gold">—</span></div>
+                        <div class="g-stat"><span class="g-stat-lbl">Pots</span><span class="g-stat-val" id="g-pots">—</span></div>
+                        <div class="g-stat"><span class="g-stat-lbl">XP</span><span class="g-stat-val" id="g-xp">—</span></div>
+                    </div>
+                    <div class="g-inv">
+                        <p class="g-inv-label">Bag</p>
+                        <div id="g-inv-items"></div>
+                    </div>
+                </div>
+                <!-- Action area -->
+                <div class="g-action-area">
+                    <div class="g-room-header">
+                        <span class="g-room-badge" id="g-room-badge">Battle</span>
+                        <span class="g-room-name" id="g-room-name">Forest Path</span>
+                    </div>
+                    <div class="g-enemy-card g-hidden" id="g-enemy-card">
+                        <div class="g-enemy-top">
+                            <span class="g-enemy-name" id="g-enemy-name">Wild Boar</span>
+                            <span class="g-enemy-hp-txt" id="g-enemy-hp-txt">18 HP</span>
+                        </div>
+                        <div class="g-enemy-hp-track"><div class="g-enemy-hp-fill" id="g-enemy-hp-bar"></div></div>
+                        <span class="g-enemy-stats" id="g-enemy-stats">ATK 4 · DEF 1</span>
+                    </div>
+                    <div class="g-log" id="g-log"></div>
+                    <div class="g-actions" id="g-actions"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div class="g-screen" id="g-end">
+            <div class="g-end-content">
+                <p class="g-end-eyebrow" id="g-end-eyebrow">Game Over</p>
+                <h2 class="g-end-title" id="g-end-title">You Have Fallen</h2>
+                <p class="g-end-stats" id="g-end-stats"></p>
+                <button class="g-btn-primary" id="g-btn-retry">Play Again</button>
+            </div>
+        </div>
+
+    </div><!-- end game-wrap -->
 
     <!-- PLAYABLE CLASSES -->
     <span class="section-label">Playable Classes</span>
