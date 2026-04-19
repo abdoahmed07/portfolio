@@ -4,7 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abdalla — Portfolio</title>
-    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <!-- Favicon — same-directory path works whether served at root or /portfolio-site/ -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- SEO -->
+    <meta name="description" content="Abdalla's developer portfolio — games, tools, full-stack projects, and university coursework built with HTML, CSS, JavaScript, Python, Java, and C#.">
+    <meta name="author" content="Abdalla">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Abdalla — Portfolio">
+    <meta property="og:description" content="Developer in progress — building things, breaking things, learning everything.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abdoahmed07.github.io/portfolio-site/">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
@@ -186,17 +200,97 @@
 
     </main>
 
-    <!-- TODO: Replace YOUR_EMAIL@HERE.COM with your actual email address -->
-    <a href="mailto:YOUR_EMAIL@HERE.COM?subject=Portfolio%20Feedback&amp;body=Hi%20Abdalla%2C%0A%0A"
-       class="contact-float"
-       target="_blank"
-       rel="noopener"
-       aria-label="Send me an email">
+    <!-- ─── CONTACT BUTTON + PANEL ─── -->
+    <button class="contact-btn" id="contactBtn" aria-label="Open contact form">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
             <path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <span>Contact</span>
-    </a>
+    </button>
+
+    <div class="contact-panel" id="contactPanel" aria-hidden="true" role="dialog" aria-labelledby="contactPanelTitle">
+        <div class="contact-panel-header">
+            <p class="contact-panel-title" id="contactPanelTitle">Get in Touch</p>
+            <button class="contact-panel-close" id="contactClose" aria-label="Close contact panel">✕</button>
+        </div>
+        <p class="contact-panel-desc">Found a bug? Have feedback? Just want to say hi? Drop me a message.</p>
+
+        <!-- Formspree form -->
+        <form id="contactForm" action="https://formspree.io/f/xvzdrjpg" method="POST" novalidate>
+            <div class="cf-field">
+                <label class="cf-label" for="cf-email">Your email</label>
+                <input class="cf-input" id="cf-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+            </div>
+            <div class="cf-field">
+                <label class="cf-label" for="cf-msg">Message</label>
+                <textarea class="cf-input cf-textarea" id="cf-msg" name="message" placeholder="What's on your mind?" required rows="3"></textarea>
+            </div>
+            <button class="cf-submit" type="submit" id="cfSubmit">
+                <span class="cf-submit-label">Send Message</span>
+                <span class="cf-submit-spinner" aria-hidden="true"></span>
+            </button>
+        </form>
+
+        <div class="cf-success" id="cfSuccess" aria-live="polite">
+            <span class="cf-success-icon">✓</span>
+            <span>Message sent — thanks!</span>
+        </div>
+        <div class="cf-error" id="cfError" aria-live="polite">
+            Something went wrong. Try again or email me directly.
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        var btn    = document.getElementById('contactBtn');
+        var panel  = document.getElementById('contactPanel');
+        var close  = document.getElementById('contactClose');
+        var form   = document.getElementById('contactForm');
+        var submit = document.getElementById('cfSubmit');
+        var success= document.getElementById('cfSuccess');
+        var error  = document.getElementById('cfError');
+
+        function openPanel()  { panel.classList.add('open');  panel.setAttribute('aria-hidden','false'); btn.setAttribute('aria-expanded','true'); }
+        function closePanel() { panel.classList.remove('open'); panel.setAttribute('aria-hidden','true'); btn.setAttribute('aria-expanded','false'); }
+
+        btn.addEventListener('click', function () { panel.classList.contains('open') ? closePanel() : openPanel(); });
+        close.addEventListener('click', closePanel);
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
+        document.addEventListener('click', function (e) {
+            if (!panel.contains(e.target) && !btn.contains(e.target)) closePanel();
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            success.classList.remove('cf-visible');
+            error.classList.remove('cf-visible');
+            submit.classList.add('cf-loading');
+            submit.disabled = true;
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(function (res) {
+                submit.classList.remove('cf-loading');
+                submit.disabled = false;
+                if (res.ok) {
+                    form.reset();
+                    success.classList.add('cf-visible');
+                } else {
+                    error.classList.add('cf-visible');
+                }
+            })
+            .catch(function () {
+                submit.classList.remove('cf-loading');
+                submit.disabled = false;
+                error.classList.add('cf-visible');
+            });
+        });
+    })();
+    </script>
+
 </body>
 </html>
