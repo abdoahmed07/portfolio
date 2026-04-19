@@ -64,7 +64,7 @@ body::after {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 36px 0 0;
+    padding: 24px 0 0;
     animation: fadeDown 0.6s ease both;
 }
 
@@ -78,7 +78,7 @@ body::after {
 
 /* ─── HERO ─────────────────────────────────────────────────── */
 .hero {
-    padding: 100px 0 80px;
+    padding: 60px 0 60px;
     animation: fadeUp 0.7s ease 0.15s both;
 }
 
@@ -312,12 +312,12 @@ body::after {
     .footer { flex-direction: column; gap: 6px; align-items: flex-start; }
 }
 
-/* ─── CONTACT / REPORT BUTTON ──────────────────────────────── */
-.contact-btn {
+/* ─── CONTACT FLOAT ────────────────────────────────────────── */
+.contact-float {
     position: fixed;
     bottom: 28px;
     right: 28px;
-    z-index: 500;
+    z-index: 1000;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -325,100 +325,24 @@ body::after {
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.55);
-    background: rgba(17,17,17,0.9);
+    color: rgba(255,255,255,0.45);
+    background: rgba(12,12,12,0.92);
     border: 1px solid rgba(255,255,255,0.1);
-    padding: 10px 16px;
+    padding: 10px 18px;
     border-radius: 100px;
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    text-decoration: none;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 4px 28px rgba(0,0,0,0.55);
+    transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
-.contact-btn:hover {
+.contact-float:hover {
     color: var(--accent);
-    border-color: rgba(255,107,43,0.35);
-    background: rgba(17,17,17,0.95);
+    border-color: rgba(255,107,43,0.45);
     transform: translateY(-2px);
 }
-.contact-btn svg { flex-shrink: 0; }
-
-.contact-panel {
-    position: fixed;
-    bottom: 80px;
-    right: 28px;
-    z-index: 501;
-    width: 280px;
-    background: var(--surface);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px;
-    padding: 20px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-    backdrop-filter: blur(16px);
-    opacity: 0;
-    transform: translateY(10px) scale(0.97);
-    pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.contact-panel.open {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-}
-.contact-panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.contact-panel-title {
-    font-family: var(--font-display);
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--text);
-}
-.contact-panel-close {
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 0.85rem;
-    padding: 2px 4px;
-    line-height: 1;
-    transition: color 0.2s;
-}
-.contact-panel-close:hover { color: var(--text); }
-.contact-panel-desc {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--muted);
-    line-height: 1.55;
-    margin-bottom: 16px;
-}
-.contact-email-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-glow);
-    border: 1px solid rgba(255,107,43,0.25);
-    border-radius: 8px;
-    padding: 10px 14px;
-    text-decoration: none;
-    transition: background 0.2s, border-color 0.2s;
-    justify-content: center;
-}
-.contact-email-btn:hover {
-    background: rgba(255,107,43,0.2);
-    border-color: rgba(255,107,43,0.5);
-}
+.contact-float svg { flex-shrink: 0; }
 
 @media (max-width: 600px) {
-    .contact-btn { bottom: 20px; right: 20px; }
-    .contact-panel { right: 20px; width: calc(100vw - 40px); bottom: 72px; }
+    .contact-float { bottom: 20px; right: 20px; padding: 9px 15px; font-size: 0.68rem; }
 }
