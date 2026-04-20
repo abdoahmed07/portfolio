@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
     <meta property="og:title" content="Abdalla — Portfolio">
     <meta property="og:description" content="Developer in progress — building things, breaking things, learning everything.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://abdoahmed07.github.io/portfolio-site/">
+    <meta property="og:url" content="https://abdoahmed07.github.io/portfolio/portfolio-site/index.html">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,11 +28,30 @@
 <body>
     <div class="bg-overlay"></div>
 
+    <!-- Floating project thumbnail preview -->
+    <div class="thumb-float" id="thumbFloat" aria-hidden="true">
+        <img src="" alt="" id="thumbImg">
+    </div>
+
     <main class="page">
 
         <!-- NAV -->
         <nav class="nav">
             <span class="nav-label">Portfolio</span>
+            <div class="nav-right">
+                <a href="about.html" class="nav-about">About</a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode" title="Toggle light / dark">
+                    <!-- Moon icon (shown in dark mode) -->
+                    <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <!-- Sun icon (shown in light mode) -->
+                    <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+                        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
         </nav>
 
         <!-- HERO -->
@@ -47,6 +66,20 @@
             <p class="hero-sub">Developer in progress — building things, breaking things, learning everything.</p>
         </section>
 
+        <!-- SKILLS STRIP -->
+        <section class="skills-strip" aria-label="Technologies">
+            <span class="skill-pill">HTML</span>
+            <span class="skill-pill">CSS</span>
+            <span class="skill-pill">JavaScript</span>
+            <span class="skill-pill">Python</span>
+            <span class="skill-pill">Java</span>
+            <span class="skill-pill">C#</span>
+            <span class="skill-pill">.NET</span>
+            <span class="skill-pill">PHP</span>
+            <span class="skill-pill">Arduino</span>
+            <span class="skill-pill">LaTeX</span>
+        </section>
+
         <!-- PROJECTS -->
         <section class="projects-section">
             <div class="section-header">
@@ -55,7 +88,7 @@
 
             <div class="projects-list">
 
-                <a href="../name-checker/index.html" class="project-item" data-num="01">
+                <a href="../name-checker/index.html" class="project-item" data-num="01" data-preview="previews/01-name-checker.png">
                     <div class="project-meta">
                         <span class="project-tag">Tool</span>
                     </div>
@@ -70,7 +103,7 @@
                     </div>
                 </a>
 
-                <a href="../fly-game/index.html" class="project-item" data-num="02">
+                <a href="../fly-game/index.html" class="project-item" data-num="02" data-preview="previews/02-fly-game.png">
                     <div class="project-meta">
                         <span class="project-tag">Game</span>
                     </div>
@@ -85,7 +118,7 @@
                     </div>
                 </a>
 
-                <a href="../islam-kindles/index.html" class="project-item" data-num="03">
+                <a href="../islam-kindles/index.html" class="project-item" data-num="03" data-preview="previews/03-islam-kindles.png">
                     <div class="project-meta">
                         <span class="project-tag">Website</span>
                     </div>
@@ -100,7 +133,7 @@
                     </div>
                 </a>
 
-                <a href="../login-system/index.html" class="project-item" data-num="04">
+                <a href="../login-system/index.html" class="project-item" data-num="04" data-preview="previews/04-login-system.png">
                     <div class="project-meta">
                         <span class="project-tag">Full-stack</span>
                     </div>
@@ -115,7 +148,7 @@
                     </div>
                 </a>
 
-                <a href="../tic-tac-toe/index.html" class="project-item" data-num="05">
+                <a href="../tic-tac-toe/index.html" class="project-item" data-num="05" data-preview="previews/05-tic-tac-toe.png">
                     <div class="project-meta">
                         <span class="project-tag">Game</span>
                     </div>
@@ -130,7 +163,7 @@
                     </div>
                 </a>
 
-                <a href="../D0009E/index.html" class="project-item" data-num="06">
+                <a href="../D0009E/index.html" class="project-item" data-num="06" data-preview="previews/06-d0009e.png">
                     <div class="project-meta">
                         <span class="project-tag">Python</span>
                     </div>
@@ -145,7 +178,7 @@
                     </div>
                 </a>
 
-                <a href="../D0010E/index.html" class="project-item" data-num="07">
+                <a href="../D0010E/index.html" class="project-item" data-num="07" data-preview="previews/07-d0010e.png">
                     <div class="project-meta">
                         <span class="project-tag">Java</span>
                     </div>
@@ -160,7 +193,7 @@
                     </div>
                 </a>
 
-                <a href="../D0015E/index.html" class="project-item" data-num="08">
+                <a href="../D0015E/index.html" class="project-item" data-num="08" data-preview="previews/08-d0015e.png">
                     <div class="project-meta">
                         <span class="project-tag">Mixed</span>
                     </div>
@@ -175,7 +208,7 @@
                     </div>
                 </a>
 
-                <a href="../hero-fight/index.html" class="project-item" data-num="09">
+                <a href="../hero-fight/index.html" class="project-item" data-num="09" data-preview="previews/09-hero-fight.png">
                     <div class="project-meta">
                         <span class="project-tag">C#</span>
                     </div>
@@ -244,6 +277,47 @@
 
     <script>
     (function () {
+        /* ── THEME TOGGLE ── */
+        var html   = document.documentElement;
+        var toggle = document.getElementById('themeToggle');
+        var saved  = localStorage.getItem('theme');
+        if (saved) html.setAttribute('data-theme', saved);
+
+        toggle.addEventListener('click', function () {
+            var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        /* ── PROJECT THUMBNAILS ── */
+        var thumbFloat = document.getElementById('thumbFloat');
+        var thumbImg   = document.getElementById('thumbImg');
+        var items      = document.querySelectorAll('.project-item[data-preview]');
+
+        items.forEach(function (item) {
+            item.addEventListener('mouseenter', function () {
+                thumbImg.src = item.dataset.preview;
+                thumbFloat.classList.add('visible');
+            });
+            item.addEventListener('mouseleave', function () {
+                thumbFloat.classList.remove('visible');
+            });
+        });
+
+        /* ── PAGE TRANSITIONS (View Transition API) ── */
+        if (document.startViewTransition) {
+            document.querySelectorAll('.project-item').forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var href = link.getAttribute('href');
+                    document.startViewTransition(function () {
+                        window.location.href = href;
+                    });
+                });
+            });
+        }
+
+        /* ── CONTACT PANEL ── */
         var btn    = document.getElementById('contactBtn');
         var panel  = document.getElementById('contactPanel');
         var close  = document.getElementById('contactClose');

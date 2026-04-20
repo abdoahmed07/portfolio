@@ -14,6 +14,20 @@
     --font-mono:    'DM Mono', monospace;
 }
 
+/* ─── LIGHT MODE ───────────────────────────────────────────── */
+[data-theme="light"] {
+    --bg:        #f5f4f1;
+    --surface:   #eceae6;
+    --border:    rgba(0,0,0,0.08);
+    --text:      #1a1816;
+    --muted:     #8a8480;
+    --accent:    #e85520;
+    --accent-glow: rgba(232,85,32,0.12);
+}
+
+[data-theme="light"] body::before { opacity: 0.15; }
+[data-theme="light"] body::after  { background: radial-gradient(circle, rgba(232,85,32,0.06) 0%, transparent 70%); }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -75,6 +89,52 @@ body::after {
     letter-spacing: 0.15em;
     text-transform: uppercase;
 }
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-about {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.nav-about:hover { color: var(--text); }
+
+/* ─── THEME TOGGLE ─────────────────────────────────────────── */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.theme-toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-glow);
+}
+
+/* show moon in dark, sun in light */
+[data-theme="light"]  .icon-moon { display: none; }
+[data-theme="light"]  .icon-sun  { display: block; }
+[data-theme="dark"]   .icon-moon { display: block; }
+[data-theme="dark"]   .icon-sun  { display: none; }
+/* fallback for missing attribute */
+:root:not([data-theme="light"]) .icon-sun  { display: none; }
+:root:not([data-theme="light"]) .icon-moon { display: block; }
 
 /* ─── HERO ─────────────────────────────────────────────────── */
 .hero {
@@ -262,6 +322,60 @@ body::after {
 .project-item:hover::after {
     transform: scaleY(1);
 }
+
+/* ─── SKILLS STRIP ─────────────────────────────────────────── */
+.skills-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-bottom: 52px;
+    animation: fadeUp 0.7s ease 0.25s both;
+}
+
+.skill-pill {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 100px;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.skill-pill:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* ─── PROJECT THUMBNAIL FLOAT ──────────────────────────────── */
+.thumb-float {
+    position: fixed;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.96) translateX(8px);
+    width: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 500;
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.7);
+}
+.thumb-float.visible {
+    opacity: 1;
+    transform: translateY(-50%) scale(1) translateX(0);
+}
+.thumb-float img {
+    width: 100%;
+    display: block;
+}
+
+/* Hide thumbnails when not enough horizontal room */
+@media (max-width: 1180px) { .thumb-float { display: none; } }
 
 /* ─── FOOTER ───────────────────────────────────────────────── */
 .footer {
@@ -483,4 +597,21 @@ body::after {
 @media (max-width: 600px) {
     .contact-btn { bottom: 20px; right: 20px; }
     .contact-panel { right: 16px; left: 16px; width: auto; bottom: 72px; }
+}
+
+/* ─── PAGE TRANSITIONS (View Transition API) ───────────────── */
+@keyframes vt-fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes vt-fade-out {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-6px); }
+}
+
+::view-transition-old(root) {
+    animation: vt-fade-out 0.2s ease forwards;
+}
+::view-transition-new(root) {
+    animation: vt-fade-in 0.3s ease forwards;
 }

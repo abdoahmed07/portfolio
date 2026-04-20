@@ -1,0 +1,178 @@
+/* ─── ABOUT PAGE STYLES ─────────────────────────────────────── */
+
+/* ── BACK LINK ── */
+.nav-back-link {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.nav-back-link:hover { color: var(--text); }
+
+/* ── ABOUT HERO ── */
+.about-hero {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 60px;
+    align-items: start;
+    padding: 60px 0 64px;
+    animation: fadeUp 0.7s ease 0.15s both;
+}
+
+/* ── PHOTO ── */
+.about-photo-wrap {
+    position: sticky;
+    top: 40px;
+}
+
+.about-photo {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    display: block;
+}
+
+/* Placeholder shown until the real photo is dropped in */
+.about-photo-placeholder {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.04em;
+    user-select: none;
+}
+
+/* ── CONTENT ── */
+.about-eyebrow {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+.about-name {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: 28px;
+}
+
+.about-bio {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.75;
+    max-width: 480px;
+    margin-bottom: 16px;
+}
+
+/* ── SOCIAL LINKS ── */
+.about-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.about-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 100px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.about-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-glow);
+}
+
+/* ── TECH SECTION ── */
+.about-tech {
+    padding: 0 0 64px;
+    animation: fadeUp 0.7s ease 0.3s both;
+}
+
+.about-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+}
+
+.tech-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+}
+
+.tech-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tech-group-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.6;
+}
+
+.tech-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+    .about-hero {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 40px 0 48px;
+    }
+
+    .about-photo-wrap {
+        position: static;
+        max-width: 180px;
+    }
+
+    .about-photo-placeholder {
+        max-width: 180px;
+        margin: 0 auto;
+    }
+}
