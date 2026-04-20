@@ -387,7 +387,7 @@ html, body {
 
 .back-to-portfolio {
     position: fixed;
-    top: 16px;
+    top: 50px;
     left: 16px;
     z-index: 1000;
     font-family: 'DM Mono', monospace;

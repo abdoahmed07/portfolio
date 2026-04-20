@@ -68,6 +68,16 @@ body::before {
     color: var(--muted);
 }
 
+.top-bar-center {
+    font-family: var(--font-m);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .nav-course {
     font-family: var(--font-m);
     font-size: 0.72rem;
@@ -77,13 +87,6 @@ body::before {
     border: 1px solid rgba(245,158,11,0.25);
     padding: 5px 14px;
     border-radius: 100px;
-}
-
-.top-bar-left {
-    font-family: var(--font-m);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    color: var(--muted);
 }
 
 .nav-course {
@@ -2415,25 +2418,24 @@ kbd.kbd {
 
 /* ── BACK TO PORTFOLIO ── */
 .back-to-portfolio {
-    position: fixed;
-    top: 16px;
-    left: 16px;
-    z-index: 1000;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
+    position: static;
+    background: none;
+    border: none;
+    backdrop-filter: none;
+    padding: 0;
+    border-radius: 0;
+    font-family: var(--font-m);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 8px 14px;
-    border-radius: 8px;
+    color: var(--muted);
     text-decoration: none;
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
-    backdrop-filter: blur(8px);
+    transition: color 0.2s;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 .back-to-portfolio:hover {
-    color: #fff;
-    border-color: rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    background: none;
+    border: none;
 }
