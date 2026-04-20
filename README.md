@@ -2,7 +2,7 @@
 
 A personal portfolio website built from scratch during my first year of Computer Engineering (Datateknik) at Luleå University of Technology. Everything here — the design, the code, the interactive demos — was made by me as I was learning. Some projects are polished, some are rough around the edges, all of them are real.
 
-The portfolio is live at **[abdoahmed07.github.io/portfolio-site](https://abdoahmed07.github.io/portfolio-site/)** and links out to each project in its own folder.
+The portfolio is live at **[abdoahmed07.github.io/portfolio/portfolio-site/index.html](https://abdoahmed07.github.io/portfolio/portfolio-site/index.html)** — click that to visit the site. Each project is linked from there.
 
 ---
 
@@ -160,7 +160,7 @@ The whole portfolio is plain web — no frameworks, no build tools, no bundlers.
 | PDF generation      | ReportLab (Python)                                     |
 | Storage             | `localStorage` for game scores and leaderboards        |
 | Contact form        | Formspree (serverless, no backend needed)              |
-| Hosting             | GitHub Pages — [abdoahmed07.github.io](https://abdoahmed07.github.io/portfolio-site/) |
+| Hosting             | GitHub Pages — [live site](https://abdoahmed07.github.io/portfolio/portfolio-site/index.html) |
 
 ---
 
