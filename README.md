@@ -1,10 +1,8 @@
 # Abdalla's Portfolio
 
-**Last updated: 27 March 2026**
-
 A personal portfolio website built from scratch during my first year of Computer Engineering (Datateknik) at Luleå University of Technology. Everything here — the design, the code, the interactive demos — was made by me as I was learning. Some projects are polished, some are rough around the edges, all of them are real.
 
-The portfolio lives at `portfolio-site/index.html` and links out to each project in its own folder.
+The portfolio is live at **[abdoahmed07.github.io/portfolio-site](https://abdoahmed07.github.io/portfolio-site/)** and links out to each project in its own folder.
 
 ---
 
@@ -28,7 +26,8 @@ If you're looking at this for work or an application: I'm a first-year student w
 ├── tic-tac-toe/          ← Project 05
 ├── D0009E/               ← Project 06 — Python course
 ├── D0010E/               ← Project 07 — Java / OOP course
-└── D0015E/               ← Project 08 — Computer Engineering survey course
+├── D0015E/               ← Project 08 — Computer Engineering survey course
+└── hero-fight/           ← Project 09 — C# console RPG, playable in browser
 ```
 
 Each folder is self-contained. Open the `index.html` inside any folder to run it — no build step, no server required for most projects.
@@ -133,18 +132,35 @@ The room navigation game (Lab 3) includes an editor where you can change room co
 
 ---
 
+### 09 — HeroFight
+
+A turn-based console RPG originally written in C# .NET 10, then fully ported to run in the browser. Pick one of three hero classes — Warrior, Mage, or Rogue — each with unique stats, a passive ability, and a special move. Fight through seven rooms of enemies, collect loot, visit shops, rest at campfires, and face a final boss.
+
+The page has two tabs: **Play** (the actual game, fully playable) and **Code** (the original C# source with syntax highlighting).
+
+| Class   | Style                                              |
+| ------- | -------------------------------------------------- |
+| Warrior | High HP and defence, lifesteal on special          |
+| Mage    | Glass cannon, AoE burst that scales with INT       |
+| Rogue   | Fast and evasive, double-strike with bleed         |
+
+**Tech:** C# .NET 10 (original) · JavaScript ES6 port for the browser · OOP architecture — abstract classes, interfaces, polymorphism · highlight.js for source display
+
+---
+
 ## Tech Stack
 
 The whole portfolio is plain web — no frameworks, no build tools, no bundlers. Just files you can open in a browser.
 
 | Thing               | What I used                                            |
 | ------------------- | ------------------------------------------------------ |
-| Languages           | HTML, CSS, JavaScript, Python, Java, Arduino C++       |
+| Languages           | HTML, CSS, JavaScript, Python, Java, C#, Arduino C++   |
 | Fonts               | Syne (headings) + DM Mono (code/mono) via Google Fonts |
 | Syntax highlighting | highlight.js                                           |
 | PDF generation      | ReportLab (Python)                                     |
 | Storage             | `localStorage` for game scores and leaderboards        |
-| Hosting             | Static — any server or just open the files locally     |
+| Contact form        | Formspree (serverless, no backend needed)              |
+| Hosting             | GitHub Pages — [abdoahmed07.github.io](https://abdoahmed07.github.io/portfolio-site/) |
 
 ---
 
@@ -163,12 +179,13 @@ Then open any `index.html` in your browser. Start here:
 portfolio-site/index.html
 ```
 
-Or jump straight to a course:
+Or jump straight to a project:
 
 ```
 D0009E/index.html
 D0010E/index.html
 D0015E/index.html
+hero-fight/index.html
 ```
 
 **One exception:** the Login/Signup system (`login-system/`) uses PHP for the real backend. Opening it locally activates demo mode automatically — login and signup show success messages without writing to a database.
@@ -184,7 +201,8 @@ D0015E/index.html
 
 - Everything was built while actively learning the concepts. Early projects (Name Checker, The Fly) are simple by design — they show where I started.
 - The university course labs were originally written in Python and Java. I ported the logic to JavaScript so they run interactively in the browser without installing anything.
-- The design system — dark background, Syne headings, amber accent (D0010E), sky blue (D0009E), gold (D0015E) — was built and maintained consistently across all course pages.
+- HeroFight was originally a C# .NET 10 console application. The whole game engine was ported to JavaScript — same classes, same logic, same OOP patterns, just in the browser.
+- The design system — dark background, Syne headings, orange accent (portfolio), amber (D0010E), sky blue (D0009E), gold (D0015E), green (Islam Kindles) — was built and maintained consistently across all pages.
 - The D0015E Arduino project and ethics assignment were co-authored with a classmate.
 
 ---
