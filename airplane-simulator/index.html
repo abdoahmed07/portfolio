@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Airport Simulator — a C++17 terminal-based simulation with manually implemented priority queue, FIFO queue, fuel emergencies, and live ANSI stats.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <title>Airport Simulator — Abdalla</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+
+<div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+        <span class="hero-eyebrow">C++ Simulation</span>
+        <h1 class="hero-title">Airport<span class="acc">Sim</span></h1>
+        <p class="hero-desc">A terminal-based airport simulator written in C++17 from scratch. Manages real-time plane arrivals, departures, and fuel emergencies using manually implemented data structures — no STL queues. Features a live ANSI terminal display with colour-coded status, fuel bars, and a scrolling event log.</p>
+        <div class="hero-meta">
+            <span class="meta-pill">C++</span>
+            <span class="meta-pill">C++17</span>
+            <span class="meta-pill">Data Structures</span>
+            <span class="meta-pill">Priority Queue</span>
+            <span class="meta-pill">Simulation</span>
+            <span class="meta-pill">OOP</span>
+        </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="terminal">Terminal Preview</button>
+        <button class="tab-btn" data-tab="code">View Code</button>
+    </div>
+
+    <!-- TERMINAL PREVIEW TAB -->
+    <div class="tab-content active" id="tab-terminal">
+        <p class="tab-note">Static preview of what the simulation looks like when running. Run <code>make run</code> in the project folder to see the real thing.</p>
+        <div class="terminal-wrap">
+<pre class="terminal-mock"><span class="t-dim">+------------------------------------------------------------------+</span>
+<span class="t-dim">|</span>  <span class="t-white">Metro International Airport</span>   <span class="t-dim">Time: 00:23 / 01:00   Step: 23/60</span>  <span class="t-dim">|</span>
+<span class="t-dim">+------------------------------------------------------------------+</span>
+<span class="t-dim">|</span>  <span class="t-white">RUNWAYS</span>                                                           <span class="t-dim">|</span>
+<span class="t-dim">|</span>  <span class="t-dim">RW-01</span>  <span class="t-green">LANDING </span>  <span class="t-white">De384 (Delta)    </span>  <span class="t-green">##########.....  2 min  fuel=65%</span>   <span class="t-dim">|</span>
+<span class="t-dim">|</span>  <span class="t-dim">RW-02</span>  <span class="t-amber">TAKEOFF </span>  <span class="t-white">Am102 (American)</span>  <span class="t-amber">############...  1 min  fuel=100%</span>  <span class="t-dim">|</span>
+<span class="t-dim">+------------------------------------------------------------------+</span>
+<span class="t-dim">|</span>  <span class="t-white">ARRIVAL QUEUE</span>  <span class="t-dim">(3 planes)</span>                                        <span class="t-dim">|</span>
+<span class="t-dim">|</span>   1.  <span class="t-red">EMRG</span>  <span class="t-white">Sw215 (Southwest)</span>  <span class="t-dim">Houston → Dallas   </span>  <span class="t-red">##........ 14%</span>  <span class="t-dim">|</span>
+<span class="t-dim">|</span>   2.  <span class="t-amber">LOW </span>  <span class="t-white">Al448 (Alaska)   </span>  <span class="t-dim">NYC → Chicago      </span>  <span class="t-amber">########.. 33%</span>  <span class="t-dim">|</span>
+<span class="t-dim">|</span>   3.       <span class="t-white">Un901 (United)   </span>  <span class="t-dim">Dallas → Phoenix   </span>  <span class="t-green">##########  71%</span>  <span class="t-dim">|</span>
+<span class="t-dim">+------------------------------------------------------------------+</span>
+<span class="t-dim">|</span>  <span class="t-white">DEPARTURE QUEUE</span>  <span class="t-dim">(2 planes)</span>                                      <span class="t-dim">|</span>
+<span class="t-dim">|</span>   1.       <span class="t-white">Jb730 (JetBlue) </span>  <span class="t-dim">Dallas → San Diego    waited=3 min</span>    <span class="t-dim">|</span>
+<span class="t-dim">|</span>   2.       <span class="t-white">Sp441 (Spirit)  </span>  <span class="t-dim">Phoenix → New York    waited=1 min</span>    <span class="t-dim">|</span>
+<span class="t-dim">+------------------------------------------------------------------+</span>
+<span class="t-dim">|</span>  <span class="t-white">STATISTICS</span>                                                        <span class="t-dim">|</span>
+<span class="t-dim">|  Landed: </span><span class="t-green">13</span>  <span class="t-dim">Departed: </span><span class="t-green">9</span>  <span class="t-dim">Emergencies: </span><span class="t-red">2</span>  <span class="t-dim">Crashes: </span><span class="t-red">0</span>              <span class="t-dim">|</span>
+<span class="t-dim">|  In queue: arrivals=</span><span class="t-white">3</span><span class="t-dim"> / departures=</span><span class="t-white">2</span>  <span class="t-dim">Avg wait: </span><span class="t-white">2.8 min</span>            <span class="t-dim">|</span>
+<span class="t-dim">+------------------------------------------------------------------+</span>
+<span class="t-dim">|</span>  <span class="t-white">EVENT LOG</span>                                                         <span class="t-dim">|</span>
+<span class="t-dim">|  [00:21]  +  Arrival   De384 (Delta) from San Antonio  fuel=65%   |</span>
+<span class="t-dim">|  [00:22]  </span><span class="t-green">v  Landed    Sw419</span> <span class="t-red">[EMERGENCY]</span><span class="t-dim">  wait=4 min               |</span>
+<span class="t-dim">|  [00:23]  </span><span class="t-amber">^  Departed  Un312   wait=6 min</span><span class="t-dim">                           |</span>
+<span class="t-dim">|  [00:23]  +  Arrival   Sw215 (Southwest) EMERGENCY  fuel=14%      |</span>
+<span class="t-dim">+------------------------------------------------------------------+</span></pre>
+        </div>
+
+        <!-- DATA STRUCTURES CALLOUT -->
+        <div class="ds-grid">
+            <div class="ds-card">
+                <div class="ds-icon">⚡</div>
+                <div class="ds-title">Priority Queue</div>
+                <div class="ds-desc">Sorted linked list for arrivals. Emergency planes (&lt;20% fuel) jump to the front. Insertion O(n), dequeue O(1).</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">→</div>
+                <div class="ds-title">FIFO Queue</div>
+                <div class="ds-desc">Standard linked list for departures. First in, first out. Enqueue and dequeue both O(1). No STL container used.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🛬</div>
+                <div class="ds-title">Fuel Emergencies</div>
+                <div class="ds-desc">Arriving planes burn 1% fuel per minute while waiting. Below 20% triggers EMERGENCY priority. At 0% — crash.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🛫</div>
+                <div class="ds-title">Runway State Machine</div>
+                <div class="ds-desc">Each runway cycles: AVAILABLE → LANDING/TAKEOFF → AVAILABLE. Arrivals always take priority over departures.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE TAB -->
+    <div class="tab-content" id="tab-code">
+        <div class="file-tabs" id="fileTabs">
+            <button class="file-tab active" data-file="main">main.cpp</button>
+            <button class="file-tab" data-file="planeh">Plane.h</button>
+            <button class="file-tab" data-file="queueh">Queue.h</button>
+            <button class="file-tab" data-file="runwayh">Runway.h</button>
+            <button class="file-tab" data-file="runwaycpp">Runway.cpp</button>
+            <button class="file-tab" data-file="airporth">Airport.h</button>
+            <button class="file-tab" data-file="airportcpp">Airport.cpp</button>
+            <button class="file-tab" data-file="simh">Simulation.h</button>
+            <button class="file-tab" data-file="simcpp">Simulation.cpp</button>
+        </div>
+        <div class="code-viewer">
+            <pre><code id="codeBlock" class="language-cpp"></code></pre>
+        </div>
+    </div>
+
+</div><!-- /page -->
+
+<script>
+const FILES = {};
+
+FILES.main = String.raw`#include "Simulation.h"
+#include <iostream>
+#include <string>
+#include <limits>
+#include <algorithm>
+
+static void banner() {
+    std::cout << "\033[2J\033[H";
+    std::cout << "\033[1;36m"
+"\n"
+"   +===========================================================+\n"
+"   |           A I R P O R T   S I M U L A T O R             |\n"
+"   |         Manual Queue  |  Priority Landings  |  C++       |\n"
+"   +===========================================================+\n"
+"\033[0m\n";
+}
+
+static int readInt(const std::string& prompt, int defaultVal, int lo, int hi) {
+    while (true) {
+        std::cout << "  " << prompt << " [" << lo << "-" << hi
+                  << ", default=" << defaultVal << "]: ";
+        std::string line;
+        std::getline(std::cin, line);
+        if (line.empty()) return defaultVal;
+        try {
+            int v = std::stoi(line);
+            if (v >= lo && v <= hi) return v;
+            std::cout << "  Please enter a value between " << lo << " and " << hi << ".\n";
+        } catch (...) {
+            std::cout << "  Invalid input.\n";
+        }
+    }
+}
+
+static bool readBool(const std::string& prompt, bool defaultVal) {
+    std::string def = defaultVal ? "y" : "n";
+    std::cout << "  " << prompt << " [y/n, default=" << def << "]: ";
+    std::string line;
+    std::getline(std::cin, line);
+    if (line.empty()) return defaultVal;
+    return line[0] == 'y' || line[0] == 'Y';
+}
+
+int main() {
+    banner();
+    std::cout << "\033[1mCONFIGURATION\033[0m\n\n";
+
+    SimConfig cfg;
+
+    std::cout << "  Airport name [default=\"Metro International Airport\"]: ";
+    std::string name;
+    std::getline(std::cin, name);
+    if (!name.empty()) cfg.name = name;
+
+    cfg.numRunways    = readInt("Number of runways",                2, 1, 6);
+    cfg.duration      = readInt("Simulation duration (minutes)",   60, 5, 300);
+    cfg.arrivalRate   = readInt("Average arrivals per 10 minutes",  3, 0, 10);
+    cfg.departureRate = readInt("Average departures per 10 minutes",3, 0, 10);
+
+    std::cout << '\n';
+    cfg.stepMode  = readBool("Step mode (press Enter each minute)?", false);
+    if (!cfg.stepMode)
+        cfg.fastMode = readBool("Fast mode (no delay between ticks)?", false);
+
+    std::cout << "\n\033[1;32m  Configuration accepted. Starting...\033[0m\n\n";
+
+    Simulation sim(cfg);
+    sim.run();
+    return 0;
+}`;
+
+FILES.planeh = String.raw`#pragma once
+#include <string>
+#include <array>
+#include <cstdlib>
+
+enum class PlaneType   { ARRIVING, DEPARTING };
+enum class PlaneStatus { IN_QUEUE, ON_RUNWAY, COMPLETED };
+
+struct Plane {
+    int         id;
+    std::string flightNumber;
+    std::string airline;
+    std::string origin;
+    std::string destination;
+    int         fuelLevel;         // 0-100%
+    PlaneType   type;
+    PlaneStatus status;
+    int         queueEntryTime;    // tick when plane joined queue
+    int         runwayStartTime;   // -1 until assigned
+    int         completionTime;    // -1 until done
+    int         runwayDuration;    // minutes needed on runway
+
+    void burnFuel() { if (fuelLevel > 0) fuelLevel--; }
+
+    bool isEmergency() const { return fuelLevel < 20; }
+    bool isLowFuel()   const { return fuelLevel >= 20 && fuelLevel < 40; }
+
+    // 0 = highest priority (emergency), 1 = low fuel, 2 = normal
+    // Departures don't burn fuel — always priority 2
+    int priority() const {
+        if (type == PlaneType::DEPARTING) return 2;
+        if (isEmergency()) return 0;
+        if (isLowFuel())   return 1;
+        return 2;
+    }
+
+    int waitTime() const {
+        return (runwayStartTime >= 0) ? runwayStartTime - queueEntryTime : -1;
+    }
+
+    static Plane createArrival(int id, int currentTime);
+    static Plane createDeparture(int id, int currentTime);
+};`;
+
+FILES.queueh = String.raw`#pragma once
+#include <functional>
+#include <stdexcept>
+#include <string>
+
+// ─────────────────────────────────────────────────────────────────
+// Manual FIFO Queue  (singly-linked list)
+// ─────────────────────────────────────────────────────────────────
+template<typename T>
+class Queue {
+public:
+    struct Node {
+        T      data;
+        Node*  next;
+        explicit Node(const T& d) : data(d), next(nullptr) {}
+    };
+
+private:
+    Node* _front;
+    Node* _rear;
+    int   _size;
+
+public:
+    Queue()  : _front(nullptr), _rear(nullptr), _size(0) {}
+    ~Queue() { clear(); }
+
+    Queue(const Queue&)            = delete;
+    Queue& operator=(const Queue&) = delete;
+
+    void enqueue(const T& item) {
+        Node* node = new Node(item);
+        if (_rear) _rear->next = node;
+        else       _front = node;
+        _rear = node;
+        ++_size;
+    }
+
+    T dequeue() {
+        if (isEmpty()) throw std::runtime_error("Queue underflow");
+        Node* tmp  = _front;
+        T     data = tmp->data;
+        _front     = _front->next;
+        if (!_front) _rear = nullptr;
+        delete tmp;
+        --_size;
+        return data;
+    }
+
+    const T& peek() const {
+        if (isEmpty()) throw std::runtime_error("Queue is empty");
+        return _front->data;
+    }
+
+    bool isEmpty() const { return _size == 0; }
+    int  size()    const { return _size; }
+
+    void clear() {
+        while (_front) {
+            Node* tmp = _front;
+            _front    = _front->next;
+            delete tmp;
+        }
+        _rear = nullptr; _size = 0;
+    }
+
+    template<typename Fn> void forEach(Fn fn) const {
+        for (const Node* n = _front; n; n = n->next) fn(n->data);
+    }
+    template<typename Fn> void forEachMut(Fn fn) {
+        for (Node* n = _front; n; n = n->next) fn(n->data);
+    }
+};
+
+// ─────────────────────────────────────────────────────────────────
+// Manual Priority Queue  (sorted singly-linked list)
+//
+//   comparator(a, b) == true  →  a has HIGHER priority than b
+//
+// Insertion: O(n)   Dequeue: O(1)   Stable (FIFO within same tier)
+// ─────────────────────────────────────────────────────────────────
+template<typename T>
+class PriorityQueue {
+public:
+    struct Node {
+        T      data;
+        Node*  next;
+        explicit Node(const T& d) : data(d), next(nullptr) {}
+    };
+
+private:
+    Node* _head;
+    int   _size;
+    std::function<bool(const T&, const T&)> _cmp;
+
+public:
+    explicit PriorityQueue(std::function<bool(const T&, const T&)> cmp)
+        : _head(nullptr), _size(0), _cmp(std::move(cmp)) {}
+
+    ~PriorityQueue() { clear(); }
+    PriorityQueue(const PriorityQueue&)            = delete;
+    PriorityQueue& operator=(const PriorityQueue&) = delete;
+
+    void enqueue(const T& item) {
+        Node* node = new Node(item);
+        if (!_head || _cmp(item, _head->data)) {
+            node->next = _head;
+            _head      = node;
+        } else {
+            Node* cur = _head;
+            while (cur->next && !_cmp(item, cur->next->data))
+                cur = cur->next;
+            node->next = cur->next;
+            cur->next  = node;
+        }
+        ++_size;
+    }
+
+    T dequeue() {
+        if (isEmpty()) throw std::runtime_error("Priority queue underflow");
+        Node* tmp  = _head;
+        T     data = tmp->data;
+        _head      = _head->next;
+        delete tmp;
+        --_size;
+        return data;
+    }
+
+    bool isEmpty() const { return _size == 0; }
+    int  size()    const { return _size; }
+
+    void clear() {
+        while (_head) { Node* tmp = _head; _head = _head->next; delete tmp; }
+        _size = 0;
+    }
+
+    template<typename Fn> void forEach(Fn fn) const {
+        for (const Node* n = _head; n; n = n->next) fn(n->data);
+    }
+    template<typename Fn> void forEachMut(Fn fn) {
+        for (Node* n = _head; n; n = n->next) fn(n->data);
+    }
+};`;
+
+FILES.runwayh = String.raw`#pragma once
+#include "Plane.h"
+#include <string>
+#include <optional>
+
+enum class RunwayStatus { AVAILABLE, LANDING, TAKEOFF };
+
+class Runway {
+public:
+    explicit Runway(std::string name);
+
+    const std::string& name()          const { return _name; }
+    RunwayStatus       status()        const { return _status; }
+    int                timeRemaining() const { return _timeRemaining; }
+    bool               isAvailable()   const { return _status == RunwayStatus::AVAILABLE; }
+    bool               hasPlane()      const { return _hasPlane; }
+    const Plane&       currentPlane()  const { return _currentPlane; }
+
+    // Assign a plane; returns false if already busy
+    bool assign(Plane& plane, int currentTime);
+
+    // Advance one minute; returns completed plane if done
+    std::optional<Plane> tick(int currentTime);
+
+    int planesServed() const { return _planesServed; }
+
+private:
+    std::string  _name;
+    RunwayStatus _status;
+    Plane        _currentPlane;
+    bool         _hasPlane;
+    int          _timeRemaining;
+    int          _planesServed;
+};`;
+
+FILES.runwaycpp = String.raw`#include "Runway.h"
+
+Runway::Runway(std::string name)
+    : _name(std::move(name))
+    , _status(RunwayStatus::AVAILABLE)
+    , _hasPlane(false)
+    , _timeRemaining(0)
+    , _planesServed(0)
+{}
+
+bool Runway::assign(Plane& plane, int currentTime) {
+    if (!isAvailable()) return false;
+
+    _currentPlane                 = plane;
+    _currentPlane.status          = PlaneStatus::ON_RUNWAY;
+    _currentPlane.runwayStartTime = currentTime;
+    _timeRemaining                = plane.runwayDuration;
+    _status = (plane.type == PlaneType::ARRIVING)
+                ? RunwayStatus::LANDING
+                : RunwayStatus::TAKEOFF;
+    _hasPlane = true;
+    return true;
+}
+
+std::optional<Plane> Runway::tick(int currentTime) {
+    if (!_hasPlane) return std::nullopt;
+
+    --_timeRemaining;
+    if (_timeRemaining > 0) return std::nullopt;
+
+    _currentPlane.status         = PlaneStatus::COMPLETED;
+    _currentPlane.completionTime = currentTime;
+    _status   = RunwayStatus::AVAILABLE;
+    _hasPlane = false;
+    ++_planesServed;
+
+    return _currentPlane;
+}`;
+
+FILES.airporth = String.raw`#pragma once
+#include "Plane.h"
+#include "Queue.h"
+#include "Runway.h"
+#include <vector>
+#include <string>
+#include <numeric>
+
+struct Stats {
+    int totalArrivals      = 0;
+    int totalDepartures    = 0;
+    int completedLandings  = 0;
+    int completedTakeoffs  = 0;
+    int emergenciesHandled = 0;
+    int totalWaitTime      = 0;
+    int maxWaitTime        = 0;
+    int planesRejected     = 0;   // crashed (fuel reached 0)
+
+    double averageWait() const {
+        int served = completedLandings + completedTakeoffs;
+        return served > 0 ? static_cast<double>(totalWaitTime) / served : 0.0;
+    }
+    int totalServed() const { return completedLandings + completedTakeoffs; }
+};
+
+class Airport {
+public:
+    Airport(std::string name, int numRunways);
+
+    void addArrival(Plane plane);
+    void addDeparture(Plane plane);
+
+    void step(int currentTime);   // advance one simulation minute
+
+    const std::string&         name()    const { return _name; }
+    const Stats&               stats()   const { return _stats; }
+    const std::vector<Runway>& runways() const { return _runways; }
+
+    int arrivalQueueSize()   const { return _arrivalQueue.size(); }
+    int departureQueueSize() const { return _departureQueue.size(); }
+
+    template<typename Fn> void forEachArrival(Fn fn)   const { _arrivalQueue.forEach(fn); }
+    template<typename Fn> void forEachDeparture(Fn fn) const { _departureQueue.forEach(fn); }
+
+    const std::vector<Plane>& recentlyCompleted() const { return _recentlyCompleted; }
+    void clearRecentlyCompleted() { _recentlyCompleted.clear(); }
+
+private:
+    std::string          _name;
+    std::vector<Runway>  _runways;
+    Stats                _stats;
+    std::vector<Plane>   _recentlyCompleted;
+
+    PriorityQueue<Plane> _arrivalQueue;    // sorted by fuel urgency
+    Queue<Plane>         _departureQueue;  // plain FIFO
+
+    void _assignToRunways(int currentTime);
+    void _burnQueuedFuel();
+};`;
+
+FILES.airportcpp = String.raw`#include "Airport.h"
+#include <algorithm>
+
+// Comparator: lower priority() = higher urgency
+// Tie-break: earlier queueEntryTime wins (stable FIFO within same tier)
+static bool arrivalCmp(const Plane& a, const Plane& b) {
+    if (a.priority() != b.priority())
+        return a.priority() < b.priority();
+    return a.queueEntryTime < b.queueEntryTime;
+}
+
+Airport::Airport(std::string name, int numRunways)
+    : _name(std::move(name))
+    , _arrivalQueue(arrivalCmp)
+{
+    for (int i = 1; i <= numRunways; ++i)
+        _runways.emplace_back("RW-0" + std::to_string(i));
+}
+
+void Airport::addArrival(Plane plane) {
+    ++_stats.totalArrivals;
+    _arrivalQueue.enqueue(plane);
+}
+
+void Airport::addDeparture(Plane plane) {
+    ++_stats.totalDepartures;
+    _departureQueue.enqueue(plane);
+}
+
+void Airport::step(int currentTime) {
+    _recentlyCompleted.clear();
+
+    // 1. Burn fuel for every waiting arrival
+    _burnQueuedFuel();
+
+    // 2. Tick each runway
+    for (auto& rw : _runways) {
+        auto done = rw.tick(currentTime);
+        if (done) {
+            int wt = done->waitTime();
+            if (wt > 0) {
+                _stats.totalWaitTime += wt;
+                _stats.maxWaitTime    = std::max(_stats.maxWaitTime, wt);
+            }
+            if (done->type == PlaneType::ARRIVING) {
+                ++_stats.completedLandings;
+                if (done->isEmergency())
+                    ++_stats.emergenciesHandled;
+            } else {
+                ++_stats.completedTakeoffs;
+            }
+            _recentlyCompleted.push_back(*done);
+        }
+    }
+
+    // 3. Assign waiting planes to newly freed runways
+    _assignToRunways(currentTime);
+}
+
+void Airport::_assignToRunways(int currentTime) {
+    for (auto& rw : _runways) {
+        if (!rw.isAvailable()) continue;
+
+        bool assigned = false;
+
+        // Arrivals always take priority over departures.
+        // Skip zero-fuel planes (crashed while waiting in queue).
+        while (!_arrivalQueue.isEmpty() && !assigned) {
+            Plane p = _arrivalQueue.dequeue();
+            if (p.fuelLevel == 0) {
+                ++_stats.planesRejected;
+                p.status = PlaneStatus::COMPLETED;
+                _recentlyCompleted.push_back(p);
+                continue;
+            }
+            rw.assign(p, currentTime);
+            assigned = true;
+        }
+
+        if (!assigned && !_departureQueue.isEmpty()) {
+            Plane p = _departureQueue.dequeue();
+            rw.assign(p, currentTime);
+        }
+    }
+}
+
+void Airport::_burnQueuedFuel() {
+    _arrivalQueue.forEachMut([](Plane& p) { p.burnFuel(); });
+}`;
+
+FILES.simh = String.raw`#pragma once
+#include "Airport.h"
+#include <string>
+#include <vector>
+
+struct SimConfig {
+    std::string name           = "Metro International Airport";
+    int         numRunways     = 2;
+    int         duration       = 60;
+    int         arrivalRate    = 3;   // avg arrivals per 10 min
+    int         departureRate  = 3;   // avg departures per 10 min
+    bool        stepMode       = false;
+    bool        fastMode       = false;
+};
+
+class Simulation {
+public:
+    explicit Simulation(SimConfig cfg);
+    void run();
+
+private:
+    SimConfig _cfg;
+    Airport   _airport;
+    int       _clock;
+    int       _nextPlaneId;
+
+    void _generateTraffic();
+
+    void _render() const;
+    void _renderRunways() const;
+    void _renderArrivalQueue() const;
+    void _renderDepartureQueue() const;
+    void _renderStats() const;
+    void _renderFinal() const;
+    void _renderLog() const;
+
+    mutable std::vector<std::string> _log;
+    void _logEvent(const std::string& msg);
+    void _processCompleted();
+
+    std::vector<Plane> _justCompleted;
+};`;
+
+FILES.simcpp = String.raw`#include "Simulation.h"
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <thread>
+#include <chrono>
+#include <algorithm>
+#include <cstdlib>
+
+#define C_RESET  "\033[0m"
+#define C_BOLD   "\033[1m"
+#define C_RED    "\033[31m"
+#define C_GREEN  "\033[32m"
+#define C_YELLOW "\033[33m"
+#define C_CYAN   "\033[36m"
+#define C_DIM    "\033[2m"
+#define C_WHITE  "\033[97m"
+
+static std::string fuelBar(int fuel, int width = 10) {
+    int filled = (fuel * width) / 100;
+    std::string bar;
+    for (int i = 0; i < width; ++i)
+        bar += (i < filled) ? '#' : '.';
+    return bar;
+}
+
+static std::string progressBar(int remaining, int total, int width = 12) {
+    int done   = total - remaining;
+    int filled = (done * width) / total;
+    std::string bar;
+    for (int i = 0; i < width; ++i)
+        bar += (i < filled) ? '#' : '.';
+    return bar;
+}
+
+static std::string fuelColour(int fuel) {
+    if (fuel < 20) return C_RED;
+    if (fuel < 40) return C_YELLOW;
+    return C_GREEN;
+}
+
+static std::string pad(const std::string& s, int width) {
+    if ((int)s.size() >= width) return s.substr(0, width);
+    return s + std::string(width - s.size(), ' ');
+}
+
+Simulation::Simulation(SimConfig cfg)
+    : _cfg(std::move(cfg))
+    , _airport(_cfg.name, _cfg.numRunways)
+    , _clock(0)
+    , _nextPlaneId(1)
+{}
+
+void Simulation::run() {
+    while (_clock <= _cfg.duration) {
+        _generateTraffic();
+        _airport.step(_clock);
+        _processCompleted();
+        _render();
+
+        if (_clock == _cfg.duration) break;
+
+        if (_cfg.stepMode) {
+            std::cout << "  Press Enter for next minute...";
+            std::cin.get();
+        } else if (!_cfg.fastMode) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(600));
+        }
+        ++_clock;
+    }
+    _renderFinal();
+}
+
+void Simulation::_generateTraffic() {
+    int arrivalChance   = _cfg.arrivalRate * 10;
+    int departureChance = _cfg.departureRate * 10;
+
+    if ((std::rand() % 100) < arrivalChance)
+        _airport.addArrival(Plane::createArrival(_nextPlaneId++, _clock));
+
+    if ((std::rand() % 100) < departureChance)
+        _airport.addDeparture(Plane::createDeparture(_nextPlaneId++, _clock));
+}
+
+void Simulation::_processCompleted() {
+    _justCompleted = _airport.recentlyCompleted();
+    _airport.clearRecentlyCompleted();
+
+    for (const auto& p : _justCompleted) {
+        std::ostringstream oss;
+        oss << "[" << std::setw(2) << std::setfill('0') << _clock << "]  ";
+
+        if (p.fuelLevel == 0) {
+            oss << C_RED << "CRASH  " << C_RESET << p.flightNumber << " ran out of fuel";
+        } else if (p.type == PlaneType::ARRIVING) {
+            oss << C_GREEN << "v  Landed   " << C_RESET << p.flightNumber;
+            if (p.isEmergency()) oss << C_RED << " [EMERGENCY]" << C_RESET;
+            oss << "  wait=" << p.waitTime() << " min";
+        } else {
+            oss << C_YELLOW << "^  Departed " << C_RESET
+                << p.flightNumber << "  wait=" << p.waitTime() << " min";
+        }
+        _logEvent(oss.str());
+    }
+}
+
+void Simulation::_logEvent(const std::string& msg) {
+    _log.push_back(msg);
+    if ((int)_log.size() > 8) _log.erase(_log.begin());
+}
+
+void Simulation::_render() const {
+    std::cout << "\033[2J\033[H";
+    // ... (full rendering code — see renderRunways, renderArrivalQueue, etc.)
+    _renderRunways();
+    _renderArrivalQueue();
+    _renderDepartureQueue();
+    _renderStats();
+    _renderLog();
+}
+
+void Simulation::_renderFinal() const {
+    const auto& s = _airport.stats();
+    std::cout << "\n\033[1;32m  === SIMULATION COMPLETE ===\033[0m\n\n";
+    std::cout << "  Landed:       " << s.completedLandings  << "\n";
+    std::cout << "  Departed:     " << s.completedTakeoffs   << "\n";
+    std::cout << "  Emergencies:  " << s.emergenciesHandled  << "\n";
+    std::cout << "  Crashes:      " << s.planesRejected      << "\n";
+    std::cout << "  Avg wait:     " << std::fixed << std::setprecision(1)
+              << s.averageWait() << " min\n";
+    std::cout << "  Max wait:     " << s.maxWaitTime << " min\n\n";
+}`;
+
+/* ── Tab switching ── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+});
+
+/* ── File tab switching ── */
+const codeBlock = document.getElementById('codeBlock');
+function loadFile(key) {
+    codeBlock.textContent = FILES[key];
+    codeBlock.removeAttribute('data-highlighted');
+    hljs.highlightElement(codeBlock);
+}
+document.querySelectorAll('.file-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.file-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        loadFile(btn.dataset.file);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => loadFile('main'));
+</script>
+</body>
+</html>

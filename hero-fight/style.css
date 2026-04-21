@@ -1020,6 +1020,15 @@ body::after {
 }
 .g-end-stats { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); margin-bottom: 28px; }
 
+/* ─── LIGHT MODE ────────────────────────────────────────────── */
+[data-theme="light"] {
+    --bg:      #f5f4f1;
+    --surface: #eceae6;
+    --border:  rgba(0,0,0,0.08);
+    --text:    #1a1816;
+    --muted:   #8a8480;
+}
+
 /* ─── Responsive ─────────────────────────────────────── */
 @media (max-width: 640px) {
     .g-main-layout { grid-template-columns: 1fr; }

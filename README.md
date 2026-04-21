@@ -18,16 +18,17 @@ If you're looking at this for work or an application: I'm a first-year student w
 
 ```
 /
-├── portfolio-site/       ← The main portfolio index page
-├── name-checker/         ← Project 01
-├── fly-game/             ← Project 02
-├── islam-kindles/        ← Project 03
-├── login-system/         ← Project 04
-├── tic-tac-toe/          ← Project 05
-├── D0009E/               ← Project 06 — Python course
-├── D0010E/               ← Project 07 — Java / OOP course
-├── D0015E/               ← Project 08 — Computer Engineering survey course
-└── hero-fight/           ← Project 09 — C# console RPG, playable in browser
+├── portfolio-site/         ← The main portfolio index page + About page
+├── name-checker/           ← Project 01
+├── fly-game/               ← Project 02
+├── islam-kindles/          ← Project 03
+├── login-system/           ← Project 04
+├── tic-tac-toe/            ← Project 05
+├── D0009E/                 ← Project 06 — Python course
+├── D0010E/                 ← Project 07 — Java / OOP course
+├── D0015E/                 ← Project 08 — Computer Engineering survey course
+├── hero-fight/             ← Project 09 — C# console RPG, playable in browser
+└── airplane-simulator/     ← Project 10 — C++ airport simulator with custom data structures
 ```
 
 Each folder is self-contained. Open the `index.html` inside any folder to run it — no build step, no server required for most projects.
@@ -132,6 +133,21 @@ The room navigation game (Lab 3) includes an editor where you can change room co
 
 ---
 
+### 10 — Airport Simulator
+
+A terminal-based airport simulator written in C++ with manually implemented data structures — no STL queues used. Manages real-time plane arrivals and departures, fuel emergencies, priority-based runway assignment, and live ANSI terminal display.
+
+Key features:
+- **Priority queue** (sorted linked list) for arrivals — emergency planes with <20% fuel get immediate priority
+- **FIFO queue** (linked list) for departures
+- Fuel burns in real-time for planes waiting to land — planes can crash if queues are too full
+- Configurable simulation: number of runways, duration, arrival/departure rates, step mode
+- Live terminal UI with color-coded status, progress bars, fuel bars, and a scrolling event log
+
+**Tech:** C++17 · manually implemented data structures · OOP · ANSI terminal rendering
+
+---
+
 ### 09 — HeroFight
 
 A turn-based console RPG originally written in C# .NET 10, then fully ported to run in the browser. Pick one of three hero classes — Warrior, Mage, or Rogue — each with unique stats, a passive ability, and a special move. Fight through seven rooms of enemies, collect loot, visit shops, rest at campfires, and face a final boss.
@@ -154,7 +170,7 @@ The whole portfolio is plain web — no frameworks, no build tools, no bundlers.
 
 | Thing               | What I used                                            |
 | ------------------- | ------------------------------------------------------ |
-| Languages           | HTML, CSS, JavaScript, Python, Java, C#, Arduino C++   |
+| Languages           | HTML, CSS, JavaScript, Python, Java, C#, C++, Arduino C++   |
 | Fonts               | Syne (headings) + DM Mono (code/mono) via Google Fonts |
 | Syntax highlighting | highlight.js                                           |
 | PDF generation      | ReportLab (Python)                                     |
@@ -186,6 +202,13 @@ D0009E/index.html
 D0010E/index.html
 D0015E/index.html
 hero-fight/index.html
+airplane-simulator/index.html
+```
+
+**One exception for Airport Simulator:** the showcase page displays the source code and a terminal mockup, but to actually run the simulation you need a C++17 compiler:
+```bash
+cd airplane-simulator
+make run
 ```
 
 **One exception:** the Login/Signup system (`login-system/`) uses PHP for the real backend. Opening it locally activates demo mode automatically — login and signup show success messages without writing to a database.

@@ -2,12 +2,12 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-    --bg:       #f5f0e8;
-    --surface:  #ede8dc;
-    --border:   #d0c9bb;
-    --text:     #1a1814;
-    --muted:    #8a8074;
-    --accent:   #2a2a2a;
+    --bg:       #0a0a0a;
+    --surface:  #111111;
+    --border:   rgba(255,255,255,0.08);
+    --text:     #f0ede8;
+    --muted:    rgba(255,255,255,0.35);
+    --accent:   #c8f04d;
     --hit:      #e63946;
     --miss:     #aaa;
     --hud-h:    52px;
@@ -34,8 +34,8 @@ html, body {
     bottom: var(--ctrl-h);
     overflow: hidden;
     background:
-        radial-gradient(ellipse at 20% 80%, rgba(180,210,140,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(220,200,160,0.22) 0%, transparent 55%),
+        radial-gradient(ellipse at 20% 80%, rgba(100,200,100,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(200,240,80,0.05) 0%, transparent 55%),
         var(--bg);
     cursor: crosshair;
 }
@@ -46,8 +46,8 @@ html, body {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
     background-size: 40px 40px;
     pointer-events: none;
 }
@@ -57,7 +57,7 @@ html, body {
     position: fixed;
     top: 0; left: 0; right: 0;
     height: var(--hud-h);
-    background: var(--text);
+    background: rgba(10,10,10,0.92);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -163,7 +163,7 @@ html, body {
     font-size: 0.82rem;
     border: 1px solid var(--border);
     border-radius: 8px;
-    background: var(--text);
+    background: #1a1a1a;
     color: #fff;
     cursor: pointer;
     transition: background 0.15s, transform 0.1s, opacity 0.2s;
@@ -180,7 +180,7 @@ html, body {
 }
 
 .ctrl-btn--ghost:hover {
-    background: rgba(0,0,0,0.06);
+    background: rgba(255,255,255,0.08);
     color: var(--text);
 }
 
@@ -279,7 +279,7 @@ html, body {
 .overlay-screen {
     position: fixed;
     inset: 0;
-    background: var(--text);
+    background: #0a0a0a;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -532,26 +532,26 @@ body.shake { animation: shake 0.35s ease; }
 
 .back-to-portfolio {
     position: fixed;
-    top: 16px;
+    top: 68px;
     left: 16px;
-    z-index: 1000;
+    z-index: 200;
     font-family: 'DM Mono', monospace;
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 8px 14px;
+    color: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 6px 12px;
     border-radius: 8px;
     text-decoration: none;
     transition: color 0.2s, border-color 0.2s, background 0.2s;
     backdrop-filter: blur(8px);
 }
 .back-to-portfolio:hover {
-    color: #fff;
-    border-color: rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
 }
 
 /* ─── EXTRACTED INLINE STYLES ────────────────────────────── */

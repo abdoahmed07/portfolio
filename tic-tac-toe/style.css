@@ -551,3 +551,12 @@ body::after {
 .topbar-spacer  { width: 60px; }
 .lb-title       { font-size: clamp(2.5rem, 7vw, 4.5rem); }
 .lb-back-btn    { margin-top: 32px; }
+
+/* ─── LIGHT MODE ────────────────────────────────────────────── */
+[data-theme="light"] {
+    --bg:      #f5f4f1;
+    --surface: #eceae6;
+    --border:  rgba(0,0,0,0.08);
+    --text:    #1a1816;
+    --muted:   #8a8480;
+}
