@@ -502,3 +502,12 @@ body::before {
     background: none;
     border: none;
 }
+
+/* ─── LIGHT MODE ────────────────────────────────────────────── */
+[data-theme="light"] {
+    --bg:      #f5f4f1;
+    --surface: #eceae6;
+    --border:  rgba(0,0,0,0.08);
+    --text:    #1a1816;
+    --muted:   #8a8480;
+}

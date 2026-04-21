@@ -1,0 +1,538 @@
+:root {
+    --bg:           #0a0a0a;
+    --surface:      #111111;
+    --border:       rgba(255,255,255,0.07);
+    --text:         #f0ede8;
+    --muted:        #6b6660;
+    --accent:       #38bdf8;
+    --accent-dim:   rgba(56,189,248,0.1);
+    --accent-glow:  rgba(56,189,248,0.12);
+    --font-display: 'Syne', sans-serif;
+    --font-mono:    'DM Mono', monospace;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+}
+
+/* Sky-blue radial glow */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56,189,248,0.07) 0%, transparent 70%);
+}
+
+/* ======= Page Layout ======= */
+
+.page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+    position: relative;
+    z-index: 2;
+}
+
+/* ======= Back Link ======= */
+
+.back-to-portfolio {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1000;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    backdrop-filter: blur(8px);
+}
+
+.back-to-portfolio:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.08);
+}
+
+/* ======= Hero ======= */
+
+.hero {
+    padding-top: 100px;
+    padding-bottom: 60px;
+    animation: fadeUp 0.6s ease both;
+}
+
+.hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.hero-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+    color: var(--text);
+}
+
+.acc {
+    color: var(--accent);
+}
+
+.hero-desc {
+    font-family: var(--font-mono);
+    color: var(--muted);
+    font-size: 0.88rem;
+    max-width: 560px;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.meta-pill {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 10px;
+    color: var(--muted);
+}
+
+/* ======= Section Label ======= */
+
+.section-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin: 60px 0 24px;
+}
+
+/* ======= Tab Bar (top-level Terminal/Code switcher) ======= */
+
+.view-tabs {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0;
+    width: fit-content;
+}
+
+.tab-btn {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    background: rgba(255,255,255,0.02);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
+}
+
+.tab-btn:not(:last-child) {
+    border-right: 1px solid var(--border);
+}
+
+.tab-btn.active {
+    color: var(--accent);
+    background: var(--accent-dim);
+}
+
+.tab-btn:hover:not(.active) {
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+}
+
+.tab-panel {
+    display: none;
+    margin-top: 16px;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* ======= Terminal Mock ======= */
+
+.terminal-wrap {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.terminal-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+}
+
+.t-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+.t-dot-red    { background: #ff5f57; }
+.t-dot-yellow { background: #febc2e; }
+.t-dot-green  { background: #28c840; }
+
+.terminal-titlebar-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-left: 6px;
+    letter-spacing: 0.06em;
+}
+
+.terminal-mock {
+    background: #0d1117;
+    color: #3fb950;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    padding: 20px 24px;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+/* Terminal color classes */
+.t-red    { color: #f85149; }
+.t-amber  { color: #d29922; }
+.t-green  { color: #3fb950; }
+.t-cyan   { color: #79c0ff; }
+.t-magenta{ color: #bc8cff; }
+.t-dim    { color: #484f58; }
+.t-white  { color: #e6edf3; }
+.t-bold   { font-weight: 700; }
+
+/* ======= Code Explorer ======= */
+
+.code-explorer {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.tab-bar {
+    display: flex;
+    overflow-x: auto;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+}
+
+.tab-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.tab {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    background: none;
+    border: none;
+    padding: 12px 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s;
+    border-bottom: 2px solid transparent;
+    letter-spacing: 0.05em;
+}
+
+.tab.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+}
+
+.tab:hover:not(.active) {
+    color: var(--text);
+}
+
+.code-panels {
+    background: #0d0d0d;
+}
+
+.code-panel {
+    display: none;
+}
+
+.code-panel.active {
+    display: block;
+}
+
+.code-panel pre {
+    margin: 0;
+    padding: 24px;
+    overflow-x: auto;
+    max-height: 560px;
+    overflow-y: auto;
+}
+
+.code-panel code {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.6;
+}
+
+.hljs {
+    background: transparent !important;
+}
+
+/* ======= Data Structures section ======= */
+
+.ds-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.ds-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: border-color 0.2s;
+}
+
+.ds-card:hover {
+    border-color: var(--accent);
+}
+
+.ds-card h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 6px;
+    color: var(--text);
+}
+
+.ds-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid rgba(56,189,248,0.25);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-bottom: 12px;
+}
+
+.ds-desc {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.ds-ops {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ds-op {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+}
+
+.ds-op code {
+    color: var(--accent);
+    font-family: var(--font-mono);
+}
+
+/* ======= Animations ======= */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ======= Top-level tab switching (Terminal / Code) ======= */
+
+.tabs {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    width: fit-content;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease 0.2s both;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeUp 0.35s ease both;
+}
+.tab-content.active { display: block; }
+
+.tab-note {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+.tab-note code {
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+/* ======= File tab bar (inside code tab) ======= */
+
+.file-tabs {
+    display: flex;
+    overflow-x: auto;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    scrollbar-width: none;
+}
+.file-tabs::-webkit-scrollbar { display: none; }
+
+.file-tab {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    background: none;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s, background 0.2s;
+    border-bottom: 2px solid transparent;
+    letter-spacing: 0.04em;
+}
+.file-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: var(--accent-dim);
+}
+.file-tab:hover:not(.active) { color: var(--text); }
+
+/* ======= Code viewer ======= */
+
+.code-viewer {
+    border: 1px solid var(--border);
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+}
+.code-viewer pre {
+    margin: 0;
+    max-height: 560px;
+    overflow-y: auto;
+    background: #0d0d0d;
+}
+.code-viewer pre code {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.6;
+    display: block;
+    padding: 24px;
+}
+.code-viewer .hljs { background: transparent !important; }
+
+/* ======= DS card text helpers ======= */
+.ds-icon {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+}
+.ds-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+/* ======= Light mode ======= */
+[data-theme="light"] {
+    --bg:      #f5f4f1;
+    --surface: #eceae6;
+    --border:  rgba(0,0,0,0.08);
+    --text:    #1a1816;
+    --muted:   #8a8480;
+}
+
+/* ======= Responsive ======= */
+
+@media (max-width: 768px) {
+    .page { padding: 0 20px 60px; }
+    .hero { padding-top: 80px; }
+    .ds-grid { grid-template-columns: 1fr; }
+    .terminal-mock { font-size: 0.68rem; padding: 14px 16px; }
+}
