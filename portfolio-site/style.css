@@ -615,28 +615,48 @@ body::after {
 ::view-transition-new(root) {
     animation: vt-fade-in 0.3s ease forwards;
 }
-/* ─── TAG FILTER (click the tag label on each project row) ──── */
+/* ─── TAG FILTER STRIP ─────────────────────────────────────── */
+.filter-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+}
 
-/* Make project tags feel clickable */
-.project-tag {
+.filter-btn {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 5px 13px;
     cursor: pointer;
     transition: color 0.18s, border-color 0.18s, background 0.18s;
-    user-select: none;
+    white-space: nowrap;
 }
 
-.project-tag:hover {
+.filter-btn:hover:not(.active) {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.22);
+}
+
+.filter-btn.active {
     color: var(--accent);
     border-color: var(--accent);
+    background: var(--accent-glow);
 }
 
-/* Active tag (currently filtering by this tag) */
+/* Matching tag label on a project row lights up when that filter is active */
 .project-tag.tag-active {
     color: var(--accent);
     border-color: var(--accent);
     background: var(--accent-glow);
 }
 
-/* Non-matching projects are dimmed, not clickable */
+/* Non-matching projects sit below, dimmed */
 .project-item.tag-hidden {
     opacity: 0.15;
     pointer-events: none;
