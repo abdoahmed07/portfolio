@@ -324,6 +324,8 @@
         if (document.startViewTransition) {
             document.querySelectorAll('.project-item').forEach(function (link) {
                 link.addEventListener('click', function (e) {
+                    /* If the click was on the tag label, let the filter handler deal with it */
+                    if (e.target.closest('.project-tag')) return;
                     e.preventDefault();
                     var href = link.getAttribute('href');
                     document.startViewTransition(function () {
@@ -352,24 +354,27 @@
             if (!panel.contains(e.target) && !btn.contains(e.target)) closePanel();
         });
 
-        /* ── TAG FILTER (click the tag label on any project row) ── */
-        var projectItems = document.querySelectorAll('.project-item');
-        var countEl      = document.querySelector('.section-count');
-        var activeTag    = null;
+        /* ── TAG FILTER ──
+           Single delegated listener on the list container.
+           e.target.closest() finds the tag even if a child node was clicked.
+           e.preventDefault() must be called here (bubbled from <a>) to block navigation. */
+        var projectItems  = document.querySelectorAll('.project-item');
+        var countEl       = document.querySelector('.section-count');
+        var activeTag     = null;
+        var projectsList  = document.querySelector('.projects-list');
 
-        projectItems.forEach(function (item) {
-            var tagEl = item.querySelector('.project-tag');
-            if (!tagEl) return;
+        if (projectsList) {
+            projectsList.addEventListener('click', function (e) {
+                var tagEl = e.target.closest('.project-tag');
+                if (!tagEl) return;          /* normal project click — don't interfere */
 
-            tagEl.addEventListener('click', function (e) {
-                /* Stop the click from bubbling to the <a> link */
-                e.preventDefault();
+                e.preventDefault();          /* block <a> navigation */
                 e.stopPropagation();
 
                 var tag = tagEl.textContent.trim();
 
                 if (activeTag === tag) {
-                    /* Same tag clicked again — reset to show all */
+                    /* Clicked the active tag again — reset */
                     activeTag = null;
                     document.querySelectorAll('.project-tag').forEach(function (t) {
                         t.classList.remove('tag-active');
@@ -377,7 +382,7 @@
                     projectItems.forEach(function (i) { i.classList.remove('tag-hidden'); });
                     countEl.textContent = '10 projects';
                 } else {
-                    /* Filter to this tag */
+                    /* Activate this tag */
                     activeTag = tag;
                     document.querySelectorAll('.project-tag').forEach(function (t) {
                         t.classList.remove('tag-active');
@@ -397,7 +402,7 @@
                     countEl.textContent = visible + (visible === 1 ? ' project' : ' projects');
                 }
             });
-        });
+        }
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
