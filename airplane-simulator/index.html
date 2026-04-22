@@ -37,41 +37,138 @@
 
     <!-- TABS -->
     <div class="tabs">
-        <button class="tab-btn active" data-tab="terminal">Terminal Preview</button>
+        <button class="tab-btn active" data-tab="terminal">▶ Live Simulation</button>
         <button class="tab-btn" data-tab="code">View Code</button>
     </div>
 
-    <!-- TERMINAL PREVIEW TAB -->
+    <!-- LIVE SIMULATION TAB -->
     <div class="tab-content active" id="tab-terminal">
-        <p class="tab-note">Static preview of what the simulation looks like when running. Run <code>make run</code> in the project folder to see the real thing.</p>
-        <div class="terminal-wrap">
-<pre class="terminal-mock"><span class="t-dim">+------------------------------------------------------------------+</span>
-<span class="t-dim">|</span>  <span class="t-white">Metro International Airport</span>   <span class="t-dim">Time: 00:23 / 01:00   Step: 23/60</span>  <span class="t-dim">|</span>
-<span class="t-dim">+------------------------------------------------------------------+</span>
-<span class="t-dim">|</span>  <span class="t-white">RUNWAYS</span>                                                           <span class="t-dim">|</span>
-<span class="t-dim">|</span>  <span class="t-dim">RW-01</span>  <span class="t-green">LANDING </span>  <span class="t-white">De384 (Delta)    </span>  <span class="t-green">##########.....  2 min  fuel=65%</span>   <span class="t-dim">|</span>
-<span class="t-dim">|</span>  <span class="t-dim">RW-02</span>  <span class="t-amber">TAKEOFF </span>  <span class="t-white">Am102 (American)</span>  <span class="t-amber">############...  1 min  fuel=100%</span>  <span class="t-dim">|</span>
-<span class="t-dim">+------------------------------------------------------------------+</span>
-<span class="t-dim">|</span>  <span class="t-white">ARRIVAL QUEUE</span>  <span class="t-dim">(3 planes)</span>                                        <span class="t-dim">|</span>
-<span class="t-dim">|</span>   1.  <span class="t-red">EMRG</span>  <span class="t-white">Sw215 (Southwest)</span>  <span class="t-dim">Houston → Dallas   </span>  <span class="t-red">##........ 14%</span>  <span class="t-dim">|</span>
-<span class="t-dim">|</span>   2.  <span class="t-amber">LOW </span>  <span class="t-white">Al448 (Alaska)   </span>  <span class="t-dim">NYC → Chicago      </span>  <span class="t-amber">########.. 33%</span>  <span class="t-dim">|</span>
-<span class="t-dim">|</span>   3.       <span class="t-white">Un901 (United)   </span>  <span class="t-dim">Dallas → Phoenix   </span>  <span class="t-green">##########  71%</span>  <span class="t-dim">|</span>
-<span class="t-dim">+------------------------------------------------------------------+</span>
-<span class="t-dim">|</span>  <span class="t-white">DEPARTURE QUEUE</span>  <span class="t-dim">(2 planes)</span>                                      <span class="t-dim">|</span>
-<span class="t-dim">|</span>   1.       <span class="t-white">Jb730 (JetBlue) </span>  <span class="t-dim">Dallas → San Diego    waited=3 min</span>    <span class="t-dim">|</span>
-<span class="t-dim">|</span>   2.       <span class="t-white">Sp441 (Spirit)  </span>  <span class="t-dim">Phoenix → New York    waited=1 min</span>    <span class="t-dim">|</span>
-<span class="t-dim">+------------------------------------------------------------------+</span>
-<span class="t-dim">|</span>  <span class="t-white">STATISTICS</span>                                                        <span class="t-dim">|</span>
-<span class="t-dim">|  Landed: </span><span class="t-green">13</span>  <span class="t-dim">Departed: </span><span class="t-green">9</span>  <span class="t-dim">Emergencies: </span><span class="t-red">2</span>  <span class="t-dim">Crashes: </span><span class="t-red">0</span>              <span class="t-dim">|</span>
-<span class="t-dim">|  In queue: arrivals=</span><span class="t-white">3</span><span class="t-dim"> / departures=</span><span class="t-white">2</span>  <span class="t-dim">Avg wait: </span><span class="t-white">2.8 min</span>            <span class="t-dim">|</span>
-<span class="t-dim">+------------------------------------------------------------------+</span>
-<span class="t-dim">|</span>  <span class="t-white">EVENT LOG</span>                                                         <span class="t-dim">|</span>
-<span class="t-dim">|  [00:21]  +  Arrival   De384 (Delta) from San Antonio  fuel=65%   |</span>
-<span class="t-dim">|  [00:22]  </span><span class="t-green">v  Landed    Sw419</span> <span class="t-red">[EMERGENCY]</span><span class="t-dim">  wait=4 min               |</span>
-<span class="t-dim">|  [00:23]  </span><span class="t-amber">^  Departed  Un312   wait=6 min</span><span class="t-dim">                           |</span>
-<span class="t-dim">|  [00:23]  +  Arrival   Sw215 (Southwest) EMERGENCY  fuel=14%      |</span>
-<span class="t-dim">+------------------------------------------------------------------+</span></pre>
-        </div>
+
+        <!-- SIM PANEL -->
+        <div class="sim-panel" id="simPanel">
+
+            <!-- Titlebar -->
+            <div class="terminal-titlebar">
+                <span class="t-dot t-dot-red"></span>
+                <span class="t-dot t-dot-yellow"></span>
+                <span class="t-dot t-dot-green"></span>
+                <span class="terminal-titlebar-label">airport-simulator — live</span>
+                <div style="flex:1"></div>
+                <div class="sim-controls">
+                    <button class="sim-btn" id="simPlay">▶ Play</button>
+                    <button class="sim-btn" id="simPause" disabled>⏸ Pause</button>
+                    <button class="sim-btn sim-btn-dim" id="simReset">↺ Reset</button>
+                    <div class="sim-speed-group">
+                        <button class="sim-speed-btn active" data-ms="900">1×</button>
+                        <button class="sim-speed-btn" data-ms="400">2×</button>
+                        <button class="sim-speed-btn" data-ms="150">5×</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Config bar -->
+            <div class="sim-config-bar">
+                <div class="sim-cfg-field">
+                    <span class="sim-cfg-label">Runways</span>
+                    <div class="sim-stepper">
+                        <button class="stepper-btn" id="rwMinus">−</button>
+                        <span class="stepper-val" id="cfgRw">2</span>
+                        <button class="stepper-btn" id="rwPlus">+</button>
+                    </div>
+                </div>
+                <div class="sim-cfg-field">
+                    <span class="sim-cfg-label">Duration (steps)</span>
+                    <div class="sim-stepper">
+                        <button class="stepper-btn" id="durMinus">−</button>
+                        <span class="stepper-val" id="cfgDur">60</span>
+                        <button class="stepper-btn" id="durPlus">+</button>
+                    </div>
+                </div>
+                <div class="sim-cfg-field">
+                    <span class="sim-cfg-label">Arrivals / 10 steps</span>
+                    <div class="sim-stepper">
+                        <button class="stepper-btn" id="arrMinus">−</button>
+                        <span class="stepper-val" id="cfgArr">3</span>
+                        <button class="stepper-btn" id="arrPlus">+</button>
+                    </div>
+                </div>
+                <div class="sim-cfg-field">
+                    <span class="sim-cfg-label">Departures / 10 steps</span>
+                    <div class="sim-stepper">
+                        <button class="stepper-btn" id="depMinus">−</button>
+                        <span class="stepper-val" id="cfgDep">3</span>
+                        <button class="stepper-btn" id="depPlus">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Airport header: name + time -->
+            <div class="sim-header">
+                <span class="sim-airport-name">Metro International Airport</span>
+                <span class="sim-time" id="simTime">Step: 0 / 60</span>
+            </div>
+
+            <!-- Dashboard body -->
+            <div class="sim-body">
+
+                <!-- Runways -->
+                <div class="sim-section">
+                    <span class="sim-section-lbl">RUNWAYS</span>
+                    <div class="sim-runways" id="simRunways"></div>
+                </div>
+
+                <!-- Queues side by side -->
+                <div class="sim-queues-wrap">
+                    <div class="sim-queue-col">
+                        <span class="sim-section-lbl">ARRIVAL QUEUE <em id="arrCount">(0)</em></span>
+                        <div class="sim-queue-list" id="simArrQueue">
+                            <div class="q-empty t-dim">No planes waiting</div>
+                        </div>
+                    </div>
+                    <div class="sim-queue-col">
+                        <span class="sim-section-lbl">DEPARTURE QUEUE <em id="depCount">(0)</em></span>
+                        <div class="sim-queue-list" id="simDepQueue">
+                            <div class="q-empty t-dim">No planes waiting</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="sim-section">
+                    <span class="sim-section-lbl">STATISTICS</span>
+                    <div class="sim-stats-row">
+                        <span class="sim-stat-item"><b class="t-green"  id="stLanded">0</b><span class="sim-stat-lbl">landed</span></span>
+                        <span class="sim-stat-sep">·</span>
+                        <span class="sim-stat-item"><b class="t-amber"  id="stDeparted">0</b><span class="sim-stat-lbl">departed</span></span>
+                        <span class="sim-stat-sep">·</span>
+                        <span class="sim-stat-item"><b class="t-red"    id="stEmerg">0</b><span class="sim-stat-lbl">emergencies</span></span>
+                        <span class="sim-stat-sep">·</span>
+                        <span class="sim-stat-item"><b class="t-red"    id="stCrashes">0</b><span class="sim-stat-lbl">crashes</span></span>
+                        <span class="sim-stat-sep">·</span>
+                        <span class="sim-stat-item"><b id="stAvgWait">0.0 min</b><span class="sim-stat-lbl">avg wait</span></span>
+                    </div>
+                </div>
+
+                <!-- Event log -->
+                <div class="sim-section">
+                    <span class="sim-section-lbl">EVENT LOG</span>
+                    <div class="sim-log" id="simLog">
+                        <div class="sim-log-placeholder t-dim">Press Play to start the simulation.</div>
+                    </div>
+                </div>
+
+            </div><!-- /sim-body -->
+
+            <!-- Simulation complete overlay -->
+            <div class="sim-done-overlay" id="simDone" style="display:none">
+                <div class="sim-done-box">
+                    <div class="sim-done-title t-green">Simulation Complete</div>
+                    <div class="sim-done-stats" id="simDoneStats"></div>
+                    <button class="sim-done-btn" id="simDoneRestart">↺ Run Again</button>
+                </div>
+            </div>
+
+        </div><!-- /sim-panel -->
 
         <!-- DATA STRUCTURES CALLOUT -->
         <div class="ds-grid">
@@ -805,6 +902,367 @@ document.querySelectorAll('.file-tab').forEach(btn => {
 });
 
 document.addEventListener('DOMContentLoaded', () => loadFile('main'));
+
+/* ══════════════════════════════════════════════════════════════
+   LIVE AIRPORT SIMULATION ENGINE
+   JS port of the C++ simulation — same logic, same data structures
+══════════════════════════════════════════════════════════════ */
+(function () {
+
+    /* ── Reference data ── */
+    const AIRLINES = ['Delta','American','Southwest','United','Alaska','JetBlue','Spirit','Frontier'];
+    const CODES    = {Delta:'DL',American:'AA',Southwest:'WN',United:'UA',Alaska:'AS',JetBlue:'B6',Spirit:'NK',Frontier:'F9'};
+    const CITIES   = ['New York','Los Angeles','Chicago','Houston','Phoenix','Dallas','San Diego','Seattle','Boston','Miami'];
+
+    /* ── Live config (mirrors SimConfig) ── */
+    const cfg = { numRunways: 2, duration: 60, arrRate: 3, depRate: 3 };
+
+    /* ── Runtime ── */
+    let state   = null;
+    let timer   = null;
+    let tickMs  = 900;
+
+    /* ── Helpers ── */
+    const rnd  = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+    const pad2 = n  => String(n).padStart(2, '0');
+
+    function fuelCls(f) { return f < 20 ? 't-red' : f < 40 ? 't-amber' : 't-green'; }
+
+    /* Block-character bar — mirrors C++ fuelBar / progressBar */
+    function bar(val, max, width, cls) {
+        const filled = max > 0 ? Math.min(width, Math.round((val / max) * width)) : 0;
+        let s = '';
+        for (let i = 0; i < width; i++) s += i < filled ? '█' : '░';
+        return `<span class="${cls}">${s}</span>`;
+    }
+
+    /* ── Plane factory (mirrors Plane::createArrival / createDeparture) ── */
+    function makePlane(id, type, clock) {
+        const airline = pick(AIRLINES);
+        const origin  = pick(CITIES);
+        let dest = pick(CITIES);
+        while (dest === origin) dest = pick(CITIES);
+        return {
+            id, airline, type,           /* 'arr' | 'dep' */
+            flight:    CODES[airline] + rnd(100, 999),
+            origin, dest,
+            fuel:      type === 'arr' ? rnd(28, 95) : 100,
+            entryTime: clock,
+            rwStart:   -1,
+            duration:  type === 'arr' ? rnd(2, 4) : rnd(1, 3),
+        };
+    }
+
+    /* ── Priority (mirrors Plane::priority()) ──
+       0 = emergency (<20% fuel)   1 = low fuel (<40%)   2 = normal
+       Departures are always priority 2 (no fuel concern) */
+    function prio(p) {
+        if (p.type === 'dep') return 2;
+        if (p.fuel  < 20)    return 0;
+        if (p.fuel  < 40)    return 1;
+        return 2;
+    }
+
+    /* ── Sorted insert (mirrors PriorityQueue::enqueue) ──
+       Stable: ties broken by entryTime (FIFO within same priority tier) */
+    function insertArr(queue, plane) {
+        const p = prio(plane);
+        let i = 0;
+        while (i < queue.length && prio(queue[i]) <= p) i++;
+        queue.splice(i, 0, plane);
+    }
+
+    /* ── Initialise simulation state (mirrors Simulation / Airport constructors) ── */
+    function initState() {
+        const runways = [];
+        for (let i = 1; i <= cfg.numRunways; i++) {
+            runways.push({ name: `RW-0${i}`, status: 'AVAIL', plane: null, remaining: 0, total: 0 });
+        }
+        return {
+            clock: 0, nextId: 1,
+            runways,
+            arrQ: [],   /* PriorityQueue<Plane> */
+            depQ: [],   /* Queue<Plane> (FIFO)  */
+            stats: { landed: 0, departed: 0, emerg: 0, crashes: 0, totalWait: 0, served: 0 },
+            log:   [],
+            done:  false,
+        };
+    }
+
+    function logEvent(s, icon, msg, cls) {
+        s.log.unshift({ time: s.clock, icon, msg, cls });
+        if (s.log.length > 9) s.log.pop();
+    }
+
+    /* ── Single tick (mirrors Airport::step + Simulation::run body) ── */
+    function tick() {
+        const s = state;
+        if (s.done) return;
+
+        /* 1. Generate traffic (mirrors Simulation::_generateTraffic) */
+        if (Math.random() < cfg.arrRate / 10) {
+            const p = makePlane(s.nextId++, 'arr', s.clock);
+            insertArr(s.arrQ, p);
+            logEvent(s, '+', `Arrival &nbsp; ${p.flight} (${p.airline}) &nbsp; ${p.origin} → ${p.dest} &nbsp; fuel=${p.fuel}%`, 'cyan');
+        }
+        if (Math.random() < cfg.depRate / 10) {
+            const p = makePlane(s.nextId++, 'dep', s.clock);
+            s.depQ.push(p);
+            logEvent(s, '›', `Departure ${p.flight} (${p.airline}) &nbsp; to ${p.dest}`, 'amber');
+        }
+
+        /* 2. Burn fuel for every waiting arrival (mirrors Airport::_burnQueuedFuel) */
+        for (const p of s.arrQ) { if (p.fuel > 0) p.fuel--; }
+
+        /* 3. Re-sort after fuel burn — priorities may have shifted */
+        s.arrQ.sort((a, b) => {
+            const pa = prio(a), pb = prio(b);
+            return pa !== pb ? pa - pb : a.entryTime - b.entryTime;
+        });
+
+        /* 4. Crash check — zero-fuel planes are removed (mirrors _assignToRunways crash path) */
+        s.arrQ = s.arrQ.filter(p => {
+            if (p.fuel === 0) {
+                s.stats.crashes++;
+                logEvent(s, '✕', `CRASH &nbsp; ${p.flight} ran out of fuel in the queue`, 'red');
+                return false;
+            }
+            return true;
+        });
+
+        /* 5. Tick each runway (mirrors Runway::tick) */
+        for (const rw of s.runways) {
+            if (rw.status === 'AVAIL') continue;
+            rw.remaining--;
+            if (rw.remaining <= 0) {
+                const p    = rw.plane;
+                const wait = Math.max(0, p.rwStart - p.entryTime);
+                s.stats.totalWait += wait;
+                s.stats.served++;
+                if (p.type === 'arr') {
+                    s.stats.landed++;
+                    const wasEmerg = p.fuel < 20;
+                    if (wasEmerg) s.stats.emerg++;
+                    logEvent(s, '✓',
+                        `Landed &nbsp; ${p.flight}${wasEmerg ? ' <span class="t-red">[EMRG]</span>' : ''} &nbsp; wait=${wait} steps`,
+                        'green');
+                } else {
+                    s.stats.departed++;
+                    logEvent(s, '↑', `Departed ${p.flight} &nbsp; wait=${wait} steps`, 'amber');
+                }
+                rw.status = 'AVAIL';
+                rw.plane  = null;
+            }
+        }
+
+        /* 6. Assign waiting planes to newly freed runways
+               Arrivals always get priority over departures
+               (mirrors Airport::_assignToRunways) */
+        for (const rw of s.runways) {
+            if (rw.status !== 'AVAIL') continue;
+            if (s.arrQ.length > 0) {
+                const p   = s.arrQ.shift();
+                p.rwStart = s.clock;
+                rw.status    = 'LAND';
+                rw.plane     = p;
+                rw.remaining = p.duration;
+                rw.total     = p.duration;
+            } else if (s.depQ.length > 0) {
+                const p   = s.depQ.shift();
+                p.rwStart = s.clock;
+                rw.status    = 'TKOF';
+                rw.plane     = p;
+                rw.remaining = p.duration;
+                rw.total     = p.duration;
+            }
+        }
+
+        s.clock++;
+        if (s.clock > cfg.duration) s.done = true;
+    }
+
+    /* ── Render the dashboard DOM ── */
+    function render() {
+        const s = state;
+
+        /* Time display */
+        document.getElementById('simTime').textContent =
+            `Step: ${s.clock} / ${cfg.duration}`;
+
+        /* Runways */
+        document.getElementById('simRunways').innerHTML = s.runways.map(rw => {
+            if (rw.status === 'AVAIL') {
+                return `<div class="rw-card rw-avail">
+                    <span class="rw-name">${rw.name}</span>
+                    <span class="rw-badge rw-avail-badge">AVAILABLE</span>
+                    <span class="t-dim" style="font-size:.72rem">—</span>
+                </div>`;
+            }
+            const p        = rw.plane;
+            const done     = rw.total - rw.remaining;
+            const isLand   = rw.status === 'LAND';
+            const barCls   = isLand ? 't-green' : 't-amber';
+            const badgeCls = isLand ? 'rw-land-badge' : 'rw-tkof-badge';
+            const badgeTxt = isLand ? 'LANDING' : 'TAKEOFF';
+            const progBar  = bar(done, rw.total, 10, barCls);
+            const fuelLine = isLand
+                ? `<span class="${fuelCls(p.fuel)}" style="font-size:.7rem">${bar(p.fuel, 100, 8, fuelCls(p.fuel))} ${p.fuel}%</span>`
+                : '';
+            return `<div class="rw-card">
+                <span class="rw-name">${rw.name}</span>
+                <span class="rw-badge ${badgeCls}">${badgeTxt}</span>
+                <span class="rw-plane">${p.flight} (${p.airline})</span>
+                <span class="rw-bar">${progBar} <span class="t-dim">${rw.remaining} steps</span></span>
+                ${fuelLine}
+            </div>`;
+        }).join('');
+
+        /* Arrival queue */
+        document.getElementById('arrCount').textContent = `(${s.arrQ.length})`;
+        if (s.arrQ.length === 0) {
+            document.getElementById('simArrQueue').innerHTML = '<div class="q-empty t-dim">No planes waiting</div>';
+        } else {
+            const rows = s.arrQ.slice(0, 6).map((p, i) => {
+                const pr  = prio(p);
+                const badge = pr === 0
+                    ? '<span class="q-badge q-emrg">EMRG</span>'
+                    : pr === 1
+                        ? '<span class="q-badge q-low">LOW</span>'
+                        : '<span class="q-badge-empty"></span>';
+                const fb = bar(p.fuel, 100, 6, fuelCls(p.fuel));
+                return `<div class="q-row">
+                    <span class="q-pos t-dim">${i+1}.</span>
+                    ${badge}
+                    <span class="q-flight">${p.flight}</span>
+                    <span class="q-info t-dim">${p.origin} → ${p.dest}</span>
+                    <span class="${fuelCls(p.fuel)} q-fuel">${fb} ${p.fuel}%</span>
+                </div>`;
+            }).join('');
+            const more = s.arrQ.length > 6 ? `<div class="q-more t-dim">+${s.arrQ.length - 6} more</div>` : '';
+            document.getElementById('simArrQueue').innerHTML = rows + more;
+        }
+
+        /* Departure queue */
+        document.getElementById('depCount').textContent = `(${s.depQ.length})`;
+        if (s.depQ.length === 0) {
+            document.getElementById('simDepQueue').innerHTML = '<div class="q-empty t-dim">No planes waiting</div>';
+        } else {
+            const rows = s.depQ.slice(0, 6).map((p, i) => {
+                const waited = s.clock - p.entryTime;
+                return `<div class="q-row">
+                    <span class="q-pos t-dim">${i+1}.</span>
+                    <span class="q-badge-empty"></span>
+                    <span class="q-flight">${p.flight}</span>
+                    <span class="q-info t-dim">${p.dest}</span>
+                    <span class="t-dim q-fuel">waited ${waited} steps</span>
+                </div>`;
+            }).join('');
+            const more = s.depQ.length > 6 ? `<div class="q-more t-dim">+${s.depQ.length - 6} more</div>` : '';
+            document.getElementById('simDepQueue').innerHTML = rows + more;
+        }
+
+        /* Stats */
+        const st = s.stats;
+        document.getElementById('stLanded').textContent   = st.landed;
+        document.getElementById('stDeparted').textContent = st.departed;
+        document.getElementById('stEmerg').textContent    = st.emerg;
+        document.getElementById('stCrashes').textContent  = st.crashes;
+        document.getElementById('stAvgWait').textContent  =
+            (st.served > 0 ? (st.totalWait / st.served).toFixed(1) : '0.0') + ' min';
+
+        /* Event log */
+        const clsMap = { cyan:'t-cyan', amber:'t-amber', green:'t-green', red:'t-red' };
+        if (s.log.length === 0) {
+            document.getElementById('simLog').innerHTML =
+                '<div class="sim-log-placeholder t-dim">No events yet.</div>';
+        } else {
+            document.getElementById('simLog').innerHTML = s.log.map(e => {
+                const c = clsMap[e.cls] || 't-dim';
+                return `<div class="log-row">
+                    <span class="t-dim log-time">[${pad2(Math.floor(e.time / 60))}:${pad2(e.time % 60)}]</span>
+                    <span class="${c} log-icon">${e.icon}</span>
+                    <span class="log-msg">${e.msg}</span>
+                </div>`;
+            }).join('');
+        }
+
+        /* Simulation complete */
+        if (s.done) {
+            stopSim();
+            const avg = st.served > 0 ? (st.totalWait / st.served).toFixed(1) : '0.0';
+            document.getElementById('simDoneStats').innerHTML =
+                `Landed <b class="t-green">${st.landed}</b> &nbsp;·&nbsp;
+                 Departed <b class="t-amber">${st.departed}</b> &nbsp;·&nbsp;
+                 Emergencies <b class="t-red">${st.emerg}</b> &nbsp;·&nbsp;
+                 Crashes <b class="t-red">${st.crashes}</b> &nbsp;·&nbsp;
+                 Avg wait <b>${avg} steps</b>`;
+            document.getElementById('simDone').style.display = 'flex';
+        }
+    }
+
+    /* ── Playback controls ── */
+    function startSim() {
+        if (timer || state.done) return;
+        document.getElementById('simPlay').disabled  = true;
+        document.getElementById('simPause').disabled = false;
+        timer = setInterval(() => { tick(); render(); }, tickMs);
+    }
+
+    function pauseSim() {
+        if (timer) { clearInterval(timer); timer = null; }
+        document.getElementById('simPlay').disabled  = false;
+        document.getElementById('simPause').disabled = true;
+    }
+
+    function stopSim() { pauseSim(); }
+
+    function resetSim() {
+        stopSim();
+        document.getElementById('simDone').style.display = 'none';
+        state = initState();
+        render();
+    }
+
+    /* ── Config stepper helper ── */
+    function setupStepper(minusId, plusId, valId, key, lo, hi, step) {
+        step = step || 1;
+        const upd = delta => {
+            cfg[key] = Math.min(hi, Math.max(lo, cfg[key] + delta * step));
+            document.getElementById(valId).textContent = cfg[key];
+            if (timer) resetSim();   /* restart live sim when config changes */
+        };
+        document.getElementById(minusId).addEventListener('click', () => upd(-1));
+        document.getElementById(plusId).addEventListener('click',  () => upd(+1));
+    }
+
+    /* ── Bootstrap ── */
+    state = initState();
+    render();
+
+    document.getElementById('simPlay').addEventListener('click', startSim);
+    document.getElementById('simPause').addEventListener('click', pauseSim);
+    document.getElementById('simReset').addEventListener('click', resetSim);
+    document.getElementById('simDoneRestart').addEventListener('click', resetSim);
+
+    setupStepper('rwMinus',  'rwPlus',  'cfgRw',  'numRunways', 1,  4);
+    setupStepper('durMinus', 'durPlus', 'cfgDur', 'duration',  20, 120, 10);
+    setupStepper('arrMinus', 'arrPlus', 'cfgArr', 'arrRate',    0,   8);
+    setupStepper('depMinus', 'depPlus', 'cfgDep', 'depRate',    0,   8);
+
+    document.querySelectorAll('.sim-speed-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.sim-speed-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            tickMs = parseInt(this.dataset.ms);
+            if (timer) {
+                clearInterval(timer);
+                timer = setInterval(() => { tick(); render(); }, tickMs);
+            }
+        });
+    });
+
+})(); /* end live simulation */
 </script>
 </body>
 </html>
