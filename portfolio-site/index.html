@@ -87,6 +87,20 @@
                 <p class="section-count">10 projects</p>
             </div>
 
+            <!-- TAG FILTER STRIP -->
+            <div class="filter-strip" id="filterStrip">
+                <button class="filter-btn active" data-tag="All">All</button>
+                <button class="filter-btn" data-tag="Game">Game</button>
+                <button class="filter-btn" data-tag="Tool">Tool</button>
+                <button class="filter-btn" data-tag="Website">Website</button>
+                <button class="filter-btn" data-tag="Full-stack">Full-stack</button>
+                <button class="filter-btn" data-tag="Python">Python</button>
+                <button class="filter-btn" data-tag="Java">Java</button>
+                <button class="filter-btn" data-tag="Mixed">Mixed</button>
+                <button class="filter-btn" data-tag="C#">C#</button>
+                <button class="filter-btn" data-tag="C++">C++</button>
+            </div>
+
             <div class="projects-list">
 
                 <a href="../name-checker/index.html" class="project-item" data-num="01" data-preview="previews/01-name-checker.png">
@@ -350,6 +364,34 @@
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
         document.addEventListener('click', function (e) {
             if (!panel.contains(e.target) && !btn.contains(e.target)) closePanel();
+        });
+
+        /* ── TAG FILTER ── */
+        var filterBtns   = document.querySelectorAll('.filter-btn');
+        var projectItems = document.querySelectorAll('.project-item');
+        var countEl      = document.querySelector('.section-count');
+
+        filterBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var tag = this.dataset.tag;
+                filterBtns.forEach(function (b) { b.classList.remove('active'); });
+                this.classList.add('active');
+
+                var visible = 0;
+                projectItems.forEach(function (item) {
+                    var itemTag = item.querySelector('.project-tag').textContent.trim();
+                    if (tag === 'All' || itemTag === tag) {
+                        item.classList.remove('tag-hidden');
+                        visible++;
+                    } else {
+                        item.classList.add('tag-hidden');
+                    }
+                });
+
+                countEl.textContent = tag === 'All'
+                    ? '10 projects'
+                    : visible + (visible === 1 ? ' project' : ' projects');
+            });
         });
 
         form.addEventListener('submit', function (e) {
