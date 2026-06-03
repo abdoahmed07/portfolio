@@ -133,21 +133,6 @@ The room navigation game (Lab 3) includes an editor where you can change room co
 
 ---
 
-### 10 — Airport Simulator
-
-A terminal-based airport simulator written in C++ with manually implemented data structures — no STL queues used. Manages real-time plane arrivals and departures, fuel emergencies, priority-based runway assignment, and live ANSI terminal display.
-
-Key features:
-- **Priority queue** (sorted linked list) for arrivals — emergency planes with <20% fuel get immediate priority
-- **FIFO queue** (linked list) for departures
-- Fuel burns in real-time for planes waiting to land — planes can crash if queues are too full
-- Configurable simulation: number of runways, duration, arrival/departure rates, step mode
-- Live terminal UI with color-coded status, progress bars, fuel bars, and a scrolling event log
-
-**Tech:** C++17 · manually implemented data structures · OOP · ANSI terminal rendering
-
----
-
 ### 09 — HeroFight
 
 A turn-based console RPG originally written in C# .NET 10, then fully ported to run in the browser. Pick one of three hero classes — Warrior, Mage, or Rogue — each with unique stats, a passive ability, and a special move. Fight through seven rooms of enemies, collect loot, visit shops, rest at campfires, and face a final boss.
@@ -161,6 +146,21 @@ The page has two tabs: **Play** (the actual game, fully playable) and **Code** (
 | Rogue   | Fast and evasive, double-strike with bleed         |
 
 **Tech:** C# .NET 10 (original) · JavaScript ES6 port for the browser · OOP architecture — abstract classes, interfaces, polymorphism · highlight.js for source display
+
+---
+
+### 10 — Airport Simulator
+
+A terminal-based airport simulator written in C++ with manually implemented data structures — no STL queues used. Manages real-time plane arrivals and departures, fuel emergencies, priority-based runway assignment, and live ANSI terminal display.
+
+Key features:
+- **Priority queue** (sorted linked list) for arrivals — emergency planes with <20% fuel get immediate priority
+- **FIFO queue** (linked list) for departures
+- Fuel burns in real-time for planes waiting to land — planes can crash if queues are too full
+- Configurable simulation: number of runways, duration, arrival/departure rates, step mode
+- Live terminal UI with color-coded status, progress bars, fuel bars, and a scrolling event log
+
+**Tech:** C++17 · manually implemented data structures · OOP · ANSI terminal rendering
 
 ---
 

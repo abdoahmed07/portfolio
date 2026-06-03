@@ -79,12 +79,13 @@
             <span class="skill-pill">PHP</span>
             <span class="skill-pill">Arduino</span>
             <span class="skill-pill">LaTeX</span>
+            <span class="skill-pill">Veryl</span>
         </section>
 
         <!-- PROJECTS -->
         <section class="projects-section">
             <div class="section-header">
-                <p class="section-count">10 projects</p>
+                <p class="section-count">11 projects</p>
             </div>
 
             <!-- TAG FILTER STRIP -->
@@ -99,6 +100,7 @@
                 <button class="filter-btn" data-tag="Mixed">Mixed</button>
                 <button class="filter-btn" data-tag="C#">C#</button>
                 <button class="filter-btn" data-tag="C++">C++</button>
+                <button class="filter-btn" data-tag="HDL">HDL</button>
             </div>
 
             <div class="projects-list">
@@ -253,6 +255,21 @@
                     </div>
                 </a>
 
+                <a href="../D0011E/index.html" class="project-item" data-num="11">
+                    <div class="project-meta">
+                        <span class="project-tag">HDL</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">D0011E — Digital Design</h2>
+                        <p class="project-desc">Built a complete 32-bit MIPS processor from scratch in Veryl HDL — from a single full adder to a running CPU with ALU, register file, control decoder, data memory, branch and jump instructions, and an integer division program.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
             </div>
         </section>
 
@@ -390,7 +407,7 @@
                     projectsList.appendChild(item);
                     item.classList.remove('tag-hidden');
                 });
-                countEl.textContent = '10 projects';
+                countEl.textContent = '11 projects';
             } else {
                 var matching    = origOrder.filter(function (i) { return i.querySelector('.project-tag').textContent.trim() === tag; });
                 var nonMatching = origOrder.filter(function (i) { return i.querySelector('.project-tag').textContent.trim() !== tag; });

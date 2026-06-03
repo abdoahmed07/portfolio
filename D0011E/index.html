@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D0011E — Digital Design · Abdalla</title>
+    <meta name="description" content="D0011E Digital Design — built a complete 32-bit MIPS processor in Veryl HDL, from logic gates to a running CPU.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <!-- Syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- Theme must be set before CSS loads to avoid flash -->
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Fixed navigation bar -->
+<nav class="topnav">
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </button>
+</nav>
+
+<div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+        <span class="hero-eyebrow">Veryl · Digital Design · LTU</span>
+        <h1 class="hero-title">D0011E<span class="acc">.</span></h1>
+        <p class="hero-desc">
+            Built a complete 32-bit MIPS processor from scratch — starting from a single
+            logic gate, assembling a full adder, scaling to a 32-bit ALU, and finishing
+            with a CPU that executes real assembly programs including an integer division
+            routine. Written in Veryl, a modern hardware description language that
+            compiles to SystemVerilog.
+        </p>
+        <div class="hero-meta">
+            <span class="meta-pill">Veryl</span>
+            <span class="meta-pill">SystemVerilog</span>
+            <span class="meta-pill">MIPS</span>
+            <span class="meta-pill">Digital Logic</span>
+            <span class="meta-pill">HDL</span>
+            <span class="meta-pill">Verilator</span>
+        </div>
+    </div>
+
+    <!-- LAB PROGRESSION -->
+    <span class="section-label">Course Labs</span>
+    <div class="labs-table">
+        <div class="lab-row">
+            <div class="lab-num">L2</div>
+            <div class="lab-info">
+                <div class="lab-title">Combinational Logic &amp; BCD Checker</div>
+                <div class="lab-desc">Designed logic circuits in Veryl for a 4-bit BCD digit checker — computing max, min, even, lo3, noBCD, and hieq3 from boolean expressions. Visualised netlists in DigitalJS via Yosys, performed Karnaugh minimisation, and implemented PLD cell arrays. Verified every output using Verilator testbenches with exhaustive assertions.</div>
+            </div>
+        </div>
+        <div class="lab-row">
+            <div class="lab-num">L3a</div>
+            <div class="lab-info">
+                <div class="lab-title">4-bit ALU — Full Adder → Arithmetic + Logic Unit</div>
+                <div class="lab-desc">Built a 1-bit full adder, chained four into a ripple-carry adder, then wrapped it in an arithmetic unit supporting ADD and SUB with signed overflow (V) and carry (C) flags. Added a 4-bit logic unit for AND and OR. Verified signed and unsigned arithmetic edge cases with complete truth tables and simulation waveforms.</div>
+            </div>
+        </div>
+        <div class="lab-row">
+            <div class="lab-num">L3b</div>
+            <div class="lab-info">
+                <div class="lab-title">32-bit ALU + Program Counter</div>
+                <div class="lab-desc">Scaled the 4-bit ALU to 32 bits using a generate loop over 32 full adders. Extended it with AND, OR, and SLT via a 4-to-1 mux, plus a zero flag (Z). Designed a clocked program counter that increments by 4 each cycle with async reset — the first sequential component in the processor.</div>
+            </div>
+        </div>
+        <div class="lab-row">
+            <div class="lab-num">L4</div>
+            <div class="lab-info">
+                <div class="lab-title">Simplified Single-Cycle MIPS Processor</div>
+                <div class="lab-desc">Wired everything together: instruction memory, register file, sign-extend unit, control decoder, ALU, and muxes in a top-level module. Implemented the full MIPS single-cycle datapath for 7 instructions — ADD, SUB, AND, OR, SLT, ADDI, SLTI. Wrote a testbench that steps through the program and asserts correct register values every clock cycle.</div>
+            </div>
+        </div>
+        <div class="lab-row">
+            <div class="lab-num">L5</div>
+            <div class="lab-info">
+                <div class="lab-title">Full MIPS — Data Memory, Branch, Jump &amp; Integer Division</div>
+                <div class="lab-desc">Added data memory (LW/SW), branch (BEQ with signed offset × 4), and jump (J with 26-bit absolute target). Wrote MIPS assembly for integer division using repeated subtraction and hand-translated it to machine code. The final processor executes the full program and stores quotient + remainder in data memory — verified by assertions in the testbench.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE DEMOS -->
+    <span class="section-label">Interactive Demos</span>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="bcd">Logic Checker</button>
+        <button class="tab-btn" data-tab="alu">ALU</button>
+        <button class="tab-btn" data-tab="mips">MIPS Emulator</button>
+        <button class="tab-btn" data-tab="code">Source Code</button>
+    </div>
+
+    <!-- ── BCD CHECKER (Lab 2) ── -->
+    <div class="tab-content active" id="tab-bcd">
+        <p class="tab-note">
+            Reproduction of the Lab 2 BCD checker. Toggle the 4 input bits and see all
+            six combinational outputs update instantly — the exact same boolean expressions
+            as the Veryl module.
+        </p>
+        <div class="bcd-panel">
+            <div class="bcd-inputs">
+                <div class="bit-toggle">
+                    <span class="bit-label">x3</span>
+                    <button class="bit-btn" id="bit3" data-val="0">0</button>
+                </div>
+                <div class="bit-toggle">
+                    <span class="bit-label">x2</span>
+                    <button class="bit-btn" id="bit2" data-val="0">0</button>
+                </div>
+                <div class="bit-toggle">
+                    <span class="bit-label">x1</span>
+                    <button class="bit-btn" id="bit1" data-val="0">0</button>
+                </div>
+                <div class="bit-toggle">
+                    <span class="bit-label">x0</span>
+                    <button class="bit-btn" id="bit0" data-val="0">0</button>
+                </div>
+            </div>
+            <div class="bcd-value">
+                Input: <b id="bcdBin">0000</b> = <b id="bcdDec">0</b>
+                <span class="bcd-note" id="bcdNote"></span>
+            </div>
+            <div class="bcd-outputs">
+                <div class="out-chip" id="out-max">
+                    <div class="out-chip-dot"></div>
+                    <span class="out-chip-name">max</span>
+                    <span class="out-chip-val" id="val-max">0</span>
+                </div>
+                <div class="out-chip" id="out-min">
+                    <div class="out-chip-dot"></div>
+                    <span class="out-chip-name">min</span>
+                    <span class="out-chip-val" id="val-min">0</span>
+                </div>
+                <div class="out-chip" id="out-even">
+                    <div class="out-chip-dot"></div>
+                    <span class="out-chip-name">even</span>
+                    <span class="out-chip-val" id="val-even">0</span>
+                </div>
+                <div class="out-chip" id="out-lo3">
+                    <div class="out-chip-dot"></div>
+                    <span class="out-chip-name">lo3</span>
+                    <span class="out-chip-val" id="val-lo3">0</span>
+                </div>
+                <div class="out-chip" id="out-noBCD">
+                    <div class="out-chip-dot"></div>
+                    <span class="out-chip-name">noBCD</span>
+                    <span class="out-chip-val" id="val-noBCD">0</span>
+                </div>
+                <div class="out-chip" id="out-hieq3">
+                    <div class="out-chip-dot"></div>
+                    <span class="out-chip-name">hieq3</span>
+                    <span class="out-chip-val" id="val-hieq3">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ALU CALCULATOR (Lab 3b) ── -->
+    <div class="tab-content" id="tab-alu">
+        <p class="tab-note">
+            The 32-bit ALU from Lab 3b. Enter two values in hex, pick an operation, and
+            see the result plus the overflow (V), carry (C), and zero (Z) flags — computed
+            the same way as the Veryl hardware.
+        </p>
+        <div class="alu-panel">
+            <div class="alu-row">
+                <span class="alu-label">A — Input (hex)</span>
+                <input class="alu-input" id="aluA" type="text" value="00000008"
+                       maxlength="8" placeholder="8 hex digits" spellcheck="false" autocomplete="off">
+                <div class="alu-input-meta" id="aluAMeta">8 (unsigned)  ·  8 (signed)</div>
+            </div>
+            <div class="alu-row">
+                <span class="alu-label">B — Input (hex)</span>
+                <input class="alu-input" id="aluB" type="text" value="00000005"
+                       maxlength="8" placeholder="8 hex digits" spellcheck="false" autocomplete="off">
+                <div class="alu-input-meta" id="aluBMeta">5 (unsigned)  ·  5 (signed)</div>
+            </div>
+            <div class="alu-row">
+                <span class="alu-label">Operation</span>
+                <div class="alu-ops">
+                    <button class="op-btn" data-op="AND">AND</button>
+                    <button class="op-btn" data-op="OR">OR</button>
+                    <button class="op-btn active" data-op="ADD">ADD</button>
+                    <button class="op-btn" data-op="SUB">SUB</button>
+                    <button class="op-btn" data-op="SLT">SLT</button>
+                </div>
+            </div>
+            <div class="alu-result-box">
+                <div class="alu-result-hex" id="aluResultHex">0x0000000D</div>
+                <div class="alu-result-rows">
+                    <div class="alu-result-row">Unsigned: <b id="aluResU">13</b></div>
+                    <div class="alu-result-row">Signed: <b id="aluResS">13</b></div>
+                </div>
+                <div class="alu-flags">
+                    <span class="alu-flag" id="flagV">V = 0</span>
+                    <span class="alu-flag" id="flagC">C = 0</span>
+                    <span class="alu-flag" id="flagZ">Z = 0</span>
+                </div>
+                <div class="alu-binary" id="aluBinary"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── MIPS EMULATOR (Labs 4 & 5) ── -->
+    <div class="tab-content" id="tab-mips">
+        <p class="tab-note">
+            A JavaScript port of the MIPS processor from Labs 4 and 5 — same instruction
+            set, same datapath logic. Step through or auto-run and watch the register file
+            update live.
+        </p>
+        <div class="mips-wrapper">
+            <div class="mips-panel">
+                <div class="mips-toolbar">
+                    <div class="mips-toolbar-left">
+                        <button class="mips-ctrl-btn" id="mipsStep">▶ Step</button>
+                        <button class="mips-ctrl-btn" id="mipsRun">⏩ Run</button>
+                        <button class="mips-ctrl-btn" id="mipsReset">↺ Reset</button>
+                        <select class="mips-prog-sel" id="mipsProg">
+                            <option value="sum">Sum 1+2+3+4+5</option>
+                            <option value="div">Division 12 ÷ 5</option>
+                        </select>
+                    </div>
+                    <span class="mips-status" id="mipsStatus">PC: 0x00  ·  Cycle: 0</span>
+                </div>
+                <div class="mips-body">
+                    <div class="mips-listing" id="mipsListing"></div>
+                    <div class="mips-regs">
+                        <div class="mips-reg-title">Register File (r0 – r9)</div>
+                        <div id="mipsRegFile"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="mips-done-overlay" id="mipsDone" style="display:none">
+                <div class="mips-done-box">
+                    <div class="mips-done-title">Program Complete</div>
+                    <div class="mips-done-desc" id="mipsDoneDesc"></div>
+                    <button class="mips-done-btn" id="mipsDoneReset">↺ Run Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CODE VIEWER ── -->
+    <div class="tab-content" id="tab-code">
+        <p class="tab-note">Selected source files from all five labs, written in Veryl.</p>
+        <div class="file-tabs" id="codeFileTabs">
+            <button class="file-tab active" data-file="full_adder">full_adder.veryl</button>
+            <button class="file-tab" data-file="adder">adder.veryl</button>
+            <button class="file-tab" data-file="bcdcheck">bcdcheck4.veryl</button>
+            <button class="file-tab" data-file="alu32">alu32.veryl</button>
+            <button class="file-tab" data-file="decoder">decoder.veryl</button>
+            <button class="file-tab" data-file="vips">vips.veryl</button>
+        </div>
+        <div class="code-viewer">
+            <pre><code id="codeBlock" class="language-veryl"></code></pre>
+        </div>
+    </div>
+
+</div><!-- /page -->
+
+<script src="script.js"></script>
+</body>
+</html>
