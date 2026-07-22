@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Airport Simulator — a C++17 terminal-based simulation with manually implemented priority queue, FIFO queue, fuel emergencies, and live ANSI stats.">
+    <meta name="description" content="Airport Simulator: a C++17 terminal-based simulation with manually implemented priority queue, FIFO queue, fuel emergencies, and live ANSI stats.">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-    <title>Airport Simulator — Abdalla</title>
+    <title>Airport Simulator · Abdalla</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
     <div class="hero">
         <span class="hero-eyebrow">C++ Simulation</span>
         <h1 class="hero-title">Airport<span class="acc">Sim</span></h1>
-        <p class="hero-desc">A terminal-based airport simulator written in C++17 from scratch. Manages real-time plane arrivals, departures, and fuel emergencies using manually implemented data structures — no STL queues. Features a live ANSI terminal display with colour-coded status, fuel bars, and a scrolling event log.</p>
+        <p class="hero-desc">A terminal-based airport simulator written in C++17 from scratch. Manages real-time plane arrivals, departures, and fuel emergencies using manually implemented data structures, no STL queues. Features a live ANSI terminal display with colour-coded status, fuel bars, and a scrolling event log.</p>
         <div class="hero-meta">
             <span class="meta-pill">C++</span>
             <span class="meta-pill">C++17</span>
@@ -52,7 +52,7 @@
                 <span class="t-dot t-dot-red"></span>
                 <span class="t-dot t-dot-yellow"></span>
                 <span class="t-dot t-dot-green"></span>
-                <span class="terminal-titlebar-label">airport-simulator — live</span>
+                <span class="terminal-titlebar-label">airport-simulator: live</span>
                 <div style="flex:1"></div>
                 <div class="sim-controls">
                     <button class="sim-btn" id="simPlay">▶ Play</button>
@@ -185,7 +185,7 @@
             <div class="ds-card">
                 <div class="ds-icon">🛬</div>
                 <div class="ds-title">Fuel Emergencies</div>
-                <div class="ds-desc">Arriving planes burn 1% fuel per minute while waiting. Below 20% triggers EMERGENCY priority. At 0% — crash.</div>
+                <div class="ds-desc">Arriving planes burn 1% fuel per minute while waiting. Below 20% triggers EMERGENCY priority. At 0% the plane crashes.</div>
             </div>
             <div class="ds-card">
                 <div class="ds-icon">🛫</div>
@@ -317,7 +317,7 @@ struct Plane {
     bool isLowFuel()   const { return fuelLevel >= 20 && fuelLevel < 40; }
 
     // 0 = highest priority (emergency), 1 = low fuel, 2 = normal
-    // Departures don't burn fuel — always priority 2
+    // Departures don't burn fuel, always priority 2
     int priority() const {
         if (type == PlaneType::DEPARTING) return 2;
         if (isEmergency()) return 0;
@@ -856,7 +856,7 @@ void Simulation::_logEvent(const std::string& msg) {
 
 void Simulation::_render() const {
     std::cout << "\033[2J\033[H";
-    // ... (full rendering code — see renderRunways, renderArrivalQueue, etc.)
+    // ... (full rendering code: see renderRunways, renderArrivalQueue, etc.)
     _renderRunways();
     _renderArrivalQueue();
     _renderDepartureQueue();
@@ -905,7 +905,7 @@ document.addEventListener('DOMContentLoaded', () => loadFile('main'));
 
 /* ══════════════════════════════════════════════════════════════
    LIVE AIRPORT SIMULATION ENGINE
-   JS port of the C++ simulation — same logic, same data structures
+   JS port of the C++ simulation, same logic, same data structures
 ══════════════════════════════════════════════════════════════ */
 (function () {
 
@@ -929,7 +929,7 @@ document.addEventListener('DOMContentLoaded', () => loadFile('main'));
 
     function fuelCls(f) { return f < 20 ? 't-red' : f < 40 ? 't-amber' : 't-green'; }
 
-    /* Block-character bar — mirrors C++ fuelBar / progressBar */
+    /* Block-character bar, mirrors C++ fuelBar / progressBar */
     function bar(val, max, width, cls) {
         const filled = max > 0 ? Math.min(width, Math.round((val / max) * width)) : 0;
         let s = '';
@@ -1015,13 +1015,13 @@ document.addEventListener('DOMContentLoaded', () => loadFile('main'));
         /* 2. Burn fuel for every waiting arrival (mirrors Airport::_burnQueuedFuel) */
         for (const p of s.arrQ) { if (p.fuel > 0) p.fuel--; }
 
-        /* 3. Re-sort after fuel burn — priorities may have shifted */
+        /* 3. Re-sort after fuel burn, priorities may have shifted */
         s.arrQ.sort((a, b) => {
             const pa = prio(a), pb = prio(b);
             return pa !== pb ? pa - pb : a.entryTime - b.entryTime;
         });
 
-        /* 4. Crash check — zero-fuel planes are removed (mirrors _assignToRunways crash path) */
+        /* 4. Crash check, zero-fuel planes are removed (mirrors _assignToRunways crash path) */
         s.arrQ = s.arrQ.filter(p => {
             if (p.fuel === 0) {
                 s.stats.crashes++;

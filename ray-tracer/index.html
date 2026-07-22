@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ray Tracer · Abdalla</title>
+    <meta name="description" content="A physically-based path tracer built from scratch in C++, ported to JavaScript so it renders live in the browser. Lambertian, metal, and glass materials with depth of field.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav">
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </button>
+</nav>
+
+<div class="page">
+
+    <div class="hero">
+        <span class="hero-eyebrow">C++ · Path Tracing · Summer 2026</span>
+        <h1 class="hero-title">Ray<span class="acc">Tracer</span></h1>
+        <p class="hero-desc">
+            A physically-based renderer built from scratch in C++, following
+            <em>Ray Tracing in One Weekend</em>. No graphics libraries, just vector math and
+            recursion. Every pixel is the average of hundreds of light rays bouncing around
+            a scene of glass, metal, and matte spheres. Ported to JavaScript below so it
+            renders live in this page instead of a static image.
+        </p>
+        <div class="hero-meta">
+            <span class="meta-pill">C++17</span>
+            <span class="meta-pill">Path Tracing</span>
+            <span class="meta-pill">Monte Carlo</span>
+            <span class="meta-pill">Vector Math</span>
+            <span class="meta-pill">CMake</span>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="render">▶ Live Render</button>
+        <button class="tab-btn" data-tab="physics">Materials &amp; Physics</button>
+        <button class="tab-btn" data-tab="code">Source Code</button>
+    </div>
+
+    <!-- ── LIVE RENDER ── -->
+    <div class="tab-content active" id="tab-render">
+        <p class="tab-note">
+            The exact algorithm from <code style="color:var(--accent)">main.cpp</code>, running
+            in this browser tab. Each pass fires one more ray per pixel through the scene, so
+            the image starts noisy and clears up as samples accumulate, exactly like the C++
+            version does over many more samples on the command line. Higher presets look
+            better but render slower, since more spheres means more ray tests per bounce.
+        </p>
+        <div class="render-panel">
+            <div class="render-toolbar">
+                <button class="render-ctrl-btn" id="rtPlay">▶ Render</button>
+                <button class="render-ctrl-btn" id="rtPause">⏸ Pause</button>
+                <button class="render-ctrl-btn" id="rtReset">↺ New Scene</button>
+                <span class="render-status" id="rtStatus">Normal · 0 samples/px · 0.0s</span>
+            </div>
+            <div class="render-config-bar">
+                <div class="render-cfg-field">
+                    <span class="render-cfg-label">Quality</span>
+                    <div class="preset-group">
+                        <button class="preset-btn" data-preset="fast">Fast</button>
+                        <button class="preset-btn active" data-preset="normal">Normal</button>
+                        <button class="preset-btn" data-preset="detailed">Detailed</button>
+                    </div>
+                </div>
+                <div class="render-cfg-field">
+                    <span class="render-cfg-label">Aperture (depth of field)</span>
+                    <input class="render-slider" id="rtAperture" type="range" min="0" max="50" value="10">
+                    <span class="render-slider-val" id="rtApertureVal">10</span>
+                </div>
+            </div>
+            <div class="canvas-wrap">
+                <canvas id="rtCanvas" width="380" height="253"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── MATERIALS & PHYSICS ── -->
+    <div class="tab-content" id="tab-physics">
+        <p class="tab-note">
+            Every sphere in the scene is one of three material types. This is called
+            <strong>path tracing</strong>, the same technique used in production renderers
+            like Pixar's RenderMan and Blender's Cycles.
+        </p>
+        <div class="ds-grid">
+            <div class="ds-card">
+                <div class="ds-icon">◐</div>
+                <div class="ds-title">Lambertian (Matte)</div>
+                <div class="ds-desc">Light scatters randomly across the hemisphere around the surface normal. Implemented by picking a random point on a unit sphere attached to the hit point and bouncing the ray toward it. Most spheres in the scene use this.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">◑</div>
+                <div class="ds-title">Metal</div>
+                <div class="ds-desc">Light reflects at the same angle it arrived, like a mirror, using <code>v - 2·dot(v,n)·n</code>. A <code>fuzz</code> parameter adds random scatter around the reflection for a brushed-metal look instead of a perfect mirror.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">○</div>
+                <div class="ds-title">Dielectric (Glass)</div>
+                <div class="ds-desc">Light bends as it enters the surface, following Snell's law. Schlick's approximation blends between reflection and refraction depending on viewing angle, which is why glass looks more like a mirror at shallow angles.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">◎</div>
+                <div class="ds-title">Depth of Field</div>
+                <div class="ds-desc">The camera samples rays from random points on a lens disk instead of a single pinhole. Objects at the focus distance stay sharp; everything else blurs, exactly like a real camera aperture.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CODE ── -->
+    <div class="tab-content" id="tab-code">
+        <p class="tab-note">Key files from the actual C++ source.</p>
+        <div class="file-tabs">
+            <button class="file-tab" data-file="raycolor">main.cpp</button>
+            <button class="file-tab" data-file="vec3">vec3.h</button>
+            <button class="file-tab" data-file="sphere">sphere.h</button>
+            <button class="file-tab active" data-file="material">material.h</button>
+            <button class="file-tab" data-file="camera">camera.h</button>
+        </div>
+        <div class="code-viewer">
+            <pre><code id="codeBlock" class="language-cpp"></code></pre>
+        </div>
+    </div>
+
+    <!-- ── LEARNED ── -->
+    <span class="section-label">What I Learned</span>
+    <div class="learned-list">
+        <div class="learned-item">
+            <b>The rendering equation.</b>
+            <p>Each recursive bounce in <code style="color:var(--accent)">ray_color()</code> computes one term of the rendering equation: how much light arrives at a point from a given direction. Writing it recursively made the physics click in a way reading about it never did.</p>
+        </div>
+        <div class="learned-item">
+            <b>Math on paper first.</b>
+            <p>Every time I tried to code before understanding the derivation (Snell's law refraction, Schlick's approximation) I got it wrong. Writing it out by hand first made the code straightforward.</p>
+        </div>
+        <div class="learned-item">
+            <b>Why C++, and why the browser version is slower.</b>
+            <p>Ray tracing is compute-intensive. The optimised C++ binary renders the full 500-samples-per-pixel scene in a few minutes; this JavaScript port trades sample count and scene density for real-time feedback in a browser tab instead.</p>
+        </div>
+    </div>
+
+</div><!-- /page -->
+
+<script src="script.js"></script>
+</body>
+</html>

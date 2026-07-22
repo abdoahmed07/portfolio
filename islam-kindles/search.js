@@ -103,7 +103,7 @@ function expandQuery(query) {
                 expanded.add(key);
             }
         });
-        // partial match — if query contains part of a synonym cluster key
+        // partial match, if query contains part of a synonym cluster key
         Object.entries(SYNONYMS).forEach(([key, syns]) => {
             if (key.includes(word) || word.includes(key)) {
                 syns.forEach(s => expanded.add(s));
@@ -188,17 +188,23 @@ function runSearch() {
     const summary = buildSummary(query, expanded, scoredSurahs.length, scoredHadiths.length, scoredDebunks.length);
     document.getElementById("summaryText").textContent = summary;
 
-    // Expanded terms pills
+    // Expanded terms pills. Built with createElement/textContent instead of
+    // innerHTML, since unmatched words fall back to the user's raw query text.
     const termsEl = document.getElementById("expandedTerms");
-    termsEl.innerHTML = "Also searched: " + expanded.slice(0,10).map(t =>
-        `<span class="term-pill">${t}</span>`
-    ).join("");
+    termsEl.textContent = "Also searched: ";
+    expanded.slice(0,10).forEach(t => {
+        const pill = document.createElement("span");
+        pill.className = "term-pill";
+        pill.textContent = t;
+        termsEl.appendChild(pill);
+    });
 
     document.getElementById("summaryCard").style.display = "block";
 
     const maxScore = Math.max(
         ...scoredSurahs.map(s=>s.score),
         ...scoredHadiths.map(h=>h.score),
+        ...scoredDebunks.map(d=>d.score),
         1
     );
 
@@ -214,7 +220,7 @@ function runSearch() {
             card.style.animationDelay = `${i * 0.07}s`;
             card.innerHTML = `
                 <div class="rcard-type t-quran">📖 Quran · Surah ${s.number}</div>
-                <div class="rcard-title">${s.name} — ${s.english}</div>
+                <div class="rcard-title">${s.name}: ${s.english}</div>
                 <div class="rcard-text">${s.topics.slice(0,5).map(t=>t.charAt(0).toUpperCase()+t.slice(1)).join(" · ")}</div>
                 ${why ? `<div class="rcard-why">${why}</div>` : ""}
                 <div class="score-bar"><div class="score-fill" style="width:${pct}%"></div></div>

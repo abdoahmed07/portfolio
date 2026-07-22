@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Solving · Abdalla</title>
+    <meta name="description" content="LeetCode practice from a summer of interview prep: arrays and hash maps, trees, and graph traversal, with a live animated Number of Islands DFS.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav">
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </button>
+</nav>
+
+<div class="page">
+
+    <div class="hero">
+        <span class="hero-eyebrow">Python · Interview Prep · Summer 2026</span>
+        <h1 class="hero-title">Problem<span class="acc">Solving</span></h1>
+        <p class="hero-desc">
+            Weekly algorithm practice, one pattern at a time: hash maps, tree recursion, and
+            graph traversal. Each solution came with a comment explaining the key insight, not
+            just what the code does. The demo below runs the actual Number of Islands DFS,
+            animated cell by cell exactly as it recurses.
+        </p>
+        <div class="hero-meta">
+            <span class="meta-pill">Arrays &amp; Hash Maps</span>
+            <span class="meta-pill">Trees</span>
+            <span class="meta-pill">Graphs (BFS/DFS)</span>
+            <span class="meta-pill">Recursion</span>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="demo">▶ Number of Islands</button>
+        <button class="tab-btn" data-tab="patterns">Patterns</button>
+        <button class="tab-btn" data-tab="code">Source Code</button>
+    </div>
+
+    <!-- ── DEMO ── -->
+    <div class="tab-content active" id="tab-demo">
+        <p class="tab-note">
+            Click cells to draw land and water, then run it. This is the exact recursive
+            <code style="color:var(--accent)">dfs()</code> from <code style="color:var(--accent)">num_islands()</code>,
+            not a re-implementation, watch it flood-fill one island at a time and mark each one
+            a different color as it's discovered.
+        </p>
+        <div class="islands-panel">
+            <div class="islands-toolbar">
+                <button class="islands-btn" id="islandsRun">▶ Count Islands</button>
+                <button class="islands-btn" id="islandsShuffle">🎲 Shuffle Grid</button>
+                <span class="islands-status" id="islandsStatus"></span>
+            </div>
+            <div class="islands-grid-wrap">
+                <div class="islands-grid" id="islandsGrid"></div>
+            </div>
+            <div class="islands-hint">Lit cells are land ('1'). Click any cell to toggle it before running.</div>
+        </div>
+    </div>
+
+    <!-- ── PATTERNS ── -->
+    <div class="tab-content" id="tab-patterns">
+        <p class="tab-note">Most interview problems reduce to a handful of recognizable patterns. These four came up constantly.</p>
+        <div class="ds-grid">
+            <div class="ds-card">
+                <div class="ds-icon">🗺️</div>
+                <div class="ds-title">Hash Map Lookup</div>
+                <div class="ds-desc">Two Sum, Group Anagrams, Top K Frequent. Whenever a problem needs "have I seen this before" or "how many of these exist," a hash map turns an O(n²) scan into O(n).</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🌳</div>
+                <div class="ds-title">Tree Recursion</div>
+                <div class="ds-desc">Solve for the root, trust the recursive calls to solve the subtrees. The one recurring mistake: validating a BST by checking only immediate children instead of passing down a valid range.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🕸️</div>
+                <div class="ds-title">Graph Traversal</div>
+                <div class="ds-desc">Number of Islands, Clone Graph, Course Schedule. Connected components, cycles, and shortest paths are all BFS/DFS with a visited set, the hard part is picking which one and what "visited" means.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🎯</div>
+                <div class="ds-title">Three-Color DFS</div>
+                <div class="ds-desc">Cycle detection needs more than a simple visited/unvisited flag. Marking nodes unvisited, in-progress, and done distinguishes "revisiting a node in the current path" (a real cycle) from "revisiting a node we already fully explored" (not a cycle).</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CODE ── -->
+    <div class="tab-content" id="tab-code">
+        <p class="tab-note">All four weeks of practice, in order.</p>
+        <div class="file-tabs">
+            <button class="file-tab" data-file="week1">week1_warmup.py</button>
+            <button class="file-tab" data-file="week3">week3_arrays_hashmaps.py</button>
+            <button class="file-tab" data-file="week5">week5_trees_recursion.py</button>
+            <button class="file-tab active" data-file="week7">week7_graphs.py</button>
+        </div>
+        <div class="code-viewer">
+            <pre><code id="codeBlock" class="language-python"></code></pre>
+        </div>
+    </div>
+
+</div><!-- /page -->
+
+<script src="script.js"></script>
+</body>
+</html>

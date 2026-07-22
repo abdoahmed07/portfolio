@@ -79,13 +79,36 @@ function dictMsg(msg, type) {
 function renderDict() {
     const el = document.getElementById("dictEntries");
     const keys = Object.keys(dict);
-    if (keys.length === 0) { el.innerHTML = '<div class="dict-empty">Dictionary is empty. Add some words above.</div>'; return; }
-    el.innerHTML = keys.map(w=>`
-        <div class="dict-entry">
-            <span class="dict-word">${w}</span>
-            <span class="dict-def">${dict[w]}</span>
-            <button class="dict-del" onclick="dictDeleteWord('${w}')">✕</button>
-        </div>`).join("");
+    el.innerHTML = "";
+    if (keys.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "dict-empty";
+        empty.textContent = "Dictionary is empty. Add some words above.";
+        el.appendChild(empty);
+        return;
+    }
+    // Built with createElement/textContent instead of innerHTML, since
+    // word/definition come from raw user input
+    keys.forEach(w => {
+        const entry = document.createElement("div");
+        entry.className = "dict-entry";
+
+        const word = document.createElement("span");
+        word.className = "dict-word";
+        word.textContent = w;
+
+        const def = document.createElement("span");
+        def.className = "dict-def";
+        def.textContent = dict[w];
+
+        const del = document.createElement("button");
+        del.className = "dict-del";
+        del.textContent = "✕";
+        del.addEventListener("click", () => dictDeleteWord(w));
+
+        entry.append(word, def, del);
+        el.appendChild(entry);
+    });
 }
 
 function dictInsert() {
@@ -168,9 +191,9 @@ const pbForms = {
     list:   { fields:[],                          cmd:()=>`list` },
 };
 
-function pbSetAction(action) {
+function pbSetAction(action, btn) {
     document.querySelectorAll(".pb-quick").forEach(b=>b.classList.remove("active"));
-    event.target.classList.add("active");
+    btn.classList.add("active");
     const area = document.getElementById("pbInputArea");
     const form = pbForms[action];
     if (form.fields.length===0) { area.innerHTML=""; pbCmd("list"); return; }

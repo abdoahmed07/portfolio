@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Writing · Abdalla</title>
+    <meta name="description" content="5 technical blog posts written over the summer covering PostgreSQL setup, WebSockets vs HTTP, JWT authentication, production deployment lessons, and an open source contribution story.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav">
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </button>
+</nav>
+
+<div class="page">
+
+    <div class="hero">
+        <span class="hero-eyebrow">Writing · Summer 2026</span>
+        <h1 class="hero-title">Field <span class="acc">Notes</span></h1>
+        <p class="hero-desc">
+            Five posts written while actually building the summer's projects, real-time systems,
+            authentication, production deployment, and an open source contribution, each one
+            written right after living through the thing it explains.
+        </p>
+        <div class="hero-meta">
+            <span class="meta-pill">PostgreSQL</span>
+            <span class="meta-pill">WebSockets</span>
+            <span class="meta-pill">JWT</span>
+            <span class="meta-pill">Deployment</span>
+            <span class="meta-pill">Open Source</span>
+        </div>
+    </div>
+
+    <span class="section-label">All Posts</span>
+    <div class="post-list" id="postList"></div>
+
+    <span class="section-label">Reading</span>
+    <div class="reader-wrap" id="reader"></div>
+
+</div><!-- /page -->
+
+<script src="script.js"></script>
+</body>
+</html>

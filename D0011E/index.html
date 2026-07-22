@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D0011E — Digital Design · Abdalla</title>
-    <meta name="description" content="D0011E Digital Design — built a complete 32-bit MIPS processor in Veryl HDL, from logic gates to a running CPU.">
+    <title>D0011E: Digital Design · Abdalla</title>
+    <meta name="description" content="D0011E Digital Design: a complete 32-bit MIPS processor built in Veryl HDL, from logic gates to a running CPU.">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +43,7 @@
         <span class="hero-eyebrow">Veryl · Digital Design · LTU</span>
         <h1 class="hero-title">D0011E<span class="acc">.</span></h1>
         <p class="hero-desc">
-            Built a complete 32-bit MIPS processor from scratch — starting from a single
+            Built a complete 32-bit MIPS processor from scratch, starting from a single
             logic gate, assembling a full adder, scaling to a 32-bit ALU, and finishing
             with a CPU that executes real assembly programs including an integer division
             routine. Written in Veryl, a modern hardware description language that
@@ -66,13 +66,13 @@
             <div class="lab-num">L2</div>
             <div class="lab-info">
                 <div class="lab-title">Combinational Logic &amp; BCD Checker</div>
-                <div class="lab-desc">Designed logic circuits in Veryl for a 4-bit BCD digit checker — computing max, min, even, lo3, noBCD, and hieq3 from boolean expressions. Visualised netlists in DigitalJS via Yosys, performed Karnaugh minimisation, and implemented PLD cell arrays. Verified every output using Verilator testbenches with exhaustive assertions.</div>
+                <div class="lab-desc">Designed logic circuits in Veryl for a 4-bit BCD digit checker that computes max, min, even, lo3, noBCD, and hieq3 from boolean expressions. Visualised netlists in DigitalJS via Yosys, performed Karnaugh minimisation, and implemented PLD cell arrays. Verified every output using Verilator testbenches with exhaustive assertions.</div>
             </div>
         </div>
         <div class="lab-row">
             <div class="lab-num">L3a</div>
             <div class="lab-info">
-                <div class="lab-title">4-bit ALU — Full Adder → Arithmetic + Logic Unit</div>
+                <div class="lab-title">4-bit ALU: Full Adder → Arithmetic + Logic Unit</div>
                 <div class="lab-desc">Built a 1-bit full adder, chained four into a ripple-carry adder, then wrapped it in an arithmetic unit supporting ADD and SUB with signed overflow (V) and carry (C) flags. Added a 4-bit logic unit for AND and OR. Verified signed and unsigned arithmetic edge cases with complete truth tables and simulation waveforms.</div>
             </div>
         </div>
@@ -80,21 +80,21 @@
             <div class="lab-num">L3b</div>
             <div class="lab-info">
                 <div class="lab-title">32-bit ALU + Program Counter</div>
-                <div class="lab-desc">Scaled the 4-bit ALU to 32 bits using a generate loop over 32 full adders. Extended it with AND, OR, and SLT via a 4-to-1 mux, plus a zero flag (Z). Designed a clocked program counter that increments by 4 each cycle with async reset — the first sequential component in the processor.</div>
+                <div class="lab-desc">Scaled the 4-bit ALU to 32 bits using a generate loop over 32 full adders. Extended it with AND, OR, and SLT via a 4-to-1 mux, plus a zero flag (Z). Designed a clocked program counter that increments by 4 each cycle with async reset, the first sequential component in the processor.</div>
             </div>
         </div>
         <div class="lab-row">
             <div class="lab-num">L4</div>
             <div class="lab-info">
                 <div class="lab-title">Simplified Single-Cycle MIPS Processor</div>
-                <div class="lab-desc">Wired everything together: instruction memory, register file, sign-extend unit, control decoder, ALU, and muxes in a top-level module. Implemented the full MIPS single-cycle datapath for 7 instructions — ADD, SUB, AND, OR, SLT, ADDI, SLTI. Wrote a testbench that steps through the program and asserts correct register values every clock cycle.</div>
+                <div class="lab-desc">Wired everything together: instruction memory, register file, sign-extend unit, control decoder, ALU, and muxes in a top-level module. Implemented the full MIPS single-cycle datapath for 7 instructions: ADD, SUB, AND, OR, SLT, ADDI, SLTI. Wrote a testbench that steps through the program and asserts correct register values every clock cycle.</div>
             </div>
         </div>
         <div class="lab-row">
             <div class="lab-num">L5</div>
             <div class="lab-info">
-                <div class="lab-title">Full MIPS — Data Memory, Branch, Jump &amp; Integer Division</div>
-                <div class="lab-desc">Added data memory (LW/SW), branch (BEQ with signed offset × 4), and jump (J with 26-bit absolute target). Wrote MIPS assembly for integer division using repeated subtraction and hand-translated it to machine code. The final processor executes the full program and stores quotient + remainder in data memory — verified by assertions in the testbench.</div>
+                <div class="lab-title">Full MIPS: Data Memory, Branch, Jump &amp; Integer Division</div>
+                <div class="lab-desc">Added data memory (LW/SW), branch (BEQ with signed offset × 4), and jump (J with 26-bit absolute target). Wrote MIPS assembly for integer division using repeated subtraction and hand-translated it to machine code. The final processor executes the full program and stores quotient + remainder in data memory, verified by assertions in the testbench.</div>
             </div>
         </div>
     </div>
@@ -113,7 +113,7 @@
     <div class="tab-content active" id="tab-bcd">
         <p class="tab-note">
             Reproduction of the Lab 2 BCD checker. Toggle the 4 input bits and see all
-            six combinational outputs update instantly — the exact same boolean expressions
+            six combinational outputs update instantly, using the exact same boolean expressions
             as the Veryl module.
         </p>
         <div class="bcd-panel">
@@ -178,18 +178,18 @@
     <div class="tab-content" id="tab-alu">
         <p class="tab-note">
             The 32-bit ALU from Lab 3b. Enter two values in hex, pick an operation, and
-            see the result plus the overflow (V), carry (C), and zero (Z) flags — computed
+            see the result plus the overflow (V), carry (C), and zero (Z) flags, computed
             the same way as the Veryl hardware.
         </p>
         <div class="alu-panel">
             <div class="alu-row">
-                <span class="alu-label">A — Input (hex)</span>
+                <span class="alu-label">Input A (hex)</span>
                 <input class="alu-input" id="aluA" type="text" value="00000008"
                        maxlength="8" placeholder="8 hex digits" spellcheck="false" autocomplete="off">
                 <div class="alu-input-meta" id="aluAMeta">8 (unsigned)  ·  8 (signed)</div>
             </div>
             <div class="alu-row">
-                <span class="alu-label">B — Input (hex)</span>
+                <span class="alu-label">Input B (hex)</span>
                 <input class="alu-input" id="aluB" type="text" value="00000005"
                        maxlength="8" placeholder="8 hex digits" spellcheck="false" autocomplete="off">
                 <div class="alu-input-meta" id="aluBMeta">5 (unsigned)  ·  5 (signed)</div>
@@ -223,8 +223,8 @@
     <!-- ── MIPS EMULATOR (Labs 4 & 5) ── -->
     <div class="tab-content" id="tab-mips">
         <p class="tab-note">
-            A JavaScript port of the MIPS processor from Labs 4 and 5 — same instruction
-            set, same datapath logic. Step through or auto-run and watch the register file
+            A JavaScript port of the MIPS processor from Labs 4 and 5, using the same
+            instruction set and datapath logic. Step through or auto-run and watch the register file
             update live.
         </p>
         <div class="mips-wrapper">
@@ -244,7 +244,7 @@
                 <div class="mips-body">
                     <div class="mips-listing" id="mipsListing"></div>
                     <div class="mips-regs">
-                        <div class="mips-reg-title">Register File (r0 – r9)</div>
+                        <div class="mips-reg-title">Register File (r0-r9)</div>
                         <div id="mipsRegFile"></div>
                     </div>
                 </div>

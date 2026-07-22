@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return -1;
     }
 
-    // ── LEADERBOARD (localStorage — works without a server) ───
+    // ── LEADERBOARD (localStorage, works without a server) ───
     function getStoredLeaderboard() {
         try {
             return JSON.parse(localStorage.getItem("tttLeaderboard") || "[]");
@@ -282,11 +282,22 @@ document.addEventListener("DOMContentLoaded", () => {
             const li = document.createElement("li");
             li.className = "lb-entry";
             const rankClass = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
-            li.innerHTML = `
-                <span class="lb-rank ${rankClass}">${i + 1}</span>
-                <span class="lb-name">${entry.name}</span>
-                <span class="lb-wins">${entry.wins} win${entry.wins !== 1 ? "s" : ""}</span>
-            `;
+
+            // Built with createElement/textContent instead of innerHTML, since
+            // entry.name comes from a player-typed input field
+            const rank = document.createElement("span");
+            rank.className = `lb-rank ${rankClass}`;
+            rank.textContent = i + 1;
+
+            const name = document.createElement("span");
+            name.className = "lb-name";
+            name.textContent = entry.name;
+
+            const wins = document.createElement("span");
+            wins.className = "lb-wins";
+            wins.textContent = `${entry.wins} win${entry.wins !== 1 ? "s" : ""}`;
+
+            li.append(rank, name, wins);
             lbList.appendChild(li);
         });
     }
@@ -298,9 +309,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     lbBackBtn.addEventListener("click", () => {
-        showScreen(gameScreen.classList.contains("active") || setupScreen.classList.contains("active")
-            ? gameScreen : setupScreen);
-        // just go back to wherever makes sense
+        // A round is in progress if the board has moves and isn't finished yet,
+        // otherwise there's nothing to return to but setup
         if (!gameOver && board.some(c => c !== "")) showScreen(gameScreen);
         else showScreen(setupScreen);
     });

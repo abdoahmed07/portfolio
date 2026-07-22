@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF Writeups · Abdalla</title>
+    <meta name="description" content="10 solved CTF challenges across web, crypto, reverse engineering, binary exploitation, and forensics, plus a live version of an original SQL injection challenge.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav">
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </button>
+</nav>
+
+<div class="page">
+
+    <div class="hero">
+        <span class="hero-eyebrow">PicoCTF · Security · Summer 2026</span>
+        <h1 class="hero-title">CTF<span class="acc">Log</span></h1>
+        <p class="hero-desc">
+            Solved 10 CTF challenges across five security categories on PicoCTF, documented
+            each one, then built and hosted an original SQL injection challenge for others to
+            solve. The writeups explain the vulnerability, the exploit, and the actual fix,
+            not just the flag. The live challenge below is a client-side port of the app I built,
+            same vulnerability, same intended solution.
+        </p>
+        <div class="hero-meta">
+            <span class="meta-pill">Web Exploitation</span>
+            <span class="meta-pill">Cryptography</span>
+            <span class="meta-pill">Reverse Engineering</span>
+            <span class="meta-pill">Binary Exploitation</span>
+            <span class="meta-pill">Forensics</span>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="writeups">Writeups</button>
+        <button class="tab-btn" data-tab="challenge">▶ Try My Challenge</button>
+        <button class="tab-btn" data-tab="interview">Interview Topics</button>
+    </div>
+
+    <!-- ── WRITEUPS ── -->
+    <div class="tab-content active" id="tab-writeups">
+        <p class="tab-note">All 10 challenges, picked by category on the left.</p>
+        <div class="writeup-panel">
+            <div class="writeup-list" id="wuList"></div>
+            <div class="writeup-content" id="wuContent"></div>
+        </div>
+    </div>
+
+    <!-- ── LIVE CHALLENGE ── -->
+    <div class="tab-content" id="tab-challenge">
+        <p class="tab-note">
+            "Can you log in without knowing the password?" The real version is a Flask + SQLite
+            app I built and hosted for others to attack. This is a client-side port of the same
+            vulnerable query-building logic, so it runs here with no backend. Try logging in
+            with real-looking credentials first, then try breaking it.
+        </p>
+        <div class="sqli-panel">
+            <div class="sqli-form-side">
+                <div class="sqli-title">🔐 Super Secure Login</div>
+                <div class="sqli-hint">Hint: the login is very secure. Or is it?</div>
+                <form id="sqliForm">
+                    <div class="sqli-field">
+                        <span class="sqli-label">Username</span>
+                        <input class="sqli-input" id="sqliUser" type="text" autocomplete="off" spellcheck="false" placeholder="Enter username">
+                    </div>
+                    <div class="sqli-field">
+                        <span class="sqli-label">Password</span>
+                        <input class="sqli-input" id="sqliPass" type="text" autocomplete="off" spellcheck="false" placeholder="Enter password">
+                    </div>
+                    <button class="sqli-submit" type="submit">Sign in</button>
+                </form>
+                <button class="cap-ctrl-btn" id="sqliReveal" style="margin-top:14px;width:100%;font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:8px;cursor:pointer;">🏳️ Give up, show me the answer</button>
+            </div>
+            <div class="sqli-query-side">
+                <div class="sqli-query-label">The SQL query your input builds, live</div>
+                <div class="sqli-query-box" id="sqliQueryBox"></div>
+                <div class="sqli-result" id="sqliResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── INTERVIEW TOPICS ── -->
+    <div class="tab-content" id="tab-interview">
+        <p class="tab-note">What solving these challenges actually taught me, framed the way it'd come up in a conversation.</p>
+        <div class="ds-grid">
+            <div class="ds-card">
+                <div class="ds-icon">💉</div>
+                <div class="ds-title">SQL Injection</div>
+                <div class="ds-desc">Parameterized queries prevent it by treating user input strictly as data, never as SQL syntax. String concatenation is dangerous specifically because it lets user input change the structure of the query itself.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">💥</div>
+                <div class="ds-title">Buffer Overflows</div>
+                <div class="ds-desc">Stack layout puts the return address right after local variables. Overwriting it redirects execution. Defenses: stack canaries (detect the overwrite), ASLR (randomize addresses), and the NX bit (make the stack non-executable).</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🔑</div>
+                <div class="ds-title">Encoding vs. Encryption</div>
+                <div class="ds-desc">Encoding (base64, ROT-13) has no secret key, a keyspace of 1, and provides zero security. Encryption uses a secret key with a keyspace large enough to resist brute force. Confusing the two is a common and dangerous mistake.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🗂️</div>
+                <div class="ds-title">File Forensics</div>
+                <div class="ds-desc">Office documents (docx, pptx, xlsx) are ZIP archives of XML and media. Hidden data can live in non-standard files inside that archive. Tools like <code style="color:var(--accent)">binwalk</code>, <code style="color:var(--accent)">exiftool</code>, and <code style="color:var(--accent)">strings</code> are standard for finding it.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🧭</div>
+                <div class="ds-title">CTF Methodology</div>
+                <div class="ds-desc">Reconnaissance first: view source, check <code style="color:var(--accent)">robots.txt</code>, look for exposed files, before trying anything exploit-shaped. Most of the challenges here rewarded looking carefully before attacking.</div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /page -->
+
+<script src="script.js"></script>
+</body>
+</html>

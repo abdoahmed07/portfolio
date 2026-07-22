@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abdalla — Portfolio</title>
+    <title>Abdalla's Portfolio</title>
 
-    <!-- Favicon — two fallbacks: same-dir copy + root copy -->
+    <!-- Favicon fallbacks: same-dir copy, root copy -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 
     <!-- SEO -->
-    <meta name="description" content="Abdalla's developer portfolio — games, tools, full-stack projects, and university coursework built with HTML, CSS, JavaScript, Python, Java, and C#.">
+    <meta name="description" content="Abdalla's developer portfolio: games, tools, full-stack projects, and university coursework built with HTML, CSS, JavaScript, Python, Java, and C#.">
     <meta name="author" content="Abdalla">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Abdalla — Portfolio">
-    <meta property="og:description" content="Developer in progress — building things, breaking things, learning everything.">
+    <meta property="og:title" content="Abdalla's Portfolio">
+    <meta property="og:description" content="Developer in progress: building things, breaking things, learning everything.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://abdoahmed07.github.io/portfolio/portfolio-site/index.html">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -63,7 +64,7 @@
                 <span class="line">Hi, I'm</span>
                 <span class="line accent">Abdalla.</span>
             </h1>
-            <p class="hero-sub">Developer in progress — building things, breaking things, learning everything.</p>
+            <p class="hero-sub">Developer in progress: building things, breaking things, learning everything.</p>
         </section>
 
         <!-- SKILLS STRIP -->
@@ -74,6 +75,7 @@
             <span class="skill-pill">Python</span>
             <span class="skill-pill">Java</span>
             <span class="skill-pill">C#</span>
+            <span class="skill-pill">C</span>
             <span class="skill-pill">C++</span>
             <span class="skill-pill">.NET</span>
             <span class="skill-pill">PHP</span>
@@ -85,7 +87,7 @@
         <!-- PROJECTS -->
         <section class="projects-section">
             <div class="section-header">
-                <p class="section-count">11 projects</p>
+                <p class="section-count">20 projects</p>
             </div>
 
             <!-- TAG FILTER STRIP -->
@@ -101,6 +103,10 @@
                 <button class="filter-btn" data-tag="C#">C#</button>
                 <button class="filter-btn" data-tag="C++">C++</button>
                 <button class="filter-btn" data-tag="HDL">HDL</button>
+                <button class="filter-btn" data-tag="C">C</button>
+                <button class="filter-btn" data-tag="Security">Security</button>
+                <button class="filter-btn" data-tag="Open Source">Open Source</button>
+                <button class="filter-btn" data-tag="Writing">Writing</button>
             </div>
 
             <div class="projects-list">
@@ -141,7 +147,7 @@
                     </div>
                     <div class="project-body">
                         <h2 class="project-title">Islam Kindles</h2>
-                        <p class="project-desc">A practice web project — exploring layout and structure.</p>
+                        <p class="project-desc">A practice web project for exploring layout and structure.</p>
                     </div>
                     <div class="project-arrow">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -185,8 +191,8 @@
                         <span class="project-tag">Python</span>
                     </div>
                     <div class="project-body">
-                        <h2 class="project-title">D0009E — Intro to Programming</h2>
-                        <p class="project-desc">University course assignments. Functions, data structures, OOP, and file I/O — six tasks in Python.</p>
+                        <h2 class="project-title">D0009E: Intro to Programming</h2>
+                        <p class="project-desc">University course assignments, six tasks in Python covering functions, data structures, OOP, and file I/O.</p>
                     </div>
                     <div class="project-arrow">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -200,7 +206,7 @@
                         <span class="project-tag">Java</span>
                     </div>
                     <div class="project-body">
-                        <h2 class="project-title">D0010E — Object-Oriented Programming</h2>
+                        <h2 class="project-title">D0010E: Object-Oriented Programming</h2>
                         <p class="project-desc">6 Java labs: custom ArrayList, room navigation game (MVC), BFS graph traversal, state machine calculator, and a full discrete event simulation.</p>
                     </div>
                     <div class="project-arrow">
@@ -215,8 +221,8 @@
                         <span class="project-tag">Mixed</span>
                     </div>
                     <div class="project-body">
-                        <h2 class="project-title">D0015E — Computer Science &amp; Engineering</h2>
-                        <p class="project-desc">Hammurabi simulation game, Arduino circuits, LaTeX documents, algorithm analysis, and engineering ethics — five modules across one course.</p>
+                        <h2 class="project-title">D0015E: Computer Science &amp; Engineering</h2>
+                        <p class="project-desc">Five modules in one course: Hammurabi simulation game, Arduino circuits, LaTeX documents, algorithm analysis, and engineering ethics.</p>
                     </div>
                     <div class="project-arrow">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -260,8 +266,143 @@
                         <span class="project-tag">HDL</span>
                     </div>
                     <div class="project-body">
-                        <h2 class="project-title">D0011E — Digital Design</h2>
-                        <p class="project-desc">Built a complete 32-bit MIPS processor from scratch in Veryl HDL — from a single full adder to a running CPU with ALU, register file, control decoder, data memory, branch and jump instructions, and an integer division program.</p>
+                        <h2 class="project-title">D0011E: Digital Design</h2>
+                        <p class="project-desc">Built a complete 32-bit MIPS processor from scratch in Veryl HDL, from a single full adder to a running CPU with ALU, register file, control decoder, data memory, branch and jump instructions, and an integer division program.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="../code-review/index.html" class="project-item" data-num="12">
+                    <div class="project-meta">
+                        <span class="project-tag">Full-stack</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">Code Review Tool</h2>
+                        <p class="project-desc">Real-time collaborative code commenting web app. React, Node, PostgreSQL, and Socket.io, with JWT auth, deployed live on Railway and Vercel.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="../ray-tracer/index.html" class="project-item" data-num="13">
+                    <div class="project-meta">
+                        <span class="project-tag">C++</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">Ray Tracer</h2>
+                        <p class="project-desc">Physically-based path tracer built from scratch in C++, ported to JavaScript so it renders live in the browser with real depth of field and glass refraction.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="../interpreter/index.html" class="project-item" data-num="14">
+                    <div class="project-meta">
+                        <span class="project-tag">Java</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">Lox Interpreter</h2>
+                        <p class="project-desc">A complete tree-walking interpreter for the Lox language, following Crafting Interpreters. Write and run real Lox code live in the browser, closures, classes, and inheritance included.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="../neural-network/index.html" class="project-item" data-num="15">
+                    <div class="project-meta">
+                        <span class="project-tag">Python</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">Neural Network</h2>
+                        <p class="project-desc">Feedforward neural network trained from scratch with only NumPy, no PyTorch or TensorFlow. Draw a digit and watch the real trained weights classify it live.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="../packet-analyser/index.html" class="project-item" data-num="16">
+                    <div class="project-meta">
+                        <span class="project-tag">C</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">netwatch: Packet Analyser</h2>
+                        <p class="project-desc">Terminal network analyser using libpcap, decoding Ethernet/IPv4/TCP/UDP/DNS by hand. Live-simulated capture with the same header parsing and BPF-style filters.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="../ctf/index.html" class="project-item" data-num="17">
+                    <div class="project-meta">
+                        <span class="project-tag">Security</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">CTF Writeups</h2>
+                        <p class="project-desc">10 solved PicoCTF challenges across web, crypto, reverse engineering, binary exploitation, and forensics, plus a live version of an original SQL injection challenge.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="../open-source/index.html" class="project-item" data-num="18">
+                    <div class="project-meta">
+                        <span class="project-tag">Open Source</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">Contributing to socket.io</h2>
+                        <p class="project-desc">A merged pull request fixing a bug where pending acknowledgement callbacks were silently dropped on disconnect, in a library used by millions of applications.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="../technical-writing/index.html" class="project-item" data-num="19">
+                    <div class="project-meta">
+                        <span class="project-tag">Writing</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">Field Notes</h2>
+                        <p class="project-desc">Five technical posts written the same week each thing happened: PostgreSQL setup, WebSockets vs HTTP, JWT auth, production deployment, and an open source contribution story.</p>
+                    </div>
+                    <div class="project-arrow">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="../problem-solving/index.html" class="project-item" data-num="20">
+                    <div class="project-meta">
+                        <span class="project-tag">Python</span>
+                    </div>
+                    <div class="project-body">
+                        <h2 class="project-title">Problem Solving</h2>
+                        <p class="project-desc">Weekly LeetCode practice across hash maps, tree recursion, and graph traversal. Includes a live animated Number of Islands DFS running the real solution code.</p>
                     </div>
                     <div class="project-arrow">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -315,7 +456,7 @@
 
         <div class="cf-success" id="cfSuccess" aria-live="polite">
             <span class="cf-success-icon">✓</span>
-            <span>Message sent — thanks!</span>
+            <span>Message sent, thanks!</span>
         </div>
         <div class="cf-error" id="cfError" aria-live="polite">
             Something went wrong. Try again or email me directly.
@@ -407,7 +548,7 @@
                     projectsList.appendChild(item);
                     item.classList.remove('tag-hidden');
                 });
-                countEl.textContent = '11 projects';
+                countEl.textContent = '20 projects';
             } else {
                 var matching    = origOrder.filter(function (i) { return i.querySelector('.project-tag').textContent.trim() === tag; });
                 var nonMatching = origOrder.filter(function (i) { return i.querySelector('.project-tag').textContent.trim() !== tag; });

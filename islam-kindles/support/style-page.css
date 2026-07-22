@@ -93,6 +93,9 @@
         .form-input:focus,
         .form-textarea:focus { border-color: var(--accent); }
 
+        .form-input.error,
+        .form-textarea.error { border-color: #ef4444; }
+
         .form-input::placeholder,
         .form-textarea::placeholder { color: var(--muted); }
 

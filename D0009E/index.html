@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="D0009E — Introduction to Programming in Python. Six interactive university assignments covering functions, data structures, OOP, and file I/O.">
+    <meta name="description" content="D0009E: Introduction to Programming in Python. Six interactive university assignments covering functions, data structures, OOP, and file I/O.">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-    <title>D0009E — Abdalla</title>
+    <title>D0009E · Abdalla</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -32,9 +32,9 @@
         <span class="hero-eyebrow">Introduction to Programming in Python</span>
         <h1 class="hero-title">Course <span class="acc">D0009E</span></h1>
         <p class="hero-desc">
-            Introduction to Programming — Python assignments covering functions,
+            Introduction to Programming: Python assignments covering functions,
             data structures, object-oriented programming, and file I/O.
-            Each task is fully interactive — try them live below.
+            Each task is fully interactive. Try them live below.
         </p>
         <div class="hero-meta">
             <span class="meta-pill">Python</span>
@@ -47,7 +47,7 @@
     </div>
 
     <!-- ════════════════════ LAB 1 ════════════════════ -->
-    <span class="section-label">Lab 1 — Functions & Calculation</span>
+    <span class="section-label">Lab 1: Functions & Calculation</span>
     <div class="projects projects-section-gap">
 
         <!-- L1-T1: Loan Calculator -->
@@ -70,15 +70,18 @@
                 <div class="demo-grid-3">
                     <div class="demo-field">
                         <label class="demo-field-label">Principal (kr)</label>
-                        <input class="demo-input" type="number" id="loanP" value="50000" min="1">
+                        <input class="demo-input" type="number" id="loanP" value="50000" min="1"
+                            onkeydown="if(event.key==='Enter') calcLoan()">
                     </div>
                     <div class="demo-field">
                         <label class="demo-field-label">Interest Rate (%)</label>
-                        <input class="demo-input" type="number" id="loanR" value="3" step="0.1" min="0">
+                        <input class="demo-input" type="number" id="loanR" value="3" step="0.1" min="0"
+                            onkeydown="if(event.key==='Enter') calcLoan()">
                     </div>
                     <div class="demo-field">
                         <label class="demo-field-label">Years</label>
-                        <input class="demo-input" type="number" id="loanA" value="10" min="1">
+                        <input class="demo-input" type="number" id="loanA" value="10" min="1"
+                            onkeydown="if(event.key==='Enter') calcLoan()">
                     </div>
                 </div>
                 <button class="demo-btn" onclick="calcLoan()">Calculate</button>
@@ -112,7 +115,7 @@ kostnad(50000, 0.03, 10)</code></pre>
             <div class="demo-panel">
                 <div class="demo-label">Live Demo</div>
                 <div class="demo-field demo-field-narrow">
-                    <label class="demo-field-label">Number of people — <span id="recipeVal">4</span></label>
+                    <label class="demo-field-label">Number of people: <span id="recipeVal">4</span></label>
                     <input class="demo-slider" type="range" id="recipeP" min="1" max="20" value="4"
                         oninput="document.getElementById('recipeVal').textContent=this.value; calcRecipe()">
                 </div>
@@ -147,11 +150,11 @@ print_recipe(4)</code></pre>
     </div>
 
     <!-- ════════════════════ LAB 3 ════════════════════ -->
-    <span class="section-label">Lab 3 — Data Structures (Three Implementations)</span>
+    <span class="section-label">Lab 3: Data Structures (Three Implementations)</span>
 
     <div class="comparison-note">
         <h3>Same problem, three different data structures</h3>
-        <p>All three implement a word dictionary with insert, lookup, and delete. The live demo is on the last card — the Python dict, which is the cleanest and most natural approach.</p>
+        <p>All three implement a word dictionary with insert, lookup, and delete. The live demo is on the last card, the Python dict, which is the cleanest and most natural approach.</p>
         <div class="comparison-grid">
             <div class="comparison-cell">
                 <span class="cc-title">Approach 1 · Parallel Lists</span>
@@ -163,7 +166,7 @@ print_recipe(4)</code></pre>
             </div>
             <div class="comparison-cell">
                 <span class="cc-title">Approach 3 · Dict ★</span>
-                <span class="cc-text">Built-in dict. O(1) lookup. The natural fit — try it live.</span>
+                <span class="cc-text">Built-in dict. O(1) lookup. The natural fit. Try it live.</span>
             </div>
         </div>
     </div>
@@ -175,7 +178,7 @@ print_recipe(4)</code></pre>
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L3 · Approach 1</span>
-                    <div class="card-title">Word Book — Using Two Lists</div>
+                    <div class="card-title">Word Book: Using Two Lists</div>
                     <p class="card-desc">Two synchronized lists: <code class="inline-code">words[]</code> and <code class="inline-code">defs[]</code>. The position of a word in one list always matches its definition in the other.</p>
                     <div class="card-tags"><span class="tag">Parallel Lists</span><span class="tag">Index sync</span><span class="tag">O(n) lookup</span></div>
                 </div>
@@ -229,7 +232,7 @@ main_lists()</code></pre>
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L3 · Approach 2</span>
-                    <div class="card-title">Word Book — Using Tuples</div>
+                    <div class="card-title">Word Book: Using Tuples</div>
                     <p class="card-desc">Stores each entry as a <code class="inline-code">(word, definition)</code> pair inside a list. More structured than parallel lists, but still requires iterating through everything to find a match.</p>
                     <div class="card-tags"><span class="tag">Tuples</span><span class="tag">List of pairs</span><span class="tag">O(n) lookup</span></div>
                 </div>
@@ -277,13 +280,13 @@ main_tuples()</code></pre>
             </div>
         </div>
 
-        <!-- L3-2: Dict — LIVE DEMO -->
+        <!-- L3-2: Dict (LIVE DEMO) -->
         <div class="project-card">
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L3 · Approach 3</span>
-                    <div class="card-title">Word Book — Using a Dictionary <span class="card-title-badge">★ Live Demo</span></div>
-                    <p class="card-desc">Uses Python's built-in <code class="inline-code">dict</code> — the most natural fit. Direct key→value mapping with O(1) average lookup. The cleanest of the three.</p>
+                    <div class="card-title">Word Book: Using a Dictionary <span class="card-title-badge">★ Live Demo</span></div>
+                    <p class="card-desc">Uses Python's built-in <code class="inline-code">dict</code>, the most natural fit. Direct key→value mapping with O(1) average lookup. The cleanest of the three.</p>
                     <div class="card-tags"><span class="tag">Dict</span><span class="tag">Hash table</span><span class="tag">O(1) lookup</span></div>
                 </div>
                 <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
@@ -292,12 +295,15 @@ main_tuples()</code></pre>
                 <div class="demo-label">Live Demo</div>
                 <div class="demo-dict-controls">
                     <div class="demo-dict-row">
-                        <input class="demo-input" type="text" id="dictWord" placeholder="Word" autocomplete="off">
-                        <input class="demo-input" type="text" id="dictDef" placeholder="Definition" autocomplete="off">
+                        <input class="demo-input" type="text" id="dictWord" placeholder="Word" autocomplete="off"
+                            onkeydown="if(event.key==='Enter') dictInsert()">
+                        <input class="demo-input" type="text" id="dictDef" placeholder="Definition" autocomplete="off"
+                            onkeydown="if(event.key==='Enter') dictInsert()">
                         <button class="demo-btn demo-btn-sm" onclick="dictInsert()">Insert</button>
                     </div>
                     <div class="demo-dict-row">
-                        <input class="demo-input" type="text" id="dictLookup" placeholder="Word to look up" autocomplete="off">
+                        <input class="demo-input" type="text" id="dictLookup" placeholder="Word to look up" autocomplete="off"
+                            onkeydown="if(event.key==='Enter') dictLookup()">
                         <button class="demo-btn demo-btn-sm" onclick="dictLookup()">Lookup</button>
                         <button class="demo-btn demo-btn-sm demo-btn-danger" onclick="dictDelete()">Delete</button>
                     </div>
@@ -347,14 +353,14 @@ main_dic()</code></pre>
     </div>
 
     <!-- ════════════════════ LAB 4 ════════════════════ -->
-    <span class="section-label">Lab 4 — Object-Oriented Programming</span>
+    <span class="section-label">Lab 4: Object-Oriented Programming</span>
     <div class="projects">
 
         <div class="project-card">
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L4</span>
-                    <div class="card-title">Phonebook — OOP with File I/O</div>
+                    <div class="card-title">Phonebook: OOP with File I/O</div>
                     <p class="card-desc">A full phonebook class. Supports multiple names (aliases) per number, persistent save/load, and a command-line interface dispatched via lambda dict.</p>
                     <div class="card-tags">
                         <span class="tag">Class</span><span class="tag">OOP</span>
@@ -371,12 +377,12 @@ main_dic()</code></pre>
                     Use the buttons below or type a command directly. Try: <code class="accent-code">add</code> · <code class="accent-code">lookup</code> · <code class="accent-code">alias</code> · <code class="accent-code">change</code> · <code class="accent-code">remove</code> · <code class="accent-code">list</code>
                 </p>
                 <div class="pb-quick-btns">
-                    <button class="pb-quick" onclick="pbSetAction('add')">+ Add</button>
-                    <button class="pb-quick" onclick="pbSetAction('lookup')">🔍 Lookup</button>
-                    <button class="pb-quick" onclick="pbSetAction('alias')">↗ Alias</button>
-                    <button class="pb-quick" onclick="pbSetAction('change')">✎ Change</button>
-                    <button class="pb-quick" onclick="pbSetAction('remove')">✕ Remove</button>
-                    <button class="pb-quick" onclick="pbSetAction('list')">☰ List</button>
+                    <button class="pb-quick" onclick="pbSetAction('add', this)">+ Add</button>
+                    <button class="pb-quick" onclick="pbSetAction('lookup', this)">🔍 Lookup</button>
+                    <button class="pb-quick" onclick="pbSetAction('alias', this)">↗ Alias</button>
+                    <button class="pb-quick" onclick="pbSetAction('change', this)">✎ Change</button>
+                    <button class="pb-quick" onclick="pbSetAction('remove', this)">✕ Remove</button>
+                    <button class="pb-quick" onclick="pbSetAction('list', this)">☰ List</button>
                 </div>
                 <div class="pb-input-area" id="pbInputArea"></div>
                 <div class="pb-terminal" id="pbTerminal">

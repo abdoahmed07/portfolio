@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Network · Abdalla</title>
+    <meta name="description" content="A feedforward neural network trained from scratch on MNIST using only NumPy, no PyTorch or TensorFlow. Draw a digit and watch the real trained weights classify it live in the browser.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav">
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </button>
+</nav>
+
+<div class="page">
+
+    <div class="hero">
+        <span class="hero-eyebrow">Python · NumPy · Summer 2026</span>
+        <h1 class="hero-title">Neural<span class="acc">Net</span></h1>
+        <p class="hero-desc">
+            A feedforward neural network built from scratch using only Python and NumPy,
+            no PyTorch, no TensorFlow, no Keras. Forward pass, backpropagation, and mini-batch
+            gradient descent, all hand-derived and hand-coded. Trained on MNIST to 97.4% test
+            accuracy. The digit classifier below runs the network's real trained weights,
+            ported to JavaScript, doing genuine inference on whatever you draw.
+        </p>
+        <div class="hero-meta">
+            <span class="meta-pill">NumPy</span>
+            <span class="meta-pill">Backpropagation</span>
+            <span class="meta-pill">MNIST</span>
+            <span class="meta-pill">97.4% Accuracy</span>
+            <span class="meta-pill">Flask</span>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="draw">▶ Try It</button>
+        <button class="tab-btn" data-tab="how">How It Works</button>
+        <button class="tab-btn" data-tab="code">Source Code</button>
+    </div>
+
+    <!-- ── DRAW & CLASSIFY ── -->
+    <div class="tab-content active" id="tab-draw">
+        <p class="tab-note">
+            Draw a digit, 0 through 9. This isn't a simulation, the actual weights from
+            <code style="color:var(--accent)">mnist_weights.npz</code> were exported and are
+            running the same forward pass shown in the code tab, just in JavaScript instead
+            of NumPy.
+        </p>
+        <div class="digit-panel">
+            <div class="digit-toolbar">
+                <button class="digit-ctrl-btn" id="nnClear">↺ Clear</button>
+                <span class="digit-status">784 → 256 → 128 → 10 · He init · Adam optimizer</span>
+            </div>
+            <div class="digit-body">
+                <div class="digit-canvas-wrap">
+                    <canvas id="drawCanvas"></canvas>
+                </div>
+                <div class="digit-results">
+                    <div class="digit-pred">
+                        <span class="digit-pred-num" id="predNum">–</span>
+                        <span class="digit-pred-conf" id="predConf">Draw a digit, 0 through 9, on the canvas.</span>
+                    </div>
+                    <div class="prob-bars" id="probBars"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── HOW IT WORKS ── -->
+    <div class="tab-content" id="tab-how">
+        <p class="tab-note">A neural network is a function with millions of parameters (weights). Training finds parameter values that minimize error on the training data. This one has none of that magic hidden behind a framework, every piece below is code I wrote.</p>
+
+        <div class="net-diagram">
+            <div class="net-layer">
+                <div class="net-layer-box">784</div>
+                <div class="net-layer-label">Input (28×28 pixels)</div>
+            </div>
+            <div class="net-arrow">→</div>
+            <div class="net-layer">
+                <div class="net-layer-box">256</div>
+                <div class="net-layer-label">Dense + ReLU</div>
+            </div>
+            <div class="net-arrow">→</div>
+            <div class="net-layer">
+                <div class="net-layer-box">128</div>
+                <div class="net-layer-label">Dense + ReLU</div>
+            </div>
+            <div class="net-arrow">→</div>
+            <div class="net-layer">
+                <div class="net-layer-box output">10</div>
+                <div class="net-layer-label">Softmax (digit probabilities)</div>
+            </div>
+        </div>
+
+        <div class="ds-grid">
+            <div class="ds-card">
+                <div class="ds-icon">→</div>
+                <div class="ds-title">Forward Pass</div>
+                <div class="ds-desc">Each layer computes <code>Z = X·W + b</code>, then applies an activation. Input flows through every layer in sequence, producing the final prediction.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">✕</div>
+                <div class="ds-title">Loss: Cross-Entropy</div>
+                <div class="ds-desc">Measures how wrong the prediction is: <code>-sum(true_label · log(predicted_prob))</code>. Combined with softmax, its gradient simplifies beautifully to <code>predictions - labels</code>.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">←</div>
+                <div class="ds-title">Backpropagation</div>
+                <div class="ds-desc">The chain rule, applied layer by layer from the output backwards, tells us how much each weight contributed to the error, so we know which direction to nudge it.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">⚙</div>
+                <div class="ds-title">He Initialization</div>
+                <div class="ds-desc">Weights start as <code>N(0, √(2/n))</code> instead of zero. If every weight started at zero, every neuron in a layer would compute the same output and the network could never differentiate between them.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CODE ── -->
+    <div class="tab-content" id="tab-code">
+        <p class="tab-note">The actual Python source, forward pass, backward pass, loss, and the canvas preprocessing pipeline the JS port above mirrors exactly.</p>
+        <div class="file-tabs">
+            <button class="file-tab active" data-file="layer">layer.py</button>
+            <button class="file-tab" data-file="activations">activations.py</button>
+            <button class="file-tab" data-file="loss">loss.py</button>
+            <button class="file-tab" data-file="preprocess">preprocess (app.py)</button>
+        </div>
+        <div class="code-viewer">
+            <pre><code id="codeBlock" class="language-python"></code></pre>
+        </div>
+    </div>
+
+    <!-- ── LEARNED ── -->
+    <span class="section-label">What I Learned</span>
+    <div class="learned-list">
+        <div class="learned-item">
+            <b>The softmax + cross-entropy gradient simplification is beautiful.</b>
+            <p>I derived it by hand: the gradient of cross-entropy(softmax(z)) with respect to z simplifies to just <code style="color:var(--accent)">predictions - labels</code>. Seeing pages of chain-rule algebra collapse into one clean line is why this combination is used everywhere in classification.</p>
+        </div>
+        <div class="learned-item">
+            <b>Weight initialization isn't a minor detail.</b>
+            <p>If every weight starts at zero, every neuron in a layer computes the same output and receives the same gradient forever, they can never specialize. He initialization keeps gradient magnitudes stable specifically for ReLU layers.</p>
+        </div>
+        <div class="learned-item">
+            <b>Mini-batches are a genuine trade-off, not an arbitrary default.</b>
+            <p>Batch size 1 gives noisy gradient estimates; the full dataset at once is accurate but slow. 32-256 samples turned out to be the sweet spot: fast, and with enough gradient variance to escape local minima.</p>
+        </div>
+    </div>
+
+</div><!-- /page -->
+
+<script src="weights.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

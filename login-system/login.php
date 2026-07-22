@@ -39,6 +39,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close statement and database connection
     $stmt->close();
     $conn->close();
+
+    if (isset($error_message)) {
+        echo $error_message;
+    }
 }
 ?>
 

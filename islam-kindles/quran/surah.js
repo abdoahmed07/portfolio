@@ -120,7 +120,7 @@ const params = new URLSearchParams(window.location.search);
 const surahId = parseInt(params.get("id")) || 1;
 const meta = SURAH_META[surahId];
 
-if (meta) document.title = `${meta[0]} — Islam Kindles`;
+if (meta) document.title = `${meta[0]} · Islam Kindles`;
 
 let viewMode = "both"; // both | arabic | translation
 
@@ -169,9 +169,9 @@ async function loadSurah(id) {
             </div>
 
             <div class="view-toggle">
-                <button class="view-btn ${viewMode==='both'?'active':''}" onclick="setView('both')">Arabic + Translation</button>
-                <button class="view-btn ${viewMode==='arabic'?'active':''}" onclick="setView('arabic')">Arabic Only</button>
-                <button class="view-btn ${viewMode==='translation'?'active':''}" onclick="setView('translation')">Translation Only</button>
+                <button class="view-btn ${viewMode==='both'?'active':''}" onclick="setView('both', this)">Arabic + Translation</button>
+                <button class="view-btn ${viewMode==='arabic'?'active':''}" onclick="setView('arabic', this)">Arabic Only</button>
+                <button class="view-btn ${viewMode==='translation'?'active':''}" onclick="setView('translation', this)">Translation Only</button>
             </div>
 
             ${showBismillah ? '<div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>' : ''}
@@ -213,10 +213,10 @@ async function loadSurah(id) {
     }
 }
 
-function setView(mode) {
+function setView(mode, btn) {
     viewMode = mode;
     document.querySelectorAll(".view-btn").forEach(b => b.classList.remove("active"));
-    event.target.classList.add("active");
+    btn.classList.add("active");
     applyViewMode();
 }
 

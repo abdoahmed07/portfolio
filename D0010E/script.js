@@ -59,7 +59,7 @@ function startQuiz(){
 function showQuestion(){
     const q=quizQuestions[quizIndex];
     document.getElementById("quizQuestion").textContent=`What is ${q.a} ${q.op} ${q.b} ?`;
-    document.getElementById("quizAttemptLabel").textContent=quizAttempt===1?"First attempt — 10 pts":"Second attempt — 5 pts";
+    document.getElementById("quizAttemptLabel").textContent=quizAttempt===1?"First attempt: 10 pts":"Second attempt: 5 pts";
     document.getElementById("quizAnswer").value="";
     document.getElementById("quizAnswer").focus();
     document.getElementById("quizFeedback").classList.add("hidden");
@@ -95,7 +95,7 @@ function submitAnswer(){
 function endQuiz(){
     document.getElementById("quizGame").classList.add("hidden");
     document.getElementById("quizResults").classList.remove("hidden");
-    const msg=quizScore===100?"Perfect score! 🏆":quizScore>=80?"Great work! 🎉":quizScore>=50?"Not bad — keep practising.":"Keep at it — you'll get there.";
+    const msg=quizScore===100?"Perfect score! 🏆":quizScore>=80?"Great work! 🎉":quizScore>=50?"Not bad, keep practising.":"Keep at it, you'll get there.";
     document.getElementById("quizFinalScore").textContent=`${quizScore} / 100`;
     document.getElementById("quizFinalMsg").textContent=msg;
     document.getElementById("quizBreakdown").innerHTML=quizBreakdown.map(({q,pts,correct})=>`
@@ -198,9 +198,9 @@ const alForms={
     indexOf:  {fields:["Value"],          run:(v)=>{const r=alList.indexOf(parseInt(v[0]));alLog(`indexOf(${v[0]}) → ${r}`,r>=0?"success":"error");if(r>=0)alRender(r);}},
     contains: {fields:["Value"],          run:(v)=>{const r=alList.contains(parseInt(v[0]));alLog(`contains(${v[0]}) → ${r}`,r?"success":"error");}},
 };
-function alSetAction(action){
+function alSetAction(action,btn){
     document.querySelectorAll(".pb-quick").forEach(b=>b.classList.remove("active"));
-    event.target.classList.add("active");
+    btn.classList.add("active");
     const area=document.getElementById("alInputArea");const form=alForms[action];
     if(!form)return;
     area.innerHTML=`<div class="demo-dict-row" style="margin-top:12px">${form.fields.map((f,i)=>`<input class="demo-input" type="number" id="alF${i}" placeholder="${f}" autocomplete="off" style="max-width:160px">`).join("")}<button class="demo-btn demo-btn-sm" onclick="alSubmit('${action}')">${action}</button></div>`;
@@ -244,6 +244,8 @@ function alRunRawCmd(){
     }catch(e){alLog(`✗ ${e.message}`,"error");}
 }
 alRender();
+
+function escapeHTML(str){return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 
 // ══════════ LAB 3: ROOM NAVIGATION GAME ══════════════════
 const NORR=0,ÖSTER=1,SÖDER=2,VÄSTER=3;
@@ -302,7 +304,7 @@ function drawGame(){
     const descEl=document.getElementById('gameDesc');
     if(descEl){
         const col=cr.color==='#FFFF00'?'#cccc00':cr.color;
-        descEl.innerHTML=`You are in the <strong style="color:${col}">${cr.name}</strong> room. `+(exits.length?`Exits: <strong>${exits.join(' · ')}</strong>. Use WASD to navigate.`:`No exits from here.`);
+        descEl.innerHTML=`You are in the <strong style="color:${col}">${escapeHTML(cr.name)}</strong> room. `+(exits.length?`Exits: <strong>${exits.join(' · ')}</strong>. Use WASD to navigate.`:`No exits from here.`);
     }
     document.getElementById('statusRoom').textContent=`Current room: ${cr.name}`;
     document.getElementById('statusExits').textContent=exits.length?`Exits: ${exits.join('  ·  ')}`:'No exits';
@@ -338,7 +340,7 @@ function renderEditorList(){
     list.innerHTML=gameRooms.map((r,i)=>`
         <div class="re-room-row" id="reRow${i}">
             <div class="re-room-swatch re-col-color" style="background:${r.color}" onclick="toggleColorPicker(${i})"></div>
-            <input class="re-input re-name re-col-name" value="${r.name}" onchange="gameRooms[${i}].name=this.value;drawGame()">
+            <input class="re-input re-name re-col-name" value="${escapeHTML(r.name)}" onchange="gameRooms[${i}].name=this.value;drawGame()">
             <input class="re-input re-num re-col-w" type="number" value="${r.w}" min="30" max="200" onchange="gameRooms[${i}].w=parseInt(this.value)||50;drawGame()" title="Width">
             <span class="re-x re-col-x">×</span>
             <input class="re-input re-num re-col-h" type="number" value="${r.h}" min="30" max="200" onchange="gameRooms[${i}].h=parseInt(this.value)||50;drawGame()" title="Height">
@@ -519,8 +521,7 @@ function calcUpdateInspector(logMsg){
     document.getElementById('cifDisplay').textContent=calcGetDisplay();
     if(logMsg){const log=document.getElementById('calcLog');const line=document.createElement('div');line.className='calc-log-line '+(logMsg.includes('→')?'calc-log-transition':logMsg.includes('Error')?'calc-log-error':'calc-log-muted');line.textContent=logMsg;log.appendChild(line);log.scrollTop=log.scrollHeight;}
 }
-document.addEventListener('keydown',function(e){
-    if(document.activeElement.tagName==='INPUT'||document.activeElement.id==='mapWrap')return;
+document.getElementById('calcWrap')?.addEventListener('keydown',function(e){
     if(e.key>='0'&&e.key<='9')calcDigit(parseInt(e.key));
     else if(e.key==='+')calcOp('+');else if(e.key==='-')calcOp('-');else if(e.key==='*')calcOp('*');
     else if(e.key==='/'){e.preventDefault();calcOp('/');}
@@ -531,19 +532,11 @@ calcUpdateInspector('');
 
 // ══════════ LAB 6: CAR WASH SIMULATION ═══════════════════
 class SeededRandom{
-    // LCG matching Java's java.util.Random for reproducible results
+    // Park-Miller LCG, seeded for reproducible simulation runs
     constructor(seed){
-        // Use two 32-bit halves to simulate 48-bit arithmetic without BigInt
-        const s=(seed^0x5DEECE66D)>>>0;
-        this.hi=((seed/0x100000000^0x5DEECE66D/0x100000000)&0xFFFF)>>>0;
-        this.lo=s&0xFFFF;
-        // Simpler: just use a good LCG with seeded Math.random substitute
-        this._state=((seed^0x5DEECE66D)&0x7FFFFFFF)>>>0;
-        // Advance state properly with modular arithmetic
         this._s=Math.abs(seed)%2147483647||12345;
     }
     _next(){
-        // Park-Miller LCG: good quality, no BigInt needed
         this._s=Math.imul(this._s,16807)%2147483647;
         return(this._s-1)/2147483646;
     }
@@ -552,7 +545,11 @@ class SeededRandom{
     unifNext(lo,hi){return lo+this._next()*(hi-lo);}
 }
 let cwSim=null,cwAutoTimer=null;
-function cwGetCfg(){return{fastStations:+document.getElementById('cwFast').value||2,slowStations:+document.getElementById('cwSlow').value||2,maxQueue:+document.getElementById('cwMaxQ').value||5,closeTime:+document.getElementById('cwClose').value||15,lambda:+document.getElementById('cwLambda').value||2,seed:+document.getElementById('cwSeed').value||1234,fastMin:2.8,fastMax:4.6,slowMin:3.5,slowMax:6.7};}
+function cwNum(id,def){const v=+document.getElementById(id).value;return Number.isFinite(v)?v:def;}
+// cwFast/cwSlow/cwMaxQ allow 0 as a valid config (their inputs have min="0"),
+// so this can't use `||` for the fallback - that would silently turn an
+// explicit 0 back into the default.
+function cwGetCfg(){return{fastStations:cwNum('cwFast',2),slowStations:cwNum('cwSlow',2),maxQueue:cwNum('cwMaxQ',5),closeTime:cwNum('cwClose',15),lambda:cwNum('cwLambda',2),seed:cwNum('cwSeed',1234),fastMin:2.8,fastMax:4.6,slowMin:3.5,slowMax:6.7};}
 function cwPush(sim,time,type,data=null){sim.events.push({time,type,data});sim.events.sort((a,b)=>a.time-b.time);}
 function cwInit(){
     clearInterval(cwAutoTimer);cwAutoTimer=null;

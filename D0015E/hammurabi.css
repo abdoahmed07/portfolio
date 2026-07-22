@@ -300,7 +300,7 @@ button:focus, input[type="range"]:focus, summary.button:focus{
 /* =========================================================
   CHANGE: Prevent overlap + stack right column on medium
   - ≥1200px: keep absolute image, reserve space for it
-  - 700–1199px: image becomes normal flow, info stacks under game
+  - 700-1199px: image becomes normal flow, info stacks under game
   - ≤699px: keep existing mobile layout
   ========================================================= */
 

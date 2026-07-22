@@ -22,15 +22,29 @@
         });
 
         // Contact form
+        const nameField    = document.getElementById("name");
+        const emailField   = document.getElementById("email");
+        const messageField = document.getElementById("message");
+
+        [nameField, emailField, messageField].forEach(field => {
+            field.addEventListener("input", () => field.classList.remove("error"));
+        });
+
         document.getElementById("sendForm").addEventListener("click", () => {
-            const name    = document.getElementById("name").value.trim();
-            const email   = document.getElementById("email").value.trim();
-            const message = document.getElementById("message").value.trim();
+            const name    = nameField.value.trim();
+            const email   = emailField.value.trim();
+            const message = messageField.value.trim();
+
+            // required is inert here (there's no <form> to trigger native
+            // validation), so empty fields need to be flagged by hand
+            nameField.classList.toggle("error", !name);
+            emailField.classList.toggle("error", !email);
+            messageField.classList.toggle("error", !message);
             if (!name || !email || !message) return;
 
-            document.getElementById("name").value    = "";
-            document.getElementById("email").value   = "";
-            document.getElementById("message").value = "";
+            nameField.value    = "";
+            emailField.value   = "";
+            messageField.value = "";
 
             const success = document.getElementById("formSuccess");
             success.style.display = "block";

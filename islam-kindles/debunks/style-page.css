@@ -59,7 +59,7 @@
 
         .debunk-card:hover { border-color: rgba(16,185,129,0.25); }
 
-        /* Question row — always visible, clickable */
+        /* Question row, always visible, clickable */
         .debunk-question-row {
             width: 100%;
             background: none;
@@ -136,7 +136,7 @@
             color: var(--accent);
         }
 
-        /* Answer body — hidden by default */
+        /* Answer body, hidden by default */
         .debunk-answer-body {
             display: none;
             border-top: 1px solid var(--border);

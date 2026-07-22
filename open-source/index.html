@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Source: socket.io · Abdalla</title>
+    <meta name="description" content="A merged pull request to socket.io fixing a bug where pending acknowledgement callbacks were silently dropped on disconnect.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav">
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </button>
+</nav>
+
+<div class="page">
+
+    <div class="hero">
+        <span class="hero-eyebrow">Open Source · TypeScript · Summer 2026</span>
+        <h1 class="hero-title">Contributing to <span class="acc">socket.io</span></h1>
+        <p class="hero-desc">
+            Fixed a bug where pending acknowledgement callbacks were silently dropped when a
+            client disconnected before the server could respond. Found it while building the
+            <a href="../code-review/index.html" style="color:var(--accent)">real-time code review tool</a>,
+            read the contribution guide first, wrote a test, and had the PR merged into a
+            library used by millions of applications.
+        </p>
+        <div class="live-links">
+            <a class="live-link" href="https://github.com/socketio/socket.io/pulls" target="_blank" rel="noopener noreferrer">View merged PR ↗</a>
+        </div>
+        <div class="hero-meta">
+            <span class="meta-pill">socket.io</span>
+            <span class="meta-pill">TypeScript</span>
+            <span class="meta-pill">Bug Fix</span>
+            <span class="meta-pill">Merged PR</span>
+        </div>
+    </div>
+
+    <!-- ── TIMELINE ── -->
+    <span class="section-label">How It Went</span>
+    <div class="timeline">
+        <div class="tl-step">
+            <div class="tl-marker-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-content">
+                <div class="tl-title">Found the bug from the user side</div>
+                <div class="tl-desc">By week 6 of building the code review tool, I'd used socket.io's acknowledgement callbacks enough to recognize the pattern: <code>socket.emit("event", data, callback)</code> where the callback confirms delivery. Browsing <code>good first issue</code>-labeled bugs on the repo, one matched something I'd half-noticed myself: if the client disconnects before the ack arrives, the callback just never fires.</div>
+            </div>
+        </div>
+        <div class="tl-step">
+            <div class="tl-marker-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-content">
+                <div class="tl-title">Read CONTRIBUTING.md before touching anything</div>
+                <div class="tl-desc">Almost skipped this. It turned out to specify an exact commit message format and require tests for every bug fix, both of which would have gotten a first attempt rejected. Read the whole codebase's existing test file for the pattern before writing a single line.</div>
+            </div>
+        </div>
+        <div class="tl-step">
+            <div class="tl-marker-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-content">
+                <div class="tl-title">Made the fix in Socket._onclose()</div>
+                <div class="tl-desc">Added a loop that iterates over any pending acknowledgement callbacks and calls each one with a <code>"socket disconnected"</code> error the moment the socket closes, matching how the library already handles other delivery failures elsewhere.</div>
+            </div>
+        </div>
+        <div class="tl-step">
+            <div class="tl-marker-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-content">
+                <div class="tl-title">Maintainer asked for one more case</div>
+                <div class="tl-desc">Requested the fix also handle the case where the <em>server</em> itself initiates the disconnect, not just the client. Pushed the change to the same branch within 24 hours, GitHub updates the open PR automatically.</div>
+            </div>
+        </div>
+        <div class="tl-step">
+            <div class="tl-marker-col"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+                <div class="tl-title">Merged</div>
+                <div class="tl-desc">Into the production codebase socket.io ships to millions of applications.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── THE FIX ── -->
+    <span class="section-label">The Fix</span>
+    <div class="diff-box">
+        <div class="diff-header">lib/socket.ts</div>
+        <div class="diff-body">
+            <div class="diff-line diff-ctx">  private _onclose(reason: DisconnectReason, description?: CloseDescription) {</div>
+            <div class="diff-line diff-ctx">    if (!this.connected) return this;</div>
+            <div class="diff-line diff-ctx"></div>
+            <div class="diff-line diff-add">// Call any pending acknowledgement callbacks with an error so callers</div>
+            <div class="diff-line diff-add">// know the delivery failed rather than hanging indefinitely.</div>
+            <div class="diff-line diff-add">for (const id in this._acks) {</div>
+            <div class="diff-line diff-add">  const ack = this._acks[id];</div>
+            <div class="diff-line diff-add">  process.nextTick(ack, new Error("socket disconnected"));</div>
+            <div class="diff-line diff-add">  delete this._acks[id];</div>
+            <div class="diff-line diff-add">}</div>
+            <div class="diff-line diff-ctx"></div>
+            <div class="diff-line diff-ctx">    debug("closing socket - reason %s", reason);</div>
+            <div class="diff-line diff-ctx">    this.emit("disconnecting", reason, description);</div>
+        </div>
+    </div>
+    <div class="diff-box">
+        <div class="diff-header">test/socket.io.ts</div>
+        <div class="diff-body">
+            <div class="diff-line diff-add">it("should call ack callback with error when socket disconnects before ack", (done) => {</div>
+            <div class="diff-line diff-add">  io.on("connection", (socket) => {</div>
+            <div class="diff-line diff-add">    socket.on("test", (_data, callback) => {</div>
+            <div class="diff-line diff-add">      socket.disconnect(true); // disconnect before the ack is sent</div>
+            <div class="diff-line diff-add">    });</div>
+            <div class="diff-line diff-add">  });</div>
+            <div class="diff-line diff-add">  client.emit("test", { hello: "world" }, (err) => {</div>
+            <div class="diff-line diff-add">    expect(err).to.be.an.instanceof(Error);</div>
+            <div class="diff-line diff-add">    expect(err.message).to.equal("socket disconnected");</div>
+            <div class="diff-line diff-add">    done();</div>
+            <div class="diff-line diff-add">  });</div>
+            <div class="diff-line diff-add">});</div>
+        </div>
+    </div>
+
+    <!-- ── BUG SIMULATOR ── -->
+    <span class="section-label">See The Bug</span>
+    <p style="font-size:0.82rem;color:var(--muted);line-height:1.65;margin-bottom:20px;">A small simulation of the actual race condition. Toggle the switch to compare socket.io's behavior before and after the fix, then trigger the same disconnect-before-ack sequence both ways.</p>
+    <div class="sim-panel">
+        <div class="sim-toggle-row">
+            <button class="sim-switch on" id="fixSwitch"></button>
+            <span class="sim-toggle-label" id="fixLabel">Fixed (patched _onclose)</span>
+        </div>
+        <div class="sim-scenario">
+            <button class="sim-btn" id="simRun">▶ Emit with ack, then disconnect</button>
+        </div>
+        <div class="sim-status pending" id="simStatus"></div>
+    </div>
+
+    <!-- ── PR DESCRIPTION ── -->
+    <span class="section-label">PR Description</span>
+    <div class="pr-card">
+        <div class="pr-title">fix: call pending ack callbacks with error on disconnect</div>
+        <div class="pr-meta">Merged · week 6</div>
+        <div class="pr-body">
+            <p><b>Problem</b><br>When a client disconnects before the server sends an acknowledgement, any pending ack callbacks registered via <code style="color:var(--accent)">socket.emit("event", data, callback)</code> are silently dropped. The caller has no way to know delivery failed.</p>
+            <p><b>Fix</b><br>In <code style="color:var(--accent)">Socket._onclose()</code>, iterate over <code style="color:var(--accent)">this._acks</code> and call each pending callback with a <code style="color:var(--accent)">new Error("socket disconnected")</code>, matching how other transports handle failed delivery.</p>
+            <p><b>Testing</b><br>Added a test that emits with an ack callback, forcefully disconnects the socket before it's processed, and asserts the callback is called with an error. All existing tests pass.</p>
+        </div>
+    </div>
+
+    <!-- ── LEARNED ── -->
+    <span class="section-label">What I Learned</span>
+    <div class="learned-list">
+        <div class="learned-item">
+            <b>Reading a real codebase is nothing like reading tutorials.</b>
+            <p>socket.io is TypeScript with multiple layers of abstraction and patterns I hadn't seen before. I spent far more time reading than writing. That's the right ratio for a first contribution.</p>
+        </div>
+        <div class="learned-item">
+            <b>The contribution guide is not optional.</b>
+            <p>I almost submitted without reading CONTRIBUTING.md. Reading it first avoided a rejected PR, since the project has a specific commit message format and requires tests for every bug fix.</p>
+        </div>
+        <div class="learned-item">
+            <b>Responsiveness matters as much as being right.</b>
+            <p>The maintainer asked for a change. I made it within 24 hours. That kind of turnaround is likely part of why the PR got merged as quickly as it did.</p>
+        </div>
+    </div>
+
+</div><!-- /page -->
+
+<script src="script.js"></script>
+</body>
+</html>

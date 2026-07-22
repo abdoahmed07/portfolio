@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Review Tool · Abdalla</title>
+    <meta name="description" content="A collaborative real-time code review web app: React, Node, Express, PostgreSQL, Socket.io, and JWT auth, deployed on Vercel and Railway.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav">
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </button>
+</nav>
+
+<div class="page">
+
+    <div class="hero">
+        <span class="hero-eyebrow">React · Node · PostgreSQL · Socket.io · Summer 2026</span>
+        <h1 class="hero-title">Code<span class="acc">Review</span></h1>
+        <p class="hero-desc">
+            A collaborative web app for inline code commenting with live updates. Paste or
+            upload code, share the link, and leave comments on specific lines. Comments appear
+            instantly for everyone viewing the same snippet, no refresh. Full-stack, deployed,
+            and actually running in production.
+        </p>
+        <div class="live-links">
+            <a class="live-link" href="https://codereview-rho.vercel.app" target="_blank" rel="noopener noreferrer">▶ Live App ↗</a>
+            <a class="live-link" href="https://sides-production.up.railway.app" target="_blank" rel="noopener noreferrer">⚙ Backend API ↗</a>
+        </div>
+        <div class="hero-meta">
+            <span class="meta-pill">React + Vite</span>
+            <span class="meta-pill">Node + Express</span>
+            <span class="meta-pill">PostgreSQL</span>
+            <span class="meta-pill">Socket.io</span>
+            <span class="meta-pill">JWT Auth</span>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="demo">▶ Try The Interaction</button>
+        <button class="tab-btn" data-tab="architecture">Architecture</button>
+        <button class="tab-btn" data-tab="code">Source Code</button>
+    </div>
+
+    <!-- ── DEMO ── -->
+    <div class="tab-content active" id="tab-demo">
+        <p class="tab-note">
+            The real app runs a Node + Postgres + Socket.io backend, which can't run inside a
+            static page. This is a small client-only version of the core interaction: click a
+            line number, leave a comment, and watch what happens when someone else is viewing
+            the same snippet at the same time, the way <code style="color:var(--accent)">new_comment</code>
+            events work over the real WebSocket connection. For the full thing with real accounts
+            and sharing, use the live link above.
+        </p>
+        <div class="review-panel">
+            <div class="review-toolbar">
+                <span class="review-toolbar-title">auth.js</span>
+                <button class="cap-ctrl-btn" id="resetDemo" style="font-family:var(--font-mono);font-size:0.68rem;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;">↺ Reset</button>
+                <span class="viewer-badge" id="viewerBadge">👥 1 viewing</span>
+            </div>
+            <div class="review-body">
+                <div class="code-col" id="reviewCode"></div>
+                <div class="comment-sidebar" id="commentSidebar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ARCHITECTURE ── -->
+    <div class="tab-content" id="tab-architecture">
+        <p class="tab-note">Technical decisions, straight from the project's own notes.</p>
+
+        <div class="stack-table">
+            <div class="stack-row"><div class="stack-layer">Backend</div><div class="stack-tech">Node.js + Express</div></div>
+            <div class="stack-row"><div class="stack-layer">Database</div><div class="stack-tech">PostgreSQL (Railway)</div></div>
+            <div class="stack-row"><div class="stack-layer">Real-time</div><div class="stack-tech">Socket.io</div></div>
+            <div class="stack-row"><div class="stack-layer">Frontend</div><div class="stack-tech">React + Vite</div></div>
+            <div class="stack-row"><div class="stack-layer">Styling</div><div class="stack-tech">Tailwind CSS</div></div>
+            <div class="stack-row"><div class="stack-layer">Auth</div><div class="stack-tech">JWT + bcryptjs</div></div>
+            <div class="stack-row"><div class="stack-layer">Deployment</div><div class="stack-tech">Railway (backend + DB) · Vercel (frontend)</div></div>
+        </div>
+
+        <div class="ds-grid">
+            <div class="ds-card">
+                <div class="ds-icon">🔌</div>
+                <div class="ds-title">Why Socket.io Over SSE</div>
+                <div class="ds-desc">Presence (who's viewing) needs bidirectional communication. Server-Sent Events are one-directional, so they can't tell the server when a user joins or leaves. Socket.io also handles reconnection automatically, which matters for a real-time app.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🔑</div>
+                <div class="ds-title">JWT In Memory, Not localStorage</div>
+                <div class="ds-desc">Storing tokens in localStorage makes XSS attacks more dangerous, any malicious script can read it. Keeping the token in React state means it dies on refresh, an acceptable trade-off for this app. In production, httpOnly cookies would be the better choice.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🎲</div>
+                <div class="ds-title">crypto.randomBytes Over nanoid</div>
+                <div class="ds-desc">nanoid v4+ is ESM-only, which breaks CommonJS require. Node's built-in <code>crypto.randomBytes(6).toString('base64url')</code> gives the same 8-character URL-safe ID with no extra dependency.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🏗️</div>
+                <div class="ds-title">Railway + Vercel, Not One Platform</div>
+                <div class="ds-desc">Vercel's CDN is faster for static assets. Railway handles long-lived WebSocket connections better than serverless functions, which have timeouts that would kill a Socket.io connection mid-session.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CODE ── -->
+    <div class="tab-content" id="tab-code">
+        <p class="tab-note">Real files from the deployed project.</p>
+        <div class="file-tabs">
+            <button class="file-tab active" data-file="handlers">sockets/handlers.js</button>
+            <button class="file-tab" data-file="socketClient">ReviewPage.jsx</button>
+            <button class="file-tab" data-file="auth">middleware/auth.js</button>
+            <button class="file-tab" data-file="schema">schema.sql</button>
+        </div>
+        <div class="code-viewer">
+            <pre><code id="codeBlock" class="language-javascript"></code></pre>
+        </div>
+    </div>
+
+</div><!-- /page -->
+
+<script src="script.js"></script>
+</body>
+</html>

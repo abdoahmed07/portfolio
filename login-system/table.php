@@ -9,11 +9,11 @@ $sql = "CREATE TABLE IF NOT EXISTS $table_name (
     FirstName VARCHAR(255)
 )";
 
-if ($connection->query($sql) === TRUE) {
+if ($conn->query($sql) === TRUE) {
     echo "Table $table_name created successfully or already exists.";
 } else {
-    echo "Error creating table: " . $connection->error;
+    echo "Error creating table: " . $conn->error;
 }
 
-$connection->close();
+$conn->close();
 ?>

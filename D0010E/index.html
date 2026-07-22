@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="D0010E — Object-Oriented Programming in Java. Six labs including custom ArrayList, BFS graph traversal, MVC game, state machine, and discrete event simulation.">
+    <meta name="description" content="D0010E: Object-Oriented Programming in Java. Six labs including custom ArrayList, BFS graph traversal, MVC game, state machine, and discrete event simulation.">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-    <title>D0010E — Abdalla</title>
+    <title>D0010E · Abdalla</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
         <span class="hero-eyebrow">Object-Oriented Programming in Java</span>
         <h1 class="hero-title">Course <span class="acc">D0010E</span></h1>
         <p class="hero-desc">
-            Advanced programming in Java — object-oriented design, algorithms, data structures,
+            Advanced programming in Java: object-oriented design, algorithms, data structures,
             and software engineering. Labs added progressively as the course continues.
         </p>
         <div class="hero-meta">
@@ -45,14 +45,14 @@
     </div>
 
     <!-- ═══════════════════ LAB 1 ═══════════════════ -->
-    <span class="section-label">Lab 1 — Arithmetic Quiz & Spellchecker</span>
+    <span class="section-label">Lab 1: Arithmetic Quiz & Spellchecker</span>
 
     <div class="lab-intro">
         <h3>Two programs, one launcher</h3>
         <p>
             <code class="ic">Main.java</code> presents a menu to launch either the
             <strong>Arithmetic Quiz</strong> or the <strong>Spellchecker</strong>.
-            Both are fully interactive — try them live below.
+            Both are fully interactive. Try them live below.
         </p>
     </div>
 
@@ -381,13 +381,13 @@
     </div><!-- end .projects -->
 
     <!-- ═══════════════════ LAB 2 ═══════════════════ -->
-    <span class="section-label section-label-gap">Lab 2 — Custom ArrayList Implementation</span>
+    <span class="section-label section-label-gap">Lab 2: Custom ArrayList Implementation</span>
 
     <div class="lab-intro">
         <h3>Building ArrayList from scratch</h3>
         <p>
             <code class="ic">MyArrayList&lt;E&gt;</code> is a generic, resizable array list built to match Java's
-            real <code class="ic">ArrayList</code> API — without using it. Implements
+            real <code class="ic">ArrayList</code> API without using it. Implements
             <code class="ic">List&lt;E&gt;</code>, <code class="ic">Cloneable</code>,
             <code class="ic">Serializable</code>, and <code class="ic">RandomAccess</code>.
             All 15 unit tests in <code class="ic">MyArrayListTest.java</code> pass.
@@ -397,39 +397,39 @@
     <!-- Method map overview -->
     <div class="method-map">
         <div class="method-group">
-            <span class="method-group-label">§1 — Basic info</span>
+            <span class="method-group-label">§1: Basic info</span>
             <span class="method-chip">size()</span>
             <span class="method-chip">isEmpty()</span>
             <span class="method-chip">clear()</span>
         </div>
         <div class="method-group">
-            <span class="method-group-label">§2 — Capacity</span>
+            <span class="method-group-label">§2: Capacity</span>
             <span class="method-chip">ensureCapacity()</span>
             <span class="method-chip">trimToSize()</span>
         </div>
         <div class="method-group">
-            <span class="method-group-label">§3 — Add</span>
+            <span class="method-group-label">§3: Add</span>
             <span class="method-chip">add(index, e)</span>
             <span class="method-chip">add(e)</span>
         </div>
         <div class="method-group">
-            <span class="method-group-label">§4 — Read</span>
+            <span class="method-group-label">§4: Read</span>
             <span class="method-chip">get(index)</span>
             <span class="method-chip">set(index, e)</span>
         </div>
         <div class="method-group">
-            <span class="method-group-label">§5 — Remove</span>
+            <span class="method-group-label">§5: Remove</span>
             <span class="method-chip">remove(index)</span>
             <span class="method-chip">removeRange(from, to)</span>
         </div>
         <div class="method-group">
-            <span class="method-group-label">§6 — Search</span>
+            <span class="method-group-label">§6: Search</span>
             <span class="method-chip">indexOf(o)</span>
             <span class="method-chip">remove(o)</span>
             <span class="method-chip">contains(o)</span>
         </div>
         <div class="method-group">
-            <span class="method-group-label">§7 — Copy</span>
+            <span class="method-group-label">§7: Copy</span>
             <span class="method-chip">clone()</span>
             <span class="method-chip">toArray()</span>
         </div>
@@ -444,7 +444,7 @@
                     <span class="card-num">Lab 2 · MyArrayList&lt;E&gt;</span>
                     <div class="card-title">Generic Resizable Array List <span class="card-title-badge">★ Live Demo</span></div>
                     <p class="card-desc">
-                        Try the full implementation live — add, get, set, remove, indexOf, contains, clone, and more.
+                        Try the full implementation live: add, get, set, remove, indexOf, contains, clone, and more.
                         Internally uses a dynamic array that doubles in size when full, exactly like the real Java ArrayList.
                     </p>
                     <div class="card-tags">
@@ -460,18 +460,18 @@
 
             <!-- LIVE DEMO -->
             <div class="demo-panel">
-                <div class="demo-label">Live Demo — MyArrayList&lt;Integer&gt;</div>
+                <div class="demo-label">Live Demo: MyArrayList&lt;Integer&gt;</div>
 
                 <!-- Quick action buttons -->
                 <div class="pb-quick-btns">
-                    <button class="pb-quick" onclick="alSetAction('add')">+ add(e)</button>
-                    <button class="pb-quick" onclick="alSetAction('addAt')">+ add(i,e)</button>
-                    <button class="pb-quick" onclick="alSetAction('get')">get(i)</button>
-                    <button class="pb-quick" onclick="alSetAction('set')">set(i,e)</button>
-                    <button class="pb-quick" onclick="alSetAction('removeIdx')">remove(i)</button>
-                    <button class="pb-quick" onclick="alSetAction('removeObj')">remove(val)</button>
-                    <button class="pb-quick" onclick="alSetAction('indexOf')">indexOf(val)</button>
-                    <button class="pb-quick" onclick="alSetAction('contains')">contains(val)</button>
+                    <button class="pb-quick" onclick="alSetAction('add', this)">+ add(e)</button>
+                    <button class="pb-quick" onclick="alSetAction('addAt', this)">+ add(i,e)</button>
+                    <button class="pb-quick" onclick="alSetAction('get', this)">get(i)</button>
+                    <button class="pb-quick" onclick="alSetAction('set', this)">set(i,e)</button>
+                    <button class="pb-quick" onclick="alSetAction('removeIdx', this)">remove(i)</button>
+                    <button class="pb-quick" onclick="alSetAction('removeObj', this)">remove(val)</button>
+                    <button class="pb-quick" onclick="alSetAction('indexOf', this)">indexOf(val)</button>
+                    <button class="pb-quick" onclick="alSetAction('contains', this)">contains(val)</button>
                     <button class="pb-quick" onclick="alRunCmd('size')">size()</button>
                     <button class="pb-quick" onclick="alRunCmd('clear')">clear()</button>
                     <button class="pb-quick" onclick="alRunCmd('clone')">clone()</button>
@@ -681,7 +681,7 @@ public static void testAvClone() {
     </div><!-- end lab2-projects -->
 
     <!-- ═══════════════════ LAB 3 ═══════════════════ -->
-    <span class="section-label section-label-gap">Lab 3 — Room Navigation Game (MVC + Observer)</span>
+    <span class="section-label section-label-gap">Lab 3: Room Navigation Game (MVC + Observer)</span>
 
     <div class="lab-intro">
         <h3>A Swing game with full MVC architecture</h3>
@@ -735,7 +735,7 @@ public static void testAvClone() {
                     <span class="card-num">Lab 3 · Rumnavigering</span>
                     <div class="card-title">Room Navigation Game <span class="card-title-badge">&#9733; Live Demo</span></div>
                     <p class="card-desc">
-                        Exact map from <code class="inline-code">Huvudprogram.java</code> — 8 rooms, 10 corridors.
+                        Exact map from <code class="inline-code">Huvudprogram.java</code>, 8 rooms, 10 corridors.
                         Click the map then use <kbd class="kbd">W</kbd><kbd class="kbd">A</kbd><kbd class="kbd">S</kbd><kbd class="kbd">D</kbd> to navigate. Black dot = your position.
                     </p>
                     <div class="card-tags">
@@ -748,7 +748,7 @@ public static void testAvClone() {
             </div>
 
             <div class="demo-panel">
-                <div class="demo-label">Live Demo — Exact Java Swing Recreation</div>
+                <div class="demo-label">Live Demo: Exact Java Swing Recreation</div>
                 <p id="gameDesc" class="game-desc-text">
                     Click the canvas to focus it, then use <kbd class="kbd">W</kbd><kbd class="kbd">A</kbd><kbd class="kbd">S</kbd><kbd class="kbd">D</kbd> to move between rooms.
                 </p>
@@ -1099,7 +1099,7 @@ public class Grafik {
                 <div id="cL3PUNKT" class="hidden"><div class="code-filename">Punkt.java</div>
 <pre><code class="language-java">package labb3.verktyg;
 
-// Immutable point — used for corridor base/pivot calculations
+// Immutable point, used for corridor base/pivot calculations
 public class Punkt {
     private final int x, y;
 
@@ -1140,7 +1140,7 @@ abstract public class GlobalaKonstanter {
     </div><!-- end lab3-projects -->
 
     <!-- ═══════════════════ LAB 4 ═══════════════════ -->
-    <span class="section-label section-label-gap">Lab 4 — FIFO Queue & Breadth-First Traversal</span>
+    <span class="section-label section-label-gap">Lab 4: FIFO Queue & Breadth-First Traversal</span>
 
     <div class="lab-intro">
         <h3>Two data structures working together</h3>
@@ -1148,7 +1148,7 @@ abstract public class GlobalaKonstanter {
             <code class="ic">FIFO.java</code> implements a circular-buffer queue.
             <code class="ic">GraphIO.java</code> reads a graph from a file.
             The <strong>BFS algorithm</strong> uses the FIFO queue to visit every node
-            in the graph level by level — nearest nodes first.
+            in the graph level by level, nearest nodes first.
             Click any node below to watch BFS spread outward, and see the queue state at each step.
         </p>
     </div>
@@ -1188,7 +1188,7 @@ abstract public class GlobalaKonstanter {
                     <div class="card-title">Breadth-First Traversal <span class="card-title-badge">★ Live Demo</span></div>
                     <p class="card-desc">
                         Click any node to start BFS from there. Watch it sweep outward level by level.
-                        The FIFO queue state is shown live — each level gets a new colour.
+                        The FIFO queue state is shown live, each level gets a new colour.
                         Switch between the two graph files from class.
                     </p>
                     <div class="card-tags">
@@ -1217,7 +1217,7 @@ abstract public class GlobalaKonstanter {
                 </div>
 
                 <p class="bfs-hint-text">
-                    Click any dot on the graph to start — or just hit <strong class="accent-strong">Step</strong> or <strong class="accent-strong">Run</strong> to pick a random start automatically.
+                    Click any dot on the graph to start, or just hit <strong class="accent-strong">Step</strong> or <strong class="accent-strong">Run</strong> to pick a random start automatically.
                 </p>
 
                 <!-- Main demo area -->
@@ -1229,7 +1229,7 @@ abstract public class GlobalaKonstanter {
                         <div class="bfs-info-section">
                             <span class="bfs-info-label">FIFO Queue</span>
                             <div class="bfs-queue-vis" id="bfsQueue">
-                                <span class="bfs-queue-empty">Queue empty — click a node to start</span>
+                                <span class="bfs-queue-empty">Queue empty, click a node to start</span>
                             </div>
                         </div>
                         <div class="bfs-info-section">
@@ -1362,21 +1362,21 @@ void bft(Graph graph, int startId) {
 }
 
 // Key insight: FIFO order guarantees BFS visits nodes
-// level by level — all distance-1 nodes before distance-2, etc.
+// level by level, all distance-1 nodes before distance-2, etc.
 // A Stack (LIFO) here would give DFS instead.</code></pre></div>
             </div>
         </div>
     </div><!-- end lab4-projects -->
 
     <!-- ═══════════════════ LAB 5 ═══════════════════ -->
-    <span class="section-label section-label-gap">Lab 5 — Calculator (State Machine + OOP)</span>
+    <span class="section-label section-label-gap">Lab 5: Calculator (State Machine + OOP)</span>
 
     <div class="lab-intro">
         <h3>A state machine disguised as a calculator</h3>
         <p>
             The calculator is built around four states: <code class="ic">Input1</code> → <code class="ic">OpReady</code> → <code class="ic">Input2</code> → <code class="ic">HasResult</code>.
             Each button type is its own class extending the abstract <code class="ic">CalculatorButton</code>, and each implements a <code class="ic">transition()</code> method that changes the state.
-            The <code class="ic">Situation</code> object holds all shared state — display, operands, current operator.
+            The <code class="ic">Situation</code> object holds all shared state: display, operands, current operator.
         </p>
     </div>
 
@@ -1410,7 +1410,7 @@ void bft(Graph graph, int startId) {
                     <span class="card-num">Lab 5 · Calculator</span>
                     <div class="card-title">Integer Calculator <span class="card-title-badge">★ Live Demo</span></div>
                     <p class="card-desc">
-                        Fully functional calculator — exact port of the Java Swing version.
+                        Fully functional calculator, exact port of the Java Swing version.
                         The current state is shown live so you can see the state machine in action as you type.
                     </p>
                     <div class="card-tags">
@@ -1426,7 +1426,7 @@ void bft(Graph graph, int startId) {
 
             <div class="demo-panel">
                 <div class="demo-label">Live Demo</div>
-                <div class="calc-demo-wrap">
+                <div class="calc-demo-wrap" id="calcWrap" tabindex="0">
                     <!-- Calculator -->
                     <div class="calc-ui">
                         <div class="calc-display" id="calcDisplay">0</div>
@@ -1512,7 +1512,7 @@ public enum State {
     HasResult  // result shown, ready for next calc
 }</code></pre></div>
                 <div id="cL5SIT" class="hidden"><div class="code-filename">Situation.java</div>
-<pre><code class="language-java">// Holds all shared mutable state — passed to every button
+<pre><code class="language-java">// Holds all shared mutable state, passed to every button
 public class Situation {
     public State state;
     public int leftOperand;
@@ -1528,7 +1528,7 @@ public class Situation {
     }
 }</code></pre></div>
                 <div id="cL5BTN" class="hidden"><div class="code-filename">CalculatorButton.java</div>
-<pre><code class="language-java">// Abstract base — all buttons share a Situation reference
+<pre><code class="language-java">// Abstract base, all buttons share a Situation reference
 // and fire transition() when clicked
 public abstract class CalculatorButton extends JButton {
     protected final Situation situation;
@@ -1555,7 +1555,7 @@ public abstract class CalculatorButton extends JButton {
                 else situation.display.setText(current + digit);
                 break;
             case OpReady:
-                // first digit of second number — switch state
+                // first digit of second number, switch state
                 situation.display.setText("" + digit);
                 situation.state = State.Input2;
                 break;
@@ -1652,7 +1652,7 @@ public abstract class CalculatorButton extends JButton {
     public GUI(Situation situation) {
         setLayout(new BorderLayout());
 
-        // Display — right-aligned, large font
+        // Display, right-aligned, large font
         situation.display.setHorizontalAlignment(SwingConstants.RIGHT);
         situation.display.setFont(new Font("Arial", Font.BOLD, 24));
         add(situation.display, BorderLayout.NORTH);
@@ -1690,7 +1690,7 @@ public abstract class CalculatorButton extends JButton {
     </div><!-- end lab5-projects -->
 
     <!-- ═══════════════════ LAB 6 ═══════════════════ -->
-    <span class="section-label section-label-gap">Lab 6 — Discrete Event Simulation (Car Wash)</span>
+    <span class="section-label section-label-gap">Lab 6: Discrete Event Simulation (Car Wash)</span>
 
     <div class="lab-intro">
         <h3>A full simulation engine from scratch</h3>
@@ -1738,7 +1738,7 @@ public abstract class CalculatorButton extends JButton {
                     <span class="card-num">Lab 6 · Car Wash Simulation</span>
                     <div class="card-title">Discrete Event Simulation <span class="card-title-badge">★ Live Demo</span></div>
                     <p class="card-desc">
-                        Run the exact simulation from <code class="inline-code">Main.java</code> — 2 fast machines, 2 slow machines, queue of 5, λ=2, seed=1234.
+                        Run the exact simulation from <code class="inline-code">Main.java</code>, 2 fast machines, 2 slow machines, queue of 5, λ=2, seed=1234.
                         Step through each event or run the full simulation and see the event log, machine states, and queue live.
                         Adjust the parameters and re-run for different results.
                     </p>
@@ -1755,7 +1755,7 @@ public abstract class CalculatorButton extends JButton {
             </div>
 
             <div class="demo-panel">
-                <div class="demo-label">Live Demo — Interactive Simulation</div>
+                <div class="demo-label">Live Demo: Interactive Simulation</div>
 
                 <!-- Config + controls -->
                 <div class="cw-config-row">
@@ -1848,14 +1848,14 @@ public abstract class CalculatorButton extends JButton {
 
                 <div id="cL6UML" class="code-panel-dark">
                     <p class="uml-caption">
-                        UML class diagram showing the architecture — inheritance, composition, and dependencies between the three packages.
+                        UML class diagram showing the architecture: inheritance, composition, and dependencies between the three packages.
                     </p>
                     <img src="UML-Diagram.png" alt="UML Class Diagram" class="uml-img">
                 </div>
 
                 <div id="cL6README" class="hidden code-panel-dark code-panel-dark--padded">
                     <div class="readme-body">
-                        <h2>Lab 6 — Design Notes</h2>
+                        <h2>Lab 6: Design Notes</h2>
                         <p>This document describes the initial design plan for the simulation. The UML diagram represents the intended architecture before implementation.</p>
                         <h3>Package Structure</h3>
                         <div class="readme-pkg-grid">
@@ -1865,25 +1865,25 @@ public abstract class CalculatorButton extends JButton {
                             </div>
                             <div class="readme-pkg">
                                 <span class="readme-pkg-name">simulation</span>
-                                <p>Generic reusable simulation engine — not specific to car wash. Simulator drives the event loop. EventQueue uses a PriorityQueue ordered by time. Event is abstract with compareTo() for ordering. State holds time and stop flag.</p>
+                                <p>Generic reusable simulation engine, not specific to car wash. Simulator drives the event loop. EventQueue uses a PriorityQueue ordered by time. Event is abstract with compareTo() for ordering. State holds time and stop flag.</p>
                             </div>
                             <div class="readme-pkg">
                                 <span class="readme-pkg-name">carwash</span>
-                                <p>Car wash–specific logic. CarWashState extends State. Each event type (Arrival, Departure, Close, Stop) extends Event and implements execute(). EventFactory centralises event creation to reduce coupling.</p>
+                                <p>Car-wash-specific logic. CarWashState extends State. Each event type (Arrival, Departure, Close, Stop) extends Event and implements execute(). EventFactory centralises event creation to reduce coupling.</p>
                             </div>
                         </div>
                         <h3>Key Design Decisions</h3>
                         <ul class="readme-list">
-                            <li><strong>EventFactory</strong> centralises event creation instead of letting events create each other directly — reduces coupling and keeps responsibilities clear.</li>
+                            <li><strong>EventFactory</strong> centralises event creation instead of letting events create each other directly. This reduces coupling and keeps responsibilities clear.</li>
                             <li><strong>Event implements Comparable&lt;Event&gt;</strong> so the PriorityQueue orders events by time automatically.</li>
-                            <li><strong>CarWashState extends State</strong> — the generic framework knows nothing about car washing; only the carwash package does.</li>
-                            <li><strong>SimulationView</strong> separates display from logic — state delegates printing to the view.</li>
+                            <li><strong>CarWashState extends State</strong>. The generic framework knows nothing about car washing, only the carwash package does.</li>
+                            <li><strong>SimulationView</strong> separates display from logic, state delegates printing to the view.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div id="cL6EVENT" class="hidden"><div class="code-filename">Event.java</div>
-<pre><code class="language-java">// Abstract base — all events share a time and an execute() method
+<pre><code class="language-java">// Abstract base, all events share a time and an execute() method
 public abstract class Event implements Comparable&lt;Event&gt; {
     private final double time;
 
@@ -1893,7 +1893,7 @@ public abstract class Event implements Comparable&lt;Event&gt; {
     // Each subclass defines what happens when the event fires
     public abstract void execute(State state, EventQueue queue);
 
-    // Natural ordering by time — used by PriorityQueue in EventQueue
+    // Natural ordering by time, used by PriorityQueue in EventQueue
     @Override
     public int compareTo(Event other) {
         return Double.compare(this.time, other.time);
@@ -1906,7 +1906,7 @@ public abstract class Event implements Comparable&lt;Event&gt; {
     private final State state;
 
     public void run() {
-        // Core simulation loop — process events in time order
+        // Core simulation loop, process events in time order
         while (!state.isStopped() &amp;&amp; !eventQueue.isEmpty()) {
             Event e = eventQueue.next();     // always the earliest event
             state.setTime(e.getTime());      // advance simulation clock
@@ -1915,7 +1915,7 @@ public abstract class Event implements Comparable&lt;Event&gt; {
     }
 }
 
-// EventQueue uses PriorityQueue&lt;Event&gt; — Event.compareTo() ensures
+// EventQueue uses PriorityQueue&lt;Event&gt;, Event.compareTo() ensures
 // the minimum-time event is always returned by next()</code></pre></div>
 
                 <div id="cL6ARR" class="hidden"><div class="code-filename">ArrivalEvent.java</div>

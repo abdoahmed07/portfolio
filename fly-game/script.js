@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("flyBests", JSON.stringify(bestScores));
         }
 
-        document.getElementById("goMode").textContent      = MODES[gameMode].label + " — game over";
+        document.getElementById("goMode").textContent      = MODES[gameMode].label + ": game over";
         document.getElementById("finalScore").textContent  = score;
         document.getElementById("finalHits").textContent   = hits;
         document.getElementById("finalMisses").textContent = misses;

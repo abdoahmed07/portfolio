@@ -1,7 +1,12 @@
 // ── DEMO MODE DETECTION ────────────────────────────────────
-// When opening as a local file (no server), skip PHP fetch entirely
+// When opening as a local file (no server) or on GitHub Pages (static
+// hosting, no PHP interpreter), skip the fetch entirely. Without the
+// github.io check, the live site would fetch login.php, get back its
+// raw source as a "successful" 200, and redirect to a page that
+// doesn't exist.
 const DEMO_MODE = window.location.protocol === "file:" ||
-                  !window.location.hostname;
+                  !window.location.hostname ||
+                  window.location.hostname.endsWith("github.io");
 
 
 function switchTab(tab) {
@@ -182,6 +187,8 @@ if (loginForm) {
         }
 
         try {
+            const fd = new FormData(loginForm);
+            const res = await fetch("login.php", { method: "POST", body: fd });
 
             if (res.ok || res.redirected) {
                 showSuccess(
@@ -200,7 +207,7 @@ if (loginForm) {
                 btn.disabled    = false;
             }
         } catch {
-            // No PHP server — demo mode
+            // No PHP server, demo mode
             showSuccess(
                 "Logged in!",
                 `Welcome back, ${user}. Redirecting you to the game…`,
@@ -248,7 +255,7 @@ if (signupForm) {
         }
 
         try {
-
+            const fd = new FormData(signupForm);
             const res = await fetch("signup.php", { method:"POST", body: fd });
 
             if (res.ok || res.redirected) {
@@ -268,7 +275,7 @@ if (signupForm) {
                 btn.disabled    = false;
             }
         } catch {
-            // No PHP server — demo mode: show success
+            // No PHP server, demo mode: show success
             showSuccess(
                 "Account created!",
                 `Welcome, ${user}! Your account is ready.`,

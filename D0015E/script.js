@@ -86,12 +86,13 @@ function hammTurn() {
     // Plague (10% chance)
     let plague = false;
     if (Math.random() < 0.10) { H.pop = Math.floor(H.pop / 2); plague = true; }
+    if (H.pop <= 0) return hammEnd(false, 'Your entire population has perished. Your reign has ended.');
 
     // Starve
     const fed = Math.floor(feed / 20);
     const starved = Math.max(0, H.pop - fed);
     const pctStarved = H.pop > 0 ? starved / H.pop : 0;
-    if (pctStarved > 0.45) return hammEnd(false, `${Math.round(pctStarved*100)}% of your people starved — you were overthrown!`);
+    if (pctStarved > 0.45) return hammEnd(false, `${Math.round(pctStarved*100)}% of your people starved, you were overthrown!`);
     H.starvedTotal += starved;
     H.pctStarvedMax = Math.max(H.pctStarvedMax, pctStarved);
 
@@ -117,13 +118,13 @@ function hammMsg(msg, type) {
 
 function hammEnd(won, reason) {
     document.getElementById('hammInputSection').style.display = 'none';
-    const acresPerPerson = H.acres / H.pop;
+    const acresPerPerson = H.pop > 0 ? H.acres / H.pop : 0;
     const avgStarved = H.starvedTotal / 10;
     let rank, rankClass;
     if (!won) { rank = reason; rankClass = 'hamm-bad'; }
     else if (avgStarved < 3 && acresPerPerson > 10) { rank = '🏆 Hammurabi himself would be proud! A truly magnificent reign.'; rankClass = 'hamm-good'; }
     else if (avgStarved < 10 && acresPerPerson > 8) { rank = '👑 A competent and just ruler. History will remember you well.'; rankClass = ''; }
-    else if (avgStarved < 33) { rank = '⚔ Your rule was adequate — not great, not terrible.'; rankClass = ''; }
+    else if (avgStarved < 33) { rank = '⚔ Your rule was adequate, not great, not terrible.'; rankClass = ''; }
     else { rank = '☠ A dismal performance. You are responsible for undue suffering.'; rankClass = 'hamm-bad'; }
     document.getElementById('hammReport').innerHTML = `
         <div class="hamm-event ${rankClass}" style="font-size:0.9rem;line-height:1.6">
@@ -159,7 +160,7 @@ function algoRun() {
     const res = document.getElementById('algoResults');
     vis.innerHTML = ''; res.innerHTML = '';
 
-    // Cubic O(n³) — init to -Infinity so all-negative arrays work
+    // Cubic O(n³): init to -Infinity so all-negative arrays work
     let maxC=-Infinity, bestC={i:0,j:0}, stepsC=0;
     for (let i=0;i<arr.length;i++) for (let j=i;j<arr.length;j++) {
         let s=0; for (let k=i;k<=j;k++){s+=arr[k];stepsC++;}
@@ -200,11 +201,11 @@ function algoRun() {
         </div>
         <div class="algo-result">
             <span class="algo-name">O(n²) Quadratic</span>
-            <span class="algo-ans">${stepsQ1.toLocaleString()} operations (n²÷2 ≈ ${Math.round(n**2/2)}) — ${Math.round(stepsC/stepsQ1)}× faster</span>
+            <span class="algo-ans">${stepsQ1.toLocaleString()} operations (n²÷2 ≈ ${Math.round(n**2/2)}), ${Math.round(stepsC/stepsQ1)}× faster</span>
         </div>
         <div class="algo-result">
             <span class="algo-name">O(n²) Prefix sum</span>
-            <span class="algo-ans">${stepsP.toLocaleString()} operations — same O but with prefix array precomputation</span>
+            <span class="algo-ans">${stepsP.toLocaleString()} operations, same O but with prefix array precomputation</span>
         </div>
         <div class="algo-complexity">
             <div class="algo-bar-row"><span>O(n³)</span><div class="algo-bar"><div style="width:100%;background:#ef4444"></div></div><span>${stepsC}</span></div>

@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════
-   D0011E — Digital Design  ·  Interactive demos + UI
+   D0011E: Digital Design  ·  Interactive demos + UI
 ════════════════════════════════════════════════════════════ */
 
 /* ── Theme toggle ─────────────────────────────────────────── */
@@ -25,7 +25,7 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
 
 /* ════════════════════════════════════════════════════════════
    BCD CHECKER  (Lab 2)
-   Mirrors bcdcheck4.veryl exactly — same boolean expressions
+   Mirrors bcdcheck4.veryl exactly, same boolean expressions
 ════════════════════════════════════════════════════════════ */
 (function () {
     // bits[0]=x3, bits[1]=x2, bits[2]=x1, bits[3]=x0  (MSB first)
@@ -81,7 +81,7 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
 
 /* ════════════════════════════════════════════════════════════
    ALU CALCULATOR  (Lab 3b)
-   Mirrors Alu32.veryl — correct overflow/carry logic
+   Mirrors Alu32.veryl, correct overflow/carry logic
 ════════════════════════════════════════════════════════════ */
 (function () {
     var currentOp = 'ADD';
@@ -188,7 +188,7 @@ var PROGRAMS = {
             { asm: 'addi r3, r0, 0',  comment: 'Q = 0   (quotient)',  op: 'ADDI', rs: 0, rt: 3, rd: 0, imm: 0  },
             { asm: 'slt  r4, r1, r2', comment: 'r4 = (R < D)',        op: 'SLT',  rs: 1, rt: 2, rd: 4, imm: 0  },
             { asm: 'beq  r4, r0, 1',  comment: 'if R ≥ D → body',    op: 'BEQ',  rs: 4, rt: 0, rd: 0, imm: 1  },
-            { asm: 'j    8',          comment: 'R < D → done',        op: 'J',    rs: 0, rt: 0, rd: 0, imm: 8  },
+            { asm: 'j    9',          comment: 'R < D → done',        op: 'J',    rs: 0, rt: 0, rd: 0, imm: 9  },
             { asm: 'addi r3, r3, 1',  comment: 'Q++',                 op: 'ADDI', rs: 3, rt: 3, rd: 0, imm: 1  },
             { asm: 'sub  r1, r1, r2', comment: 'R -= D',              op: 'SUB',  rs: 1, rt: 2, rd: 1, imm: 0  },
             { asm: 'j    3',          comment: 'back to loop',         op: 'J',    rs: 0, rt: 0, rd: 0, imm: 3  },
@@ -270,7 +270,7 @@ var PROGRAMS = {
         var curEl = listing.querySelector('.current');
         if (curEl) curEl.scrollIntoView({ block: 'nearest' });
 
-        // Register file — show r0–r9 (the registers used by both demo programs)
+        // Register file: show r0-r9 (the registers used by both demo programs)
         var regFile = document.getElementById('mipsRegFile');
         regFile.innerHTML = Array.from({ length: 10 }, function (_, i) {
             var val     = regs[i];
@@ -333,7 +333,7 @@ var PROGRAMS = {
 })();
 
 /* ════════════════════════════════════════════════════════════
-   CODE VIEWER  —  Veryl source files
+   CODE VIEWER: Veryl source files
 ════════════════════════════════════════════════════════════ */
 (function () {
     /* Register a minimal Veryl language for highlight.js */
@@ -416,8 +416,8 @@ var PROGRAMS = {
     ].join('\n');
 
     SRC.bcdcheck = [
-        '// Lab 2 — BCD digit checker',
-        '// x is a 4-bit BCD input (0–9 valid, 10–15 are invalid BCD)',
+        '// Lab 2: BCD digit checker',
+        '// x is a 4-bit BCD input (0-9 valid, 10-15 are invalid BCD)',
         'module bcdcheck4 (',
         '    x    : input  logic<4>,',
         '    max  : output logic   ,   // x == 9',
@@ -432,13 +432,13 @@ var PROGRAMS = {
         '    assign even  = !x[0];',
         '    assign lo3   = x <: 3;',
         '    assign noBCD = x >: 9 & x <= 15;',
-        '    // hieq3 reuses lo3 and noBCD — no duplicated comparators',
+        '    // hieq3 reuses lo3 and noBCD, no duplicated comparators',
         '    assign hieq3 = !lo3 & !noBCD;',
         '}',
     ].join('\n');
 
     SRC.alu32 = [
-        '// Lab 3b — 32-bit ALU  (AND · OR · ADD · SUB · SLT)',
+        '// Lab 3b: 32-bit ALU  (AND · OR · ADD · SUB · SLT)',
         'module Alu32 (',
         '    A  : input  logic<32>,',
         '    B  : input  logic<32>,',
@@ -462,12 +462,12 @@ var PROGRAMS = {
         '',
         '    assign V = arith_v;',
         '    assign C = arith_c;',
-        '    assign Z = ~|R;   // NOR reduction — true only when every bit is 0',
+        '    assign Z = ~|R;   // NOR reduction, true only when every bit is 0',
         '}',
     ].join('\n');
 
     SRC.decoder = [
-        '// Lab 5 — MIPS control unit',
+        '// Lab 5: MIPS control unit',
         '// Decodes opcode + funct → all control signals for the datapath',
         'module Decoder1 (',
         '    opcode         : input  logic<6>,',
@@ -509,7 +509,7 @@ var PROGRAMS = {
     ].join('\n');
 
     SRC.vips = [
-        '// Lab 5 — Top-level MIPS processor',
+        '// Lab 5: Top-level MIPS processor',
         '// Supports: ADD  SUB  AND  OR  SLT  ADDI  SLTI  LW  SW  BEQ  J',
         'module Vips (',
         '    i_clk         : input  clock              ,',

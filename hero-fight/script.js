@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   HeroFight — Web Edition
+   HeroFight: Web Edition
    Full JS port of the C# .NET 10 console RPG
 ═══════════════════════════════════════════════════════ */
 
@@ -7,6 +7,13 @@
 function rng()          { return Math.random(); }
 function rngInt(lo, hi) { return Math.floor(rng() * (hi - lo)) + lo; }
 function $id(id)        { return document.getElementById(id); }
+
+// The player's chosen name is the one piece of user-typed text that ends
+// up inside innerHTML strings below (welcome log, end screen), so it
+// needs escaping - everything else interpolated there is hardcoded.
+function escapeHTML(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
 // ─── Character base ──────────────────────────────────────
 class Character {
@@ -55,7 +62,7 @@ class Warrior extends Player {
         const raw = Math.max(2, this.attack + 3 - eDef);
         const dmg = boss ? Math.round(raw * 0.8) : raw;
         this.takeDamage(2);
-        return { dmg, msg: '⚔ <b>Heavy Strike!</b> You deal <b>' + dmg + '</b> damage — but take 2 self-damage.' };
+        return { dmg, msg: '⚔ <b>Heavy Strike!</b> You deal <b>' + dmg + '</b> damage, but take 2 self-damage.' };
     }
 }
 
@@ -251,7 +258,7 @@ function startGame(name, cls) {
     clearLog();
     refreshPlayer();
     refreshRoomBar();
-    log('Welcome, <b>' + p.name + '</b> the <b>' + p.characterClass + '</b>! Your adventure begins.', 'g-log-sys');
+    log('Welcome, <b>' + escapeHTML(p.name) + '</b> the <b>' + p.characterClass + '</b>! Your adventure begins.', 'g-log-sys');
     showScreen('g-main');
     enterRoom();
 }
@@ -262,7 +269,7 @@ function enterRoom() {
     var room = ROOMS[S.roomIdx];
     setRoomBadge(room.type, room.name);
     refreshRoomBar();
-    log('— Room ' + (S.roomIdx + 1) + ' / 7 : <b>' + room.name + '</b> —', 'g-log-sys');
+    log('Room ' + (S.roomIdx + 1) + ' / 7: <b>' + room.name + '</b>', 'g-log-sys');
 
     if      (room.type === 'battle'  ) startBattle(false);
     else if (room.type === 'boss'    ) startBattle(true);
@@ -489,7 +496,7 @@ function endGame(victory) {
     $id('g-end-eyebrow').textContent = victory ? '★  Victory!' : 'Game Over';
     $id('g-end-title').textContent   = victory ? 'You Slew the Dragon!' : 'You Have Fallen';
     $id('g-end-stats').innerHTML     =
-        '<b>' + p.name + '</b> the <b>' + p.characterClass + '</b>' +
+        '<b>' + escapeHTML(p.name) + '</b> the <b>' + p.characterClass + '</b>' +
         ' &nbsp;·&nbsp; Lv. ' + p.level +
         ' &nbsp;·&nbsp; ' + p.experience + ' XP' +
         ' &nbsp;·&nbsp; ' + p.gold + ' gold';

@@ -50,6 +50,11 @@ input.addEventListener("input", () => {
     result.classList.add("hidden");
 });
 
+// Enter submits, matching what people expect from a single-field form
+input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !submitBtn.disabled) submitBtn.click();
+});
+
 // ── SUBMIT ─────────────────────────────────────────────────
 submitBtn.addEventListener("click", () => {
     const val = input.value.trim();
