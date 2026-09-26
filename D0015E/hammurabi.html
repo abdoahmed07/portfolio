@@ -95,7 +95,7 @@
 
             <input type="range" id="sliderAcrestosellbuy"
               min="-1000" max="1000" step="1" value="0"
-              onchange="onChangeAcres('sliderAcrestosellbuy')">
+              oninput="onChangeAcres('sliderAcrestosellbuy')">
 
 
             <button class="button blue" id="plusbuttonAcrestosellbuy"
@@ -129,7 +129,7 @@
             
             <input type="range" id="sliderFeedpeople"
               min="0" max="2800" step="1" value="0"
-              onchange="onChangeFeeding('sliderFeedpeople')">
+              oninput="onChangeFeeding('sliderFeedpeople')">
 
             <!-- Button to increase food amount -->
             <button class="button blue" id="plusbuttonFeedpeople"
@@ -155,7 +155,7 @@
             
             <input type="range" id="sliderPlantwithseed"
               min="0" max="1000" step="1" value="0"
-              onchange="onChangePlanting('sliderPlantwithseed')">
+              oninput="onChangePlanting('sliderPlantwithseed')">
 
             <button class="button blue" id="plusbuttonPlantwithseed"
               onclick="onChangePlanting('plusbuttonPlantwithseed')" 
@@ -195,8 +195,7 @@
               </ul>
               <p class="small">
                 Vill du läsa mer? Se 
-                <a href="Hammurabi Game - Play Hammurabi Online-1.pdf" 
-                target="_blank" rel="noopener">Regler</a>.
+                <a href="#regler">Regler</a>.
               </p>
             </div>
           </details>
@@ -258,16 +257,12 @@
       <section id="kallor" class="info card card--tint-purple">
         <h2>Källor</h2>
         <ul class="bullets">
-          <li><a href="https://en.wikipedia.org/wiki/Hammurabi" target= 
-            rel >Wikipedia: Om Hammurabi</a></li>
-          <li><a href="Hammurabi Game - Play Hammurabi Online-1.pdf" target=
-            rel >Regler</a></li>
-            <li><a href=
-              "https://www.nationalgeographic.com/culture/article/hammurabi" 
-              target=  rel >Logo Image</a></li>
-            <li><a href=
-            "https://warhistory.org/es/@msw/article/babylonia-enemy-of-assyria" 
-            target=  rel >Standing Image</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Hammurabi"
+            target="_blank" rel="noopener">Wikipedia: Om Hammurabi</a></li>
+          <li><a href="https://www.nationalgeographic.com/culture/article/hammurabi"
+            target="_blank" rel="noopener">Logo Image</a></li>
+          <li><a href="https://warhistory.org/es/@msw/article/babylonia-enemy-of-assyria"
+            target="_blank" rel="noopener">Standing Image</a></li>
         </ul>
       </section>
     </aside>

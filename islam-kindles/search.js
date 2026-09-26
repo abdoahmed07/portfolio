@@ -81,9 +81,29 @@ const SURAHS = [
     { number:114, name:"An-Nas",        english:"Mankind",                   topics:["faith","protection","prayer","fundamentals"] }
 ];
 
+// Short versions of the entries in debunks/script.js. Add one here when you add one there.
 const DEBUNKS = [
-    // Add your debunks here as you fill out the debunks page
-    // { id:1, title:"...", summary:"...", topics:["..."], url:"debunks/index.html" }
+    {
+        id: 1,
+        title: "Do I have to perform wudu before every prayer?",
+        summary: "No. Wudu stays valid until something breaks it, so one wudu can cover several prayers.",
+        topics: ["prayer","purification","wudu","ablution"],
+        url: "debunks/index.html"
+    },
+    {
+        id: 2,
+        title: "Is Islam only about rituals like prayer and fasting?",
+        summary: "No. Islam also covers character, family, business and how you treat people.",
+        topics: ["faith","character","prayer","fasting","manners"],
+        url: "debunks/index.html"
+    },
+    {
+        id: 3,
+        title: "Did Islam spread only by the sword?",
+        summary: "No. It spread mostly through trade, migration and scholars, and the Quran says there is no compulsion in religion.",
+        topics: ["knowledge","history","jihad","conversion","sword"],
+        url: "debunks/index.html"
+    }
 ];
 
 // ══════════════════════════════════════════════════════════════

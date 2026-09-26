@@ -290,6 +290,7 @@ function calculateStarvedPeople() {
 	(20 * number of acres you have + amount of grain you have in storage) / (100 * population) + 1*/
 
 function calculateNewcomers() {
+	if (gameState.population <= 0) return 0;
 	return Math.floor((20 * gameState.internalAcres + gameState.internalBushels) / (100 * gameState.population)) + 1;
 }
 

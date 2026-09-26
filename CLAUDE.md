@@ -37,8 +37,7 @@ A new project touches several places by hand:
 1. The new folder with its own `index.html`, `script.js`, `style.css`.
 2. A `<a class="project-item" data-num="NN">` entry in `portfolio-site/index.html`. Its `.project-tag` text must exactly match a `data-tag` on a `.filter-btn` in the filter strip, or filtering won't pick it up. Add a new filter button if the tag is new.
 3. The hardcoded `"20 projects"` count appears twice in `portfolio-site/index.html`: in the `.section-count` markup and in the `applyFilter` script (`tag === 'All'` branch). Update both.
-4. Optional hover preview: `data-preview="previews/NN-name.png"` on the item, image in `portfolio-site/previews/`. Only 01-09 have one currently.
-5. The README structure tree and project section.
+4. The README structure tree and project section.
 
 ## Shared conventions across pages
 
@@ -56,4 +55,9 @@ Many projects were originally written in other languages (Python, Java, C#, C, C
 
 ## Writing style
 
-All prose, UI copy, comments and commit messages should read like a person wrote them. No em dashes, no AI-cliche phrasing, sentence-case headers, match existing quote style. Emoji used as functional UI glyphs (♥, ⚔, ★, ✓/✗) and single em dashes used as empty-value placeholders in UIs are fine and should be left alone.
+All prose, UI copy, comments and commit messages should read like a person wrote them.
+
+- Keep it simple and easy to understand. Short sentences, everyday words.
+- UI copy stays short and plain. Say what a thing does, nothing more.
+- No em dashes, no AI-cliche phrasing, sentence-case headers, match existing quote style.
+- Emoji used as functional UI glyphs (♥, ⚔, ★, ✓/✗) and single em dashes used as empty-value placeholders in UIs are fine and should be left alone.

@@ -127,6 +127,16 @@ let viewMode = "both"; // both | arabic | translation
 async function loadSurah(id) {
     const content = document.getElementById("surahContent");
 
+    if (!meta) {
+        content.innerHTML = `
+            <div class="error-state">
+                <p style="margin-bottom:12px">There is no surah with that number. Pick one from 1 to 114.</p>
+                <a href="index.html" style="color:var(--accent);font-family:var(--font-m);font-size:0.8rem;">← Back to Quran</a>
+            </div>
+        `;
+        return;
+    }
+
     try {
         // Fetch Arabic and English in parallel
         const [arRes, enRes] = await Promise.all([

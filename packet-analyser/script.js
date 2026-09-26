@@ -110,6 +110,8 @@ function stepFlow(flow) {
         }
     }
 
+    // Keep the DNS name on the row so --host can match names, not just IPs
+    if (pkt) pkt.hostName = flow.kind === 'dns' ? flow.name : flow.host.name;
     return pkt;
 }
 
@@ -210,7 +212,8 @@ function getFilters() {
 function matchesFilter(pkt, f) {
     if (f.protos.length > 0 && f.protos.indexOf(pkt.proto) === -1) return false;
     if (f.port && String(pkt.srcPort) !== f.port && String(pkt.dstPort) !== f.port) return false;
-    if (f.host && pkt.src.indexOf(f.host) === -1 && pkt.dst.indexOf(f.host) === -1) return false;
+    if (f.host && pkt.src.indexOf(f.host) === -1 && pkt.dst.indexOf(f.host) === -1
+        && (pkt.hostName || '').indexOf(f.host) === -1) return false;
     return true;
 }
 function reapplyFilters() {

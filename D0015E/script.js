@@ -53,6 +53,7 @@ function hammShowYear() {
 }
 
 function hammTurn() {
+    if (!H.rng) return;
     const buy   = parseInt(document.getElementById('hBuy').value)   || 0;
     const feed  = parseInt(document.getElementById('hFeed').value)  || 0;
     const plant = parseInt(document.getElementById('hPlant').value) || 0;

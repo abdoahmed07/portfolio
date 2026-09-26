@@ -59,7 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
             pill.classList.add("active");
             mode = parseInt(pill.dataset.mode);
             p2Group.classList.toggle("hidden", mode === 1);
-            p1Input.labels[0].textContent = mode === 1 ? "Your name" : "Player 1 name";
+            const p1Label = p1Input.labels && p1Input.labels[0];
+            if (p1Label) p1Label.textContent = mode === 1 ? "Your name" : "Player 1 name";
         });
     });
 
