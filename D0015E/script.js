@@ -57,6 +57,7 @@ function hammTurn() {
     const buy   = parseInt(document.getElementById('hBuy').value)   || 0;
     const feed  = parseInt(document.getElementById('hFeed').value)  || 0;
     const plant = parseInt(document.getElementById('hPlant').value) || 0;
+    if (feed < 0 || plant < 0) return hammMsg("Feed and plant amounts can't be negative.", 'error');
     let g = H.grain;
 
     // Buy/sell land
@@ -99,7 +100,9 @@ function hammTurn() {
 
     // Immigration
     const immigrants = Math.floor((20 * H.acres + g) / (100 * H.pop) * 5);
-    H.pop = fed + immigrants;
+    // Survivors plus newcomers, same as the standalone game. Using fed here
+    // would add people out of nowhere when you overfeed.
+    H.pop = H.pop - starved + immigrants;
     H.lastStarved = starved;
     H.lastImmig = immigrants;
     H.grain = g;

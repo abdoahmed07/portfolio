@@ -56,7 +56,9 @@ function startQuiz(){
     document.getElementById("quizGame").classList.remove("hidden");
     showQuestion();
 }
+let quizLocked=false; // true while feedback shows, so Enter can't answer twice
 function showQuestion(){
+    quizLocked=false;
     const q=quizQuestions[quizIndex];
     document.getElementById("quizQuestion").textContent=`What is ${q.a} ${q.op} ${q.b} ?`;
     document.getElementById("quizAttemptLabel").textContent=quizAttempt===1?"First attempt: 10 pts":"Second attempt: 5 pts";
@@ -72,10 +74,12 @@ function showFeedback(msg,type){
     el.textContent=msg;el.className=`quiz-feedback quiz-feedback-${type}`;
 }
 function submitAnswer(){
+    if(quizLocked||quizIndex>=10)return;
     const input=document.getElementById("quizAnswer");
     const val=parseInt(input.value);
     if(isNaN(val)){input.focus();return;}
     const q=quizQuestions[quizIndex];
+    quizLocked=true;
     if(val===q.answer){
         const pts=quizAttempt===1?10:5;quizScore+=pts;
         quizBreakdown.push({q,pts,correct:true});
@@ -116,8 +120,8 @@ function checkSpelling(){
     const verdict=document.getElementById("spellVerdict");
     const suggs=document.getElementById("spellSuggestions");
     result.classList.remove("hidden");
-    if(WORD_SET.has(raw)){verdict.innerHTML=`<span class="spell-correct">✓</span> "<strong>${raw}</strong>" is spelled correctly.`;suggs.innerHTML="";return;}
-    verdict.innerHTML=`<span class="spell-wrong">✗</span> "<strong>${raw}</strong>" is not in the dictionary.`;
+    if(WORD_SET.has(raw)){verdict.innerHTML=`<span class="spell-correct">✓</span> "<strong>${escapeHTML(raw)}</strong>" is spelled correctly.`;suggs.innerHTML="";return;}
+    verdict.innerHTML=`<span class="spell-wrong">✗</span> "<strong>${escapeHTML(raw)}</strong>" is not in the dictionary.`;
     const found=new Set();
     for(let i=0;i<raw.length;i++){const s=raw.slice(0,i)+raw.slice(i+1);if(WORD_SET.has(s))found.add({word:s,method:"delete"});}
     for(let c=97;c<=122;c++)for(let i=0;i<=raw.length;i++){const s=raw.slice(0,i)+String.fromCharCode(c)+raw.slice(i);if(WORD_SET.has(s))found.add({word:s,method:"insert"});}
@@ -210,6 +214,7 @@ function alSetAction(action,btn){
 function alSubmit(action){
     const form=alForms[action];const vals=form.fields.map((_,i)=>document.getElementById(`alF${i}`)?.value.trim()||"");
     alEcho(`${action}(${vals.join(",")})`);
+    if(vals.some(v=>!/^-?\d+$/.test(v))){alLog("✗ Enter whole numbers only","error");return;}
     try{form.run(vals);form.fields.forEach((_,i)=>{const el=document.getElementById(`alF${i}`);if(el)el.value="";});document.getElementById("alF0")?.focus();}
     catch(e){alLog(`✗ ${e.message}`,"error");alRender();}
 }
@@ -227,6 +232,10 @@ function alRunCmd(cmd){
 function alRunRawCmd(){
     const input=document.getElementById("alCmd");const raw=input.value.trim();if(!raw)return;input.value="";alEcho(raw);
     const parts=raw.split(/\s+/);const action=parts[0].toLowerCase();const args=parts.slice(1).map(Number);
+    const ARGC={add:[1,2],get:[1],set:[2],remove:[1],indexof:[1],contains:[1]};
+    if(ARGC[action]&&(!ARGC[action].includes(args.length)||args.some(a=>!Number.isInteger(a)))){
+        alLog(`✗ ${action} takes ${ARGC[action].join(" or ")} whole number${ARGC[action].at(-1)>1?"s":""}`,"error");return;
+    }
     try{
         switch(action){
             case"add":if(args.length===2){alList.add(args[0],args[1]);alLog(`add(${args[0]},${args[1]}) → done`,"success");alRender(args[0]);}else{alList.add(args[0]);alLog(`add(${args[0]}) → done`,"success");alRender(alList.size-1);}break;
@@ -344,15 +353,17 @@ function renderEditorList(){
             <input class="re-input re-num re-col-w" type="number" value="${r.w}" min="30" max="200" onchange="gameRooms[${i}].w=parseInt(this.value)||50;drawGame()" title="Width">
             <span class="re-x re-col-x">×</span>
             <input class="re-input re-num re-col-h" type="number" value="${r.h}" min="30" max="200" onchange="gameRooms[${i}].h=parseInt(this.value)||50;drawGame()" title="Height">
-            <input class="re-input re-num re-col-at" type="number" value="${r.x}" min="0" max="480" onchange="gameRooms[${i}].x=parseInt(this.value);drawGame()" title="X">
+            <input class="re-input re-num re-col-at" type="number" value="${r.x}" min="0" max="480" onchange="setRoomPos(${i},'x',this)" title="X">
             <span class="re-comma re-col-comma">,</span>
-            <input class="re-input re-num re-col-y" type="number" value="${r.y}" min="0" max="360" onchange="gameRooms[${i}].y=parseInt(this.value);drawGame()" title="Y">
+            <input class="re-input re-num re-col-y" type="number" value="${r.y}" min="0" max="360" onchange="setRoomPos(${i},'y',this)" title="Y">
             <div id="reColorPicker${i}" class="re-color-picker re-hidden">
                 ${PRESET_COLORS.map(c=>`<div class="re-color-swatch" style="background:${c.hex}" title="${c.name}" onclick="setRoomColor(${i},'${c.hex}')"></div>`).join('')}
                 <input type="color" class="re-color-custom" value="${r.color}" oninput="setRoomColor(${i},this.value)" title="Custom">
             </div>
         </div>`).join('');
 }
+// Keep the old position if the field is left empty
+function setRoomPos(i,key,el){const v=parseInt(el.value);if(isNaN(v)){el.value=gameRooms[i][key];return;}gameRooms[i][key]=v;drawGame();}
 function toggleColorPicker(i){const p=document.getElementById(`reColorPicker${i}`);document.querySelectorAll('.re-color-picker').forEach((x,pi)=>{if(pi!==i)x.classList.add('re-hidden');});p.classList.toggle('re-hidden');}
 function setRoomColor(i,hex){gameRooms[i].color=hex;document.querySelector(`#reRow${i} .re-room-swatch`).style.background=hex;document.getElementById(`reColorPicker${i}`).classList.add('re-hidden');drawGame();}
 function toggleBgPicker(){document.getElementById('bgPicker').classList.toggle('re-hidden');document.getElementById('corridorPicker').classList.add('re-hidden');}

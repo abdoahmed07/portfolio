@@ -61,14 +61,19 @@ function showSuccess(title, msg, redirectUrl) {
     document.getElementById("successTitle").textContent = title;
     document.getElementById("successMsg").textContent   = msg;
 
+    // the redirect bar only makes sense when we're actually going somewhere
+    const fill = document.getElementById("redirectFill");
+    panel.querySelector(".redirect-bar").hidden = !redirectUrl;
+    fill.style.width = "0%";
+    if (!redirectUrl) return;
+
     // animate the redirect bar then navigate
-    requestAnimationFrame(() => {
-        const fill = document.getElementById("redirectFill");
+    requestAnimationFrame(() => requestAnimationFrame(() => {
         fill.style.width = "100%";
-    });
+    }));
 
     setTimeout(() => {
-        if (redirectUrl) window.location.href = redirectUrl;
+        window.location.href = redirectUrl;
     }, 2600);
 }
 
@@ -182,7 +187,7 @@ if (loginForm) {
         btn.disabled     = true;
 
         if (DEMO_MODE) {
-            showSuccess("Logged in!", `Welcome back, ${user}. Redirecting you to the game…`, null);
+            showSuccess("Logged in! (demo)", `Welcome back, ${user}. This is a demo, so nothing was checked.`, null);
             return;
         }
 
@@ -190,29 +195,28 @@ if (loginForm) {
             const fd = new FormData(loginForm);
             const res = await fetch("login.php", { method: "POST", body: fd });
 
-            if (res.ok || res.redirected) {
+            // login.php answers 200 for both outcomes. Only a correct password
+            // sends a redirect, and a wrong one just echoes the error text.
+            if (res.redirected) {
                 showSuccess(
                     "Logged in!",
                     `Welcome back, ${user}. Redirecting you to the game…`,
-                    res.redirected ? res.url : "ttt/index.html"
+                    res.url
                 );
             } else {
                 const text = await res.text();
-                const match = text.match(/Password incorrect|Email is not registered|not registered/i);
+                const match = text.match(/Password incorrect|Email is not registered/i);
                 showAlert("loginAlert",
-                    match ? match[0] : "Incorrect username or password.",
+                    match ? match[0] + "." : "Something went wrong. Try again.",
                     "error"
                 );
                 btn.textContent = "Login →";
                 btn.disabled    = false;
             }
         } catch {
-            // No PHP server, demo mode
-            showSuccess(
-                "Logged in!",
-                `Welcome back, ${user}. Redirecting you to the game…`,
-                null
-            );
+            showAlert("loginAlert", "Couldn't reach the server. Try again.", "error");
+            btn.textContent = "Login →";
+            btn.disabled    = false;
         }
     });
 }
@@ -250,7 +254,7 @@ if (signupForm) {
         btn.disabled    = true;
 
         if (DEMO_MODE) {
-            showSuccess("Account created!", `Welcome, ${user}! Your account is ready.`, null);
+            showSuccess("Account created! (demo)", `Welcome, ${user}! This is a demo, so nothing was saved.`, null);
             return;
         }
 
@@ -258,7 +262,8 @@ if (signupForm) {
             const fd = new FormData(signupForm);
             const res = await fetch("signup.php", { method:"POST", body: fd });
 
-            if (res.ok || res.redirected) {
+            // same as login: success is a redirect, a taken name is a 200 with text
+            if (res.redirected) {
                 showSuccess(
                     "Account created!",
                     `Welcome, ${user}! Your account is ready. Redirecting to login…`,
@@ -275,12 +280,9 @@ if (signupForm) {
                 btn.disabled    = false;
             }
         } catch {
-            // No PHP server, demo mode: show success
-            showSuccess(
-                "Account created!",
-                `Welcome, ${user}! Your account is ready.`,
-                null
-            );
+            showAlert("signupAlert", "Couldn't reach the server. Try again.", "error");
+            btn.textContent = "Create Account →";
+            btn.disabled    = false;
         }
     });
 }

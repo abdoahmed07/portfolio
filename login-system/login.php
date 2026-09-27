@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $stored_password_hash)) {
             // Password is correct, set session variables and redirect to the tic-tac-toe game
             $_SESSION["username"] = $row["username"]; // Store the username in the session
-            header("Location: ttt/index.html"); // Redirect to the game
+            header("Location: ../tic-tac-toe/index.html"); // Redirect to the game
             exit;
         } else {
             // Password is incorrect, set error message

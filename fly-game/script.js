@@ -28,6 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let timerInterval= null;
     let paused       = false;
     let gameActive   = false;
+    let gameEnded    = true;   // stops endGame from running twice
+    let respawnTimer = null;
+    let endTimer     = null;
     let currentPos   = { x: 50, y: 50 };
 
     const bestScores = JSON.parse(localStorage.getItem("flyBests") || "{}");
@@ -193,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
             dead.style.opacity = "0";
         }, 80);
 
-        setTimeout(() => {
+        respawnTimer = setTimeout(() => {
             dead.remove();
             if (gameActive) spawnFly();
         }, 650);
@@ -221,9 +224,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const limit = MODES[gameMode].missLimit;
         if (misses >= limit) {
+            // Stop counting clicks now, the game over screen follows after the shake
+            gameActive = false;
+            clearInterval(moveInterval);
+            clearInterval(timerInterval);
             document.body.classList.add("shake");
             setTimeout(() => document.body.classList.remove("shake"), 360);
-            setTimeout(endGame, 400);
+            endTimer = setTimeout(endGame, 400);
         }
     }
 
@@ -235,9 +242,9 @@ document.addEventListener("DOMContentLoaded", () => {
             f = document.createElement("div");
             f.id = "fly";
             f.className = "fly";
+            f.addEventListener("click", handleHit);
             container.appendChild(f);
         }
-        f.addEventListener("click", handleHit);
         moveFly();
     }
 
@@ -284,8 +291,11 @@ document.addEventListener("DOMContentLoaded", () => {
         combo  = 0;
         paused = false;
         gameActive = true;
+        gameEnded  = false;
         gameMode = selectedMode;
 
+        clearTimeout(respawnTimer);
+        clearTimeout(endTimer);
         clearInterval(timerInterval);
         clearInterval(moveInterval);
         document.querySelectorAll(".dead-fly,.splat,.miss-flash").forEach(el => el.remove());
@@ -308,7 +318,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function endGame() {
+        if (gameEnded) return;
+        gameEnded  = true;
         gameActive = false;
+        clearTimeout(respawnTimer);
+        clearTimeout(endTimer);
         clearInterval(moveInterval);
         clearInterval(timerInterval);
 
@@ -337,6 +351,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showModeScreen() {
         gameActive = false;
+        gameEnded  = true;
+        clearTimeout(respawnTimer);
+        clearTimeout(endTimer);
         clearInterval(moveInterval);
         clearInterval(timerInterval);
         document.querySelectorAll(".dead-fly,.splat,.miss-flash").forEach(el => el.remove());

@@ -51,6 +51,11 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
     var comments = {}; // lineIdx -> [{author, body, fake}]
     var openLine = null;
     var fakeCommenterTimer = null;
+    var lastLine = null; // line of the most recent comment, the fake reply goes there
+
+    function escapeHtml(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
     function highlight(src) {
         /* Single pass so the keyword and string matches can't interfere with
@@ -72,8 +77,8 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
             comments[line].forEach(function (c) {
                 html += '<div class="comment-card' + (c.fake ? ' fake' : '') + '">' +
                     '<div class="comment-line-tag">Line ' + (parseInt(line) + 1) + '</div>' +
-                    '<div class="comment-author">' + c.author + '</div>' +
-                    '<div class="comment-body">' + c.body + '</div></div>';
+                    '<div class="comment-author">' + escapeHtml(c.author) + '</div>' +
+                    '<div class="comment-body">' + escapeHtml(c.body) + '</div></div>';
             });
         });
         sidebar.innerHTML = html;
@@ -112,6 +117,7 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
                 if (!body) return;
                 comments[openLine] = comments[openLine] || [];
                 comments[openLine].push({ author: 'You', body: body });
+                lastLine = openLine;
                 openLine = null;
                 renderCode();
                 renderComments();
@@ -126,17 +132,15 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
     function maybeSpawnFakeReply() {
         clearTimeout(fakeCommenterTimer);
         fakeCommenterTimer = setTimeout(function () {
-            var lines = Object.keys(comments);
-            if (lines.length === 0) return;
-            var line = lines[lines.length - 1];
-            comments[line].push({ author: 'Anonymous', body: "Good catch, that's exactly why I added the optional-chaining check here.", fake: true });
+            if (lastLine === null || !comments[lastLine]) return;
+            comments[lastLine].push({ author: 'Anonymous', body: "Good catch, that's exactly why I added the optional-chaining check here.", fake: true });
             viewerBadge.textContent = '👥 2 viewing';
             renderComments();
         }, 1400);
     }
 
     document.getElementById('resetDemo').addEventListener('click', function () {
-        comments = {}; openLine = null;
+        comments = {}; openLine = null; lastLine = null;
         viewerBadge.textContent = '👥 1 viewing';
         clearTimeout(fakeCommenterTimer);
         renderCode(); renderComments();

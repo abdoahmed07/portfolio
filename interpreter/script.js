@@ -158,7 +158,7 @@ Scanner.prototype.identifier = function () {
     this.addToken(KEYWORDS[text] || TT.IDENTIFIER);
 };
 
-/* f"{greeting}, {name}!" → ( (greeting) + ", " + (name) + "!" ) */
+/* f"{greeting}, {name}!" → ( "" + (greeting) + ", " + (name) + "!" ) */
 Scanner.prototype.fstring = function () {
     var segments = [];
     var literal = '';
@@ -194,6 +194,11 @@ Scanner.prototype.fstring = function () {
         this.tokens.push(new Token(TT.STRING, '""', '', this.line));
         return;
     }
+
+    /* Start with "" when the f-string opens with an expression, so f"{a}{b}"
+       builds a string even when a and b are numbers. Otherwise it would
+       parse as (a) + (b) and add them. */
+    if (typeof segments[0] !== 'string') segments.unshift('');
 
     this.tokens.push(new Token(TT.LEFT_PAREN, '(', null, this.line));
     for (var i = 0; i < segments.length; i++) {
@@ -314,6 +319,7 @@ Parser.prototype.statement = function () {
 
 /* for (init; cond; incr) body → desugars to { init; while(cond) { body; incr; } } */
 Parser.prototype.forStatement = function () {
+    var keyword = this.previous();
     this.consume(TT.LEFT_PAREN, "Expect '(' after 'for'.");
     var initializer;
     if (this.match(TT.SEMICOLON)) initializer = null;
@@ -331,7 +337,7 @@ Parser.prototype.forStatement = function () {
     var body = this.statement();
     if (increment !== null) body = { kind: 'Block', statements: [body, { kind: 'Expression', expression: increment }] };
     if (condition === null) condition = { kind: 'Literal', value: true };
-    body = { kind: 'While', condition: condition, body: body };
+    body = { kind: 'While', keyword: keyword, condition: condition, body: body };
     if (initializer !== null) body = { kind: 'Block', statements: [initializer, body] };
     return body;
 };
@@ -359,11 +365,12 @@ Parser.prototype.returnStatement = function () {
 };
 
 Parser.prototype.whileStatement = function () {
+    var keyword = this.previous();
     this.consume(TT.LEFT_PAREN, "Expect '(' after 'while'.");
     var condition = this.expression();
     this.consume(TT.RIGHT_PAREN, "Expect ')' after condition.");
     var body = this.statement();
-    return { kind: 'While', condition: condition, body: body };
+    return { kind: 'While', keyword: keyword, condition: condition, body: body };
 };
 
 Parser.prototype.expressionStatement = function () {
@@ -551,8 +558,14 @@ LoxInstance.prototype.toString = function () { return this.klass.name + ' instan
    INTERPRETER, walks the AST and evaluates it directly.
    Mirrors Interpreter.java.
 ════════════════════════════════════════════════════════════ */
+/* Everything runs on the main thread, so an endless loop would freeze the
+   tab. Each loop pass and function call uses one step, and the program
+   stops with an error once the budget runs out. Not in the Java version. */
+var LOX_STEP_LIMIT = 1000000;
+
 function Interpreter(printFn) {
     this.printFn = printFn;
+    this.steps = 0;
     this.globals = new LoxEnvironment(null);
     this.environment = this.globals;
 
@@ -589,7 +602,10 @@ Interpreter.prototype.execute = function (stmt) {
             else if (stmt.elseBranch) this.execute(stmt.elseBranch);
             return;
         case 'While':
-            while (this.isTruthy(this.evaluate(stmt.condition))) this.execute(stmt.body);
+            while (this.isTruthy(this.evaluate(stmt.condition))) {
+                this.useStep(stmt.keyword);
+                this.execute(stmt.body);
+            }
             return;
         case 'Function': {
             var fn = new LoxFunction(stmt, this.environment, false);
@@ -718,7 +734,14 @@ Interpreter.prototype.evalCall = function (expr) {
     if (args.length !== callee.arity()) {
         throw new LoxRuntimeError(expr.paren, 'Expected ' + callee.arity() + ' arguments but got ' + args.length + '.');
     }
+    this.useStep(expr.paren);
     return callee.call(this, args);
+};
+
+Interpreter.prototype.useStep = function (token) {
+    if (++this.steps > LOX_STEP_LIMIT) {
+        throw new LoxRuntimeError(token, 'Stopped after ' + LOX_STEP_LIMIT.toLocaleString('en-US') + ' steps. Is there an endless loop?');
+    }
 };
 
 Interpreter.prototype.evalSuper = function (expr) {
@@ -798,21 +821,28 @@ function runLox(source, printFn) {
     function run() {
         output.innerHTML = '';
         var source = editor.value;
-        var printedAny = false;
+        var printed = 0;
+        var MAX_LINES = 1000;
 
         var errors;
         try {
-            errors = runLox(source, function (text) { appendLine(text, 'lox-out-print'); printedAny = true; });
+            errors = runLox(source, function (text) {
+                if (printed++ < MAX_LINES) appendLine(text, 'lox-out-print');
+            });
         } catch (e) {
-            appendLine('Internal error: ' + e.message, 'lox-out-error');
+            var msg = e instanceof RangeError ? 'Too much recursion.' : e.message;
+            appendLine('Internal error: ' + msg, 'lox-out-error');
             return;
+        }
+        if (printed > MAX_LINES) {
+            appendLine('(' + (printed - MAX_LINES).toLocaleString('en-US') + ' more lines not shown)', 'lox-out-muted');
         }
 
         if (errors.length > 0) {
             errors.forEach(function (err) {
                 appendLine('[line ' + err.line + '] ' + (err.runtime ? 'Runtime error: ' : 'Error: ') + err.message, 'lox-out-error');
             });
-        } else if (!printedAny) {
+        } else if (printed === 0) {
             appendLine('(no output, try adding a print statement)', 'lox-out-muted');
         }
     }

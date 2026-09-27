@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let draws        = 0;
     let p1Name       = "Player 1";
     let p2Name       = "Bot";
+    let botTimer     = null;
 
     const WIN_LINES = [
         [0,1,2],[3,4,5],[6,7,8], // rows
@@ -89,11 +90,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ── BACK ───────────────────────────────────────────────────
     backBtn.addEventListener("click", () => {
+        clearTimeout(botTimer);
         showScreen(setupScreen);
     });
 
     // ── ROUND ──────────────────────────────────────────────────
     function startRound() {
+        clearTimeout(botTimer);
         board        = Array(9).fill("");
         currentPlayer= "X";
         gameOver     = false;
@@ -118,6 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function handleCellClick(e) {
         const idx = parseInt(e.currentTarget.dataset.idx);
         if (gameOver || board[idx] !== "") return;
+        // Wait for the bot to finish its move
+        if (mode === 1 && currentPlayer === "O") return;
         placeMove(idx, currentPlayer);
     }
 
@@ -140,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
             currentPlayer = player === "X" ? "O" : "X";
             updateTurnUI();
             if (mode === 1 && currentPlayer === "O") {
-                setTimeout(doBotMove, 420);
+                botTimer = setTimeout(doBotMove, 420);
             }
         }
     }
@@ -161,7 +166,8 @@ document.addEventListener("DOMContentLoaded", () => {
         else                 { winsO++; scoreOEl.classList.add("active-turn"); }
         updateScoreDisplay();
         showResult(`${winner} wins! 🎉`);
-        updateLeaderboard(winner);
+        // Only people go on the leaderboard, not the bot
+        if (!(mode === 1 && player === "O")) updateLeaderboard(winner);
     }
 
     function handleDraw() {
