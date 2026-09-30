@@ -19,6 +19,8 @@ If you're looking at this for work or an application: I'm a first-year student w
 ```
 /
 ├── portfolio-site/         ← The main portfolio index page + About page
+├── shared/                 ← Styles, theme, scroll and 3D code every page uses
+│   └── gl/                 ← Three.js studio, the 20 project objects, the hub's chrome form
 ├── name-checker/           ← Project 01
 ├── fly-game/               ← Project 02
 ├── islam-kindles/          ← Project 03
@@ -41,7 +43,7 @@ If you're looking at this for work or an application: I'm a first-year student w
 └── problem-solving/        ← Project 20, LeetCode practice with an animated graph demo
 ```
 
-Each folder is self-contained. Open the `index.html` inside any folder to run it, no build step or server required for most projects.
+Each project folder has its own page, script and styles, and they all share `shared/`. There's no build step. Serve the repo root (see below) so the `../shared/` paths work.
 
 ---
 
@@ -272,7 +274,8 @@ The whole portfolio is plain web: no frameworks, no build tools, no bundlers. Ju
 | ------------------- | ------------------------------------------------------ |
 | Languages           | HTML, CSS, JavaScript, Python, Java, C, C++, C#, Arduino C++, Veryl |
 | Original backends    | Node.js, Express, PostgreSQL, Socket.io, Flask, libpcap |
-| Fonts               | Syne (headings) + DM Mono (code/mono) via Google Fonts |
+| Fonts               | Geist + Geist Mono via Google Fonts                    |
+| 3D                  | Three.js (from jsDelivr), one object per project       |
 | Syntax highlighting | highlight.js                                           |
 | PDF generation      | ReportLab (Python)                                     |
 | Storage             | `localStorage` for game scores and leaderboards        |
@@ -283,18 +286,15 @@ The whole portfolio is plain web: no frameworks, no build tools, no bundlers. Ju
 
 ## How to run it locally
 
-No installation needed. Just clone the repo and open files directly in your browser.
+No installation needed. Clone the repo and serve the root folder with any static server:
 
 ```bash
 git clone https://github.com/abdoahmed07/portfolio.git
 cd portfolio
+python3 -m http.server 8934
 ```
 
-Then open any `index.html` in your browser. Start here:
-
-```
-portfolio-site/index.html
-```
+Then open http://localhost:8934/portfolio-site/index.html. Opening the files directly also works, but browsers won't load the 3D objects from `file://`, so each project shows its number instead.
 
 Or jump straight to a project:
 
@@ -336,7 +336,7 @@ make run
 - HeroFight was originally a C# .NET 10 console application. The whole game engine was ported to JavaScript: same classes, same logic, same patterns, just running in the browser.
 - Projects 12 through 20 came from a separate summer sprint of independent side projects (real-time systems, graphics, interpreters, security, machine learning), each originally a full standalone project with its own repo, then adapted into a showcase page here.
 - Where a project's original form needs something a static site can't provide (a database, a raw socket, a GPU-scale render), the showcase page ports the actual algorithm or logic to JavaScript rather than faking the output, the neural network runs its real trained weights, the ray tracer runs the real path-tracing math, and so on.
-- The design system stayed consistent across every page: dark background, Syne headings, and a distinct accent color per project.
+- Every page shares one design system in `shared/`: a dark and a light theme, Geist type, and a distinct accent color per project. Each project also has its own small 3D object, shown on the hub and at the top of its page.
 - The D0015E Arduino project and ethics assignment were co-authored with a classmate.
 
 ---

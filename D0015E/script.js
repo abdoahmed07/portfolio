@@ -10,7 +10,8 @@ function toggleCode(btn) {
     body.classList.toggle('open', !isOpen);
     btn.classList.toggle('open', !isOpen);
     if(!btn.dataset.origLabel) btn.dataset.origLabel = btn.textContent;
-    btn.textContent = isOpen ? (btn.dataset.origLabel || 'View Code') : 'Hide';
+    btn.textContent = isOpen ? (btn.dataset.origLabel || 'View code') : 'Hide';
+    btn.setAttribute('aria-expanded', String(!isOpen));
 }
 
 function switchCodeTab(btn, targetId) {

@@ -9,54 +9,64 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pj">
 
-<nav class="topnav">
-    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
-        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-    </button>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
 </nav>
 
-<div class="page">
+<main class="page" id="main">
 
-    <div class="hero">
-        <span class="hero-eyebrow">C++ · Path Tracing · Summer 2026</span>
-        <h1 class="hero-title">Ray<span class="acc">Tracer</span></h1>
-        <p class="hero-desc">
-            A physically-based renderer built from scratch in C++, following
-            <em>Ray Tracing in One Weekend</em>. No graphics libraries, just vector math and
-            recursion. Every pixel is the average of hundreds of light rays bouncing around
-            a scene of glass, metal, and matte spheres. Ported to JavaScript below so it
-            renders live in this page instead of a static image.
-        </p>
-        <div class="hero-meta">
-            <span class="meta-pill">C++17</span>
-            <span class="meta-pill">Path Tracing</span>
-            <span class="meta-pill">Monte Carlo</span>
-            <span class="meta-pill">Vector Math</span>
-            <span class="meta-pill">CMake</span>
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+            <span class="hero-eyebrow">C++ · Path Tracing · Summer 2026</span>
+            <h1 class="hero-title">Ray<span class="acc">Tracer</span></h1>
+            <p class="hero-desc">
+                A physically-based renderer built from scratch in C++, following
+                <em>Ray Tracing in One Weekend</em>. No graphics libraries, just vector math and
+                recursion. Every pixel is the average of hundreds of light rays bouncing around
+                a scene of glass, metal, and matte spheres. Ported to JavaScript below so it
+                renders live in this page instead of a static image.
+            </p>
+            <div class="hero-meta">
+                <span class="meta-pill">C++17</span>
+                <span class="meta-pill">Path Tracing</span>
+                <span class="meta-pill">Monte Carlo</span>
+                <span class="meta-pill">Vector Math</span>
+                <span class="meta-pill">CMake</span>
+            </div>
         </div>
-    </div>
+        <div class="stage" data-object="ray-tracer" data-accent="#fb7185" aria-hidden="true"><span class="stage-fallback">13</span></div>
+    </header>
 
     <div class="tabs">
-        <button class="tab-btn active" data-tab="render">▶ Live Render</button>
-        <button class="tab-btn" data-tab="physics">Materials &amp; Physics</button>
-        <button class="tab-btn" data-tab="code">Source Code</button>
+        <button class="tab-btn active" data-tab="render">▶ Live render</button>
+        <button class="tab-btn" data-tab="physics">Materials &amp; physics</button>
+        <button class="tab-btn" data-tab="code">Source code</button>
     </div>
 
     <!-- ── LIVE RENDER ── -->
@@ -68,7 +78,7 @@
             version does over many more samples on the command line. Higher presets look
             better but render slower, since more spheres means more ray tests per bounce.
         </p>
-        <div class="render-panel">
+        <div class="render-panel dark-panel">
             <div class="render-toolbar">
                 <button class="render-ctrl-btn" id="rtPlay">▶ Render</button>
                 <button class="render-ctrl-btn" id="rtPause">⏸ Pause</button>
@@ -85,13 +95,13 @@
                     </div>
                 </div>
                 <div class="render-cfg-field">
-                    <span class="render-cfg-label">Aperture (depth of field)</span>
+                    <label class="render-cfg-label" for="rtAperture">Aperture (depth of field)</label>
                     <input class="render-slider" id="rtAperture" type="range" min="0" max="50" value="10">
                     <span class="render-slider-val" id="rtApertureVal">10</span>
                 </div>
             </div>
             <div class="canvas-wrap">
-                <canvas id="rtCanvas" width="380" height="253"></canvas>
+                <canvas id="rtCanvas" width="380" height="253" role="img" aria-label="Path-traced scene of glass, metal and matte spheres on a large ground sphere. It sharpens as more samples are added."></canvas>
             </div>
         </div>
     </div>
@@ -121,7 +131,7 @@
             </div>
             <div class="ds-card">
                 <div class="ds-icon">◎</div>
-                <div class="ds-title">Depth of Field</div>
+                <div class="ds-title">Depth of field</div>
                 <div class="ds-desc">The camera samples rays from random points on a lens disk instead of a single pinhole. Objects at the focus distance stay sharp; everything else blurs, exactly like a real camera aperture.</div>
             </div>
         </div>
@@ -131,10 +141,10 @@
     <div class="tab-content" id="tab-code">
         <p class="tab-note">Key files from the actual C++ source.</p>
         <div class="file-tabs">
-            <button class="file-tab" data-file="raycolor">main.cpp</button>
+            <button class="file-tab active" data-file="raycolor">main.cpp</button>
             <button class="file-tab" data-file="vec3">vec3.h</button>
             <button class="file-tab" data-file="sphere">sphere.h</button>
-            <button class="file-tab active" data-file="material">material.h</button>
+            <button class="file-tab" data-file="material">material.h</button>
             <button class="file-tab" data-file="camera">camera.h</button>
         </div>
         <div class="code-viewer">
@@ -143,7 +153,7 @@
     </div>
 
     <!-- ── LEARNED ── -->
-    <span class="section-label">What I Learned</span>
+    <h2 class="section-label" data-scene>What I learned</h2>
     <div class="learned-list">
         <div class="learned-item">
             <b>The rendering equation.</b>
@@ -159,8 +169,19 @@
         </div>
     </div>
 
-</div><!-- /page -->
+</main>
 
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

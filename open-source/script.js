@@ -6,16 +6,6 @@
 ════════════════════════════════════════════════════════════ */
 
 (function () {
-    var toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    });
-})();
-
-(function () {
     var fixed = true;
     var switchEl = document.getElementById('fixSwitch');
     var statusEl = document.getElementById('simStatus');
@@ -29,6 +19,7 @@
     switchEl.addEventListener('click', function () {
         fixed = !fixed;
         switchEl.classList.toggle('on', fixed);
+        switchEl.setAttribute('aria-checked', String(fixed));
         document.getElementById('fixLabel').textContent = fixed ? 'Fixed (patched _onclose)' : 'Before the fix (original code)';
         clearTimeout(pendingTimer);
         setStatus('pending', 'Click "Emit with ack" to try it.');

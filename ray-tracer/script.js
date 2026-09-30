@@ -5,17 +5,6 @@
    Renders progressively in a canvas instead of writing a PPM file.
 ════════════════════════════════════════════════════════════ */
 
-/* ── Theme toggle ─────────────────────────────────────────── */
-(function () {
-    var toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    });
-})();
-
 /* ── Tab switching ────────────────────────────────────────── */
 document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {

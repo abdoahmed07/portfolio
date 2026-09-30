@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,45 +8,61 @@
     <title>D0015E · Abdalla</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-    <script>
-  (function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();
-</script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/latex.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pj">
 
-<header class="top-bar">
-    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
-    <span class="top-bar-center">Luleå University of Technology</span>
-    <span class="nav-course">D0015E</span>
-</header>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
 
-<div class="page">
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
+
+<main class="page" id="main">
 
     <!-- HERO -->
-    <div class="hero">
-        <div class="hero-eyebrow">Computer Science &amp; Engineering Fundamentals</div>
-        <h1 class="hero-title">D0015E</h1>
-        <p class="hero-sub">
-            A broad survey course: Hammurabi strategy simulation, Arduino embedded programming,
-            LaTeX typesetting, algorithm complexity analysis, and engineering ethics.
-            Five modules, one course.
-        </p>
-        <div class="hero-pills">
-            <span class="tag">Hammurabi</span>
-            <span class="tag">Arduino</span>
-            <span class="tag">LaTeX</span>
-            <span class="tag">Algorithm Analysis</span>
-            <span class="tag">Engineering Ethics</span>
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+        <p class="hero-uni">Luleå University of Technology</p>
+            <div class="hero-eyebrow">Computer Science &amp; Engineering Fundamentals</div>
+            <h1 class="hero-title">D0015E</h1>
+            <p class="hero-sub">
+                A broad survey course: Hammurabi strategy simulation, Arduino embedded programming,
+                LaTeX typesetting, algorithm complexity analysis, and engineering ethics.
+                Five modules, one course.
+            </p>
+            <div class="hero-pills">
+                <span class="tag">Hammurabi</span>
+                <span class="tag">Arduino</span>
+                <span class="tag">LaTeX</span>
+                <span class="tag">Algorithm Analysis</span>
+                <span class="tag">Engineering Ethics</span>
+            </div>
         </div>
-    </div>
+        <div class="stage" data-object="D0015E" data-accent="#f59e0b" aria-hidden="true"><span class="stage-fallback">08</span></div>
+    </header>
 
     <!-- ═══════════════ MODULE A: HAMMURABI ═══════════════ -->
-    <span class="section-label">Module A: Hammurabi Simulation Game</span>
+    <h2 class="section-label" data-scene>Module A: Hammurabi simulation game</h2>
 
     <div class="lab-intro">
         <h3>Govern ancient Sumeria for 10 years</h3>
@@ -63,7 +79,7 @@
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Module A · Hammurabi</span>
-                    <div class="card-title">Strategy Simulation <span class="card-title-badge">★ Live Demo</span></div>
+                    <div class="card-title">Strategy simulation <span class="card-title-badge">★ Live demo</span></div>
                     <p class="card-desc">
                         Full browser port of the classic Hammurabi game. Govern for 10 years:
                         allocate grain, feed your people, plant crops, buy and sell land.
@@ -78,7 +94,7 @@
                 </div>
                 <div class="card-header-right">
                     <a href="hammurabi.html" target="_blank" class="demo-btn demo-btn-sm ext-link-btn">↗ Standalone</a>
-                    <button class="code-toggle" onclick="toggleCode(this)">View Rules</button>
+                    <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View Rules</button>
                 </div>
             </div>
 
@@ -108,15 +124,15 @@
 
                         <div class="hamm-input-section" id="hammInputSection">
                             <div class="hamm-input-row">
-                                <label class="hamm-label">Acres to buy <span class="hamm-hint">(negative = sell)</span></label>
+                                <label class="hamm-label" for="hBuy">Acres to buy <span class="hamm-hint">(negative = sell)</span></label>
                                 <input class="demo-input hamm-input" type="number" id="hBuy" value="0">
                             </div>
                             <div class="hamm-input-row">
-                                <label class="hamm-label">Bushels to feed people <span class="hamm-hint">(20 per person)</span></label>
+                                <label class="hamm-label" for="hFeed">Bushels to feed people <span class="hamm-hint">(20 per person)</span></label>
                                 <input class="demo-input hamm-input" type="number" id="hFeed" value="0" min="0">
                             </div>
                             <div class="hamm-input-row">
-                                <label class="hamm-label">Acres to plant <span class="hamm-hint">(1 bushel/acre, 10 acres/person)</span></label>
+                                <label class="hamm-label" for="hPlant">Acres to plant <span class="hamm-hint">(1 bushel/acre, 10 acres/person)</span></label>
                                 <input class="demo-input hamm-input" type="number" id="hPlant" value="0" min="0">
                             </div>
                             <button class="demo-btn hamm-go" onclick="hammTurn()">Make It So!</button>
@@ -847,7 +863,7 @@ function finishTurn() {
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Module B · Arduino</span>
-                    <div class="card-title">Project 1: Four Circuits</div>
+                    <div class="card-title">Project 1: Four circuits</div>
                     <p class="card-desc">
                         Progressive Arduino exercises: LED blink timing, potentiometer-controlled blink rate,
                         LDR ambient light sensor driving LED brightness, and a buzzer playing a melody
@@ -861,7 +877,7 @@ function finishTurn() {
                         <span class="tag">PWM</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
             <div class="code-body">
                 <div class="code-tabs">
@@ -997,7 +1013,7 @@ void playMelody() {
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Module C · LaTeX</span>
-                    <div class="card-title">D1: Koch Snowflake &amp; D2: Ski Slope</div>
+                    <div class="card-title">D1: Koch snowflake &amp; D2: Ski slope</div>
                     <p class="card-desc">
                         Two academic papers using LaTeX theorem/proof environments, aligned equations,
                         figure insertion, and BibTeX citations.
@@ -1013,14 +1029,14 @@ void playMelody() {
                 <div class="card-header-right">
                     <a href="D1.pdf" target="_blank" class="demo-btn demo-btn-sm ext-link-btn">↗ D1 PDF</a>
                     <a href="D2.pdf" target="_blank" class="demo-btn demo-btn-sm ext-link-btn">↗ D2 PDF</a>
-                    <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                    <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
                 </div>
             </div>
 
             <div class="code-body">
                 <div class="code-tabs">
-                    <button class="code-tab active" onclick="switchCodeTab(this,'latD1')">D1: Koch Snowflake</button>
-                    <button class="code-tab" onclick="switchCodeTab(this,'latD2')">D2: Ski Slope</button>
+                    <button class="code-tab active" onclick="switchCodeTab(this,'latD1')">D1: Koch snowflake</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'latD2')">D2: Ski slope</button>
                 </div>
                 <div id="latD1"><div class="code-filename">D1_Snöflingan.sty: Koch Snowflake (key excerpts)</div>
 <pre><code class="language-latex">\section{A Famous Fractal: The Koch Snowflake}
@@ -1112,7 +1128,7 @@ so the slope is steepest at $\boxed{x \approx 1.17 \text{ km}}$.</code></pre></d
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Module D · Algorithms</span>
-                    <div class="card-title">Maximum Subarray: Big-O Analysis <span class="card-title-badge">★ Live Demo</span></div>
+                    <div class="card-title">Maximum subarray: Big-O analysis <span class="card-title-badge">★ Live demo</span></div>
                     <p class="card-desc">
                         Compare all three algorithms visually. Enter a list of numbers and watch each approach
                         find the maximum subarray, with step counts shown live.
@@ -1125,7 +1141,7 @@ so the slope is steepest at $\boxed{x \approx 1.17 \text{ km}}$.</code></pre></d
                         <span class="tag">Bentley 1984</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
 
             <div class="demo-panel">
@@ -1243,7 +1259,7 @@ för de kvadratiska metoderna.
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Module E · Ethics</span>
-                    <div class="card-title">Yrkesrollen Assignment</div>
+                    <div class="card-title">Yrkesrollen assignment</div>
                     <p class="card-desc">
                         Five questions on gender equality, engineering virtues, licensing, and professional ethics.
                         Written in Swedish, co-authored with a classmate, typeset in LaTeX.
@@ -1258,7 +1274,7 @@ för de kvadratiska metoderna.
                 </div>
                 <div class="card-header-right">
                     <a href="L.pdf" target="_blank" class="demo-btn demo-btn-sm ext-link-btn">↗ PDF</a>
-                    <button class="code-toggle" onclick="toggleCode(this)">View Document</button>
+                    <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View Document</button>
                 </div>
             </div>
             <div class="code-body">
@@ -1314,8 +1330,19 @@ för de kvadratiska metoderna.
         </div>
     </div>
 
-</div><!-- end .page -->
+</main>
 
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+<!-- end .page -->
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,50 +8,66 @@
     <title>D0010E · Abdalla</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-    <script>
-  (function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();
-</script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pj">
 
-<header class="top-bar">
-    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
-    <span class="top-bar-center">Luleå University of Technology</span>
-    <span class="nav-course">D0010E</span>
-</header>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
 
-<div class="page">
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
+
+<main class="page" id="main">
 
     <!-- HERO -->
-    <div class="hero">
-        <span class="hero-eyebrow">Object-Oriented Programming in Java</span>
-        <h1 class="hero-title">Course <span class="acc">D0010E</span></h1>
-        <p class="hero-desc">
-            Advanced programming in Java: object-oriented design, algorithms, data structures,
-            and software engineering. Labs added progressively as the course continues.
-        </p>
-        <div class="hero-meta">
-            <span class="meta-pill">Java</span>
-            <span class="meta-pill">OOP</span>
-            <span class="meta-pill">Algorithms</span>
-            <span class="meta-pill">Data Structures</span>
-            <span class="meta-pill">Lab 1 of many</span>
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+        <p class="hero-uni">Luleå University of Technology</p>
+            <span class="hero-eyebrow">Object-Oriented Programming in Java</span>
+            <h1 class="hero-title">Course <span class="acc">D0010E</span></h1>
+            <p class="hero-desc">
+                Advanced programming in Java: object-oriented design, algorithms, data structures,
+                and software engineering. Labs added progressively as the course continues.
+            </p>
+            <div class="hero-meta">
+                <span class="meta-pill">Java</span>
+                <span class="meta-pill">OOP</span>
+                <span class="meta-pill">Algorithms</span>
+                <span class="meta-pill">Data Structures</span>
+                <span class="meta-pill">Lab 1 of many</span>
+            </div>
         </div>
-    </div>
+        <div class="stage" data-object="D0010E" data-accent="#f59e0b" aria-hidden="true"><span class="stage-fallback">07</span></div>
+    </header>
 
     <!-- ═══════════════════ LAB 1 ═══════════════════ -->
-    <span class="section-label">Lab 1: Arithmetic Quiz & Spellchecker</span>
+    <h2 class="section-label" data-scene>Lab 1: Arithmetic Quiz & Spellchecker</h2>
 
     <div class="lab-intro">
         <h3>Two programs, one launcher</h3>
         <p>
             <code class="ic">Main.java</code> presents a menu to launch either the
-            <strong>Arithmetic Quiz</strong> or the <strong>Spellchecker</strong>.
+            <strong>Arithmetic quiz</strong> or the <strong>Spellchecker</strong>.
             Both are fully interactive. Try them live below.
         </p>
     </div>
@@ -63,7 +79,7 @@
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 1 · Part A</span>
-                    <div class="card-title">Arithmetic Quiz</div>
+                    <div class="card-title">Arithmetic quiz</div>
                     <p class="card-desc">
                         10 random questions covering +, −, ×, ÷.
                         First correct answer earns 10 points, second attempt earns 5.
@@ -76,7 +92,7 @@
                         <span class="tag">Scoring</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
 
             <!-- LIVE DEMO -->
@@ -110,14 +126,14 @@
                             onkeydown="if(event.key==='Enter') submitAnswer()">
                         <button class="demo-btn demo-btn-sm" onclick="submitAnswer()">Submit</button>
                     </div>
-                    <div class="quiz-feedback hidden" id="quizFeedback"></div>
+                    <div class="quiz-feedback hidden" id="quizFeedback" aria-live="polite"></div>
                 </div>
 
                 <!-- Results screen -->
                 <div id="quizResults" class="hidden">
                     <div class="quiz-final">
                         <div class="quiz-final-score" id="quizFinalScore"></div>
-                        <div class="quiz-final-msg" id="quizFinalMsg"></div>
+                        <div class="quiz-final-msg" id="quizFinalMsg" aria-live="polite"></div>
                         <div class="quiz-breakdown" id="quizBreakdown"></div>
                         <button class="demo-btn btn-play-again" onclick="startQuiz()">Play Again →</button>
                     </div>
@@ -232,13 +248,13 @@
                         <span class="tag">72,875 words</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
 
             <!-- LIVE DEMO -->
             <div class="demo-panel">
                 <div class="demo-label">Live Demo
-                    <span id="dictStatus" class="dict-status">Loading dictionary…</span>
+                    <span id="dictStatus" class="dict-status" aria-live="polite">Loading dictionary…</span>
                 </div>
 
                 <div class="spell-input-row">
@@ -251,15 +267,15 @@
                 </div>
 
                 <div class="spell-examples">
-                    Try: <span class="spell-chip" onclick="tryWord(this)">recieve</span>
-                    <span class="spell-chip" onclick="tryWord(this)">speling</span>
-                    <span class="spell-chip" onclick="tryWord(this)">helo</span>
-                    <span class="spell-chip" onclick="tryWord(this)">teh</span>
-                    <span class="spell-chip" onclick="tryWord(this)">javascript</span>
-                    <span class="spell-chip" onclick="tryWord(this)">hellp</span>
+                    Try: <button type="button" class="spell-chip" onclick="tryWord(this)">recieve</button>
+                    <button type="button" class="spell-chip" onclick="tryWord(this)">speling</button>
+                    <button type="button" class="spell-chip" onclick="tryWord(this)">helo</button>
+                    <button type="button" class="spell-chip" onclick="tryWord(this)">teh</button>
+                    <button type="button" class="spell-chip" onclick="tryWord(this)">javascript</button>
+                    <button type="button" class="spell-chip" onclick="tryWord(this)">hellp</button>
                 </div>
 
-                <div id="spellResult" class="hidden">
+                <div id="spellResult" class="hidden" aria-live="polite">
                     <div class="spell-verdict" id="spellVerdict"></div>
                     <div class="spell-suggestions" id="spellSuggestions"></div>
                 </div>
@@ -442,7 +458,7 @@
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 2 · MyArrayList&lt;E&gt;</span>
-                    <div class="card-title">Generic Resizable Array List <span class="card-title-badge">★ Live Demo</span></div>
+                    <div class="card-title">Generic resizable array list <span class="card-title-badge">★ Live demo</span></div>
                     <p class="card-desc">
                         Try the full implementation live: add, get, set, remove, indexOf, contains, clone, and more.
                         Internally uses a dynamic array that doubles in size when full, exactly like the real Java ArrayList.
@@ -455,7 +471,7 @@
                         <span class="tag">Shallow clone</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
 
             <!-- LIVE DEMO -->
@@ -744,7 +760,7 @@ public static void testAvClone() {
                         <span class="tag">10 corridors</span><span class="tag">WASD</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
 
             <div class="demo-panel">
@@ -753,7 +769,7 @@ public static void testAvClone() {
                     Click the canvas to focus it, then use <kbd class="kbd">W</kbd><kbd class="kbd">A</kbd><kbd class="kbd">S</kbd><kbd class="kbd">D</kbd> to move between rooms.
                 </p>
                 <div class="map-wrap" id="mapWrap" tabindex="0">
-                    <canvas id="gameCanvas" width="660" height="480"></canvas>
+                    <canvas id="gameCanvas" width="660" height="480" role="img" aria-label="Map of the rooms. The dot marks the room you are in. Use W, A, S and D to move."></canvas>
                 </div>
                 <div class="game-status">
                     <span class="status-room" id="statusRoom">Current room: Orange</span>
@@ -1185,7 +1201,7 @@ abstract public class GlobalaKonstanter {
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 4 · BFS on a Grid Graph</span>
-                    <div class="card-title">Breadth-First Traversal <span class="card-title-badge">★ Live Demo</span></div>
+                    <div class="card-title">Breadth-first traversal <span class="card-title-badge">★ Live demo</span></div>
                     <p class="card-desc">
                         Click any node to start BFS from there. Watch it sweep outward level by level.
                         The FIFO queue state is shown live, each level gets a new colour.
@@ -1199,7 +1215,7 @@ abstract public class GlobalaKonstanter {
                         <span class="tag">Grid graph</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
 
             <div class="demo-panel">
@@ -1223,11 +1239,11 @@ abstract public class GlobalaKonstanter {
                 <!-- Main demo area -->
                 <div class="bfs-demo-wrap">
                     <div class="bfs-graph-panel">
-                        <canvas id="bfsCanvas" width="440" height="380"></canvas>
+                        <canvas id="bfsCanvas" width="440" height="380" role="img" aria-label="Graph of connected nodes. Nodes change color as breadth-first search visits them."></canvas>
                     </div>
                     <div class="bfs-info-panel">
                         <div class="bfs-info-section">
-                            <span class="bfs-info-label">FIFO Queue</span>
+                            <span class="bfs-info-label">FIFO queue</span>
                             <div class="bfs-queue-vis" id="bfsQueue">
                                 <span class="bfs-queue-empty">Queue empty, click a node to start</span>
                             </div>
@@ -1408,7 +1424,7 @@ void bft(Graph graph, int startId) {
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 5 · Calculator</span>
-                    <div class="card-title">Integer Calculator <span class="card-title-badge">★ Live Demo</span></div>
+                    <div class="card-title">Integer calculator <span class="card-title-badge">★ Live demo</span></div>
                     <p class="card-desc">
                         Fully functional calculator, exact port of the Java Swing version.
                         The current state is shown live so you can see the state machine in action as you type.
@@ -1421,7 +1437,7 @@ void bft(Graph graph, int startId) {
                         <span class="tag">OOP</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
 
             <div class="demo-panel">
@@ -1434,22 +1450,22 @@ void bft(Graph graph, int startId) {
                             <button class="calc-btn calc-digit" onclick="calcDigit(7)">7</button>
                             <button class="calc-btn calc-digit" onclick="calcDigit(8)">8</button>
                             <button class="calc-btn calc-digit" onclick="calcDigit(9)">9</button>
-                            <button class="calc-btn calc-op"    onclick="calcOp('/')">÷</button>
+                            <button class="calc-btn calc-op"    onclick="calcOp('/')" aria-label="Divide">÷</button>
 
                             <button class="calc-btn calc-digit" onclick="calcDigit(4)">4</button>
                             <button class="calc-btn calc-digit" onclick="calcDigit(5)">5</button>
                             <button class="calc-btn calc-digit" onclick="calcDigit(6)">6</button>
-                            <button class="calc-btn calc-op"    onclick="calcOp('*')">×</button>
+                            <button class="calc-btn calc-op"    onclick="calcOp('*')" aria-label="Multiply">×</button>
 
                             <button class="calc-btn calc-digit" onclick="calcDigit(1)">1</button>
                             <button class="calc-btn calc-digit" onclick="calcDigit(2)">2</button>
                             <button class="calc-btn calc-digit" onclick="calcDigit(3)">3</button>
-                            <button class="calc-btn calc-op"    onclick="calcOp('-')">−</button>
+                            <button class="calc-btn calc-op"    onclick="calcOp('-')" aria-label="Subtract">−</button>
 
                             <button class="calc-btn calc-digit" onclick="calcDigit(0)">0</button>
-                            <button class="calc-btn calc-equals" onclick="calcEquals()">=</button>
+                            <button class="calc-btn calc-equals" onclick="calcEquals()" aria-label="Equals">=</button>
                             <button class="calc-btn calc-cancel" onclick="calcCancel()">C</button>
-                            <button class="calc-btn calc-op"    onclick="calcOp('+')">+</button>
+                            <button class="calc-btn calc-op"    onclick="calcOp('+')" aria-label="Add">+</button>
                         </div>
                     </div>
 
@@ -1467,7 +1483,7 @@ void bft(Graph graph, int startId) {
                             <div class="calc-insp-state" id="csInput2">
                                 <span class="cis-dot"></span>Input2
                             </div>
-                            <div class="calc-insp-state" id="csHasResult">
+                            <div class="calc-insp-state" id="csHasResult" aria-live="polite">
                                 <span class="cis-dot"></span>HasResult
                             </div>
                         </div>
@@ -1736,7 +1752,7 @@ public abstract class CalculatorButton extends JButton {
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">Lab 6 · Car Wash Simulation</span>
-                    <div class="card-title">Discrete Event Simulation <span class="card-title-badge">★ Live Demo</span></div>
+                    <div class="card-title">Discrete event simulation <span class="card-title-badge">★ Live demo</span></div>
                     <p class="card-desc">
                         Run the exact simulation from <code class="inline-code">Main.java</code>, 2 fast machines, 2 slow machines, queue of 5, λ=2, seed=1234.
                         Step through each event or run the full simulation and see the event log, machine states, and queue live.
@@ -1751,7 +1767,7 @@ public abstract class CalculatorButton extends JButton {
                         <span class="tag">3 packages</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
 
             <div class="demo-panel">
@@ -1760,27 +1776,27 @@ public abstract class CalculatorButton extends JButton {
                 <!-- Config + controls -->
                 <div class="cw-config-row">
                     <div class="cw-config-group">
-                        <label class="cw-config-label">Fast machines</label>
+                        <label class="cw-config-label" for="cwFast">Fast machines</label>
                         <input class="demo-input cw-num" type="number" id="cwFast" value="2" min="0" max="8">
                     </div>
                     <div class="cw-config-group">
-                        <label class="cw-config-label">Slow machines</label>
+                        <label class="cw-config-label" for="cwSlow">Slow machines</label>
                         <input class="demo-input cw-num" type="number" id="cwSlow" value="2" min="0" max="8">
                     </div>
                     <div class="cw-config-group">
-                        <label class="cw-config-label">Max queue</label>
+                        <label class="cw-config-label" for="cwMaxQ">Max queue</label>
                         <input class="demo-input cw-num" type="number" id="cwMaxQ" value="5" min="0" max="20">
                     </div>
                     <div class="cw-config-group">
-                        <label class="cw-config-label">Close time</label>
+                        <label class="cw-config-label" for="cwClose">Close time</label>
                         <input class="demo-input cw-num" type="number" id="cwClose" value="15" min="1" max="100">
                     </div>
                     <div class="cw-config-group">
-                        <label class="cw-config-label">λ (arrival rate)</label>
+                        <label class="cw-config-label" for="cwLambda">λ (arrival rate)</label>
                         <input class="demo-input cw-num" type="number" id="cwLambda" value="2" min="0.1" max="10" step="0.1">
                     </div>
                     <div class="cw-config-group">
-                        <label class="cw-config-label">Seed</label>
+                        <label class="cw-config-label" for="cwSeed">Seed</label>
                         <input class="demo-input cw-num" type="number" id="cwSeed" value="1234">
                     </div>
                 </div>
@@ -1830,8 +1846,8 @@ public abstract class CalculatorButton extends JButton {
             <!-- UML diagram + README as tabs -->
             <div class="code-body">
                 <div class="code-tabs">
-                    <button class="code-tab active" onclick="switchCodeTab(this,'cL6UML')">UML Diagram</button>
-                    <button class="code-tab" onclick="switchCodeTab(this,'cL6README')">Design Notes</button>
+                    <button class="code-tab active" onclick="switchCodeTab(this,'cL6UML')">UML diagram</button>
+                    <button class="code-tab" onclick="switchCodeTab(this,'cL6README')">Design notes</button>
                     <button class="code-tab" onclick="switchCodeTab(this,'cL6EVENT')">Event.java</button>
                     <button class="code-tab" onclick="switchCodeTab(this,'cL6SIM')">Simulator.java</button>
                     <button class="code-tab" onclick="switchCodeTab(this,'cL6ARR')">ArrivalEvent.java</button>
@@ -1846,18 +1862,18 @@ public abstract class CalculatorButton extends JButton {
                     <button class="code-tab" onclick="switchCodeTab(this,'cL6MAIN')">Main.java</button>
                 </div>
 
-                <div id="cL6UML" class="code-panel-dark">
+                <div id="cL6UML" class="code-panel-dark dark-panel">
                     <p class="uml-caption">
                         UML class diagram showing the architecture: inheritance, composition, and dependencies between the three packages.
                     </p>
                     <img src="UML-Diagram.png" alt="UML Class Diagram" class="uml-img">
                 </div>
 
-                <div id="cL6README" class="hidden code-panel-dark code-panel-dark--padded">
+                <div id="cL6README" class="hidden code-panel-dark dark-panel code-panel-dark--padded">
                     <div class="readme-body">
-                        <h2>Lab 6: Design Notes</h2>
+                        <h2>Lab 6: Design notes</h2>
                         <p>This document describes the initial design plan for the simulation. The UML diagram represents the intended architecture before implementation.</p>
-                        <h3>Package Structure</h3>
+                        <h3>Package structure</h3>
                         <div class="readme-pkg-grid">
                             <div class="readme-pkg">
                                 <span class="readme-pkg-name">random</span>
@@ -1872,7 +1888,7 @@ public abstract class CalculatorButton extends JButton {
                                 <p>Car-wash-specific logic. CarWashState extends State. Each event type (Arrival, Departure, Close, Stop) extends Event and implements execute(). EventFactory centralises event creation to reduce coupling.</p>
                             </div>
                         </div>
-                        <h3>Key Design Decisions</h3>
+                        <h3>Key design decisions</h3>
                         <ul class="readme-list">
                             <li><strong>EventFactory</strong> centralises event creation instead of letting events create each other directly. This reduces coupling and keeps responsibilities clear.</li>
                             <li><strong>Event implements Comparable&lt;Event&gt;</strong> so the PriorityQueue orders events by time automatically.</li>
@@ -1980,6 +1996,8 @@ public abstract class Event implements Comparable&lt;Event&gt; {
 <pre><code class="language-java">class CarWashState extends State {
     private int freeFast, freeSlow;
     private final Queue&lt;Car&gt; queue = new ArrayDeque&lt;&gt;();
+    // ...
+}</code></pre></div>
                 <div id="cL6CLOSE" class="hidden"><div class="code-filename">CloseEvent.java</div>
 <pre><code class="language-java">package carwash;
 
@@ -2406,11 +2424,22 @@ public class Main {
     </div><!-- end lab6-projects -->
 
 
-</div><!-- end .page -->
+</main>
+
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+<!-- end .page -->
 
 <!-- Load word list async -->
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script src="wordlist.js" defer></script>
 
 <script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html

@@ -111,7 +111,7 @@ function renderDebunks() {
         ` : "";
 
         card.innerHTML = `
-            <button class="debunk-question-row" onclick="toggleDebunk(this)">
+            <button type="button" class="debunk-question-row" aria-expanded="false" onclick="toggleDebunk(this)">
                 <div class="debunk-q-left">
                     <div class="debunk-tags">
                         <span class="debunk-category">${d.category}</span>
@@ -139,11 +139,13 @@ function toggleDebunk(btn) {
     // close all others
     document.querySelectorAll(".debunk-question-row.open").forEach(b => {
         b.classList.remove("open");
+        b.setAttribute("aria-expanded", "false");
         b.nextElementSibling.style.display = "none";
     });
 
     if (!isOpen) {
         btn.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
         body.style.display = "block";
         body.style.animation = "none";
         void body.offsetWidth;
@@ -175,8 +177,9 @@ document.getElementById("searchBar").addEventListener("input", function() {
     renderDebunks();
 });
 
-document.getElementById("menuToggle").addEventListener("click", () => {
-    document.getElementById("navLinks").classList.toggle("open");
+document.getElementById("menuToggle").addEventListener("click", (e) => {
+    const open = document.getElementById("navLinks").classList.toggle("open");
+    e.currentTarget.setAttribute("aria-expanded", String(open));
 });
 
 renderDebunks();

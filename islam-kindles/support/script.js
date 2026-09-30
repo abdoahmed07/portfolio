@@ -1,7 +1,8 @@
 
         // menu
-        document.getElementById("menuToggle").addEventListener("click", () => {
-            document.getElementById("navLinks").classList.toggle("open");
+        document.getElementById("menuToggle").addEventListener("click", (e) => {
+            const open = document.getElementById("navLinks").classList.toggle("open");
+            e.currentTarget.setAttribute("aria-expanded", String(open));
         });
 
         // FAQ accordion
@@ -12,10 +13,12 @@
                 // close all
                 document.querySelectorAll(".faq-question").forEach(b => {
                     b.classList.remove("open");
+                    b.setAttribute("aria-expanded", "false");
                     b.nextElementSibling.style.display = "none";
                 });
                 if (!isOpen) {
                     btn.classList.add("open");
+                    btn.setAttribute("aria-expanded", "true");
                     answer.style.display = "block";
                 }
             });
@@ -25,6 +28,7 @@
         const nameField    = document.getElementById("name");
         const emailField   = document.getElementById("email");
         const messageField = document.getElementById("message");
+        let successTimer;
 
         [nameField, emailField, messageField].forEach(field => {
             field.addEventListener("input", () => field.classList.remove("error"));
@@ -46,9 +50,11 @@
             emailField.value   = "";
             messageField.value = "";
 
+            // Restart the hide timer on every submit so a second send stays visible
             const success = document.getElementById("formSuccess");
             success.style.display = "block";
-            setTimeout(() => success.style.display = "none", 4000);
+            clearTimeout(successTimer);
+            successTimer = setTimeout(() => success.style.display = "none", 4000);
         });
 
         // Chat

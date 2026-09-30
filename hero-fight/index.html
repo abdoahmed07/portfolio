@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,36 +8,55 @@
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-    <script>
-  (function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();
-</script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pj">
 
-<a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
 
-<div class="page">
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
+
+<main class="page" id="main">
 
     <!-- HERO -->
-    <div class="hero">
-        <span class="hero-eyebrow">C# Console RPG</span>
-        <h1 class="hero-title">Hero<span class="acc">Fight</span></h1>
-        <p class="hero-desc">A turn-based RPG built in C# .NET 10. Three playable classes, a 7-room dungeon, and a full combat system, built to practice OOP, abstract classes, interfaces, and polymorphism.</p>
-        <div class="hero-meta">
-            <span class="meta-pill">C#</span>
-            <span class="meta-pill">.NET 10</span>
-            <span class="meta-pill">OOP</span>
-            <span class="meta-pill">Polymorphism</span>
-            <span class="meta-pill">Interfaces</span>
-            <span class="meta-pill">Console</span>
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+            <span class="hero-eyebrow">C# Console RPG</span>
+            <h1 class="hero-title">Hero<span class="acc">Fight</span></h1>
+            <p class="hero-desc">A turn-based RPG built in C# .NET 10. Three playable classes, a 7-room dungeon, and a full combat system, built to practice OOP, abstract classes, interfaces, and polymorphism.</p>
+            <div class="hero-meta">
+                <span class="meta-pill">C#</span>
+                <span class="meta-pill">.NET 10</span>
+                <span class="meta-pill">OOP</span>
+                <span class="meta-pill">Polymorphism</span>
+                <span class="meta-pill">Interfaces</span>
+                <span class="meta-pill">Console</span>
+            </div>
         </div>
-    </div>
+        <div class="stage" data-object="hero-fight" data-accent="#ff6b2b" aria-hidden="true"><span class="stage-fallback">09</span></div>
+    </header>
 
     <!-- GAME -->
-    <span class="section-label">Play the Game</span>
+    <h2 class="section-label" data-scene>Play the game</h2>
 
     <div class="game-wrap">
 
@@ -145,7 +164,7 @@
     </div><!-- end game-wrap -->
 
     <!-- PLAYABLE CLASSES -->
-    <span class="section-label">Playable Classes</span>
+    <h2 class="section-label" data-scene>Playable classes</h2>
     <div class="class-grid">
 
         <div class="class-card">
@@ -193,7 +212,7 @@
     </div>
 
     <!-- OOP ARCHITECTURE -->
-    <span class="section-label">OOP Architecture</span>
+    <h2 class="section-label" data-scene>OOP architecture</h2>
     <div class="arch-card">
         <p class="arch-intro">Built around three core OOP pillars:</p>
         <div class="arch-tree">
@@ -235,7 +254,7 @@
     </div>
 
     <!-- DUNGEON: 7 ROOMS -->
-    <span class="section-label">Dungeon: 7 Rooms</span>
+    <h2 class="section-label" data-scene>Dungeon: 7 rooms</h2>
     <div class="rooms-row">
         <div class="room-card battle">
             <span class="room-icon">⚔</span>
@@ -282,7 +301,7 @@
     </div>
 
     <!-- SOURCE CODE -->
-    <span class="section-label">Source Code</span>
+    <h2 class="section-label" data-scene>Source code</h2>
     <div class="code-explorer">
         <div class="tab-bar" role="tablist">
             <button class="tab active" data-tab="program">Program.cs</button>
@@ -990,11 +1009,22 @@ public class Item
         </div>
     </div>
 
-</div><!-- end .page -->
+</main>
 
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+<!-- end .page -->
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
 <script src="script.js"></script>
 
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

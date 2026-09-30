@@ -120,11 +120,11 @@ function renderHadiths() {
                     <span class="hadith-grade ${gradeClass(h.grade)}">${h.grade}</span>
                     ${h.topics.map(t => `<span class="hadith-topic">${t}</span>`).join("")}
                 </div>
-                ${h.arabic ? `<div class="hadith-arabic">${h.arabic}</div>` : ""}
+                ${h.arabic ? `<div class="hadith-arabic" lang="ar" dir="rtl">${h.arabic}</div>` : ""}
                 <p class="hadith-text">${h.text}</p>
             </div>
 
-            <button class="hadith-chain-toggle" onclick="toggleChain(this)">
+            <button type="button" class="hadith-chain-toggle" aria-expanded="false" onclick="toggleChain(this)">
                 <span>Chain of Narrators (${h.chain.length})</span>
                 <span class="chain-icon">▾</span>
             </button>
@@ -134,7 +134,7 @@ function renderHadiths() {
                         <div class="chain-step">
                             <div class="chain-dot"><div class="chain-dot-inner"></div></div>
                             <div class="chain-info">
-                                <div class="chain-name">${c.name}</div>
+                                <div class="chain-name"${/[\u0600-\u06FF]/.test(c.name) ? ' lang="ar"' : ""}>${c.name}</div>
                                 <div class="chain-role">${c.role}</div>
                             </div>
                         </div>
@@ -169,6 +169,7 @@ function toggleChain(btn) {
     const body = btn.nextElementSibling;
     const isOpen = btn.classList.contains("open");
     btn.classList.toggle("open", !isOpen);
+    btn.setAttribute("aria-expanded", String(!isOpen));
     body.style.display = isOpen ? "none" : "block";
 }
 
@@ -188,8 +189,9 @@ document.getElementById("searchBar").addEventListener("input", function() {
     renderHadiths();
 });
 
-document.getElementById("menuToggle").addEventListener("click", () => {
-    document.getElementById("navLinks").classList.toggle("open");
+document.getElementById("menuToggle").addEventListener("click", (e) => {
+    const open = document.getElementById("navLinks").classList.toggle("open");
+    e.currentTarget.setAttribute("aria-expanded", String(open));
 });
 
 renderHadiths();
