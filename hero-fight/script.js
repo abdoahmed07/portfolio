@@ -61,8 +61,10 @@ class Warrior extends Player {
     useSpecial(eDef, boss) {
         const raw = Math.max(2, this.attack + 3 - eDef);
         const dmg = boss ? Math.round(raw * 0.8) : raw;
-        this.takeDamage(2);
-        return { dmg, msg: '⚔ <b>Heavy Strike!</b> You deal <b>' + dmg + '</b> damage, but take 2 self-damage.' };
+        // The recoil can hurt but never knock you out
+        const self = Math.min(2, this.health - 1);
+        this.takeDamage(self);
+        return { dmg, msg: '⚔ <b>Heavy Strike!</b> You deal <b>' + dmg + '</b> damage, but take ' + self + ' self-damage.' };
     }
 }
 
@@ -376,8 +378,10 @@ function doAttack() {
 
 function doSpecial() {
     var res = S.player.useSpecial(S.enemy.defense, S.isBoss);
-    if (!res.skip) S.enemy.takeDamage(res.dmg);
-    log(res.msg, res.skip ? 'g-log-sys' : 'g-log-atk');
+    // A special that didn't happen (no gold for Fireball) doesn't use up the turn
+    if (res.skip) { log(res.msg, 'g-log-sys'); return; }
+    S.enemy.takeDamage(res.dmg);
+    log(res.msg, 'g-log-atk');
     afterPlayerAction();
 }
 
@@ -409,8 +413,8 @@ function addXP(n) {
     S.player.experience += n;
     var p = S.player;
     var thresholds = [0, 10, 25, 45, 70, 100];
-    var next = thresholds[p.level] !== undefined ? thresholds[p.level] : p.level * 20;
-    if (p.experience >= next) {
+    var nextFor = function(lv) { return thresholds[lv] !== undefined ? thresholds[lv] : lv * 20; };
+    while (p.experience >= nextFor(p.level)) {
         p.level++;
         if      (p.characterClass === 'Warrior') { p.maxHealth += 6; p.attack += 2; p.defense += 2; }
         else if (p.characterClass === 'Mage')    { p.maxHealth += 4; p.attack += 4; p.defense += 1; }

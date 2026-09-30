@@ -5,16 +5,6 @@
    loaded from weights.js, not a simulation.
 ════════════════════════════════════════════════════════════ */
 
-/* ── Theme toggle & tabs ──────────────────────────────────── */
-(function () {
-    var toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    });
-})();
 document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
         document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
@@ -121,7 +111,11 @@ function forward(input784) {
         lastPos = p;
         hasInk = true;
     }
-    function endDraw() { drawing = false; predictLoop(); }
+    function endDraw() {
+        if (!drawing) return;   // mouseup is on window, so ignore clicks that did not start on the canvas
+        drawing = false;
+        predictLoop();
+    }
 
     canvas.addEventListener('mousedown', startDraw);
     canvas.addEventListener('mousemove', moveDraw);

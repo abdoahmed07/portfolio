@@ -7,15 +7,6 @@
    static page can't run a real WebSocket server.
 ════════════════════════════════════════════════════════════ */
 
-(function () {
-    var toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    });
-})();
 document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
         document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
@@ -88,12 +79,12 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
         codeCol.innerHTML = SNIPPET.map(function (line, i) {
             var hasComment = comments[i] && comments[i].length > 0;
             var row = '<div class="code-line' + (hasComment ? ' has-comment' : '') + '" data-line="' + i + '">' +
-                '<span class="code-line-num">' + (i + 1) + '</span>' +
+                '<button type="button" class="code-line-num" aria-label="Comment on line ' + (i + 1) + '" aria-expanded="' + (openLine === i) + '">' + (i + 1) + '</button>' +
                 '<span class="code-line-src">' + highlight(line) + '</span></div>';
             if (openLine === i) {
                 row += '<div class="inline-comment-form">' +
-                    '<textarea id="commentInput" placeholder="Leave a comment on this line..."></textarea>' +
-                    '<button id="commentSubmit">Comment</button></div>';
+                    '<textarea id="commentInput" aria-label="Comment on line ' + (i + 1) + '" placeholder="Leave a comment on this line..."></textarea>' +
+                    '<button type="button" id="commentSubmit">Comment</button></div>';
             }
             return row;
         }).join('');

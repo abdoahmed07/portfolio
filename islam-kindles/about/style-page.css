@@ -18,7 +18,7 @@
 
         .about-card-num {
             font-family: var(--font-m);
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             letter-spacing: 0.15em;
             color: var(--accent);
             margin-bottom: 12px;

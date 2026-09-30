@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,109 +8,141 @@
     <title>Tic-Tac-Toe</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-    <script>
-  (function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();
-</script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+<body class="pj">
+    <a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
 
-    <!-- SETUP SCREEN -->
-    <div id="setupScreen" class="screen active">
-        <div class="screen-content">
-            <p class="eyebrow">classic game</p>
-            <h1 class="big-title">Tic-Tac-<span class="acc">Toe</span></h1>
-
-            <div class="mode-row">
-                <button class="mode-pill active" data-mode="1">vs Bot</button>
-                <button class="mode-pill" data-mode="2">2 Players</button>
-            </div>
-
-            <div class="name-fields">
-                <div class="field-group" id="p1Group">
-                    <label class="field-label" for="p1Name">Your name</label>
-                    <input class="field-input" id="p1Name" type="text" placeholder="Player 1" maxlength="16" autocomplete="off">
-                </div>
-                <div class="field-group hidden" id="p2Group">
-                    <label class="field-label" for="p2Name">Opponent name</label>
-                    <input class="field-input" id="p2Name" type="text" placeholder="Player 2" maxlength="16" autocomplete="off">
-                </div>
-            </div>
-
-            <div class="error-msg hidden" id="errorMsg">Please enter a name to continue.</div>
-
-            <button class="btn-play" id="playBtn">Play →</button>
-        </div>
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
     </div>
+</nav>
 
-    <!-- GAME SCREEN -->
-    <div id="gameScreen" class="screen">
-        <div class="screen-content game-layout">
+<main class="page app-layout" id="main">
+        <div class="app-main ttt-screens">
+        <!-- SETUP SCREEN -->
+        <div id="setupScreen" class="screen active">
+            <div class="screen-content">
+                <p class="eyebrow">classic game</p>
+                <h1 class="big-title">Tic-Tac-<span class="acc">Toe</span></h1>
 
-            <!-- Top bar -->
-            <div class="game-topbar">
-                <button class="back-btn" id="backBtn">← Back</button>
-                <p class="game-title-small">Tic-Tac-Toe</p>
-                <div class="topbar-spacer"></div>
-            </div>
-
-            <!-- Score strip -->
-            <div class="score-strip">
-                <div class="score-block" id="scoreX">
-                    <span class="score-name" id="nameX">Player 1</span>
-                    <span class="score-sym x-sym">X</span>
-                    <span class="score-num" id="winsX">0</span>
+                <div class="mode-row">
+                    <button class="mode-pill active" data-mode="1">vs Bot</button>
+                    <button class="mode-pill" data-mode="2">2 Players</button>
                 </div>
-                <div class="score-block score-center">
-                    <span class="score-draws" id="drawCount">0</span>
-                    <span class="score-draws-label">draws</span>
+
+                <div class="name-fields">
+                    <div class="field-group" id="p1Group">
+                        <label class="field-label" for="p1Name">Your name</label>
+                        <input class="field-input" id="p1Name" type="text" placeholder="Player 1" maxlength="16" autocomplete="off">
+                    </div>
+                    <div class="field-group hidden" id="p2Group">
+                        <label class="field-label" for="p2Name">Opponent name</label>
+                        <input class="field-input" id="p2Name" type="text" placeholder="Player 2" maxlength="16" autocomplete="off">
+                    </div>
                 </div>
-                <div class="score-block score-right" id="scoreO">
-                    <span class="score-num" id="winsO">0</span>
-                    <span class="score-sym o-sym">O</span>
-                    <span class="score-name" id="nameO">Bot</span>
-                </div>
-            </div>
 
-            <!-- Turn indicator -->
-            <div class="turn-bar">
-                <div class="turn-indicator" id="turnIndicator">
-                    <span class="turn-dot" id="turnDot"></span>
-                    <span id="turnText">Player 1's turn</span>
-                </div>
-            </div>
+                <div class="error-msg hidden" id="errorMsg" aria-live="polite">Please enter a name to continue.</div>
 
-            <!-- Board -->
-            <div class="board" id="board" aria-label="Tic Tac Toe Board">
-                <!-- 9 cells injected by JS -->
+                <button class="btn-play" id="playBtn">Play →</button>
             </div>
-
-            <!-- Result banner -->
-            <div class="result-banner hidden" id="resultBanner">
-                <span id="resultText">Player 1 wins!</span>
-                <button class="btn-next" id="nextRoundBtn">Next Round →</button>
-            </div>
-
         </div>
-    </div>
 
-    <!-- LEADERBOARD SCREEN -->
-    <div id="lbScreen" class="screen">
-        <div class="screen-content">
-            <p class="eyebrow">all-time records</p>
-            <h2 class="big-title lb-title">Leader<span class="acc">board</span></h2>
-            <ol id="lbList" class="lb-list">
-                <li class="lb-empty">No entries yet.</li>
-            </ol>
-            <button class="btn-play lb-back-btn" id="lbBackBtn">← Back to Game</button>
+        <!-- GAME SCREEN -->
+        <div id="gameScreen" class="screen">
+            <div class="screen-content game-layout">
+
+                <!-- Top bar -->
+                <div class="game-topbar">
+                    <button class="back-btn" id="backBtn">← Back</button>
+                    <p class="game-title-small">Tic-Tac-Toe</p>
+                    <div class="topbar-spacer"></div>
+                </div>
+
+                <!-- Score strip -->
+                <div class="score-strip">
+                    <div class="score-block" id="scoreX">
+                        <span class="score-name" id="nameX">Player 1</span>
+                        <span class="score-sym x-sym">X</span>
+                        <span class="score-num" id="winsX">0</span>
+                    </div>
+                    <div class="score-block score-center">
+                        <span class="score-draws" id="drawCount">0</span>
+                        <span class="score-draws-label">draws</span>
+                    </div>
+                    <div class="score-block score-right" id="scoreO">
+                        <span class="score-num" id="winsO">0</span>
+                        <span class="score-sym o-sym">O</span>
+                        <span class="score-name" id="nameO">Bot</span>
+                    </div>
+                </div>
+
+                <!-- Turn indicator -->
+                <div class="turn-bar">
+                    <div class="turn-indicator" id="turnIndicator">
+                        <span class="turn-dot" id="turnDot"></span>
+                        <span id="turnText">Player 1's turn</span>
+                    </div>
+                </div>
+
+                <!-- Board -->
+                <div class="board" id="board" aria-label="Tic Tac Toe Board">
+                    <!-- 9 cells injected by JS -->
+                </div>
+
+                <!-- Result banner -->
+                <div class="result-banner hidden" id="resultBanner">
+                    <span id="resultText">Player 1 wins!</span>
+                    <button class="btn-next" id="nextRoundBtn">Next Round →</button>
+                </div>
+
+            </div>
         </div>
+
+        <!-- LEADERBOARD SCREEN -->
+        <div id="lbScreen" class="screen">
+            <div class="screen-content">
+                <p class="eyebrow">all-time records</p>
+                <h2 class="big-title lb-title">Leader<span class="acc">board</span></h2>
+                <ol id="lbList" class="lb-list">
+                    <li class="lb-empty">No entries yet.</li>
+                </ol>
+                <button class="btn-play lb-back-btn" id="lbBackBtn">← Back to Game</button>
+            </div>
+        </div>
+        </div>
+        <div class="stage" data-object="tic-tac-toe" data-accent="#a855f7" aria-hidden="true"><span class="stage-fallback">05</span></div>
+    </main>
+
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
     </div>
+</footer>
+
 
     <!-- Leaderboard toggle (fixed) -->
-    <button class="lb-toggle" id="lbToggle" title="Leaderboard">🏆</button>
+    <button type="button" class="lb-toggle" id="lbToggle" aria-label="Leaderboard">🏆</button>
 
-    <script src="script.js"></script>
+    <script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
+<script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

@@ -315,6 +315,7 @@ document.getElementById("searchBtn").addEventListener("click", runSearch);
 document.getElementById("searchInput").addEventListener("keydown", e => {
     if (e.key === "Enter") runSearch();
 });
-document.getElementById("menuToggle").addEventListener("click", () => {
-    document.getElementById("navLinks").classList.toggle("open");
+document.getElementById("menuToggle").addEventListener("click", (e) => {
+    const open = document.getElementById("navLinks").classList.toggle("open");
+    e.currentTarget.setAttribute("aria-expanded", String(open));
 });

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +7,28 @@
     <title>Search · Islam Kindles</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="search.css">
 </head>
-<body>
+<body class="pj ik">
+
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
 
 <header class="top-bar">
     <div class="logo"><a href="index.html">Islam<span> Kindles</span></a></div>
-        <nav class="nav-links" id="navLinks">
+        <nav class="nav-links" id="navLinks" aria-label="Islam Kindles">
         <a href="quran/index.html">Quran</a>
         <a href="hadith/index.html">Hadith</a>
         <a href="debunks/index.html">Debunks</a>
@@ -23,10 +36,10 @@
         <a href="support/index.html">Support</a>
         <a href="search.html" class="nav-search">✦ Search</a>
     </nav>
-    <button class="menu-toggle" id="menuToggle">☰</button>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</button>
 </header>
 
-<div class="page-shell">
+<main class="page-shell" id="main">
     <div class="search-hero">
         <span class="section-eyebrow fade-up">Across Quran, Hadith & Debunks</span>
         <h1 class="section-title fade-up-2 title-mb">Islamic <span class="acc">Search</span></h1>
@@ -37,7 +50,7 @@
         <div class="search-wrap">
             <input class="search-big-input" id="searchInput" type="text"
                 placeholder="wudu, prayer, charity, fasting…" autocomplete="off">
-            <button class="search-submit" id="searchBtn">→</button>
+            <button type="button" class="search-submit" id="searchBtn" aria-label="Search">→</button>
         </div>
 
         <p class="search-hint">
@@ -46,16 +59,16 @@
         </p>
 
         <div class="example-chips">
-            <span class="chip" onclick="go(this)">Wudu</span>
-            <span class="chip" onclick="go(this)">Intention</span>
-            <span class="chip" onclick="go(this)">Prayer</span>
-            <span class="chip" onclick="go(this)">Fasting</span>
-            <span class="chip" onclick="go(this)">Charity</span>
-            <span class="chip" onclick="go(this)">Brotherhood</span>
-            <span class="chip" onclick="go(this)">Faith</span>
-            <span class="chip" onclick="go(this)">Pilgrimage</span>
-            <span class="chip" onclick="go(this)">Repentance</span>
-            <span class="chip" onclick="go(this)">Mercy</span>
+            <button type="button" class="chip" onclick="go(this)">Wudu</button>
+            <button type="button" class="chip" onclick="go(this)">Intention</button>
+            <button type="button" class="chip" onclick="go(this)">Prayer</button>
+            <button type="button" class="chip" onclick="go(this)">Fasting</button>
+            <button type="button" class="chip" onclick="go(this)">Charity</button>
+            <button type="button" class="chip" onclick="go(this)">Brotherhood</button>
+            <button type="button" class="chip" onclick="go(this)">Faith</button>
+            <button type="button" class="chip" onclick="go(this)">Pilgrimage</button>
+            <button type="button" class="chip" onclick="go(this)">Repentance</button>
+            <button type="button" class="chip" onclick="go(this)">Mercy</button>
         </div>
     </div>
 
@@ -82,8 +95,17 @@
         </div>
 
     </div>
-</div>
+</main>
 
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script src="search.js"></script>
 </body>
 </html>

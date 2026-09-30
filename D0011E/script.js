@@ -2,17 +2,6 @@
    D0011E: Digital Design  ·  Interactive demos + UI
 ════════════════════════════════════════════════════════════ */
 
-/* ── Theme toggle ─────────────────────────────────────────── */
-(function () {
-    const toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-        const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    });
-})();
-
 /* ── Tab switching ────────────────────────────────────────── */
 document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -217,7 +206,7 @@ var PROGRAMS = {
 
         var instr = prog.instrs[pc];
 
-        if (instr.op === 'NOP') { pc++; cycle++; finish(); return; }
+        if (instr.op === 'NOP') { pc++; cycle++; lastChanged = -1; renderMips(); finish(); return; }
 
         var rsVal = toU32(regs[instr.rs]);
         var rtVal = toU32(regs[instr.rt]);
@@ -290,6 +279,7 @@ var PROGRAMS = {
         clearInterval(timer); timer = null;
         document.getElementById('mipsStep').disabled = true;
         document.getElementById('mipsRun').disabled  = true;
+        document.getElementById('mipsRun').textContent = '⏩ Run';
         document.getElementById('mipsDoneDesc').textContent = prog.result + '  ·  ' + cycle + ' cycles';
         document.getElementById('mipsDone').style.display = 'flex';
     }

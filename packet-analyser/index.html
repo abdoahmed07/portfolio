@@ -9,54 +9,64 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pj">
 
-<nav class="topnav">
-    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
-        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-    </button>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
 </nav>
 
-<div class="page">
+<main class="page" id="main">
 
-    <div class="hero">
-        <span class="hero-eyebrow">C · libpcap · Summer 2026</span>
-        <h1 class="hero-title">net<span class="acc">watch</span></h1>
-        <p class="hero-desc">
-            A terminal tool written in C that captures and decodes live network traffic using
-            libpcap. No magic underneath, every Ethernet, IPv4, TCP, UDP, and DNS header is
-            parsed by hand from raw bytes. A browser tab can't open a raw socket, so the capture
-            below is simulated traffic, but it runs through the exact same decoding and
-            column-formatting logic as the real C program.
-        </p>
-        <div class="hero-meta">
-            <span class="meta-pill">C</span>
-            <span class="meta-pill">libpcap</span>
-            <span class="meta-pill">BPF Filtering</span>
-            <span class="meta-pill">Byte-level Parsing</span>
-            <span class="meta-pill">ANSI Terminal UI</span>
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+            <span class="hero-eyebrow">C · libpcap · Summer 2026</span>
+            <h1 class="hero-title">net<span class="acc">watch</span></h1>
+            <p class="hero-desc">
+                A terminal tool written in C that captures and decodes live network traffic using
+                libpcap. No magic underneath, every Ethernet, IPv4, TCP, UDP, and DNS header is
+                parsed by hand from raw bytes. A browser tab can't open a raw socket, so the capture
+                below is simulated traffic, but it runs through the exact same decoding and
+                column-formatting logic as the real C program.
+            </p>
+            <div class="hero-meta">
+                <span class="meta-pill">C</span>
+                <span class="meta-pill">libpcap</span>
+                <span class="meta-pill">BPF Filtering</span>
+                <span class="meta-pill">Byte-level Parsing</span>
+                <span class="meta-pill">ANSI Terminal UI</span>
+            </div>
         </div>
-    </div>
+        <div class="stage" data-object="packet-analyser" data-accent="#22c55e" aria-hidden="true"><span class="stage-fallback">16</span></div>
+    </header>
 
     <div class="tabs">
-        <button class="tab-btn active" data-tab="capture">▶ Live Capture</button>
-        <button class="tab-btn" data-tab="structure">Packet Structure</button>
-        <button class="tab-btn" data-tab="code">Source Code</button>
+        <button class="tab-btn active" data-tab="capture">▶ Live capture</button>
+        <button class="tab-btn" data-tab="structure">Packet structure</button>
+        <button class="tab-btn" data-tab="code">Source code</button>
     </div>
 
     <!-- ── LIVE CAPTURE ── -->
@@ -68,7 +78,7 @@
             query/response pairs. Filters below work like the real CLI flags
             (<code style="color:var(--accent)">--tcp --port 443 --host google</code>), applied live.
         </p>
-        <div class="capture-panel">
+        <div class="capture-panel dark-panel">
             <div class="capture-toolbar">
                 <button class="cap-ctrl-btn" id="capStart">▶ Start</button>
                 <button class="cap-ctrl-btn" id="capStop">■ Stop</button>
@@ -81,9 +91,9 @@
                 <span class="cap-status" id="capState">STOPPED</span>
             </div>
             <div class="filter-bar">
-                <label class="filter-chip"><input type="checkbox" id="fTcp"> --tcp</label>
-                <label class="filter-chip"><input type="checkbox" id="fUdp"> --udp</label>
-                <label class="filter-chip"><input type="checkbox" id="fIcmp"> --icmp</label>
+                <label class="filter-chip" for="fTcp"><input type="checkbox" id="fTcp"> --tcp</label>
+                <label class="filter-chip" for="fUdp"><input type="checkbox" id="fUdp"> --udp</label>
+                <label class="filter-chip" for="fIcmp"><input type="checkbox" id="fIcmp"> --icmp</label>
                 <div class="filter-field">--port <input class="filter-input" id="fPort" type="text" placeholder="443" inputmode="numeric"></div>
                 <div class="filter-field">--host <input class="filter-input" id="fHost" type="text" placeholder="google" style="width:110px"></div>
                 <button class="filter-clear" id="fClear">Clear filters</button>
@@ -135,22 +145,22 @@ TCP header (minimum 20B)                    UDP header (always 8B)
         <div class="ds-grid">
             <div class="ds-card">
                 <div class="ds-icon">🔀</div>
-                <div class="ds-title">Everything Is Just Bytes</div>
+                <div class="ds-title">Everything is just bytes</div>
                 <div class="ds-desc">Reading a TCP header means casting a <code>const u_char*</code> pointer to a <code>TCPHeader*</code> and reading fields. The NIC lays out bytes in memory in exactly the layout described in the struct.</div>
             </div>
             <div class="ds-card">
                 <div class="ds-icon">🔁</div>
-                <div class="ds-title">Byte Order Matters</div>
+                <div class="ds-title">Byte order matters</div>
                 <div class="ds-desc">Network protocols are big-endian, x86 is little-endian. Every multi-byte field needs <code>ntohs()</code> or <code>ntohl()</code> before use. Forgetting this on the port number gave nonsense values for hours.</div>
             </div>
             <div class="ds-card">
                 <div class="ds-icon">⚡</div>
-                <div class="ds-title">BPF Filtering In-Kernel</div>
+                <div class="ds-title">BPF filtering in-kernel</div>
                 <div class="ds-desc">Applying filters via <code>pcap_setfilter()</code> runs in the kernel, much faster than capturing everything and filtering in userspace. Non-matching packets get discarded before crossing the kernel/userspace boundary at all.</div>
             </div>
             <div class="ds-card">
                 <div class="ds-icon">🏷️</div>
-                <div class="ds-title">DNS Label Encoding</div>
+                <div class="ds-title">DNS label encoding</div>
                 <div class="ds-desc">Domain names are length-prefixed labels: <code>[3]www[6]google[3]com[0]</code>. Once that clicks, decoding a name is a simple loop. Compression pointers in responses are a bit more involved.</div>
             </div>
         </div>
@@ -171,7 +181,7 @@ TCP header (minimum 20B)                    UDP header (always 8B)
     </div>
 
     <!-- ── LEARNED ── -->
-    <span class="section-label">What I Learned</span>
+    <h2 class="section-label" data-scene>What I learned</h2>
     <div class="learned-list">
         <div class="learned-item">
             <b>Why <code style="color:var(--accent)">__attribute__((packed))</code> matters.</b>
@@ -187,8 +197,19 @@ TCP header (minimum 20B)                    UDP header (always 8B)
         </div>
     </div>
 
-</div><!-- /page -->
+</main>
 
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

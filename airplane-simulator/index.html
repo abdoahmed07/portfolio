@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,44 +8,65 @@
     <title>Airport Simulator · Abdalla</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pj">
 
-<a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
 
-<div class="page">
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
+
+<main class="page" id="main">
 
     <!-- HERO -->
-    <div class="hero">
-        <span class="hero-eyebrow">C++ Simulation</span>
-        <h1 class="hero-title">Airport<span class="acc">Sim</span></h1>
-        <p class="hero-desc">A terminal-based airport simulator written in C++17 from scratch. Manages real-time plane arrivals, departures, and fuel emergencies using manually implemented data structures, no STL queues. Features a live ANSI terminal display with colour-coded status, fuel bars, and a scrolling event log.</p>
-        <div class="hero-meta">
-            <span class="meta-pill">C++</span>
-            <span class="meta-pill">C++17</span>
-            <span class="meta-pill">Data Structures</span>
-            <span class="meta-pill">Priority Queue</span>
-            <span class="meta-pill">Simulation</span>
-            <span class="meta-pill">OOP</span>
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+            <span class="hero-eyebrow">C++ Simulation</span>
+            <h1 class="hero-title">Airport<span class="acc">Sim</span></h1>
+            <p class="hero-desc">A terminal-based airport simulator written in C++17 from scratch. Manages real-time plane arrivals, departures, and fuel emergencies using manually implemented data structures, no STL queues. Features a live ANSI terminal display with colour-coded status, fuel bars, and a scrolling event log.</p>
+            <div class="hero-meta">
+                <span class="meta-pill">C++</span>
+                <span class="meta-pill">C++17</span>
+                <span class="meta-pill">Data Structures</span>
+                <span class="meta-pill">Priority queue</span>
+                <span class="meta-pill">Simulation</span>
+                <span class="meta-pill">OOP</span>
+            </div>
         </div>
-    </div>
+        <div class="stage" data-object="airplane-simulator" data-accent="#38bdf8" aria-hidden="true"><span class="stage-fallback">10</span></div>
+    </header>
 
     <!-- TABS -->
     <div class="tabs">
-        <button class="tab-btn active" data-tab="terminal">▶ Live Simulation</button>
-        <button class="tab-btn" data-tab="code">View Code</button>
+        <button class="tab-btn active" data-tab="terminal">▶ Live simulation</button>
+        <button class="tab-btn" data-tab="code">View code</button>
     </div>
 
     <!-- LIVE SIMULATION TAB -->
     <div class="tab-content active" id="tab-terminal">
 
         <!-- SIM PANEL -->
-        <div class="sim-panel" id="simPanel">
+        <div class="sim-panel dark-panel" id="simPanel">
 
             <!-- Titlebar -->
             <div class="terminal-titlebar">
@@ -71,33 +92,33 @@
                 <div class="sim-cfg-field">
                     <span class="sim-cfg-label">Runways</span>
                     <div class="sim-stepper">
-                        <button class="stepper-btn" id="rwMinus">−</button>
+                        <button type="button" class="stepper-btn" id="rwMinus" aria-label="Fewer runways">−</button>
                         <span class="stepper-val" id="cfgRw">2</span>
-                        <button class="stepper-btn" id="rwPlus">+</button>
+                        <button type="button" class="stepper-btn" id="rwPlus" aria-label="More runways">+</button>
                     </div>
                 </div>
                 <div class="sim-cfg-field">
                     <span class="sim-cfg-label">Duration (steps)</span>
                     <div class="sim-stepper">
-                        <button class="stepper-btn" id="durMinus">−</button>
+                        <button type="button" class="stepper-btn" id="durMinus" aria-label="Shorter duration">−</button>
                         <span class="stepper-val" id="cfgDur">60</span>
-                        <button class="stepper-btn" id="durPlus">+</button>
+                        <button type="button" class="stepper-btn" id="durPlus" aria-label="Longer duration">+</button>
                     </div>
                 </div>
                 <div class="sim-cfg-field">
                     <span class="sim-cfg-label">Arrivals / 10 steps</span>
                     <div class="sim-stepper">
-                        <button class="stepper-btn" id="arrMinus">−</button>
+                        <button type="button" class="stepper-btn" id="arrMinus" aria-label="Fewer arrivals">−</button>
                         <span class="stepper-val" id="cfgArr">3</span>
-                        <button class="stepper-btn" id="arrPlus">+</button>
+                        <button type="button" class="stepper-btn" id="arrPlus" aria-label="More arrivals">+</button>
                     </div>
                 </div>
                 <div class="sim-cfg-field">
                     <span class="sim-cfg-label">Departures / 10 steps</span>
                     <div class="sim-stepper">
-                        <button class="stepper-btn" id="depMinus">−</button>
+                        <button type="button" class="stepper-btn" id="depMinus" aria-label="Fewer departures">−</button>
                         <span class="stepper-val" id="cfgDep">3</span>
-                        <button class="stepper-btn" id="depPlus">+</button>
+                        <button type="button" class="stepper-btn" id="depPlus" aria-label="More departures">+</button>
                     </div>
                 </div>
             </div>
@@ -145,7 +166,7 @@
                         <span class="sim-stat-sep">·</span>
                         <span class="sim-stat-item"><b class="t-red"    id="stCrashes">0</b><span class="sim-stat-lbl">crashes</span></span>
                         <span class="sim-stat-sep">·</span>
-                        <span class="sim-stat-item"><b id="stAvgWait">0.0 min</b><span class="sim-stat-lbl">avg wait</span></span>
+                        <span class="sim-stat-item"><b id="stAvgWait">0.0 steps</b><span class="sim-stat-lbl">avg wait</span></span>
                     </div>
                 </div>
 
@@ -174,22 +195,22 @@
         <div class="ds-grid">
             <div class="ds-card">
                 <div class="ds-icon">⚡</div>
-                <div class="ds-title">Priority Queue</div>
+                <div class="ds-title">Priority queue</div>
                 <div class="ds-desc">Sorted linked list for arrivals. Emergency planes (&lt;20% fuel) jump to the front. Insertion O(n), dequeue O(1).</div>
             </div>
             <div class="ds-card">
                 <div class="ds-icon">→</div>
-                <div class="ds-title">FIFO Queue</div>
+                <div class="ds-title">FIFO queue</div>
                 <div class="ds-desc">Standard linked list for departures. First in, first out. Enqueue and dequeue both O(1). No STL container used.</div>
             </div>
             <div class="ds-card">
                 <div class="ds-icon">🛬</div>
-                <div class="ds-title">Fuel Emergencies</div>
+                <div class="ds-title">Fuel emergencies</div>
                 <div class="ds-desc">Arriving planes burn 1% fuel per minute while waiting. Below 20% triggers EMERGENCY priority. At 0% the plane crashes.</div>
             </div>
             <div class="ds-card">
                 <div class="ds-icon">🛫</div>
-                <div class="ds-title">Runway State Machine</div>
+                <div class="ds-title">Runway state machine</div>
                 <div class="ds-desc">Each runway cycles: AVAILABLE → LANDING/TAKEOFF → AVAILABLE. Arrivals always take priority over departures.</div>
             </div>
         </div>
@@ -213,8 +234,18 @@
         </div>
     </div>
 
-</div><!-- /page -->
+</main>
 
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script>
 const FILES = {};
 
@@ -1169,7 +1200,7 @@ document.addEventListener('DOMContentLoaded', () => loadFile('main'));
         document.getElementById('stEmerg').textContent    = st.emerg;
         document.getElementById('stCrashes').textContent  = st.crashes;
         document.getElementById('stAvgWait').textContent  =
-            (st.served > 0 ? (st.totalWait / st.served).toFixed(1) : '0.0') + ' min';
+            (st.served > 0 ? (st.totalWait / st.served).toFixed(1) : '0.0') + ' steps';
 
         /* Event log */
         const clsMap = { cyan:'t-cyan', amber:'t-amber', green:'t-green', red:'t-red' };
@@ -1230,7 +1261,7 @@ document.addEventListener('DOMContentLoaded', () => loadFile('main'));
         const upd = delta => {
             cfg[key] = Math.min(hi, Math.max(lo, cfg[key] + delta * step));
             document.getElementById(valId).textContent = cfg[key];
-            if (timer) resetSim();   /* restart live sim when config changes */
+            resetSim();   /* config changes always start a fresh sim, running or paused */
         };
         document.getElementById(minusId).addEventListener('click', () => upd(-1));
         document.getElementById(plusId).addEventListener('click',  () => upd(+1));
@@ -1264,5 +1295,6 @@ document.addEventListener('DOMContentLoaded', () => loadFile('main'));
 
 })(); /* end live simulation */
 </script>
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

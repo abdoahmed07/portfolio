@@ -10,16 +10,6 @@
    every program in this demo, including closures and inheritance.
 ════════════════════════════════════════════════════════════ */
 
-/* ── Theme toggle & tabs ──────────────────────────────────── */
-(function () {
-    var toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    });
-})();
 document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
         document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
