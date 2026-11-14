@@ -1,27 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
     <title>Quran · Islam Kindles</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-    <link rel="stylesheet" href="../../shared/base.css">
+    <script>(function(){var t;try{t=localStorage.getItem('theme');}catch(e){}if(t!=='light'&&t!=='dark')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="../../shared/site.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style-page.css">
 </head>
 <body class="pj ik">
 
 <a class="skip-link" href="#main">Skip to content</a>
-<div class="backdrop" aria-hidden="true"></div>
 
 <nav class="site-nav" aria-label="Main">
-    <span class="site-nav-name">Abdalla</span>
+    <a class="site-nav-name" href="../../portfolio-site/index.html">Abdalla</a>
     <div class="site-nav-right">
-        <a href="../../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <a href="../../portfolio-site/index.html#projects" class="site-nav-link">All projects</a>
         <button class="theme-toggle" id="themeToggle" type="button"></button>
     </div>
 </nav>
@@ -53,12 +49,11 @@
 <footer class="site-footer">
     <div class="site-footer-line">
         <p>© 2026 Abdalla</p>
-        <p>Built with curiosity.</p>
+        <a href="../../portfolio-site/index.html#apps">All projects</a>
     </div>
 </footer>
 
-<script src="../../shared/theme.js"></script>
-<script src="../../shared/motion.js"></script>
+<script src="../../shared/site.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

@@ -7,7 +7,6 @@
     --font-d: var(--font-display);
     --font-m: var(--font-mono);
 }
-[data-theme="light"] { --accent: #065f46; }
 
 /* ─── TOP NAV ──────────────────────────────────────────────── */
 .top-bar {

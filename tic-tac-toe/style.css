@@ -1,6 +1,4 @@
-/* Page accent. Everything shared (tokens, nav, hero, tabs, code viewer) is in shared/base.css. */
-:root { --accent: #a855f7; --accent-dark: #a855f7; }
-[data-theme="light"] { --accent: #7e22ce; }
+/* Shared tokens, nav, hero, tabs and the code viewer are in shared/site.css. */
 
 /* ─── RESET ────────────────────────────────────────────────── */
 
@@ -499,3 +497,6 @@
 .topbar-spacer  { width: 60px; }
 .lb-title       { font-size: clamp(2.5rem, 7vw, 4.5rem); }
 .lb-back-btn    { margin-top: 32px; }
+
+/* the screens stack in one grid cell; minmax(0, 1fr) keeps them inside the page on narrow phones */
+.ttt-screens { grid-template-columns: minmax(0, 1fr); }

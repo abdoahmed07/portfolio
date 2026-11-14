@@ -174,12 +174,13 @@ img { display: block; height: auto; }
     font: 750 clamp(2.1rem, 4.4vw, 3rem)/1.08 var(--font-display); letter-spacing: -0.03em;
     color: var(--text);
 }
-.pj .hero-title .acc, .pj .acc { color: inherit; }
+.pj .hero-title .acc, .pj .acc { color: var(--accent-text); }
 .pj .hero-desc, .pj .hero-sub {
     margin: 0; max-width: 64ch;
     font-size: 17px; line-height: 1.6; color: var(--muted);
 }
 .pj .hero-desc em { color: var(--text); }
+.pj .hero-uni { margin: 0 0 6px; font-size: 14px; color: var(--muted); }
 .pj .hero-meta, .pj .hero-pills { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 18px; }
 .pj .meta-pill, .pj .hero-pill, .pj .hero-pills .tag {
     font-size: 13px; color: var(--muted);
@@ -263,6 +264,10 @@ img { display: block; height: auto; }
     --on-accent: #1a0d06;
     color: var(--panel-ink);
 }
+
+/* App pages (name checker, login, tic-tac-toe): the app itself, centered */
+.pj .app-layout { display: flex; justify-content: center; padding-top: 24px; padding-bottom: 72px; }
+.pj .app-main { min-width: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
 /* highlight.js colors that fall short of AA in the stock themes */
 .hljs-meta, .hljs-meta .hljs-keyword, .hljs-meta .hljs-string { color: #d4978a; }
