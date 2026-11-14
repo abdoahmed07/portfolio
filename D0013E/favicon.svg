@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- D0013E: course 13, MIPS assembly -->
+  <rect width="64" height="64" rx="14" fill="#c026d3"/>
+  <text x="32" y="42" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">13</text>
+</svg>

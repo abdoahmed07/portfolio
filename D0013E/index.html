@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D0013E: Microcomputer Engineering · Abdalla</title>
+    <meta name="description" content="D0013E: MIPS assembly from a recursive string decoder to a pipelined CPU, interrupts, a small multitasking kernel, and the same program again in C and Rust.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Syntax highlighting (MIPS assembly is not in the default bundle, so it's loaded on its own) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/mipsasm.min.js"></script>
+
+    <script>(function(){var t;try{t=localStorage.getItem('theme');}catch(e){}if(t!=='light'&&t!=='dark')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="../shared/site.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="pj">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="site-nav" aria-label="Main">
+    <a class="site-nav-name" href="../portfolio-site/index.html">Abdalla</a>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html#projects" class="site-nav-link">All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
+
+<main class="page" id="main">
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-text">
+            <p class="hero-uni">Luleå University of Technology</p>
+            <p class="hero-eyebrow"><a href="../portfolio-site/index.html#courses">LTU courses</a> · MIPS assembly · C · Rust</p>
+            <h1 class="hero-title">D0013E<span class="acc">.</span></h1>
+            <p class="hero-desc">
+                Programming a computer from the bottom up. I wrote a recursive string decoder in
+                MIPS assembly, made it run on a pipelined CPU, exposed it to interrupts, built a
+                tiny kernel that switches between three programs on a timer, and finally wrote the
+                same decoder again in C and in Rust to compare what the compilers make of it.
+            </p>
+            <div class="hero-meta">
+                <span class="meta-pill">MIPS assembly</span>
+                <span class="meta-pill">Pipelining</span>
+                <span class="meta-pill">Interrupts</span>
+                <span class="meta-pill">Kernel</span>
+                <span class="meta-pill">C</span>
+                <span class="meta-pill">Rust</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- LAB PROGRESSION -->
+    <h2 class="section-label">Course labs</h2>
+    <div class="labs-table">
+        <div class="lab-row">
+            <div class="lab-num">L1b</div>
+            <div class="lab-info">
+                <div class="lab-title">Decrypting a string</div>
+                <div class="lab-desc">A recursive <code>decode</code> and a pseudo-random <code>codgen</code> in MIPS assembly. Every local of <code>decode</code> lives on the stack at a fixed offset from the frame pointer, and <code>codgen</code> counts zero bits with the <code>x &amp;= x - 1</code> trick, since MIPS here has no multiply or divide.</div>
+            </div>
+        </div>
+        <div class="lab-row">
+            <div class="lab-num">L2</div>
+            <div class="lab-info">
+                <div class="lab-title">Pipelined MIPS and interrupts</div>
+                <div class="lab-desc">Made the decoder run on a 5-stage pipeline: filled delay slots, added bubbles after loads, and replaced pseudo-instructions with real ones. Measured the speed-up (3.470 instead of 4) and explained why, then ran it with timer and keyboard interrupts firing.</div>
+            </div>
+        </div>
+        <div class="lab-row">
+            <div class="lab-num">L3a</div>
+            <div class="lab-info">
+                <div class="lab-title">User code and a kernel</div>
+                <div class="lab-desc">A user program that can't touch the hardware asks the kernel to print through <code>SYSCALL</code>. Wrote the exception handler in kernel space: read the cause from CP0, check the service code, write to the I/O port, return with <code>RFE</code>.</div>
+            </div>
+        </div>
+        <div class="lab-row">
+            <div class="lab-num">L3b</div>
+            <div class="lab-info">
+                <div class="lab-title">Multitasking</div>
+                <div class="lab-desc">Three programs share one CPU. On each timer interrupt the kernel saves 27 registers on the running program's stack, stores its PC, <code>$gp</code> and <code>$sp</code> in a process control block, and resumes the next one, round robin.</div>
+            </div>
+        </div>
+        <div class="lab-row">
+            <div class="lab-num">L4</div>
+            <div class="lab-info">
+                <div class="lab-title">From C to assembly</div>
+                <div class="lab-desc">The same decoder in C, run on Linux first and then cross-compiled for MIPS at optimization levels 0 to 3, to compare the compiler's calling convention and stack use with my hand-written assembly.</div>
+            </div>
+        </div>
+        <div class="lab-row">
+            <div class="lab-num">L4r</div>
+            <div class="lab-info">
+                <div class="lab-title">Rust edition</div>
+                <div class="lab-desc">The decoder once more in Rust: a hosted version that checks itself on the "abc" string first, and a <code>no_std</code> bare-metal build for a big-endian MIPS target with its own panic handler and linker script.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE DEMOS -->
+    <h2 class="section-label">Interactive demos</h2>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="decode">▶ Decode the message</button>
+        <button class="tab-btn" data-tab="pipe">Pipeline</button>
+        <button class="tab-btn" data-tab="kernel">Multitasking kernel</button>
+        <button class="tab-btn" data-tab="code">Source code</button>
+    </div>
+
+    <!-- ── DECODE (Lab 1b / 2 / 4) ── -->
+    <div class="tab-content active" id="tab-decode">
+        <p class="tab-note">
+            The decoder from the labs, ported line for line from my <code>lab4.c</code>. Each call to
+            <code>decode</code> calls itself on the rest of the words first, so the recursion goes all
+            the way down before a single letter is written. Then the characters appear from the end
+            of the string back to the start as the calls return.
+        </p>
+        <div class="dec-panel dark-panel">
+            <div class="dec-bar">
+                <div class="dec-seg" id="decInput" role="group" aria-label="Input">
+                    <button type="button" class="dec-seg-btn" data-input="coded" aria-pressed="true">The real message</button>
+                    <button type="button" class="dec-seg-btn" data-input="abc" aria-pressed="false">"abc" test</button>
+                </div>
+                <label class="dec-seed">seed <input id="decSeed" value="0x237fcc97" spellcheck="false" autocomplete="off" aria-label="Seed"></label>
+                <button type="button" class="dec-run" id="decRun">▶ Decode</button>
+            </div>
+
+            <div class="dec-depth">
+                <div class="dec-depth-head"><span id="decPhase">Press Decode to start.</span><span id="decDepthTxt">depth 0</span></div>
+                <div class="dec-depth-track"><div class="dec-depth-fill" id="decDepthFill"></div></div>
+            </div>
+
+            <div class="dec-out" id="decOut" aria-live="polite"></div>
+
+            <dl class="dec-stats">
+                <div><dd id="decCalls">0</dd><dt>calls to codgen</dt></div>
+                <div><dd id="decDeep">0</dd><dt>deepest recursion</dt></div>
+                <div><dd id="decStack">0 B</dd><dt>stack at the deepest point</dt></div>
+            </dl>
+            <p class="dec-hint" id="decHint">Each call to decode puts a 32-byte frame on the stack: the return address, the old frame pointer, the two pointers and the four locals x, y, m and r.</p>
+        </div>
+
+        <div class="dec-check">
+            <div>
+                <div class="ds-title">Checking codgen first</div>
+                <p class="ds-desc">The lab gives a test seed, 0x66e26625, and the first five values codgen must return for it. Run my codgen on it and compare.</p>
+            </div>
+            <button type="button" class="dec-check-btn" id="decCheck">Run the test</button>
+            <ol class="dec-check-list" id="decCheckList"></ol>
+        </div>
+    </div>
+
+    <!-- ── PIPELINE (Lab 2) ── -->
+    <div class="tab-content" id="tab-pipe">
+        <p class="tab-note">
+            My cycle counts from SyncRim. A 5-stage pipeline should finish about 4 times faster than the
+            single-cycle model the lab compares against, but mine came out at 3.470.
+        </p>
+        <div class="pipe-stats">
+            <div class="pipe-stat"><b>24,160</b><span>cycles, lab 1b<br>no pipeline</span></div>
+            <div class="pipe-stat"><b>27,851</b><span>cycles, lab 2<br>pipelined</span></div>
+            <div class="pipe-stat"><b>28,166</b><span>cycles, with<br>timer interrupts</span></div>
+            <div class="pipe-stat"><b>28,180</b><span>cycles, timer plus<br>one key press</span></div>
+        </div>
+        <div class="pipe-formula">
+            speed-up = 4 × 24,160 / 27,851 = <b>3.470</b>
+        </div>
+
+        <div class="pipe-diagram dark-panel">
+            <div class="pipe-diagram-head">
+                <span>Why it's not 4: a value loaded from the stack can't be used in the very next cycle</span>
+                <div class="dec-seg" id="pipeMode" role="group" aria-label="Pipeline schedule">
+                    <button type="button" class="dec-seg-btn" data-mode="nop" aria-pressed="true">With the bubble</button>
+                    <button type="button" class="dec-seg-btn" data-mode="bad" aria-pressed="false">Without it</button>
+                </div>
+            </div>
+            <div class="pipe-grid" id="pipeGrid" role="img" aria-label="Pipeline diagram"></div>
+            <p class="pipe-caption" id="pipeCaption"></p>
+        </div>
+
+        <div class="ds-grid">
+            <div class="ds-card">
+                <div class="ds-title">Every local on the stack</div>
+                <div class="ds-desc">The assignment requires x, y, m and r to live on the stack, not in registers. Every time one is reloaded, the next instruction has to wait a cycle. Those bubbles are why the speed-up lands under 4.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-title">What interrupts cost</div>
+                <div class="ds-desc">The timer fires about every 1024 cycles, so roughly 27 times in a run. They added 315 cycles in total, about ten instructions each for the handler. One key press added another 14.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── KERNEL (Lab 3b) ── -->
+    <div class="tab-content" id="tab-kernel">
+        <p class="tab-note">
+            A model of my lab 3b kernel. Each program thinks it has the CPU to itself and prints its
+            characters through <code>SYSCALL</code>. Every 1000 cycles or so the timer interrupts, and
+            the kernel saves the running program and switches to the next one. Cycle counts are
+            approximate, the switching works the same way as the real kernel.
+        </p>
+        <div class="k-panel dark-panel">
+            <div class="dec-bar">
+                <button type="button" class="dec-run" id="kRun">▶ Run</button>
+                <button type="button" class="k-btn" id="kKey">Type a key</button>
+                <button type="button" class="k-btn" id="kReset">Reset</button>
+                <span class="k-cycles" id="kCycles">cycle 0</span>
+            </div>
+            <div class="k-body">
+                <div>
+                    <div class="k-label">Output window</div>
+                    <div class="k-out" id="kOut" aria-live="off"></div>
+                </div>
+                <div>
+                    <div class="k-label">Process control blocks (.kdata)</div>
+                    <table class="k-pcb">
+                        <thead><tr><th></th><th>PC</th><th>$gp</th><th>$sp</th></tr></thead>
+                        <tbody id="kPcb"></tbody>
+                    </table>
+                    <div class="k-label">Kernel log</div>
+                    <ol class="k-log" id="kLog"></ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CODE ── -->
+    <div class="tab-content" id="tab-code">
+        <p class="tab-note">My code from the labs, as handed in.</p>
+        <div class="file-tabs">
+            <button class="file-tab active" data-file="lab1b">lab1b.s</button>
+            <button class="file-tab" data-file="lab2">lab2.s</button>
+            <button class="file-tab" data-file="lab3">lab3.s (kernel)</button>
+            <button class="file-tab" data-file="lab4c">lab4.c</button>
+            <button class="file-tab" data-file="lab4rs">main.rs</button>
+        </div>
+        <div class="code-viewer">
+            <pre><code id="codeBlock" class="language-mipsasm"></code></pre>
+        </div>
+    </div>
+
+    <!-- ── LEARNED ── -->
+    <h2 class="section-label">What I learned</h2>
+    <div class="learned-list">
+        <div class="learned-item">
+            <b>The stack is just memory with rules.</b>
+            <p>Drawing the stack frame for every function before writing it, with the frame pointer as a fixed anchor, is what made a recursive function in assembly manageable.</p>
+        </div>
+        <div class="learned-item">
+            <b>Pipelines don't come for free.</b>
+            <p>Delay slots and load-use bubbles meant my code needed small, careful changes to run at all on the pipelined CPU, and the speed-up depends on how the code is written, not just on the hardware.</p>
+        </div>
+        <div class="learned-item">
+            <b>A context switch has to be invisible.</b>
+            <p>For a program not to notice it was paused, the kernel must save every register it could have touched and put each one back exactly. Missing a single register breaks a program that did nothing wrong.</p>
+        </div>
+        <div class="learned-item">
+            <b>Same algorithm, three languages.</b>
+            <p>Writing the decoder in assembly, C and Rust showed what a compiler does for me. In Rust I had to use wrapping arithmetic on purpose, because plain addition panics on overflow in a debug build.</p>
+        </div>
+    </div>
+
+</main>
+
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <a href="../portfolio-site/index.html#courses">All projects</a>
+    </div>
+</footer>
+
+<script src="../shared/site.js"></script>
+<script src="sources.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

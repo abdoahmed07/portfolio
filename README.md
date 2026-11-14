@@ -41,7 +41,8 @@ If you're looking at this for work or an application: I'm a first-year student w
 ├── technical-writing/      ← Project 19, five technical blog posts
 ├── problem-solving/        ← Project 20, LeetCode practice with an animated graph demo
 ├── kent/                   ← Project 21, Kent card game, the real React build in app/
-└── streak/                 ← Project 22, Streak habit tracker, the real app build in app/
+├── streak/                 ← Project 22, Streak habit tracker, the real app build in app/
+└── D0013E/                 ← Project 23, MIPS assembly course: decoder, pipeline, a multitasking kernel
 ```
 
 Each project folder has its own page, script and styles, and they all share `shared/`. There's no build step. Serve the repo root (see below) so the `../shared/` paths work.
@@ -284,6 +285,25 @@ A calm, minimal habit tracker. One tap a day keeps a streak going, and check-ins
 The showcase page has a four-week calendar you can tap, with the numbers worked out by the app's real `streak.ts` (bundled into `streak/streak-rules.js`), the production build of the app in `streak/app/` (it needs an account), and the source.
 
 **Tech:** TypeScript · React 19 · Vite · Supabase (Postgres, auth, row-level security) · PWA · Vitest
+
+---
+
+### 23. D0013E: Microcomputer Engineering
+
+**Course:** D0013E at LTU, programming a computer from the bottom up in MIPS assembly.
+
+| Lab | What I built |
+| --- | --- |
+| 1b | A recursive string decoder in MIPS assembly, with every local of `decode` on the stack behind a frame pointer |
+| 2 | The same decoder on a pipelined MIPS: delay slots, load-use bubbles, and timer and keyboard interrupts. Measured speed-up 3.470 |
+| 3a | A user program that prints through `SYSCALL`, and the kernel exception handler that serves it |
+| 3b | A multitasking kernel: timer interrupts switch between three programs round robin, saving 27 registers and a process control block each time |
+| 4 | The decoder in C, then cross-compiled for MIPS at different optimization levels |
+| 4 (Rust) | The decoder in Rust, hosted and as a `no_std` build for a big-endian MIPS target |
+
+The showcase page decodes the hidden message with the real algorithm (ported from my C version), shows the pipeline hazard behind the speed-up, and runs a model of the multitasking kernel.
+
+**Tech:** MIPS assembly · C · Rust · SyncRim
 
 ---
 
