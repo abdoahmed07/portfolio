@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,40 +7,28 @@
     <meta name="description" content="A merged pull request to socket.io fixing a bug where pending acknowledgement callbacks were silently dropped on disconnect.">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
-            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
-        }
-    }
-    </script>
-    <link rel="stylesheet" href="../shared/base.css">
+    <script>(function(){var t;try{t=localStorage.getItem('theme');}catch(e){}if(t!=='light'&&t!=='dark')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="../shared/site.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="pj">
 
 <a class="skip-link" href="#main">Skip to content</a>
-<div class="backdrop" aria-hidden="true"></div>
 
 <nav class="site-nav" aria-label="Main">
-    <span class="site-nav-name">Abdalla</span>
+    <a class="site-nav-name" href="../portfolio-site/index.html">Abdalla</a>
     <div class="site-nav-right">
-        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <a href="../portfolio-site/index.html#projects" class="site-nav-link">All projects</a>
         <button class="theme-toggle" id="themeToggle" type="button"></button>
     </div>
 </nav>
 
 <main class="page" id="main">
 
-    <header class="hero" data-scene="hero">
+    <header class="hero">
         <div class="hero-text">
-            <span class="hero-eyebrow">Open Source · TypeScript · Summer 2026</span>
+            <p class="hero-eyebrow"><a href="../portfolio-site/index.html#more">Security, open source and writing</a> · Open Source · TypeScript · Summer 2026</p>
             <h1 class="hero-title">Contributing to <span class="acc">socket.io</span></h1>
             <p class="hero-desc">
                 Fixed a bug where pending acknowledgement callbacks were silently dropped when a
@@ -59,11 +47,10 @@
                 <span class="meta-pill">Merged PR</span>
             </div>
         </div>
-        <div class="stage" data-object="open-source" data-accent="#eab308" aria-hidden="true"><span class="stage-fallback">18</span></div>
     </header>
 
     <!-- ── TIMELINE ── -->
-    <h2 class="section-label" data-scene>How it went</h2>
+    <h2 class="section-label">How it went</h2>
     <div class="timeline">
         <div class="tl-step">
             <div class="tl-marker-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
@@ -103,7 +90,7 @@
     </div>
 
     <!-- ── THE FIX ── -->
-    <h2 class="section-label" data-scene>The fix</h2>
+    <h2 class="section-label">The fix</h2>
     <div class="diff-box dark-panel">
         <div class="diff-header">lib/socket.ts</div>
         <div class="diff-body">
@@ -141,7 +128,7 @@
     </div>
 
     <!-- ── BUG SIMULATOR ── -->
-    <h2 class="section-label" data-scene>See the bug</h2>
+    <h2 class="section-label">See the bug</h2>
     <p style="font-size:0.82rem;color:var(--muted);line-height:1.65;margin-bottom:20px;">A small simulation of the actual race condition. Toggle the switch to compare socket.io's behavior before and after the fix, then trigger the same disconnect-before-ack sequence both ways.</p>
     <div class="sim-panel">
         <div class="sim-toggle-row">
@@ -155,7 +142,7 @@
     </div>
 
     <!-- ── PR DESCRIPTION ── -->
-    <h2 class="section-label" data-scene>PR description</h2>
+    <h2 class="section-label">PR description</h2>
     <div class="pr-card">
         <div class="pr-title">fix: call pending ack callbacks with error on disconnect</div>
         <div class="pr-meta">Merged · week 6</div>
@@ -167,7 +154,7 @@
     </div>
 
     <!-- ── LEARNED ── -->
-    <h2 class="section-label" data-scene>What I learned</h2>
+    <h2 class="section-label">What I learned</h2>
     <div class="learned-list">
         <div class="learned-item">
             <b>Reading a real codebase is nothing like reading tutorials.</b>
@@ -188,14 +175,12 @@
 <footer class="site-footer">
     <div class="site-footer-line">
         <p>© 2026 Abdalla</p>
-        <p>Built with curiosity.</p>
+        <a href="../portfolio-site/index.html#more">All projects</a>
     </div>
 </footer>
 
 
-<script src="../shared/theme.js"></script>
-<script src="../shared/motion.js"></script>
+<script src="../shared/site.js"></script>
 <script src="script.js"></script>
-<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

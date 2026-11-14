@@ -19,8 +19,7 @@ If you're looking at this for work or an application: I'm a first-year student w
 ```
 /
 ├── portfolio-site/         ← The main portfolio index page + About page
-├── shared/                 ← Styles, theme, scroll and 3D code every page uses
-│   └── gl/                 ← Three.js studio, the 22 project objects, the hub's chrome form
+├── shared/                 ← site.css and site.js, the style and light/dark theme every page uses
 ├── name-checker/           ← Project 01
 ├── fly-game/               ← Project 02
 ├── islam-kindles/          ← Project 03
@@ -106,7 +105,7 @@ Six interactive labs, each with a live demo you can run in the browser:
 | L3·A3 | Word book using a dictionary: live insert/lookup/delete demo               |
 | L4    | Phonebook OOP: full terminal with commands like `add`, `search`, `delete` |
 
-**Tech:** Python concepts ported to JavaScript for the browser demos · Syne + DM Mono fonts · unified dark design system
+**Tech:** Python concepts ported to JavaScript for the browser demos
 
 ---
 
@@ -296,8 +295,7 @@ The whole portfolio is plain web: no frameworks, no build tools, no bundlers. Ju
 | ------------------- | ------------------------------------------------------ |
 | Languages           | HTML, CSS, JavaScript, Python, Java, C, C++, C#, Arduino C++, Veryl |
 | Original backends    | Node.js, Express, PostgreSQL, Socket.io, Flask, libpcap |
-| Fonts               | Geist + Geist Mono via Google Fonts                    |
-| 3D                  | Three.js (from jsDelivr), one object per project       |
+| Fonts               | System fonts, nothing extra to download                |
 | Syntax highlighting | highlight.js                                           |
 | PDF generation      | ReportLab (Python)                                     |
 | Storage             | `localStorage` for game scores and leaderboards        |
@@ -316,7 +314,7 @@ cd portfolio
 python3 -m http.server 8934
 ```
 
-Then open http://localhost:8934/portfolio-site/index.html. Opening the files directly also works, but browsers won't load the 3D objects from `file://`, so each project shows its number instead.
+Then open http://localhost:8934/portfolio-site/index.html. Opening the files directly also works, except the embedded Kent and Streak apps, which only run when the folder is served.
 
 Or jump straight to a project:
 
@@ -358,7 +356,7 @@ make run
 - HeroFight was originally a C# .NET 10 console application. The whole game engine was ported to JavaScript: same classes, same logic, same patterns, just running in the browser.
 - Projects 12 through 20 came from a separate summer sprint of independent side projects (real-time systems, graphics, interpreters, security, machine learning), each originally a full standalone project with its own repo, then adapted into a showcase page here.
 - Where a project's original form needs something a static site can't provide (a database, a raw socket, a GPU-scale render), the showcase page ports the actual algorithm or logic to JavaScript rather than faking the output, the neural network runs its real trained weights, the ray tracer runs the real path-tracing math, and so on.
-- Every page shares one design system in `shared/`: a dark and a light theme, Geist type, and a distinct accent color per project. Each project also has its own small 3D object, shown on the hub and at the top of its page.
+- Every page shares one simple design in `shared/`: a light and a dark theme that follow your system (with a toggle), one orange accent, and the same header and footer. The hub groups the projects into LTU courses, games, apps and websites, things built from scratch, and security, open source and writing, each with a screenshot of its demo.
 - The D0015E Arduino project and ethics assignment were co-authored with a classmate.
 
 ---

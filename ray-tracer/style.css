@@ -1,6 +1,4 @@
-/* Page accent. Everything shared (tokens, nav, hero, tabs, code viewer) is in shared/base.css. */
-:root { --accent: #fb7185; --accent-dark: #fb7185; }
-[data-theme="light"] { --accent: #be123c; }
+/* Shared tokens, nav, hero, tabs and the code viewer are in shared/site.css. */
 
 /* ── Tabs ── */
 
