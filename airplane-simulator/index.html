@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Airport Simulator: a C++17 terminal-based simulation with manually implemented priority queue, FIFO queue, fuel emergencies, and live ANSI stats.">
+    <meta name="description" content="Airport Simulator: a C++17 simulation with hand-written priority and FIFO queues, played back as an animated airport from real runs of the program.">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <title>Airport Simulator · Abdalla</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
     <div class="hero">
         <span class="hero-eyebrow">C++ Simulation</span>
         <h1 class="hero-title">Airport<span class="acc">Sim</span></h1>
-        <p class="hero-desc">A terminal-based airport simulator written in C++17 from scratch. Manages real-time plane arrivals, departures, and fuel emergencies using manually implemented data structures, no STL queues. Features a live ANSI terminal display with colour-coded status, fuel bars, and a scrolling event log.</p>
+        <p class="hero-desc">A terminal airport simulator written in C++17 from scratch, with hand-written queues instead of the STL ones. Below are real runs of the program played back: arrivals hold until a runway frees up, planes low on fuel jump the line, and departures queue on the taxiway and take off while the sun sets. Hover a plane to see its flight.</p>
         <div class="hero-meta">
             <span class="meta-pill">C++</span>
             <span class="meta-pill">C++17</span>
@@ -37,138 +37,72 @@
 
     <!-- TABS -->
     <div class="tabs">
-        <button class="tab-btn active" data-tab="terminal">▶ Live Simulation</button>
+        <button class="tab-btn active" data-tab="terminal">▶ Watch it run</button>
         <button class="tab-btn" data-tab="code">View Code</button>
     </div>
 
     <!-- LIVE SIMULATION TAB -->
     <div class="tab-content active" id="tab-terminal">
 
-        <!-- SIM PANEL -->
-        <div class="sim-panel" id="simPanel">
+        <!-- ANIMATED AIRPORT -->
+        <div class="ap">
+            <div class="ap-frame" id="frame">
+                <canvas id="field" role="img" aria-label="Animated airport seen from above"></canvas>
+                <div class="ap-tip" id="tip"></div>
+            </div>
 
-            <!-- Titlebar -->
-            <div class="terminal-titlebar">
-                <span class="t-dot t-dot-red"></span>
-                <span class="t-dot t-dot-yellow"></span>
-                <span class="t-dot t-dot-green"></span>
-                <span class="terminal-titlebar-label">airport-simulator: live</span>
-                <div style="flex:1"></div>
-                <div class="sim-controls">
-                    <button class="sim-btn" id="simPlay">▶ Play</button>
-                    <button class="sim-btn" id="simPause" disabled>⏸ Pause</button>
-                    <button class="sim-btn sim-btn-dim" id="simReset">↺ Reset</button>
-                    <div class="sim-speed-group">
-                        <button class="sim-speed-btn active" data-ms="900">1×</button>
-                        <button class="sim-speed-btn" data-ms="400">2×</button>
-                        <button class="sim-speed-btn" data-ms="150">5×</button>
-                    </div>
+            <div class="ap-controls">
+                <button class="ap-btn ap-play" id="play" type="button">Pause</button>
+                <input id="scrub" type="range" min="0" max="0" value="0" aria-label="Simulation minute">
+                <span class="ap-clock" id="clock">00:00</span>
+                <div class="ap-speeds" id="speeds">
+                    <button class="ap-btn" type="button" data-ms="1400">1×</button>
+                    <button class="ap-btn" type="button" data-ms="700">2×</button>
+                    <button class="ap-btn" type="button" data-ms="300">5×</button>
                 </div>
             </div>
 
-            <!-- Config bar -->
-            <div class="sim-config-bar">
-                <div class="sim-cfg-field">
-                    <span class="sim-cfg-label">Runways</span>
-                    <div class="sim-stepper">
-                        <button class="stepper-btn" id="rwMinus">−</button>
-                        <span class="stepper-val" id="cfgRw">2</span>
-                        <button class="stepper-btn" id="rwPlus">+</button>
+            <div class="ap-panel">
+                <div>
+                    <h2 class="ap-h">Pick an airport</h2>
+                    <div class="ap-scenarios" id="scenarios">
+                        <button class="scenario" type="button" data-run="regional"><strong>Harbour Regional</strong><span>1 runway, light traffic</span></button>
+                        <button class="scenario" type="button" data-run="hub"><strong>Metro International</strong><span>4 runways, heavy traffic</span></button>
+                        <button class="scenario" type="button" data-run="overload"><strong>One Runway Too Few</strong><span>1 runway, more planes than it can handle</span></button>
                     </div>
                 </div>
-                <div class="sim-cfg-field">
-                    <span class="sim-cfg-label">Duration (steps)</span>
-                    <div class="sim-stepper">
-                        <button class="stepper-btn" id="durMinus">−</button>
-                        <span class="stepper-val" id="cfgDur">60</span>
-                        <button class="stepper-btn" id="durPlus">+</button>
-                    </div>
+
+                <div>
+                    <h2 class="ap-h">Right now</h2>
+                    <dl class="ap-stats">
+                        <div><dd id="s-landed">0</dd><dt>Landed</dt></div>
+                        <div><dd id="s-departed">0</dd><dt>Took off</dt></div>
+                        <div><dd id="s-circling">0</dd><dt>Holding</dt></div>
+                        <div><dd id="s-waiting">0</dd><dt>Waiting to leave</dt></div>
+                        <div><dd id="s-emergencies">0</dd><dt>Emergency landings</dt></div>
+                        <div><dd id="s-crashes">0</dd><dt>Ran out of fuel</dt></div>
+                    </dl>
+                    <ul class="ap-legend">
+                        <li><i style="background:#f8fafc;box-shadow:inset 0 0 0 1px #94a3b8"></i>Tail colour = airline</li>
+                        <li><i style="background:transparent;box-shadow:inset 0 0 0 2px #fbbf24"></i>Low on fuel</li>
+                        <li><i style="background:transparent;box-shadow:inset 0 0 0 2px #f87171"></i>Emergency, under 20% fuel</li>
+                        <li><i style="background:#cbd5e1"></i>Shadow distance = altitude</li>
+                    </ul>
                 </div>
-                <div class="sim-cfg-field">
-                    <span class="sim-cfg-label">Arrivals / 10 steps</span>
-                    <div class="sim-stepper">
-                        <button class="stepper-btn" id="arrMinus">−</button>
-                        <span class="stepper-val" id="cfgArr">3</span>
-                        <button class="stepper-btn" id="arrPlus">+</button>
-                    </div>
-                </div>
-                <div class="sim-cfg-field">
-                    <span class="sim-cfg-label">Departures / 10 steps</span>
-                    <div class="sim-stepper">
-                        <button class="stepper-btn" id="depMinus">−</button>
-                        <span class="stepper-val" id="cfgDep">3</span>
-                        <button class="stepper-btn" id="depPlus">+</button>
-                    </div>
+
+                <div>
+                    <h2 class="ap-h">Latest events</h2>
+                    <ul class="ap-events" id="events"></ul>
                 </div>
             </div>
 
-            <!-- Airport header: name + time -->
-            <div class="sim-header">
-                <span class="sim-airport-name">Metro International Airport</span>
-                <span class="sim-time" id="simTime">Step: 0 / 60</span>
-            </div>
+            <details class="ap-details">
+                <summary>What the program printed this minute</summary>
+                <p class="ap-note">The animation is drawn from this screen. The C++ simulator was compiled and run with each airport's settings, and every minute's screen was recorded.</p>
+                <div class="ap-term"><pre id="screen"></pre></div>
+            </details>
+        </div>
 
-            <!-- Dashboard body -->
-            <div class="sim-body">
-
-                <!-- Runways -->
-                <div class="sim-section">
-                    <span class="sim-section-lbl">RUNWAYS</span>
-                    <div class="sim-runways" id="simRunways"></div>
-                </div>
-
-                <!-- Queues side by side -->
-                <div class="sim-queues-wrap">
-                    <div class="sim-queue-col">
-                        <span class="sim-section-lbl">ARRIVAL QUEUE <em id="arrCount">(0)</em></span>
-                        <div class="sim-queue-list" id="simArrQueue">
-                            <div class="q-empty t-dim">No planes waiting</div>
-                        </div>
-                    </div>
-                    <div class="sim-queue-col">
-                        <span class="sim-section-lbl">DEPARTURE QUEUE <em id="depCount">(0)</em></span>
-                        <div class="sim-queue-list" id="simDepQueue">
-                            <div class="q-empty t-dim">No planes waiting</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Statistics -->
-                <div class="sim-section">
-                    <span class="sim-section-lbl">STATISTICS</span>
-                    <div class="sim-stats-row">
-                        <span class="sim-stat-item"><b class="t-green"  id="stLanded">0</b><span class="sim-stat-lbl">landed</span></span>
-                        <span class="sim-stat-sep">·</span>
-                        <span class="sim-stat-item"><b class="t-amber"  id="stDeparted">0</b><span class="sim-stat-lbl">departed</span></span>
-                        <span class="sim-stat-sep">·</span>
-                        <span class="sim-stat-item"><b class="t-red"    id="stEmerg">0</b><span class="sim-stat-lbl">emergencies</span></span>
-                        <span class="sim-stat-sep">·</span>
-                        <span class="sim-stat-item"><b class="t-red"    id="stCrashes">0</b><span class="sim-stat-lbl">crashes</span></span>
-                        <span class="sim-stat-sep">·</span>
-                        <span class="sim-stat-item"><b id="stAvgWait">0.0 min</b><span class="sim-stat-lbl">avg wait</span></span>
-                    </div>
-                </div>
-
-                <!-- Event log -->
-                <div class="sim-section">
-                    <span class="sim-section-lbl">EVENT LOG</span>
-                    <div class="sim-log" id="simLog">
-                        <div class="sim-log-placeholder t-dim">Press Play to start the simulation.</div>
-                    </div>
-                </div>
-
-            </div><!-- /sim-body -->
-
-            <!-- Simulation complete overlay -->
-            <div class="sim-done-overlay" id="simDone" style="display:none">
-                <div class="sim-done-box">
-                    <div class="sim-done-title t-green">Simulation Complete</div>
-                    <div class="sim-done-stats" id="simDoneStats"></div>
-                    <button class="sim-done-btn" id="simDoneRestart">↺ Run Again</button>
-                </div>
-            </div>
-
-        </div><!-- /sim-panel -->
 
         <!-- DATA STRUCTURES CALLOUT -->
         <div class="ds-grid">
@@ -228,10 +162,10 @@ static void banner() {
     std::cout << "\033[2J\033[H";
     std::cout << "\033[1;36m"
 "\n"
-"   +===========================================================+\n"
-"   |           A I R P O R T   S I M U L A T O R             |\n"
-"   |         Manual Queue  |  Priority Landings  |  C++       |\n"
-"   +===========================================================+\n"
+"   ╔══════════════════════════════════════════════════════════╗\n"
+"   ║           A I R P O R T   S I M U L A T O R            ║\n"
+"   ║         Manual Queue  |  Priority Landings  |  C++      ║\n"
+"   ╚══════════════════════════════════════════════════════════╝\n"
 "\033[0m\n";
 }
 
@@ -263,6 +197,7 @@ static bool readBool(const std::string& prompt, bool defaultVal) {
 
 int main() {
     banner();
+
     std::cout << "\033[1mCONFIGURATION\033[0m\n\n";
 
     SimConfig cfg;
@@ -280,12 +215,13 @@ int main() {
     std::cout << '\n';
     cfg.stepMode  = readBool("Step mode (press Enter each minute)?", false);
     if (!cfg.stepMode)
-        cfg.fastMode = readBool("Fast mode (no delay between ticks)?", false);
+        cfg.fastMode = readBool("Fast mode (no delay between ticks)?",  false);
 
     std::cout << "\n\033[1;32m  Configuration accepted. Starting...\033[0m\n\n";
 
     Simulation sim(cfg);
     sim.run();
+
     return 0;
 }`;
 
@@ -303,21 +239,24 @@ struct Plane {
     std::string airline;
     std::string origin;
     std::string destination;
-    int         fuelLevel;         // 0-100%
+    int         fuelLevel;        // 0–100 %
     PlaneType   type;
     PlaneStatus status;
-    int         queueEntryTime;    // tick when plane joined queue
-    int         runwayStartTime;   // -1 until assigned
-    int         completionTime;    // -1 until done
-    int         runwayDuration;    // minutes needed on runway
+    int         queueEntryTime;   // simulation minute when plane joined queue
+    int         runwayStartTime;  // -1 until assigned
+    int         completionTime;   // -1 until done
+    int         runwayDuration;   // minutes needed on runway
 
-    void burnFuel() { if (fuelLevel > 0) fuelLevel--; }
+    // Fuel decreases every minute while waiting
+    void burnFuel() {
+        if (fuelLevel > 0) fuelLevel--;
+    }
 
     bool isEmergency() const { return fuelLevel < 20; }
     bool isLowFuel()   const { return fuelLevel >= 20 && fuelLevel < 40; }
 
     // 0 = highest priority (emergency), 1 = low fuel, 2 = normal
-    // Departures don't burn fuel, always priority 2
+    // Departures don't burn fuel so they are always priority 2
     int priority() const {
         if (type == PlaneType::DEPARTING) return 2;
         if (isEmergency()) return 0;
@@ -329,8 +268,58 @@ struct Plane {
         return (runwayStartTime >= 0) ? runwayStartTime - queueEntryTime : -1;
     }
 
-    static Plane createArrival(int id, int currentTime);
-    static Plane createDeparture(int id, int currentTime);
+    static Plane createArrival(int id, int currentTime) {
+        static const std::array<std::string, 8> airlines = {
+            "Delta", "United", "American", "Southwest",
+            "JetBlue", "Alaska", "Spirit", "Frontier"
+        };
+        static const std::array<std::string, 2> codes = { "AA", "DL" };
+        static const std::array<std::string, 10> cities = {
+            "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
+            "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"
+        };
+
+        Plane p;
+        p.id             = id;
+        p.airline        = airlines[id % airlines.size()];
+        p.flightNumber   = p.airline.substr(0, 2) + std::to_string(100 + (id * 37) % 900);
+        p.origin         = cities[(id * 3) % cities.size()];
+        p.destination    = cities[(id * 7 + 2) % cities.size()];
+        p.fuelLevel      = 20 + (std::rand() % 80);   // 20–99 %
+        p.type           = PlaneType::ARRIVING;
+        p.status         = PlaneStatus::IN_QUEUE;
+        p.queueEntryTime = currentTime;
+        p.runwayStartTime = -1;
+        p.completionTime  = -1;
+        p.runwayDuration  = 3 + (std::rand() % 3);    // 3–5 min to land
+        return p;
+    }
+
+    static Plane createDeparture(int id, int currentTime) {
+        static const std::array<std::string, 8> airlines = {
+            "Delta", "United", "American", "Southwest",
+            "JetBlue", "Alaska", "Spirit", "Frontier"
+        };
+        static const std::array<std::string, 10> cities = {
+            "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
+            "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"
+        };
+
+        Plane p;
+        p.id             = id;
+        p.airline        = airlines[id % airlines.size()];
+        p.flightNumber   = p.airline.substr(0, 2) + std::to_string(100 + (id * 53) % 900);
+        p.origin         = cities[(id * 5) % cities.size()];
+        p.destination    = cities[(id * 11 + 3) % cities.size()];
+        p.fuelLevel      = 100;   // full tank for departures
+        p.type           = PlaneType::DEPARTING;
+        p.status         = PlaneStatus::IN_QUEUE;
+        p.queueEntryTime = currentTime;
+        p.runwayStartTime = -1;
+        p.completionTime  = -1;
+        p.runwayDuration  = 2 + (std::rand() % 3);    // 2–4 min to take off
+        return p;
+    }
 };`;
 
 FILES.queueh = String.raw`#pragma once
@@ -338,9 +327,9 @@ FILES.queueh = String.raw`#pragma once
 #include <stdexcept>
 #include <string>
 
-// ─────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 // Manual FIFO Queue  (singly-linked list)
-// ─────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 template<typename T>
 class Queue {
 public:
@@ -357,10 +346,18 @@ private:
 
 public:
     Queue()  : _front(nullptr), _rear(nullptr), _size(0) {}
+
     ~Queue() { clear(); }
 
+    // Non-copyable, movable
     Queue(const Queue&)            = delete;
     Queue& operator=(const Queue&) = delete;
+
+    Queue(Queue&& o) noexcept
+        : _front(o._front), _rear(o._rear), _size(o._size) {
+        o._front = o._rear = nullptr;
+        o._size = 0;
+    }
 
     void enqueue(const T& item) {
         Node* node = new Node(item);
@@ -386,8 +383,16 @@ public:
         return _front->data;
     }
 
+    T& peekMutable() {
+        if (isEmpty()) throw std::runtime_error("Queue is empty");
+        return _front->data;
+    }
+
     bool isEmpty() const { return _size == 0; }
     int  size()    const { return _size; }
+
+    const Node* head() const { return _front; }
+    Node*       head()       { return _front; }
 
     void clear() {
         while (_front) {
@@ -395,24 +400,34 @@ public:
             _front    = _front->next;
             delete tmp;
         }
-        _rear = nullptr; _size = 0;
+        _rear  = nullptr;
+        _size  = 0;
     }
 
-    template<typename Fn> void forEach(Fn fn) const {
-        for (const Node* n = _front; n; n = n->next) fn(n->data);
+    // Apply a function to every element (read-only traversal)
+    template<typename Fn>
+    void forEach(Fn fn) const {
+        for (const Node* n = _front; n; n = n->next)
+            fn(n->data);
     }
-    template<typename Fn> void forEachMut(Fn fn) {
-        for (Node* n = _front; n; n = n->next) fn(n->data);
+
+    // Mutable traversal
+    template<typename Fn>
+    void forEachMut(Fn fn) {
+        for (Node* n = _front; n; n = n->next)
+            fn(n->data);
     }
 };
 
-// ─────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 // Manual Priority Queue  (sorted singly-linked list)
 //
 //   comparator(a, b) == true  →  a has HIGHER priority than b
+//                                (a appears earlier in the list)
 //
-// Insertion: O(n)   Dequeue: O(1)   Stable (FIFO within same tier)
-// ─────────────────────────────────────────────────────────────────
+// Insertion is O(n); suitable for airport-scale queues (dozens of planes).
+// Ties preserve insertion order (stable).
+// ─────────────────────────────────────────────────────────────────────────────
 template<typename T>
 class PriorityQueue {
 public:
@@ -432,16 +447,20 @@ public:
         : _head(nullptr), _size(0), _cmp(std::move(cmp)) {}
 
     ~PriorityQueue() { clear(); }
+
     PriorityQueue(const PriorityQueue&)            = delete;
     PriorityQueue& operator=(const PriorityQueue&) = delete;
 
     void enqueue(const T& item) {
         Node* node = new Node(item);
+
+        // Insert before the first element with strictly lower priority
         if (!_head || _cmp(item, _head->data)) {
             node->next = _head;
             _head      = node;
         } else {
             Node* cur = _head;
+            // Advance while cur->next has >= priority (stable: don't jump over equals)
             while (cur->next && !_cmp(item, cur->next->data))
                 cur = cur->next;
             node->next = cur->next;
@@ -460,19 +479,36 @@ public:
         return data;
     }
 
+    const T& peek() const {
+        if (isEmpty()) throw std::runtime_error("Priority queue is empty");
+        return _head->data;
+    }
+
     bool isEmpty() const { return _size == 0; }
     int  size()    const { return _size; }
 
+    const Node* head() const { return _head; }
+    Node*       head()       { return _head; }
+
     void clear() {
-        while (_head) { Node* tmp = _head; _head = _head->next; delete tmp; }
+        while (_head) {
+            Node* tmp = _head;
+            _head     = _head->next;
+            delete tmp;
+        }
         _size = 0;
     }
 
-    template<typename Fn> void forEach(Fn fn) const {
-        for (const Node* n = _head; n; n = n->next) fn(n->data);
+    template<typename Fn>
+    void forEach(Fn fn) const {
+        for (const Node* n = _head; n; n = n->next)
+            fn(n->data);
     }
-    template<typename Fn> void forEachMut(Fn fn) {
-        for (Node* n = _head; n; n = n->next) fn(n->data);
+
+    template<typename Fn>
+    void forEachMut(Fn fn) {
+        for (Node* n = _head; n; n = n->next)
+            fn(n->data);
     }
 };`;
 
@@ -487,6 +523,7 @@ class Runway {
 public:
     explicit Runway(std::string name);
 
+    // Getters
     const std::string& name()          const { return _name; }
     RunwayStatus       status()        const { return _status; }
     int                timeRemaining() const { return _timeRemaining; }
@@ -494,12 +531,13 @@ public:
     bool               hasPlane()      const { return _hasPlane; }
     const Plane&       currentPlane()  const { return _currentPlane; }
 
-    // Assign a plane; returns false if already busy
+    // Assign a plane; returns false if runway is busy
     bool assign(Plane& plane, int currentTime);
 
-    // Advance one minute; returns completed plane if done
+    // Advance one minute; returns completed plane (if any)
     std::optional<Plane> tick(int currentTime);
 
+    // Statistics
     int planesServed() const { return _planesServed; }
 
 private:
@@ -516,6 +554,7 @@ FILES.runwaycpp = String.raw`#include "Runway.h"
 Runway::Runway(std::string name)
     : _name(std::move(name))
     , _status(RunwayStatus::AVAILABLE)
+    , _currentPlane{}
     , _hasPlane(false)
     , _timeRemaining(0)
     , _planesServed(0)
@@ -524,14 +563,14 @@ Runway::Runway(std::string name)
 bool Runway::assign(Plane& plane, int currentTime) {
     if (!isAvailable()) return false;
 
-    _currentPlane                 = plane;
-    _currentPlane.status          = PlaneStatus::ON_RUNWAY;
-    _currentPlane.runwayStartTime = currentTime;
-    _timeRemaining                = plane.runwayDuration;
-    _status = (plane.type == PlaneType::ARRIVING)
-                ? RunwayStatus::LANDING
-                : RunwayStatus::TAKEOFF;
-    _hasPlane = true;
+    plane.status         = PlaneStatus::ON_RUNWAY;
+    plane.runwayStartTime = currentTime;
+    _currentPlane        = plane;
+    _hasPlane            = true;
+    _timeRemaining       = plane.runwayDuration;
+    _status              = (plane.type == PlaneType::ARRIVING)
+                           ? RunwayStatus::LANDING
+                           : RunwayStatus::TAKEOFF;
     return true;
 }
 
@@ -539,15 +578,20 @@ std::optional<Plane> Runway::tick(int currentTime) {
     if (!_hasPlane) return std::nullopt;
 
     --_timeRemaining;
-    if (_timeRemaining > 0) return std::nullopt;
 
-    _currentPlane.status         = PlaneStatus::COMPLETED;
-    _currentPlane.completionTime = currentTime;
-    _status   = RunwayStatus::AVAILABLE;
-    _hasPlane = false;
-    ++_planesServed;
+    if (_timeRemaining <= 0) {
+        _currentPlane.status         = PlaneStatus::COMPLETED;
+        _currentPlane.completionTime = currentTime;
+        Plane done = _currentPlane;
 
-    return _currentPlane;
+        _status        = RunwayStatus::AVAILABLE;
+        _hasPlane      = false;
+        _timeRemaining = 0;
+        ++_planesServed;
+
+        return done;
+    }
+    return std::nullopt;
 }`;
 
 FILES.airporth = String.raw`#pragma once
@@ -558,15 +602,18 @@ FILES.airporth = String.raw`#pragma once
 #include <string>
 #include <numeric>
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Statistics gathered over the entire simulation
+// ─────────────────────────────────────────────────────────────────────────────
 struct Stats {
-    int totalArrivals      = 0;
-    int totalDepartures    = 0;
+    int totalArrivals    = 0;
+    int totalDepartures  = 0;
     int completedLandings  = 0;
     int completedTakeoffs  = 0;
     int emergenciesHandled = 0;
-    int totalWaitTime      = 0;
-    int maxWaitTime        = 0;
-    int planesRejected     = 0;   // crashed (fuel reached 0)
+    int totalWaitTime    = 0;   // sum of all wait times (minutes)
+    int maxWaitTime      = 0;
+    int planesRejected   = 0;   // planes that ran out of fuel (fuel == 0 when dequeued)
 
     double averageWait() const {
         int served = completedLandings + completedTakeoffs;
@@ -575,46 +622,64 @@ struct Stats {
     int totalServed() const { return completedLandings + completedTakeoffs; }
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Airport – owns runways and manages the arrival / departure queues
+// ─────────────────────────────────────────────────────────────────────────────
 class Airport {
 public:
     Airport(std::string name, int numRunways);
 
+    // Add planes to queues
     void addArrival(Plane plane);
     void addDeparture(Plane plane);
 
-    void step(int currentTime);   // advance one simulation minute
+    // Advance simulation by one minute
+    void step(int currentTime);
 
-    const std::string&         name()    const { return _name; }
-    const Stats&               stats()   const { return _stats; }
+    // Accessors for display
+    const std::string& name()       const { return _name; }
+    const Stats&       stats()      const { return _stats; }
     const std::vector<Runway>& runways() const { return _runways; }
 
+    // Queue sizes
     int arrivalQueueSize()   const { return _arrivalQueue.size(); }
     int departureQueueSize() const { return _departureQueue.size(); }
 
-    template<typename Fn> void forEachArrival(Fn fn)   const { _arrivalQueue.forEach(fn); }
-    template<typename Fn> void forEachDeparture(Fn fn) const { _departureQueue.forEach(fn); }
+    // Traversal helpers for display
+    template<typename Fn>
+    void forEachArrival(Fn fn) const { _arrivalQueue.forEach(fn); }
+    template<typename Fn>
+    void forEachDeparture(Fn fn) const { _departureQueue.forEach(fn); }
 
+    // Recently completed planes (cleared each step by caller if needed)
     const std::vector<Plane>& recentlyCompleted() const { return _recentlyCompleted; }
     void clearRecentlyCompleted() { _recentlyCompleted.clear(); }
 
 private:
-    std::string          _name;
-    std::vector<Runway>  _runways;
-    Stats                _stats;
-    std::vector<Plane>   _recentlyCompleted;
+    std::string            _name;
+    std::vector<Runway>    _runways;
+    Stats                  _stats;
+    std::vector<Plane>     _recentlyCompleted;
 
-    PriorityQueue<Plane> _arrivalQueue;    // sorted by fuel urgency
-    Queue<Plane>         _departureQueue;  // plain FIFO
+    // Arrival queue: PRIORITY sorted by fuel urgency
+    PriorityQueue<Plane>   _arrivalQueue;
 
+    // Departure queue: plain FIFO
+    Queue<Plane>           _departureQueue;
+
+    // Assign waiting planes to free runways
     void _assignToRunways(int currentTime);
+
+    // Burn fuel for all queued arrivals; flag if any drop to 0
     void _burnQueuedFuel();
 };`;
 
 FILES.airportcpp = String.raw`#include "Airport.h"
 #include <algorithm>
+#include <iostream>
 
-// Comparator: lower priority() = higher urgency
-// Tie-break: earlier queueEntryTime wins (stable FIFO within same tier)
+// Comparator: lower priority number = higher urgency
+// Tie-break: earlier queueEntryTime wins (FIFO within same bucket)
 static bool arrivalCmp(const Plane& a, const Plane& b) {
     if (a.priority() != b.priority())
         return a.priority() < b.priority();
@@ -642,13 +707,14 @@ void Airport::addDeparture(Plane plane) {
 void Airport::step(int currentTime) {
     _recentlyCompleted.clear();
 
-    // 1. Burn fuel for every waiting arrival
+    // 1. Burn fuel for every plane waiting to land
     _burnQueuedFuel();
 
-    // 2. Tick each runway
+    // 2. Tick each runway (process planes in progress)
     for (auto& rw : _runways) {
         auto done = rw.tick(currentTime);
         if (done) {
+            // Collect stats
             int wt = done->waitTime();
             if (wt > 0) {
                 _stats.totalWaitTime += wt;
@@ -656,7 +722,7 @@ void Airport::step(int currentTime) {
             }
             if (done->type == PlaneType::ARRIVING) {
                 ++_stats.completedLandings;
-                if (done->isEmergency())
+                if (done->isEmergency())   // was emergency when it landed
                     ++_stats.emergenciesHandled;
             } else {
                 ++_stats.completedTakeoffs;
@@ -675,15 +741,17 @@ void Airport::_assignToRunways(int currentTime) {
 
         bool assigned = false;
 
-        // Arrivals always take priority over departures.
-        // Skip zero-fuel planes (crashed while waiting in queue).
+        // Arrivals take priority over departures.
+        // Skip over any zero-fuel planes (crashed while waiting).
         while (!_arrivalQueue.isEmpty() && !assigned) {
             Plane p = _arrivalQueue.dequeue();
             if (p.fuelLevel == 0) {
                 ++_stats.planesRejected;
-                p.status = PlaneStatus::COMPLETED;
+                p.status          = PlaneStatus::COMPLETED;
+                p.runwayStartTime = currentTime;
+                p.completionTime  = currentTime;
                 _recentlyCompleted.push_back(p);
-                continue;
+                continue;  // try next plane in the arrival queue
             }
             rw.assign(p, currentTime);
             assigned = true;
@@ -707,12 +775,12 @@ FILES.simh = String.raw`#pragma once
 
 struct SimConfig {
     std::string name           = "Metro International Airport";
-    int         numRunways     = 2;
-    int         duration       = 60;
-    int         arrivalRate    = 3;   // avg arrivals per 10 min
-    int         departureRate  = 3;   // avg departures per 10 min
-    bool        stepMode       = false;
-    bool        fastMode       = false;
+    int         numRunways     = 2;     // 1–6
+    int         duration       = 60;    // simulation minutes
+    int         arrivalRate    = 3;     // avg arrivals per 10 min
+    int         departureRate  = 3;     // avg departures per 10 min
+    bool        stepMode       = false; // true = press Enter each tick
+    bool        fastMode       = false; // true = no sleep between ticks
 };
 
 class Simulation {
@@ -723,11 +791,13 @@ public:
 private:
     SimConfig _cfg;
     Airport   _airport;
-    int       _clock;
+    int       _clock;          // current simulation minute
     int       _nextPlaneId;
 
+    // Plane generation
     void _generateTraffic();
 
+    // Rendering
     void _render() const;
     void _renderRunways() const;
     void _renderArrivalQueue() const;
@@ -736,10 +806,12 @@ private:
     void _renderFinal() const;
     void _renderLog() const;
 
+    // Log of recent events (shown in the display)
     mutable std::vector<std::string> _log;
     void _logEvent(const std::string& msg);
     void _processCompleted();
 
+    // Saved for logging after step()
     std::vector<Plane> _justCompleted;
 };`;
 
@@ -747,48 +819,85 @@ FILES.simcpp = String.raw`#include "Simulation.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <cstdlib>
+#include <cmath>
 #include <thread>
 #include <chrono>
 #include <algorithm>
-#include <cstdlib>
 
-#define C_RESET  "\033[0m"
-#define C_BOLD   "\033[1m"
-#define C_RED    "\033[31m"
-#define C_GREEN  "\033[32m"
-#define C_YELLOW "\033[33m"
-#define C_CYAN   "\033[36m"
-#define C_DIM    "\033[2m"
-#define C_WHITE  "\033[97m"
+// ─── ANSI color helpers ───────────────────────────────────────────────────────
+namespace Color {
+    const char* reset   = "\033[0m";
+    const char* bold    = "\033[1m";
+    const char* red     = "\033[31m";
+    const char* green   = "\033[32m";
+    const char* yellow  = "\033[33m";
+    const char* blue    = "\033[34m";
+    const char* magenta = "\033[35m";
+    const char* cyan    = "\033[36m";
+    const char* white   = "\033[37m";
+    const char* grey    = "\033[90m";
+}
 
-static std::string fuelBar(int fuel, int width = 10) {
-    int filled = (fuel * width) / 100;
+// ─── Box-drawing helpers ──────────────────────────────────────────────────────
+static const int BOX_W = 66;
+
+static void hline(char left, char mid, char right) {
+    std::cout << left;
+    for (int i = 0; i < BOX_W - 2; ++i) std::cout << mid;
+    std::cout << right << '\n';
+}
+static void row(const std::string& content) {
+    // Pad or truncate to fit inside box
+    std::string s = content;
+    // Strip ANSI when calculating visible length (rough estimate)
+    int visible = 0;
+    bool inEsc  = false;
+    for (char c : s) {
+        if (c == '\033') { inEsc = true; continue; }
+        if (inEsc) { if (c == 'm') inEsc = false; continue; }
+        ++visible;
+    }
+    int padding = BOX_W - 4 - visible;
+    if (padding < 0) padding = 0;
+    std::cout << "| " << s << std::string(padding, ' ') << " |\n";
+}
+static void emptyRow() { row(""); }
+
+static std::string fuelBar(int fuel) {
+    int filled = fuel / 10;  // 0–10
     std::string bar;
-    for (int i = 0; i < width; ++i)
-        bar += (i < filled) ? '#' : '.';
+    const char* color = (fuel < 20) ? Color::red
+                      : (fuel < 40) ? Color::yellow
+                      : Color::green;
+    bar += color;
+    for (int i = 0; i < filled;      ++i) bar += '#';
+    bar += Color::grey;
+    for (int i = filled; i < 10; ++i) bar += '-';
+    bar += Color::reset;
     return bar;
 }
 
-static std::string progressBar(int remaining, int total, int width = 12) {
-    int done   = total - remaining;
-    int filled = (done * width) / total;
+static std::string progressBar(int elapsed, int total, int width = 10) {
+    int filled = (total > 0) ? (elapsed * width / total) : 0;
     std::string bar;
-    for (int i = 0; i < width; ++i)
-        bar += (i < filled) ? '#' : '.';
+    bar += Color::cyan;
+    for (int i = 0; i < filled;      ++i) bar += '#';
+    bar += Color::grey;
+    for (int i = filled; i < width; ++i) bar += '-';
+    bar += Color::reset;
     return bar;
 }
 
-static std::string fuelColour(int fuel) {
-    if (fuel < 20) return C_RED;
-    if (fuel < 40) return C_YELLOW;
-    return C_GREEN;
+static std::string mmss(int minutes) {
+    std::ostringstream oss;
+    oss << std::setw(2) << std::setfill('0') << (minutes / 60)
+        << ':'
+        << std::setw(2) << std::setfill('0') << (minutes % 60);
+    return oss.str();
 }
 
-static std::string pad(const std::string& s, int width) {
-    if ((int)s.size() >= width) return s.substr(0, width);
-    return s + std::string(width - s.size(), ' ');
-}
-
+// ─────────────────────────────────────────────────────────────────────────────
 Simulation::Simulation(SimConfig cfg)
     : _cfg(std::move(cfg))
     , _airport(_cfg.name, _cfg.numRunways)
@@ -796,84 +905,323 @@ Simulation::Simulation(SimConfig cfg)
     , _nextPlaneId(1)
 {}
 
-void Simulation::run() {
-    while (_clock <= _cfg.duration) {
-        _generateTraffic();
-        _airport.step(_clock);
-        _processCompleted();
-        _render();
+// ─── Traffic generation ───────────────────────────────────────────────────────
+void Simulation::_generateTraffic() {
+    // Poisson-ish: each minute, generate 0 or 1 arrival / departure
+    // with probability = rate/10
+    auto arrives = [&]() {
+        return (std::rand() % 100) < (_cfg.arrivalRate * 10);
+    };
+    auto departs = [&]() {
+        return (std::rand() % 100) < (_cfg.departureRate * 10);
+    };
 
-        if (_clock == _cfg.duration) break;
-
-        if (_cfg.stepMode) {
-            std::cout << "  Press Enter for next minute...";
-            std::cin.get();
-        } else if (!_cfg.fastMode) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(600));
-        }
-        ++_clock;
+    if (arrives()) {
+        Plane p = Plane::createArrival(_nextPlaneId++, _clock);
+        _airport.addArrival(p);
+        _logEvent(std::string(Color::cyan) + "+" + Color::reset +
+                  " Arrival   " + Color::bold + p.flightNumber + Color::reset +
+                  " (" + p.airline + ") from " + p.origin +
+                  "  fuel=" + std::to_string(p.fuelLevel) + "%");
     }
-    _renderFinal();
+    if (departs()) {
+        Plane p = Plane::createDeparture(_nextPlaneId++, _clock);
+        _airport.addDeparture(p);
+        _logEvent(std::string(Color::magenta) + "+" + Color::reset +
+                  " Departure " + Color::bold + p.flightNumber + Color::reset +
+                  " (" + p.airline + ") to   " + p.destination);
+    }
 }
 
-void Simulation::_generateTraffic() {
-    int arrivalChance   = _cfg.arrivalRate * 10;
-    int departureChance = _cfg.departureRate * 10;
-
-    if ((std::rand() % 100) < arrivalChance)
-        _airport.addArrival(Plane::createArrival(_nextPlaneId++, _clock));
-
-    if ((std::rand() % 100) < departureChance)
-        _airport.addDeparture(Plane::createDeparture(_nextPlaneId++, _clock));
+// ─── Event logging ────────────────────────────────────────────────────────────
+void Simulation::_logEvent(const std::string& msg) {
+    std::ostringstream oss;
+    oss << Color::grey << "[" << mmss(_clock) << "] " << Color::reset << msg;
+    _log.push_back(oss.str());
+    if (_log.size() > 8) _log.erase(_log.begin());
 }
 
 void Simulation::_processCompleted() {
+    for (const Plane& p : _airport.recentlyCompleted()) {
+        if (p.fuelLevel == 0) {
+            _logEvent(std::string(Color::red) + "CRASH " + Color::reset +
+                      Color::bold + p.flightNumber + Color::reset +
+                      " ran out of fuel in queue!");
+        } else if (p.type == PlaneType::ARRIVING) {
+            std::string fuel_note = p.isEmergency() ? " [EMERGENCY]" : "";
+            _logEvent(std::string(Color::green) + "v" + Color::reset +
+                      " Landed    " + Color::bold + p.flightNumber + Color::reset +
+                      fuel_note + "  wait=" + std::to_string(p.waitTime()) + " min");
+        } else {
+            _logEvent(std::string(Color::yellow) + "^" + Color::reset +
+                      " Departed  " + Color::bold + p.flightNumber + Color::reset +
+                      "  wait=" + std::to_string(p.waitTime()) + " min");
+        }
+    }
     _justCompleted = _airport.recentlyCompleted();
     _airport.clearRecentlyCompleted();
+}
 
-    for (const auto& p : _justCompleted) {
-        std::ostringstream oss;
-        oss << "[" << std::setw(2) << std::setfill('0') << _clock << "]  ";
+// ─── Rendering ────────────────────────────────────────────────────────────────
+void Simulation::_renderRunways() const {
+    row(std::string(Color::bold) + "  RUNWAYS" + Color::reset);
+    emptyRow();
 
-        if (p.fuelLevel == 0) {
-            oss << C_RED << "CRASH  " << C_RESET << p.flightNumber << " ran out of fuel";
-        } else if (p.type == PlaneType::ARRIVING) {
-            oss << C_GREEN << "v  Landed   " << C_RESET << p.flightNumber;
-            if (p.isEmergency()) oss << C_RED << " [EMERGENCY]" << C_RESET;
-            oss << "  wait=" << p.waitTime() << " min";
+    const auto& runways = _airport.runways();
+    for (const auto& rw : runways) {
+        std::ostringstream line;
+        line << "  ";
+
+        if (rw.isAvailable()) {
+            line << Color::green << Color::bold << rw.name() << Color::reset
+                 << "  " << Color::green << "CLEAR" << Color::reset
+                 << "    — awaiting assignment";
         } else {
-            oss << C_YELLOW << "^  Departed " << C_RESET
-                << p.flightNumber << "  wait=" << p.waitTime() << " min";
+            const Plane& p = rw.currentPlane();
+            const char*  op_color  = (rw.status() == RunwayStatus::LANDING)
+                                     ? Color::cyan : Color::yellow;
+            const char*  op_label  = (rw.status() == RunwayStatus::LANDING)
+                                     ? "LANDING " : "TAKEOFF ";
+
+            // Elapsed time on runway
+            int elapsed = p.runwayDuration - rw.timeRemaining();
+
+            line << Color::bold << rw.name() << Color::reset
+                 << "  " << op_color << op_label << Color::reset
+                 << Color::bold << p.flightNumber << Color::reset
+                 << " (" << p.airline << ")"
+                 << "  " << progressBar(elapsed, p.runwayDuration)
+                 << "  " << Color::yellow << rw.timeRemaining() << " min" << Color::reset;
+
+            if (p.type == PlaneType::ARRIVING) {
+                line << "  fuel=" << fuelBar(p.fuelLevel);
+                if (p.isEmergency())
+                    line << Color::red << " EMERGENCY" << Color::reset;
+            } else {
+                line << "  to " << p.destination;
+            }
         }
-        _logEvent(oss.str());
+        row(line.str());
     }
 }
 
-void Simulation::_logEvent(const std::string& msg) {
-    _log.push_back(msg);
-    if ((int)_log.size() > 8) _log.erase(_log.begin());
+void Simulation::_renderArrivalQueue() const {
+    int sz = _airport.arrivalQueueSize();
+    std::ostringstream header;
+    header << "  " << Color::bold << Color::cyan << "ARRIVAL QUEUE"
+           << Color::reset << "  (" << sz << " plane" << (sz != 1 ? "s" : "") << ")";
+    row(header.str());
+    emptyRow();
+
+    if (sz == 0) {
+        row("  " + std::string(Color::grey) + "  (empty)" + Color::reset);
+        return;
+    }
+
+    int idx = 1;
+    _airport.forEachArrival([&](const Plane& p) {
+        std::ostringstream line;
+        const char* urgency_color = p.isEmergency() ? Color::red
+                                  : p.isLowFuel()   ? Color::yellow
+                                  : Color::reset;
+        const char* urgency_tag   = p.isEmergency() ? " EMRG"
+                                  : p.isLowFuel()   ? " LOW "
+                                  : "     ";
+
+        line << "  " << std::setw(2) << idx++ << ".  "
+             << urgency_color << urgency_tag << Color::reset << "  "
+             << Color::bold << p.flightNumber << Color::reset
+             << " (" << std::setw(9) << std::left << p.airline << ")"
+             << "  " << p.origin << " → " << p.destination
+             << "  fuel=" << fuelBar(p.fuelLevel) << " " << std::setw(3) << p.fuelLevel << "%";
+        row(line.str());
+    });
+}
+
+void Simulation::_renderDepartureQueue() const {
+    int sz = _airport.departureQueueSize();
+    std::ostringstream header;
+    header << "  " << Color::bold << Color::magenta << "DEPARTURE QUEUE"
+           << Color::reset << "  (" << sz << " plane" << (sz != 1 ? "s" : "") << ")";
+    row(header.str());
+    emptyRow();
+
+    if (sz == 0) {
+        row("  " + std::string(Color::grey) + "  (empty)" + Color::reset);
+        return;
+    }
+
+    int idx = 1;
+    _airport.forEachDeparture([&](const Plane& p) {
+        std::ostringstream line;
+        int waited = _clock - p.queueEntryTime;
+        line << "  " << std::setw(2) << idx++ << ".       "
+             << Color::bold << p.flightNumber << Color::reset
+             << " (" << std::setw(9) << std::left << p.airline << ")"
+             << "  " << p.origin << " → " << p.destination
+             << "  waited=" << waited << " min";
+        row(line.str());
+    });
+}
+
+void Simulation::_renderStats() const {
+    const Stats& s = _airport.stats();
+    std::ostringstream line1, line2;
+
+    line1 << "  Landed: "    << Color::green  << s.completedLandings  << Color::reset
+          << "  Departed: "  << Color::yellow << s.completedTakeoffs  << Color::reset
+          << "  Emergencies: " << Color::red  << s.emergenciesHandled << Color::reset
+          << "  Crashes: "   << Color::red    << s.planesRejected     << Color::reset;
+
+    line2 << "  In queue: arrivals=" << _airport.arrivalQueueSize()
+          << " / departures=" << _airport.departureQueueSize()
+          << "  Avg wait: " << Color::cyan
+          << std::fixed << std::setprecision(1) << s.averageWait()
+          << " min" << Color::reset
+          << "  Max wait: " << s.maxWaitTime << " min";
+
+    row(line1.str());
+    row(line2.str());
+}
+
+void Simulation::_renderLog() const {
+    row(std::string(Color::bold) + "  EVENT LOG" + Color::reset);
+    emptyRow();
+    if (_log.empty()) { row("  " + std::string(Color::grey) + "(no events yet)" + Color::reset); return; }
+    for (const auto& entry : _log)
+        row("  " + entry);
 }
 
 void Simulation::_render() const {
+    // Clear screen
     std::cout << "\033[2J\033[H";
-    // ... (full rendering code: see renderRunways, renderArrivalQueue, etc.)
+
+    // ── Header ──
+    hline('+', '-', '+');
+    std::ostringstream title;
+    title << Color::bold << "  " << _airport.name()
+          << Color::reset << "   Time: " << Color::cyan << mmss(_clock)
+          << Color::reset << " / " << mmss(_cfg.duration)
+          << "   Step: " << _clock << "/" << _cfg.duration;
+    row(title.str());
+    hline('+', '-', '+');
+
+    // ── Runways ──
+    emptyRow();
     _renderRunways();
+    emptyRow();
+    hline('+', '-', '+');
+
+    // ── Queues ──
+    emptyRow();
     _renderArrivalQueue();
+    emptyRow();
+    hline('+', '-', '+');
+    emptyRow();
     _renderDepartureQueue();
+    emptyRow();
+    hline('+', '-', '+');
+
+    // ── Stats ──
+    emptyRow();
+    row(std::string(Color::bold) + "  STATISTICS" + Color::reset);
+    emptyRow();
     _renderStats();
+    emptyRow();
+    hline('+', '-', '+');
+
+    // ── Log ──
+    emptyRow();
     _renderLog();
+    emptyRow();
+    hline('+', '-', '+');
 }
 
 void Simulation::_renderFinal() const {
-    const auto& s = _airport.stats();
-    std::cout << "\n\033[1;32m  === SIMULATION COMPLETE ===\033[0m\n\n";
-    std::cout << "  Landed:       " << s.completedLandings  << "\n";
-    std::cout << "  Departed:     " << s.completedTakeoffs   << "\n";
-    std::cout << "  Emergencies:  " << s.emergenciesHandled  << "\n";
-    std::cout << "  Crashes:      " << s.planesRejected      << "\n";
-    std::cout << "  Avg wait:     " << std::fixed << std::setprecision(1)
-              << s.averageWait() << " min\n";
-    std::cout << "  Max wait:     " << s.maxWaitTime << " min\n\n";
+    const Stats& s = _airport.stats();
+    std::cout << "\033[2J\033[H";
+
+    hline('+', '=', '+');
+    row(std::string(Color::bold) + Color::cyan + "  SIMULATION COMPLETE  —  " + _airport.name() + Color::reset);
+    hline('+', '=', '+');
+    emptyRow();
+    row(std::string(Color::bold) + "  FINAL STATISTICS" + Color::reset);
+    emptyRow();
+
+    auto stat = [&](const std::string& label, int val, const char* color = Color::white) {
+        std::ostringstream o;
+        o << "    " << std::setw(30) << std::left << label
+          << color << std::setw(6) << std::right << val << Color::reset;
+        row(o.str());
+    };
+    auto statf = [&](const std::string& label, double val, const char* color = Color::white) {
+        std::ostringstream o;
+        o << "    " << std::setw(30) << std::left << label
+          << color << std::setw(8) << std::right << std::fixed << std::setprecision(2) << val << Color::reset;
+        row(o.str());
+    };
+
+    stat("Total arrivals queued:",   s.totalArrivals,      Color::cyan);
+    stat("Total departures queued:", s.totalDepartures,    Color::magenta);
+    stat("Successful landings:",     s.completedLandings,  Color::green);
+    stat("Successful takeoffs:",     s.completedTakeoffs,  Color::yellow);
+    stat("Emergency landings:",      s.emergenciesHandled, Color::red);
+    stat("Planes lost (fuel out):",  s.planesRejected,     Color::red);
+    emptyRow();
+    statf("Average wait time (min):", s.averageWait(),     Color::cyan);
+    stat("Maximum wait time (min):", s.maxWaitTime,        Color::yellow);
+    emptyRow();
+
+    int total = s.completedLandings + s.completedTakeoffs;
+    int remaining = _airport.arrivalQueueSize() + _airport.departureQueueSize();
+    stat("Total planes served:",     total,                Color::green);
+    stat("Planes still in queue:",   remaining,            Color::yellow);
+    emptyRow();
+    hline('+', '=', '+');
+    std::cout << '\n';
+}
+
+// ─── Main loop ────────────────────────────────────────────────────────────────
+void Simulation::run() {
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
+
+    std::cout << "\033[2J\033[H";
+    std::cout << Color::bold << Color::cyan
+              << "\n  Starting simulation: " << _cfg.name << "\n"
+              << Color::reset;
+    std::cout << "  Duration: " << _cfg.duration << " min"
+              << "  |  Runways: " << _cfg.numRunways
+              << "  |  Arrivals/10min: ~" << _cfg.arrivalRate
+              << "  |  Departures/10min: ~" << _cfg.departureRate << "\n\n";
+
+    if (!_cfg.fastMode) {
+        std::cout << "  Press Enter to begin...";
+        std::cin.ignore();
+    }
+
+    for (_clock = 0; _clock <= _cfg.duration; ++_clock) {
+        // 1. Generate new traffic
+        _generateTraffic();
+
+        // 2. Advance the airport (burns fuel, ticks runways, assigns planes)
+        _airport.step(_clock);
+
+        // 3. Log completed planes
+        _processCompleted();
+
+        // 4. Render
+        _render();
+
+        // 5. Pause or wait
+        if (_cfg.stepMode) {
+            std::cout << "\n  [t=" << _clock << "]  Press Enter for next tick...";
+            std::cin.ignore();
+        } else if (!_cfg.fastMode) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        }
+    }
+
+    _renderFinal();
 }`;
 
 /* ── Tab switching ── */
@@ -904,365 +1252,959 @@ document.querySelectorAll('.file-tab').forEach(btn => {
 document.addEventListener('DOMContentLoaded', () => loadFile('main'));
 
 /* ══════════════════════════════════════════════════════════════
-   LIVE AIRPORT SIMULATION ENGINE
-   JS port of the C++ simulation, same logic, same data structures
+   ANIMATED AIRPORT
+   Plays back recorded runs of the C++ program (runs/*.js). Every
+   landing, takeoff and queue position comes from what it printed.
 ══════════════════════════════════════════════════════════════ */
 (function () {
+  // ───────────────────────────── Layout of the airfield (a fixed 1000×640 stage) ─────────────────────────────
+  const W = 1000, H = 640;
+  const RX0 = 210, RX1 = 890;              // runway ends (everyone lands and takes off heading east)
+  const TD_X = 285;                         // touchdown point
+  const HOLD_X = 188;                       // connector from the taxiway up to the runway's west end
+  let exitX = [655];                        // each runway's own high-speed exit, so arrivals never queue on a runway
+  const TAXI_Y = 470;                       // parallel taxiway
+  const GATE_Y = 534;                       // parked planes
+  const LANE_Y = 501;                       // apron lane that arrivals use to reach their gate
+  const GATES = Array.from({ length: 13 }, (_, i) => 272 + i * 50);
+  const QX0 = 240, QS = 34;                 // departure line-up on the taxiway: first spot and spacing
+  const STACKS = [{ cx: 200, cy: 100, name: "HOLD A" }, { cx: 562, cy: 100, name: "HOLD B" }];
+  const HL = 150;                           // length of the straight legs of a holding racetrack
 
-    /* ── Reference data ── */
-    const AIRLINES = ['Delta','American','Southwest','United','Alaska','JetBlue','Spirit','Frontier'];
-    const CODES    = {Delta:'DL',American:'AA',Southwest:'WN',United:'UA',Alaska:'AS',JetBlue:'B6',Spirit:'NK',Frontier:'F9'};
-    const CITIES   = ['New York','Los Angeles','Chicago','Houston','Phoenix','Dallas','San Diego','Seattle','Boston','Miami'];
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (id) => document.getElementById(id);
+  const canvas = $("field"), ctx = canvas.getContext("2d"), frameEl = $("frame"), tip = $("tip");
+  const bg = document.createElement("canvas"), bgCtx = bg.getContext("2d");
+  let scale = 1, dpr = 1, planeBoost = 1;
+  let runwayY = [], rwHalf = 12;
 
-    /* ── Live config (mirrors SimConfig) ── */
-    const cfg = { numRunways: 2, duration: 60, arrRate: 3, depRate: 3 };
+  // ───────────────────────────── Small helpers ─────────────────────────────
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+  const pad = (n) => String(n).padStart(2, "0");
+  const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  function rng(seed) { return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function hash(s) { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; }
+  const TAILS = ["#e11d48", "#2563eb", "#059669", "#d97706", "#7c3aed", "#0891b2", "#dc2626", "#16a34a", "#ea580c", "#4f46e5"];
 
-    /* ── Runtime ── */
-    let state   = null;
-    let timer   = null;
-    let tickMs  = 900;
+  // Routes: a polyline with rounded corners, measured by distance so planes move at a steady pace along it.
+  function pt(x, y, alt = 0) { return { x, y, alt }; }
+  function mixPt(a, b, t) { return pt(lerp(a.x, b.x, t), lerp(a.y, b.y, t), lerp(a.alt, b.alt, t)); }
+  function buildRoute(points, radius = 24) {
+    const P = [];
+    for (const p of points) { const l = P[P.length - 1]; if (!l || Math.hypot(p.x - l.x, p.y - l.y) > 0.5) P.push(p); }
+    const out = [P[0]];
+    for (let i = 1; i < P.length - 1; i++) {
+      const A = P[i - 1], B = P[i], C = P[i + 1];
+      const ab = Math.hypot(B.x - A.x, B.y - A.y), bc = Math.hypot(C.x - B.x, C.y - B.y);
+      const r = Math.min(radius, ab / 2, bc / 2);
+      const p1 = mixPt(B, A, r / ab), p2 = mixPt(B, C, r / bc);
+      out.push(p1);
+      for (let k = 1; k < 10; k++) { const t = k / 10; out.push(mixPt(mixPt(p1, B, t), mixPt(B, p2, t), t)); }
+      out.push(p2);
+    }
+    if (P.length > 1) out.push(P[P.length - 1]);
+    const cum = [0];
+    for (let i = 1; i < out.length; i++) cum.push(cum[i - 1] + Math.hypot(out[i].x - out[i - 1].x, out[i].y - out[i - 1].y));
+    return { pts: out, cum, len: cum[cum.length - 1] };
+  }
+  function sample(route, d) {
+    const { pts, cum, len } = route;
+    if (pts.length < 2 || len === 0) return { ...pts[0], heading: null };
+    d = clamp(d, 0, len);
+    let lo = 0, hi = cum.length - 1;
+    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (cum[m] <= d) lo = m; else hi = m; }
+    const a = pts[lo], b = pts[hi], t = (d - cum[lo]) / (cum[hi] - cum[lo] || 1);
+    return { ...mixPt(a, b, t), heading: Math.atan2(b.y - a.y, b.x - a.x) };
+  }
+  // Holding racetrack: east along the top, round the right, west along the bottom, round the left.
+  function trackPos(stack, R, u) {
+    const P = 2 * HL + 2 * Math.PI * R; let d = ((u % 1) + 1) % 1 * P;
+    const { cx, cy } = stack;
+    if (d < HL) return { x: cx - HL / 2 + d, y: cy - R, heading: 0 };
+    d -= HL;
+    if (d < Math.PI * R) { const a = -Math.PI / 2 + d / R; return { x: cx + HL / 2 + R * Math.cos(a), y: cy + R * Math.sin(a), heading: a + Math.PI / 2 }; }
+    d -= Math.PI * R;
+    if (d < HL) return { x: cx + HL / 2 - d, y: cy + R, heading: Math.PI };
+    d -= HL;
+    const a = Math.PI / 2 + d / R; return { x: cx - HL / 2 + R * Math.cos(a), y: cy + R * Math.sin(a), heading: a + Math.PI / 2 };
+  }
 
-    /* ── Helpers ── */
-    const rnd  = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
-    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-    const pad2 = n  => String(n).padStart(2, '0');
+  // ───────────────────────────── Sizing ─────────────────────────────
+  function resize() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = frameEl.clientWidth;
+    if (!w) return;
+    scale = w / W;
+    planeBoost = clamp(Math.pow(1 / scale, 0.45), 1, 1.7);   // planes stay readable on a phone
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(w * H / W * dpr);
+    bg.width = canvas.width; bg.height = canvas.height;
+    drawBackground();
+  }
+  new ResizeObserver(resize).observe(frameEl);
 
-    function fuelCls(f) { return f < 20 ? 't-red' : f < 40 ? 't-amber' : 't-green'; }
+  function layoutRunways(n) {
+    runwayY = n === 1 ? [330] : Array.from({ length: n }, (_, i) => 232 + i * (418 - 232) / (n - 1));
+    for (const s of STACKS) s.cy = n === 1 ? 128 : 100;
+    exitX = n === 1 ? [655] : Array.from({ length: n }, (_, i) => 700 - i * 45);
+    // Gates west of every exit are for arrivals, gates east of them for departures: the two flows never meet on the apron.
+    ARR_GATES = GATES.map((x, i) => i).filter((i) => GATES[i] < Math.min(...exitX) - 25);
+    DEP_GATES = GATES.map((x, i) => i).filter((i) => GATES[i] > Math.max(...exitX) + 40);
+    rwHalf = n >= 4 ? 9 : n === 3 ? 10 : n === 2 ? 11 : 13;
+    drawBackground();
+  }
 
-    /* Block-character bar, mirrors C++ fuelBar / progressBar */
-    function bar(val, max, width, cls) {
-        const filled = max > 0 ? Math.min(width, Math.round((val / max) * width)) : 0;
-        let s = '';
-        for (let i = 0; i < width; i++) s += i < filled ? '█' : '░';
-        return `<span class="${cls}">${s}</span>`;
+  // ───────────────────────────── The ground (drawn once) ─────────────────────────────
+  function drawBackground() {
+    const g = bgCtx, r = rng(11);
+    g.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0);
+    g.clearRect(0, 0, W, H);
+
+    // Grass, mowing stripes, and some texture.
+    g.fillStyle = "#3d5a37"; g.fillRect(0, 0, W, H);
+    g.save(); g.rotate(-0.32);
+    for (let i = -10; i < 40; i += 2) { g.fillStyle = "rgba(255,255,240,0.028)"; g.fillRect(i * 42 - 200, -500, 42, 1800); }
+    g.restore();
+    for (let i = 0; i < 14; i++) {
+      const x = r() * W, y = r() * H, rad = 60 + r() * 140;
+      const gr = g.createRadialGradient(x, y, 0, x, y, rad);
+      gr.addColorStop(0, r() < 0.5 ? "rgba(20,40,20,0.22)" : "rgba(120,150,80,0.10)"); gr.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = gr; g.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+    }
+    for (let i = 0; i < 4200; i++) { g.fillStyle = r() < 0.55 ? "rgba(0,0,0,0.07)" : "rgba(255,255,220,0.05)"; g.fillRect(r() * W, r() * H, 1.3, 1.3); }
+
+    // Holding patterns: faint dashed racetracks in the sky.
+    g.save(); g.setLineDash([3, 6]); g.lineWidth = 1; g.strokeStyle = "rgba(255,255,255,0.13)";
+    for (const s of STACKS) {
+      for (const R of RING_R) {
+        g.beginPath();
+        for (let u = 0; u <= 1.001; u += 0.01) { const p = trackPos(s, R, u); u === 0 ? g.moveTo(p.x, p.y) : g.lineTo(p.x, p.y); }
+        g.stroke();
+      }
+      g.setLineDash([]);
+      label(g, s.name, s.cx, s.cy + 3, "rgba(255,255,255,0.32)", "center");
+      g.setLineDash([3, 6]);
+    }
+    g.restore();
+
+    // Trees around the edges.
+    const trees = (x0, y0, x1, y1, n) => { for (let i = 0; i < n; i++) {
+      const x = lerp(x0, x1, r()), y = lerp(y0, y1, r()), rad = 5 + r() * 7;
+      g.fillStyle = "rgba(0,0,0,0.25)"; g.beginPath(); g.arc(x + 4, y + 5, rad, 0, Math.PI * 2); g.fill();
+      g.fillStyle = r() < 0.5 ? "#2c4529" : "#33502e"; g.beginPath(); g.arc(x, y, rad, 0, Math.PI * 2); g.fill();
+      g.fillStyle = "rgba(255,255,200,0.08)"; g.beginPath(); g.arc(x - rad * 0.3, y - rad * 0.3, rad * 0.55, 0, Math.PI * 2); g.fill();
+    } };
+    trees(14, 488, 205, 600, 26); trees(925, 480, 992, 605, 12); trees(900, 185, 995, 200, 5);
+
+    if (!runwayY.length) return;
+    const topY = runwayY[0];
+
+    // Taxiways (under the runways, which cross them).
+    const taxi = (pts, w = 15) => {
+      g.lineCap = "round"; g.lineJoin = "round";
+      g.strokeStyle = "#54585e"; g.lineWidth = w + 2; path(g, pts); g.stroke();
+      g.strokeStyle = "#484c52"; g.lineWidth = w; path(g, pts); g.stroke();
+      g.strokeStyle = "rgba(226,178,52,0.85)"; g.lineWidth = 1.2; path(g, pts); g.stroke();
+    };
+    taxi([[HOLD_X, TAXI_Y], [945, TAXI_Y]]);
+    taxi([[HOLD_X, TAXI_Y], [HOLD_X, topY]]);
+    runwayY.forEach((ry, i) => taxi([[exitX[i], ry], [exitX[i], TAXI_Y]]));
+
+    // Approach-light bars west of every runway.
+    for (const ry of runwayY) for (let k = 0; k < 7; k++) {
+      const x = RX0 - 16 - k * 22; g.fillStyle = "rgba(20,22,26,0.55)"; g.fillRect(x - 2, ry - 5, 4, 10);
     }
 
-    /* ── Plane factory (mirrors Plane::createArrival / createDeparture) ── */
-    function makePlane(id, type, clock) {
-        const airline = pick(AIRLINES);
-        const origin  = pick(CITIES);
-        let dest = pick(CITIES);
-        while (dest === origin) dest = pick(CITIES);
-        return {
-            id, airline, type,           /* 'arr' | 'dep' */
-            flight:    CODES[airline] + rnd(100, 999),
-            origin, dest,
-            fuel:      type === 'arr' ? rnd(28, 95) : 100,
-            entryTime: clock,
-            rwStart:   -1,
-            duration:  type === 'arr' ? rnd(2, 4) : rnd(1, 3),
-        };
-    }
-
-    /* ── Priority (mirrors Plane::priority()) ──
-       0 = emergency (<20% fuel)   1 = low fuel (<40%)   2 = normal
-       Departures are always priority 2 (no fuel concern) */
-    function prio(p) {
-        if (p.type === 'dep') return 2;
-        if (p.fuel  < 20)    return 0;
-        if (p.fuel  < 40)    return 1;
-        return 2;
-    }
-
-    /* ── Sorted insert (mirrors PriorityQueue::enqueue) ──
-       Stable: ties broken by entryTime (FIFO within same priority tier) */
-    function insertArr(queue, plane) {
-        const p = prio(plane);
-        let i = 0;
-        while (i < queue.length && prio(queue[i]) <= p) i++;
-        queue.splice(i, 0, plane);
-    }
-
-    /* ── Initialise simulation state (mirrors Simulation / Airport constructors) ── */
-    function initState() {
-        const runways = [];
-        for (let i = 1; i <= cfg.numRunways; i++) {
-            runways.push({ name: `RW-0${i}`, status: 'AVAIL', plane: null, remaining: 0, total: 0 });
-        }
-        return {
-            clock: 0, nextId: 1,
-            runways,
-            arrQ: [],   /* PriorityQueue<Plane> */
-            depQ: [],   /* Queue<Plane> (FIFO)  */
-            stats: { landed: 0, departed: 0, emerg: 0, crashes: 0, totalWait: 0, served: 0 },
-            log:   [],
-            done:  false,
-        };
-    }
-
-    function logEvent(s, icon, msg, cls) {
-        s.log.unshift({ time: s.clock, icon, msg, cls });
-        if (s.log.length > 9) s.log.pop();
-    }
-
-    /* ── Single tick (mirrors Airport::step + Simulation::run body) ── */
-    function tick() {
-        const s = state;
-        if (s.done) return;
-
-        /* 1. Generate traffic (mirrors Simulation::_generateTraffic) */
-        if (Math.random() < cfg.arrRate / 10) {
-            const p = makePlane(s.nextId++, 'arr', s.clock);
-            insertArr(s.arrQ, p);
-            logEvent(s, '+', `Arrival &nbsp; ${p.flight} (${p.airline}) &nbsp; ${p.origin} → ${p.dest} &nbsp; fuel=${p.fuel}%`, 'cyan');
-        }
-        if (Math.random() < cfg.depRate / 10) {
-            const p = makePlane(s.nextId++, 'dep', s.clock);
-            s.depQ.push(p);
-            logEvent(s, '›', `Departure ${p.flight} (${p.airline}) &nbsp; to ${p.dest}`, 'amber');
-        }
-
-        /* 2. Burn fuel for every waiting arrival (mirrors Airport::_burnQueuedFuel) */
-        for (const p of s.arrQ) { if (p.fuel > 0) p.fuel--; }
-
-        /* 3. Re-sort after fuel burn, priorities may have shifted */
-        s.arrQ.sort((a, b) => {
-            const pa = prio(a), pb = prio(b);
-            return pa !== pb ? pa - pb : a.entryTime - b.entryTime;
-        });
-
-        /* 4. Crash check, zero-fuel planes are removed (mirrors _assignToRunways crash path) */
-        s.arrQ = s.arrQ.filter(p => {
-            if (p.fuel === 0) {
-                s.stats.crashes++;
-                logEvent(s, '✕', `CRASH &nbsp; ${p.flight} ran out of fuel in the queue`, 'red');
-                return false;
-            }
-            return true;
-        });
-
-        /* 5. Tick each runway (mirrors Runway::tick) */
-        for (const rw of s.runways) {
-            if (rw.status === 'AVAIL') continue;
-            rw.remaining--;
-            if (rw.remaining <= 0) {
-                const p    = rw.plane;
-                const wait = Math.max(0, p.rwStart - p.entryTime);
-                s.stats.totalWait += wait;
-                s.stats.served++;
-                if (p.type === 'arr') {
-                    s.stats.landed++;
-                    const wasEmerg = p.fuel < 20;
-                    if (wasEmerg) s.stats.emerg++;
-                    logEvent(s, '✓',
-                        `Landed &nbsp; ${p.flight}${wasEmerg ? ' <span class="t-red">[EMRG]</span>' : ''} &nbsp; wait=${wait} steps`,
-                        'green');
-                } else {
-                    s.stats.departed++;
-                    logEvent(s, '↑', `Departed ${p.flight} &nbsp; wait=${wait} steps`, 'amber');
-                }
-                rw.status = 'AVAIL';
-                rw.plane  = null;
-            }
-        }
-
-        /* 6. Assign waiting planes to newly freed runways
-               Arrivals always get priority over departures
-               (mirrors Airport::_assignToRunways) */
-        for (const rw of s.runways) {
-            if (rw.status !== 'AVAIL') continue;
-            if (s.arrQ.length > 0) {
-                const p   = s.arrQ.shift();
-                p.rwStart = s.clock;
-                rw.status    = 'LAND';
-                rw.plane     = p;
-                rw.remaining = p.duration;
-                rw.total     = p.duration;
-            } else if (s.depQ.length > 0) {
-                const p   = s.depQ.shift();
-                p.rwStart = s.clock;
-                rw.status    = 'TKOF';
-                rw.plane     = p;
-                rw.remaining = p.duration;
-                rw.total     = p.duration;
-            }
-        }
-
-        s.clock++;
-        if (s.clock > cfg.duration) s.done = true;
-    }
-
-    /* ── Render the dashboard DOM ── */
-    function render() {
-        const s = state;
-
-        /* Time display */
-        document.getElementById('simTime').textContent =
-            `Step: ${s.clock} / ${cfg.duration}`;
-
-        /* Runways */
-        document.getElementById('simRunways').innerHTML = s.runways.map(rw => {
-            if (rw.status === 'AVAIL') {
-                return `<div class="rw-card rw-avail">
-                    <span class="rw-name">${rw.name}</span>
-                    <span class="rw-badge rw-avail-badge">AVAILABLE</span>
-                    <span class="t-dim" style="font-size:.72rem">—</span>
-                </div>`;
-            }
-            const p        = rw.plane;
-            const done     = rw.total - rw.remaining;
-            const isLand   = rw.status === 'LAND';
-            const barCls   = isLand ? 't-green' : 't-amber';
-            const badgeCls = isLand ? 'rw-land-badge' : 'rw-tkof-badge';
-            const badgeTxt = isLand ? 'LANDING' : 'TAKEOFF';
-            const progBar  = bar(done, rw.total, 10, barCls);
-            const fuelLine = isLand
-                ? `<span class="${fuelCls(p.fuel)}" style="font-size:.7rem">${bar(p.fuel, 100, 8, fuelCls(p.fuel))} ${p.fuel}%</span>`
-                : '';
-            return `<div class="rw-card">
-                <span class="rw-name">${rw.name}</span>
-                <span class="rw-badge ${badgeCls}">${badgeTxt}</span>
-                <span class="rw-plane">${p.flight} (${p.airline})</span>
-                <span class="rw-bar">${progBar} <span class="t-dim">${rw.remaining} steps</span></span>
-                ${fuelLine}
-            </div>`;
-        }).join('');
-
-        /* Arrival queue */
-        document.getElementById('arrCount').textContent = `(${s.arrQ.length})`;
-        if (s.arrQ.length === 0) {
-            document.getElementById('simArrQueue').innerHTML = '<div class="q-empty t-dim">No planes waiting</div>';
-        } else {
-            const rows = s.arrQ.slice(0, 6).map((p, i) => {
-                const pr  = prio(p);
-                const badge = pr === 0
-                    ? '<span class="q-badge q-emrg">EMRG</span>'
-                    : pr === 1
-                        ? '<span class="q-badge q-low">LOW</span>'
-                        : '<span class="q-badge-empty"></span>';
-                const fb = bar(p.fuel, 100, 6, fuelCls(p.fuel));
-                return `<div class="q-row">
-                    <span class="q-pos t-dim">${i+1}.</span>
-                    ${badge}
-                    <span class="q-flight">${p.flight}</span>
-                    <span class="q-info t-dim">${p.origin} → ${p.dest}</span>
-                    <span class="${fuelCls(p.fuel)} q-fuel">${fb} ${p.fuel}%</span>
-                </div>`;
-            }).join('');
-            const more = s.arrQ.length > 6 ? `<div class="q-more t-dim">+${s.arrQ.length - 6} more</div>` : '';
-            document.getElementById('simArrQueue').innerHTML = rows + more;
-        }
-
-        /* Departure queue */
-        document.getElementById('depCount').textContent = `(${s.depQ.length})`;
-        if (s.depQ.length === 0) {
-            document.getElementById('simDepQueue').innerHTML = '<div class="q-empty t-dim">No planes waiting</div>';
-        } else {
-            const rows = s.depQ.slice(0, 6).map((p, i) => {
-                const waited = s.clock - p.entryTime;
-                return `<div class="q-row">
-                    <span class="q-pos t-dim">${i+1}.</span>
-                    <span class="q-badge-empty"></span>
-                    <span class="q-flight">${p.flight}</span>
-                    <span class="q-info t-dim">${p.dest}</span>
-                    <span class="t-dim q-fuel">waited ${waited} steps</span>
-                </div>`;
-            }).join('');
-            const more = s.depQ.length > 6 ? `<div class="q-more t-dim">+${s.depQ.length - 6} more</div>` : '';
-            document.getElementById('simDepQueue').innerHTML = rows + more;
-        }
-
-        /* Stats */
-        const st = s.stats;
-        document.getElementById('stLanded').textContent   = st.landed;
-        document.getElementById('stDeparted').textContent = st.departed;
-        document.getElementById('stEmerg').textContent    = st.emerg;
-        document.getElementById('stCrashes').textContent  = st.crashes;
-        document.getElementById('stAvgWait').textContent  =
-            (st.served > 0 ? (st.totalWait / st.served).toFixed(1) : '0.0') + ' min';
-
-        /* Event log */
-        const clsMap = { cyan:'t-cyan', amber:'t-amber', green:'t-green', red:'t-red' };
-        if (s.log.length === 0) {
-            document.getElementById('simLog').innerHTML =
-                '<div class="sim-log-placeholder t-dim">No events yet.</div>';
-        } else {
-            document.getElementById('simLog').innerHTML = s.log.map(e => {
-                const c = clsMap[e.cls] || 't-dim';
-                return `<div class="log-row">
-                    <span class="t-dim log-time">[${pad2(Math.floor(e.time / 60))}:${pad2(e.time % 60)}]</span>
-                    <span class="${c} log-icon">${e.icon}</span>
-                    <span class="log-msg">${e.msg}</span>
-                </div>`;
-            }).join('');
-        }
-
-        /* Simulation complete */
-        if (s.done) {
-            stopSim();
-            const avg = st.served > 0 ? (st.totalWait / st.served).toFixed(1) : '0.0';
-            document.getElementById('simDoneStats').innerHTML =
-                `Landed <b class="t-green">${st.landed}</b> &nbsp;·&nbsp;
-                 Departed <b class="t-amber">${st.departed}</b> &nbsp;·&nbsp;
-                 Emergencies <b class="t-red">${st.emerg}</b> &nbsp;·&nbsp;
-                 Crashes <b class="t-red">${st.crashes}</b> &nbsp;·&nbsp;
-                 Avg wait <b>${avg} steps</b>`;
-            document.getElementById('simDone').style.display = 'flex';
-        }
-    }
-
-    /* ── Playback controls ── */
-    function startSim() {
-        if (timer || state.done) return;
-        document.getElementById('simPlay').disabled  = true;
-        document.getElementById('simPause').disabled = false;
-        timer = setInterval(() => { tick(); render(); }, tickMs);
-    }
-
-    function pauseSim() {
-        if (timer) { clearInterval(timer); timer = null; }
-        document.getElementById('simPlay').disabled  = false;
-        document.getElementById('simPause').disabled = true;
-    }
-
-    function stopSim() { pauseSim(); }
-
-    function resetSim() {
-        stopSim();
-        document.getElementById('simDone').style.display = 'none';
-        state = initState();
-        render();
-    }
-
-    /* ── Config stepper helper ── */
-    function setupStepper(minusId, plusId, valId, key, lo, hi, step) {
-        step = step || 1;
-        const upd = delta => {
-            cfg[key] = Math.min(hi, Math.max(lo, cfg[key] + delta * step));
-            document.getElementById(valId).textContent = cfg[key];
-            if (timer) resetSim();   /* restart live sim when config changes */
-        };
-        document.getElementById(minusId).addEventListener('click', () => upd(-1));
-        document.getElementById(plusId).addEventListener('click',  () => upd(+1));
-    }
-
-    /* ── Bootstrap ── */
-    state = initState();
-    render();
-
-    document.getElementById('simPlay').addEventListener('click', startSim);
-    document.getElementById('simPause').addEventListener('click', pauseSim);
-    document.getElementById('simReset').addEventListener('click', resetSim);
-    document.getElementById('simDoneRestart').addEventListener('click', resetSim);
-
-    setupStepper('rwMinus',  'rwPlus',  'cfgRw',  'numRunways', 1,  4);
-    setupStepper('durMinus', 'durPlus', 'cfgDur', 'duration',  20, 120, 10);
-    setupStepper('arrMinus', 'arrPlus', 'cfgArr', 'arrRate',    0,   8);
-    setupStepper('depMinus', 'depPlus', 'cfgDep', 'depRate',    0,   8);
-
-    document.querySelectorAll('.sim-speed-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            document.querySelectorAll('.sim-speed-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            tickMs = parseInt(this.dataset.ms);
-            if (timer) {
-                clearInterval(timer);
-                timer = setInterval(() => { tick(); render(); }, tickMs);
-            }
-        });
+    // Runways.
+    runwayY.forEach((ry, i) => {
+      g.fillStyle = "rgba(0,0,0,0.25)"; g.fillRect(RX0 + 2, ry - rwHalf + 3, RX1 - RX0, rwHalf * 2);
+      g.fillStyle = "#33363b"; g.fillRect(RX0, ry - rwHalf, RX1 - RX0, rwHalf * 2);
+      // tyre marks near the touchdown zone
+      for (let k = 0; k < 18; k++) { g.fillStyle = "rgba(0,0,0,0.12)"; g.fillRect(TD_X - 20 + r() * 110, ry - 4 + r() * 8, 18 + r() * 30, 1.2); }
+      g.fillStyle = "rgba(255,255,255,0.55)";
+      g.fillRect(RX0, ry - rwHalf + 1, RX1 - RX0, 0.8); g.fillRect(RX0, ry + rwHalf - 1.8, RX1 - RX0, 0.8);
+      for (let x = RX0 + 50; x < RX1 - 50; x += 24) g.fillRect(x, ry - 0.6, 13, 1.2);
+      // threshold "piano keys" at both ends
+      const keys = Math.max(3, Math.floor(rwHalf / 2.4));
+      for (let k = 0; k < keys; k++) {
+        const y = ry - rwHalf + 3 + k * ((rwHalf * 2 - 6) / keys);
+        g.fillRect(RX0 + 5, y, 18, 1.4); g.fillRect(RX1 - 23, y, 18, 1.4);
+      }
+      // touchdown zone markings
+      for (const dx of [0, 36]) { g.fillRect(TD_X + dx, ry - rwHalf + 3, dx ? 10 : 16, 1.6); g.fillRect(TD_X + dx, ry + rwHalf - 4.6, dx ? 10 : 16, 1.6); }
+      // runway numbers
+      const suffix = runwayY.length === 1 ? "" : runwayY.length === 2 ? ["L", "R"][i] : ["L", "C", "C", "R"][i] ?? "";
+      rotatedText(g, "09" + suffix, RX0 + 34, ry, Math.PI / 2, rwHalf > 10 ? 9 : 7.5);
+      rotatedText(g, "27" + (suffix === "L" ? "R" : suffix === "R" ? "L" : suffix), RX1 - 34, ry, -Math.PI / 2, rwHalf > 10 ? 9 : 7.5);
+      label(g, `RW-${pad(i + 1)}`, RX0, ry - rwHalf - 5, "rgba(255,255,255,0.6)");
     });
 
-})(); /* end live simulation */
+    // Apron, stands and the terminal.
+    g.fillStyle = "#5d6267"; roundRect(g, 232, 482, 700, 82, 6); g.fill();
+    g.strokeStyle = "rgba(0,0,0,0.12)"; g.lineWidth = 0.6;
+    for (let x = 240; x < 930; x += 26) { g.beginPath(); g.moveTo(x, 482); g.lineTo(x, 564); g.stroke(); }
+    g.strokeStyle = "rgba(226,178,52,0.6)"; g.lineWidth = 1;
+    g.beginPath(); for (const x of exitX) { g.moveTo(x, TAXI_Y); g.lineTo(x, LANE_Y); } g.moveTo(Math.max(...exitX), LANE_Y); g.lineTo(245, LANE_Y); g.stroke();
+    for (const gx of GATES) {
+      g.strokeStyle = "rgba(226,178,52,0.75)"; g.lineWidth = 1; g.beginPath(); g.moveTo(gx, TAXI_Y + 8); g.lineTo(gx, GATE_Y + 12); g.stroke();
+      g.fillStyle = "rgba(226,178,52,0.75)"; g.fillRect(gx - 6, GATE_Y + 15, 12, 1.4);
+      g.fillStyle = "#b9c0c8"; g.fillRect(gx - 2, 546, 4, 18);
+    }
+    g.fillStyle = "rgba(0,0,0,0.3)"; roundRect(g, 244, 568, 680, 46, 6); g.fill();
+    const tg = g.createLinearGradient(0, 562, 0, 610); tg.addColorStop(0, "#a4acb5"); tg.addColorStop(1, "#7f8892");
+    g.fillStyle = tg; roundRect(g, 240, 563, 680, 45, 6); g.fill();
+    g.fillStyle = "rgba(255,255,255,0.18)"; for (let x = 252; x < 910; x += 22) g.fillRect(x, 570, 12, 3);
+    g.fillStyle = "rgba(0,0,0,0.12)"; for (let x = 300; x < 900; x += 120) g.fillRect(x, 585, 30, 14);
+    label(g, "TERMINAL", 580, 598, "rgba(255,255,255,0.55)", "center");
+
+    // Control tower.
+    g.fillStyle = "rgba(0,0,0,0.3)"; g.beginPath(); g.arc(128, 552, 13, 0, Math.PI * 2); g.fill();
+    g.fillStyle = "#a3abb4"; g.beginPath(); g.arc(124, 548, 12, 0, Math.PI * 2); g.fill();
+    g.fillStyle = "#2a3c4f"; g.beginPath(); g.arc(124, 548, 8, 0, Math.PI * 2); g.fill();
+    label(g, "TOWER", 124, 572, "rgba(255,255,255,0.45)", "center");
+
+    // Road along the bottom.
+    g.fillStyle = "#2c2f34"; g.fillRect(0, 620, W, 20);
+    g.fillStyle = "rgba(255,255,255,0.35)"; for (let x = 0; x < W; x += 28) g.fillRect(x, 629.5, 14, 1);
+  }
+  function path(g, pts) { g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); }
+  function roundRect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+  function label(g, text, x, y, color, align = "left") { g.font = "600 9px ui-sans-serif, system-ui, sans-serif"; g.fillStyle = color; g.textAlign = align; g.textBaseline = "alphabetic"; g.fillText(text, x, y); }
+  function rotatedText(g, text, x, y, a, size) { g.save(); g.translate(x, y); g.rotate(a); g.font = `700 ${size}px ui-monospace, Menlo, monospace`; g.fillStyle = "rgba(255,255,255,0.7)"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(text, 0, 0); g.restore(); }
+
+  // ───────────────────────────── Glow sprites for lights ─────────────────────────────
+  function glowSprite(r, g, b) {
+    const c = document.createElement("canvas"); c.width = c.height = 64; const x = c.getContext("2d");
+    const gr = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, `rgba(${r},${g},${b},1)`); gr.addColorStop(0.18, `rgba(${r},${g},${b},0.55)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
+    x.fillStyle = gr; x.fillRect(0, 0, 64, 64); return c;
+  }
+  const GLOW = { white: glowSprite(255, 244, 214), green: glowSprite(80, 255, 140), red: glowSprite(255, 70, 60),
+                 blue: glowSprite(90, 150, 255), amber: glowSprite(255, 180, 80), strobe: glowSprite(255, 255, 255) };
+  function glow(sprite, x, y, rad, alpha) { if (alpha <= 0.01) return; ctx.globalAlpha = Math.min(1, alpha); ctx.drawImage(sprite, x - rad, y - rad, rad * 2, rad * 2); }
+
+  // ───────────────────────────── The plane shape (nose pointing +x, ~32 units long) ─────────────────────────────
+  const FUSE = new Path2D("M16,0 C16,-2.7 12.5,-2.7 10,-2.7 L-13,-2.2 Q-16,-1.8 -16.6,0 Q-16,1.8 -13,2.2 L10,2.7 C12.5,2.7 16,2.7 16,0 Z");
+  const WINGS = new Path2D("M4,-2 L-5,-15.5 L-8.6,-15.5 L-4,-2 Z M4,2 L-5,15.5 L-8.6,15.5 L-4,2 Z M-11,-1.6 L-14.8,-6.6 L-17,-6.6 L-15.6,-1.6 Z M-11,1.6 L-14.8,6.6 L-17,6.6 L-15.6,1.6 Z");
+  const ENGINES = new Path2D("M-2,-9 h5.5 v2.6 h-5.5 Z M-2,6.4 h5.5 v2.6 h-5.5 Z");
+  const TAILFIN = new Path2D("M-16.4,-0.9 L-9.5,-0.9 L-9.5,0.9 L-16.4,0.9 Z");
+  const local = (p, lx, ly, s) => ({ x: p.x + (lx * Math.cos(p.heading) - ly * Math.sin(p.heading)) * s, y: p.y + (lx * Math.sin(p.heading) + ly * Math.cos(p.heading)) * s });
+
+  // ───────────────────────────── Planes ─────────────────────────────
+  // Gates west of the runway exit are for arrivals, gates east of it for departures, so the two
+  // flows never have to cross on the apron.
+  let ARR_GATES = [], DEP_GATES = [];
+  const QVIS = 7;                       // departures that wait on the taxiway; the rest wait at their gate
+  const spotX = (k) => QX0 + k * QS;
+  const RING_R = [32, 76], RING_ALT = [0.55, 0.85];
+  const ringLen = (R) => 2 * HL + 2 * Math.PI * R;
+  const RING_CAP = RING_R.map((R) => Math.floor(ringLen(R) / 58));
+  const MIN_GAP = 31;                   // how close a taxiing plane gets to the one in front
+
+  const planes = new Map();
+  let gates = GATES.map(() => null);
+  let particles = [];
+  let simT = 0;                         // seconds of animation time (stops while paused)
+
+  function create(id, kind, airline) {
+    const p = { id, kind, airline: airline || "", tail: TAILS[hash(airline || id) % TAILS.length], phase: (hash(id) % 1000) / 1000,
+                x: -100, y: -100, alt: 0, heading: 0, moveDir: 0, v: 0, opacity: 0, mode: "new", tracked: true,
+                trail: [], lastTrail: 0, status: "ok", gate: -1, stuck: 0 };
+    planes.set(id, p); return p;
+  }
+  function allocGate(pool) {
+    const free = pool.filter((i) => !gates[i]);
+    return free.length ? free[Math.floor(Math.random() * free.length)] : -1;
+  }
+  function releaseGate(p) { if (p.gate >= 0 && gates[p.gate] === p.id) gates[p.gate] = null; p.gate = -1; }
+  function lead(p, dist) { return pt(p.x + Math.cos(p.heading) * dist, p.y + Math.sin(p.heading) * dist, p.alt); }
+
+  // Distance travelled along a leg of length L lasting D seconds, at normalised time g, starting at speed v0
+  // and ending at speed v1. (A cubic Hermite curve: speeds blend smoothly from one leg into the next.)
+  function hermite(g, L, D, v0, v1) {
+    if (L <= 0) return 0;
+    g = clamp(g, 0, 1);
+    const m0 = clamp((v0 * D) / L, 0, 2.8), m1 = clamp((v1 * D) / L, 0, 2.8), g2 = g * g, g3 = g2 * g;
+    return L * ((g3 - 2 * g2 + g) * m0 + (-2 * g3 + 3 * g2) + (g3 - g2) * m1);
+  }
+
+  // ── Holding ──
+  function ringMembers(s, ring) {
+    return [...planes.values()].filter((q) => q.mode === "hold" && q.stack === s && q.ring === ring && Math.abs(q.R - RING_R[ring]) < 4);
+  }
+  // Evenly space the planes on each ring while keeping their order, so nobody ever overtakes anybody.
+  function spaceRings() {
+    for (const s of [0, 1]) for (const ring of [0, 1]) {
+      const list = ringMembers(s, ring).sort((a, b) => a.u - b.u);
+      const n = list.length;
+      if (!n) continue;
+      let cut = 0, big = -1;
+      for (let i = 0; i < n; i++) {
+        const gap = (list[(i + 1) % n].u - list[i].u + 1) % 1 || 1;
+        if (gap > big) { big = gap; cut = (i + 1) % n; }
+      }
+      const seq = [...list.slice(cut), ...list.slice(0, cut)];
+      let prev = seq[0].u, acc = 0;
+      const unwrapped = seq.map((q, i) => { if (i) { acc += (q.u - prev + 1) % 1; prev = q.u; } return seq[0].u + acc; });
+      const base = unwrapped.reduce((sum, u, i) => sum + u - i / n, 0) / n;
+      seq.forEach((q, i) => (q.uTarget = base + i / n));
+    }
+  }
+  function joinPoint(s, ring, travelTime) {
+    // Planes already circling, plus the slots that planes still flying in have reserved.
+    const P = ringLen(RING_R[ring]);
+    const reserved = [...planes.values()].filter((q) => q.mode === "inbound" && q.stack === s && q.ring === ring)
+      .map((q) => (((q.joinU - (HOLDV() * (q.route.len - q.d)) / ((AIRV() + HOLDV()) / 2) / P) % 1) + 1) % 1);
+    const list = [...ringMembers(s, ring).map((q) => q.u), ...reserved].sort((a, b) => a - b);
+    let mid = Math.random();
+    if (list.length) {
+      let big = -1;
+      list.forEach((u, i) => { const gap = ((list[(i + 1) % list.length] - u + 1) % 1) || 1; if (gap > big) { big = gap; mid = u + gap / 2; } });
+    }
+    return (((mid + (HOLDV() * travelTime) / ringLen(RING_R[ring])) % 1) + 1) % 1;
+  }
+  function startInbound(p) {
+    const ring = p.ring ?? 0, R = RING_R[ring], st = STACKS[p.stack];
+    let u = joinPoint(p.stack, ring, 0), route;
+    for (let k = 0; k < 2; k++) {        // aim for the gap where it will be by the time we get there
+      const j = trackPos(st, R, u), back = trackPos(st, R, u - 45 / ringLen(R));
+      route = buildRoute([pt(j.x - 110, -40, 1.5), pt(back.x, back.y, RING_ALT[ring] + 0.35), pt(j.x, j.y, RING_ALT[ring])], 60);
+      u = joinPoint(p.stack, ring, route.len / ((AIRV() + HOLDV()) / 2));
+    }
+    Object.assign(p, { route, d: 0, v: AIRV(), mode: "inbound", joinU: u, x: route.pts[0].x, y: route.pts[0].y, alt: 1.5, heading: 1.1, opacity: 1 });
+  }
+
+  // ── Runways: progress follows the simulator's clock, so speed never jumps from one minute to the next ──
+  function runwayTimes(p, fr, r, jump) {
+    p.endMin = fr.minute + Math.max(1, r.minutesLeft);
+    if (jump) {
+      const total = r.progress < 1 ? Math.max(1, r.minutesLeft) / (1 - r.progress) : r.minutesLeft + 1;
+      p.startMin = p.endMin - total;
+    } else p.startMin = fr.minute;
+  }
+  function startLanding(p, ri, r, fr, jump, isNew) {
+    const ry = runwayY[ri];
+    runwayTimes(p, fr, r, jump);
+    if (isNew || p.mode === "new") {
+      if (jump) Object.assign(p, trackPos(STACKS[0], RING_R[0], 0.62), { alt: RING_ALT[0] });
+      else Object.assign(p, { x: -60, y: ry - 150, alt: 1.1, heading: 0.35 });
+      p.opacity = 1;
+    }
+    p.v0 = p.mode === "hold" || jump ? HOLDV() : AIRV();
+    const out = lead(p, 60); out.alt = Math.max(0.2, p.alt - 0.3);
+    p.appR = buildRoute([pt(p.x, p.y, p.alt), out, pt(36, ry - 72, 0.3), pt(108, ry, 0.16), pt(TD_X, ry, 0)], 55);
+    p.rollR = buildRoute([pt(TD_X, ry, 0), pt(exitX[ri] - 25, ry, 0)]);
+    p.mode = "land"; p.runway = ri; p.smoked = false; releaseGate(p);
+  }
+  function startTaxiIn(p) {
+    const ry = runwayY[p.runway];
+    // the nearest free gate, to keep the apron lane short and quiet
+    const free = ARR_GATES.filter((i) => !gates[i]).sort((a, b) => GATES[b] - GATES[a]);
+    p.gate = free.length ? free[Math.floor(Math.random() * Math.min(2, free.length))] : -1;
+    const ex = exitX[p.runway], gx = p.gate >= 0 ? GATES[p.gate] : ex - 160;
+    if (p.gate >= 0) gates[p.gate] = p.id;
+    else p.fadeWhileTaxiing = true;   // every gate is taken: this one taxis off toward the remote stands
+    // Down the exit, across the taxiway, then along the apron lane (departures never use it).
+    const pts = [pt(ex - 25, ry), pt(ex, ry), pt(ex, LANE_Y), pt(gx, LANE_Y)];
+    if (p.gate >= 0) pts.push(pt(gx, GATE_Y));
+    Object.assign(p, { route: buildRoute(pts, 18), d: 0, v: TAXIV(), mode: "taxiin", tracked: false });   // rolls straight off the runway
+  }
+  function startTakeoff(p, ri, r, fr, jump, isNew) {
+    const ry = runwayY[ri];
+    runwayTimes(p, fr, r, jump);
+    p.rollStart = p.endMin - 0.55 * (p.endMin - p.startMin);
+    p.runway = ri;
+    p.rollR = buildRoute([pt(RX0 + 32, ry), pt(RX0 + (RX1 - RX0) * 0.7, ry), pt(RX1 - 10, ry, 0.18), pt(RX1 + 110, ry - 85, 0.75), pt(1190, ry - 210, 1.5)], 90);
+    if (jump && fr.minute >= p.rollStart) {
+      Object.assign(p, { mode: "roll", rollFrom: p.rollStart, opacity: 1 });
+      return;
+    }
+    if (isNew || p.mode === "new" || p.mode === "hidden") Object.assign(p, { x: jump ? spotX(0) : spotX(QVIS), y: TAXI_Y, alt: 0, heading: Math.PI, v: 0 });
+    const pts = [pt(p.x, p.y)];
+    if (p.mode === "gate" || p.mode === "pushback") { pts.push(pt(p.x, TAXI_Y)); p.committed = true; }
+    pts.push(pt(HOLD_X, TAXI_Y), pt(HOLD_X, ry), pt(RX0 + 32, ry));
+    Object.assign(p, { route: buildRoute(pts, 18), d: 0, mode: "lineup" });
+  }
+
+  // ── Departures at the terminal ──
+  function toGate(p, fadeIn) {
+    p.gate = allocGate(DEP_GATES);
+    if (p.gate < 0) { p.mode = "hidden"; return false; }
+    gates[p.gate] = p.id;
+    Object.assign(p, { x: GATES[p.gate], y: GATE_Y, heading: Math.PI / 2, alt: 0, v: 0, mode: "gate", opacity: fadeIn ? 0 : 1, boardUntil: simT + 0.8 * tickMs / 1000 });
+    return true;
+  }
+  function canPushBack(p) {
+    if (p.qIndex >= QVIS || simT < p.boardUntil) return false;
+    const gx = GATES[p.gate];
+    for (const q of planes.values()) {
+      if (q === p || q.kind !== "dep") continue;
+      // go in order: the plane ahead in line must already be out on the taxiway and clear of this gate
+      if (q.qIndex === p.qIndex - 1 && (q.mode === "gate" || q.mode === "pushback" || q.mode === "hidden" || (q.mode === "queue" && q.x > gx - 48))) return false;
+      if ((q.mode === "queue" || q.mode === "lineup") && Math.abs(q.x - gx) < 44 && Math.abs(q.y - TAXI_Y) < 10) return false;
+    }
+    return true;
+  }
+  function startPushback(p) {
+    const gx = GATES[p.gate];
+    Object.assign(p, { route: buildRoute([pt(gx, GATE_Y), pt(gx, TAXI_Y)]), d: 0, v: 0, mode: "pushback", committed: true });
+  }
+  function startLost(p) { p.mode = "lost"; p.tracked = false; p.status = "emergency"; }
+
+  // ── Keeping a safe distance on the ground ──
+  // Returns how far ahead (in the direction of travel) the nearest plane on the ground is.
+  function gapAhead(p) {
+    const c = Math.cos(p.moveDir), s = Math.sin(p.moveDir);
+    const mainLine = Math.abs(c) > 0.7;          // moving along the taxiway or the apron lane
+    let gap = Infinity;
+    for (const q of planes.values()) {
+      if (q === p || q.alt > 0.1 || q.mode === "hidden" || q.mode === "lost" || q.fade || q.opacity < 0.3) continue;
+      const dx = q.x - p.x, dy = q.y - p.y, along = dx * c + dy * s;
+      if (along <= 0 || along > 90) continue;
+      const lateral = Math.abs(-dx * s + dy * c);
+      if (lateral >= 24) continue;
+      // Right of way: traffic on the main taxiway or lane keeps going; a plane about to cross or merge
+      // (still off to the side, heading across) waits for it. Without this, both would wait for each other.
+      const qCrossing = q.mode !== "parked" && q.mode !== "gate" && Math.abs(Math.cos(q.moveDir ?? 0)) < 0.7;
+      if (mainLine && qCrossing && lateral > 9 && !q.committed) continue;
+      gap = Math.min(gap, along);
+    }
+    // Arrivals hold short of the taxiway until both it and the apron lane are clear, then cross in one go.
+    if (p.mode === "taxiin" && !p.committed && p.y < TAXI_Y - 20) {
+      const holdY = TAXI_Y - 36;
+      const busy = [...planes.values()].some((q) => q !== p && q.alt < 0.1 && q.opacity > 0.3 && q.mode !== "hidden" && !q.fade &&
+        (Math.abs(q.y - TAXI_Y) < 12 || Math.abs(q.y - LANE_Y) < 12) && Math.abs(q.x - p.x) < 75);
+      if (busy) gap = Math.min(gap, holdY - p.y + MIN_GAP);
+      else if (p.y > holdY - 6) p.committed = true;
+    }
+    return gap;
+  }
+  // Move along the current route at up to vmax: speed up and slow down smoothly, brake behind other planes
+  // and at the end of the route. Returns true once the end is reached.
+  function drive(p, vmax, dt) {
+    const A = 46 * SPEED(), rem = p.route.len - p.d;
+    const here = sample(p.route, p.d);
+    p.moveDir = here.heading ?? p.moveDir;
+    let cap = Math.min(vmax, Math.sqrt(2 * A * rem) + 1.5);
+    const gap = gapAhead(p);
+    if (gap < Infinity) cap = Math.min(cap, Math.sqrt(2 * A * Math.max(0, gap - MIN_GAP)));
+    p.stuck = cap < 1 && rem > 1 ? p.stuck + dt : 0;
+    if (p.stuck > 3) cap = vmax * 0.4;             // never wait forever
+    p.v = p.v < cap ? Math.min(cap, p.v + A * dt) : Math.max(cap, p.v - 3 * A * dt);
+    p.d = Math.min(p.route.len, p.d + p.v * dt);
+    const pose = sample(p.route, p.d);
+    p.x = pose.x; p.y = pose.y; p.alt = pose.alt;
+    if (pose.heading != null) p.targetHeading = pose.heading;
+    return p.d >= p.route.len - 0.5;
+  }
+
+  // ───────────────────────────── Matching each minute of the program to the planes on screen ─────────────────────────────
+  function reconcile(fr, jump) {
+    const seen = new Set();
+    fr.runways.forEach((r, ri) => {
+      if (r.op === "clear") return;
+      seen.add(r.id);
+      let p = planes.get(r.id); const isNew = !p;
+      if (!p) p = create(r.id, r.op === "landing" ? "arr" : "dep", r.airline);
+      if (r.emergency) p.status = "emergency";
+      if (r.to) p.to = r.to;
+      if (r.op === "landing") { if (p.mode !== "land") startLanding(p, ri, r, fr, jump, isNew); else p.endMin = fr.minute + Math.max(1, r.minutesLeft); }
+      else if (!["lineup", "lined", "roll"].includes(p.mode)) startTakeoff(p, ri, r, fr, jump, isNew);
+      else p.endMin = fr.minute + Math.max(1, r.minutesLeft);
+    });
+
+    fr.arrivals.forEach((a, idx) => {
+      seen.add(a.id);
+      let p = planes.get(a.id);
+      if (!p) {
+        p = create(a.id, "arr", a.airline);
+        const n = [0, 1].map((s) => [...planes.values()].filter((q) => q.stack === s && (q.mode === "hold" || q.mode === "inbound")).length);
+        p.stack = n[0] === n[1] ? idx % 2 : n[0] < n[1] ? 0 : 1;
+        p.isNewArrival = true;
+      }
+      Object.assign(p, { qIndex: idx, status: a.status, fuel: a.fuel, from: a.from });
+    });
+    // Each stack fills its inner ring first; extra planes circle further out.
+    for (const s of [0, 1]) {
+      const ladder = [...planes.values()].filter((p) => p.stack === s && p.kind === "arr" && (p.mode === "hold" || p.mode === "inbound" || p.isNewArrival))
+        .sort((a, b) => a.qIndex - b.qIndex);
+      ladder.forEach((p, k) => {
+        const ring = k < RING_CAP[0] ? 0 : 1;
+        if (p.mode === "inbound") return;          // already heading for a ring
+        p.ring = ring;
+      });
+      if (jump) for (const ring of [0, 1]) {
+        const onRing = ladder.filter((p) => p.ring === ring), base = Math.random();
+        onRing.forEach((p, k) => Object.assign(p, { mode: "hold", u: (base + k / onRing.length) % 1, R: RING_R[ring], alt: RING_ALT[ring], opacity: 1, isNewArrival: false }));
+      }
+      for (const p of ladder) if (p.isNewArrival) { p.isNewArrival = false; startInbound(p); }
+    }
+
+    fr.departures.forEach((d, idx) => {
+      seen.add(d.id);
+      let p = planes.get(d.id);
+      if (!p) {
+        p = create(d.id, "dep", d.airline);
+        p.qIndex = idx;
+        if (jump && idx < QVIS) Object.assign(p, { mode: "queue", x: spotX(idx), y: TAXI_Y, heading: Math.PI, opacity: 1 });
+        else toGate(p, !jump);
+      }
+      Object.assign(p, { qIndex: idx, to: d.to, waited: d.waited });
+    });
+
+    for (const p of planes.values()) {
+      if (seen.has(p.id) || !p.tracked) continue;
+      p.tracked = false;
+      if (p.mode === "land" || p.mode === "lineup" || p.mode === "lined" || p.mode === "roll") p.endMin = Math.min(p.endMin, fr.minute + 0.6);
+      else if (p.kind === "arr") startLost(p);
+      else p.fade = true;
+    }
+  }
+
+  // ───────────────────────────── Moving everything, every animation frame ─────────────────────────────
+  const SPEED = () => 700 / tickMs;
+  const AIRV = () => 120 * Math.pow(SPEED(), 0.6);
+  const HOLDV = () => 50 * Math.pow(SPEED(), 0.6);
+  const TAXIV = () => 60 * Math.pow(SPEED(), 0.85);
+
+  function update(dt, tNow) {
+    spaceRings();
+    const minuteSec = tickMs / 1000;
+    for (const p of [...planes.values()]) {
+      switch (p.mode) {
+        case "inbound": {
+          const rem = p.route.len - p.d;
+          p.v = rem > 90 ? AIRV() : lerp(HOLDV(), AIRV(), rem / 90);
+          p.d = Math.min(p.route.len, p.d + p.v * dt);
+          const s = sample(p.route, p.d);
+          Object.assign(p, { x: s.x, y: s.y, alt: s.alt }); if (s.heading != null) p.targetHeading = s.heading;
+          if (p.d >= p.route.len) Object.assign(p, { mode: "hold", R: RING_R[p.ring ?? 0], u: p.joinU, uTarget: p.joinU });
+          break;
+        }
+        case "hold": {
+          const ring = p.ring ?? 0, k = 1 - Math.exp(-dt * 0.9);
+          p.R += (RING_R[ring] - p.R) * k;
+          p.alt += (RING_ALT[ring] - p.alt) * k;
+          const drift = p.uTarget != null ? (((p.uTarget - p.u) % 1) + 1.5) % 1 - 0.5 : 0;
+          p.u = (((p.u + (HOLDV() * dt) / ringLen(p.R) + drift * (1 - Math.exp(-dt * 0.9 * Math.pow(SPEED(), 0.6)))) % 1) + 1) % 1;
+          const t = trackPos(STACKS[p.stack], p.R, p.u);
+          p.x = t.x; p.y = t.y; p.targetHeading = t.heading;
+          break;
+        }
+        case "land": {
+          const span = Math.max(0.05, p.endMin - p.startMin), T = span * minuteSec;
+          const f = clamp((tNow - p.startMin) / span, 0, 1);
+          const La = p.appR.len, Lr = p.rollR.len, a = La / (La + 1.5 * Lr), vTD = (1.5 * Lr) / ((1 - a) * T);
+          const s = f < a ? sample(p.appR, hermite(f / a, La, a * T, p.v0, vTD)) : sample(p.rollR, hermite((f - a) / (1 - a), Lr, (1 - a) * T, vTD, TAXIV()));
+          Object.assign(p, { x: s.x, y: s.y, alt: s.alt }); if (s.heading != null) p.targetHeading = s.heading;
+          if (f >= a && !p.smoked) { p.smoked = true; puff(p.x, p.y); }
+          // Still someone sitting in the exit as we roll toward it? They've been towed to a remote stand.
+          if (f >= a) {
+            const ex = exitX[p.runway] - 25, ey = runwayY[p.runway];
+            for (const q of planes.values()) {
+              if (q.mode === "taxiin" && !q.fade && q.d < 70 && Math.hypot(q.x - ex, q.y - ey) < 60) { q.fade = true; q.fadeRate = 3.5; releaseGate(q); }
+            }
+          }
+          if (f >= 1 && !p.tracked) startTaxiIn(p);
+          break;
+        }
+        case "lineup":
+          if (p.gate >= 0 && Math.abs(p.y - GATE_Y) > 40) releaseGate(p);
+          if (drive(p, TAXIV(), dt)) Object.assign(p, { mode: "lined", v: 0 });
+          break;
+        case "lined":
+          p.targetHeading = 0;
+          if (tNow >= p.rollStart || !p.tracked) {
+            p.rollFrom = tNow; p.mode = "roll";
+            if (p.endMin - tNow < 0.5) p.endMin = tNow + 0.5;
+          }
+          break;
+        case "roll": {
+          const span = Math.max(0.05, p.endMin - p.rollFrom), L = p.rollR.len, D = span * minuteSec;
+          const f = clamp((tNow - p.rollFrom) / span, 0, 1);
+          const s = sample(p.rollR, hermite(f, L, D, 0, (2.6 * L) / D));
+          Object.assign(p, { x: s.x, y: s.y, alt: s.alt }); if (s.heading != null) p.targetHeading = s.heading;
+          if (f >= 1) planes.delete(p.id);
+          break;
+        }
+        case "taxiin":
+          if (p.fadeWhileTaxiing && p.d > p.route.len * 0.5) p.fade = true;
+          if (p.committed && p.y > LANE_Y + 6) p.committed = false;
+          if (p.stuck > 1.6 && !p.fade) { p.fade = true; p.fadeRate = 3; releaseGate(p); }   // too long a wait: off to a remote stand
+          if (drive(p, TAXIV(), dt)) { p.mode = "parked"; p.leaveAt = simT + 1.6 * minuteSec; if (p.gate < 0) p.fade = true; }
+          break;
+        case "parked": if (simT > p.leaveAt) p.fade = true; break;
+        case "hidden": toGate(p, true); break;
+        case "gate":
+          p.opacity = Math.min(1, p.opacity + dt * 1.5);
+          if (canPushBack(p)) startPushback(p);
+          break;
+        case "pushback": {
+          const done = drive(p, TAXIV() * 0.4, dt);   // moving backwards: the nose turns from the terminal toward the runway
+          p.targetHeading = lerpAngle(Math.PI / 2, Math.PI, smooth(0, 1, p.d / p.route.len));
+          if (done) { releaseGate(p); Object.assign(p, { mode: "queue", v: 0, committed: false }); }
+          break;
+        }
+        case "queue": {
+          p.opacity = Math.min(1, p.opacity + dt * 1.5);
+          const target = spotX(Math.min(p.qIndex, QVIS - 1)), dx = target - p.x, dist = Math.abs(dx);
+          p.moveDir = dx < 0 ? Math.PI : 0;
+          const A = 46 * SPEED();
+          let cap = Math.min(TAXIV(), Math.sqrt(2 * A * dist));
+          const gap = gapAhead(p);
+          if (gap < Infinity) cap = Math.min(cap, Math.sqrt(2 * A * Math.max(0, gap - MIN_GAP)));
+          p.v = p.v < cap ? Math.min(cap, p.v + A * dt) : Math.max(cap, p.v - 3 * A * dt);
+          p.x += Math.sign(dx) * Math.min(dist, p.v * dt); p.y = TAXI_Y;
+          p.targetHeading = p.v > 3 ? p.moveDir : Math.PI;
+          break;
+        }
+        case "lost":
+          p.targetHeading = p.heading + 2.2 * dt; p.alt = Math.max(0, p.alt - dt * 0.35);
+          p.x += Math.cos(p.heading) * AIRV() * 0.5 * dt; p.y += Math.sin(p.heading) * AIRV() * 0.5 * dt;
+          p.opacity -= dt * 0.45;
+          if (p.opacity <= 0) planes.delete(p.id);
+          break;
+      }
+      // Turn smoothly toward wherever the plane is going.
+      if (p.targetHeading != null) p.heading = dt > 0 ? lerpAngle(p.heading, p.targetHeading, 1 - Math.exp(-dt * 9)) : p.targetHeading;
+      if (["inbound", "land", "lineup", "lined", "roll", "taxiin", "pushback"].includes(p.mode)) p.opacity = Math.min(1, p.opacity + dt * 3);
+      if (p.fade) { p.opacity -= dt * (p.fadeRate || 1.2); if (p.opacity <= 0) { releaseGate(p); planes.delete(p.id); } }
+      // light trails behind anything flying
+      if (!reduceMotion && p.alt > 0.08 && simT - p.lastTrail > 0.05) { p.trail.push({ x: p.x, y: p.y }); p.lastTrail = simT; if (p.trail.length > 28) p.trail.shift(); }
+      else if (p.alt <= 0.08 && p.trail.length && dt > 0) p.trail.shift();
+    }
+    for (const q of particles) { q.life -= dt; q.r += dt * 10; q.x += q.vx * dt; q.y += q.vy * dt; }
+    particles = particles.filter((q) => q.life > 0);
+  }
+  function lerpAngle(a, b, t) { const d = Math.atan2(Math.sin(b - a), Math.cos(b - a)); return a + d * t; }
+  function puff(x, y) { for (let i = 0; i < 7; i++) particles.push({ x: x - 4 - Math.random() * 6, y: y + (Math.random() - 0.5) * 6, vx: -6 - Math.random() * 10, vy: (Math.random() - 0.5) * 6, r: 2 + Math.random() * 2, life: 1 + Math.random() * 0.6, max: 1.6 }); }
+
+  // Clouds drifting over the field.
+  const clouds = Array.from({ length: 5 }, (_, i) => {
+    const r = rng(100 + i);
+    return { x: r() * 1300 - 150, y: 40 + r() * 520, speed: 5 + r() * 6,
+             puffs: Array.from({ length: 6 }, () => ({ dx: (r() - 0.5) * 120, dy: (r() - 0.5) * 40, r: 30 + r() * 40 })) };
+  });
+
+  // ───────────────────────────── Drawing ─────────────────────────────
+  function render(now, frac) {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+    ctx.drawImage(bg, 0, 0);
+    ctx.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0);
+    if (!run) return;
+
+    const fr = run.frames[index];
+    const progress = clamp((fr.minute + frac) / Math.max(1, fr.duration), 0, 1);
+    const night = 0.12 + 0.88 * smooth(0, 0.85, progress);
+    const lights = smooth(0.25, 0.7, night);
+    const t = now / 1000;
+    const list = [...planes.values()].filter((p) => p.mode !== "hidden" && p.opacity > 0.01).sort((a, b) => a.alt - b.alt);
+    const size = 0.95 * planeBoost;
+
+    // Golden-hour warmth that fades as night falls.
+    ctx.fillStyle = `rgba(255,150,70,${0.1 * (1 - night)})`; ctx.fillRect(0, 0, W, H);
+
+    // Cloud shadows on the ground.
+    for (const c of clouds) {
+      if (!reduceMotion) c.x += c.speed * (1 / 60) * (timer ? 1 : 0);
+      if (c.x > W + 220) c.x = -220;
+      for (const pf of c.puffs) {
+        const x = c.x + pf.dx + 60, y = c.y + pf.dy + 80;
+        const gr = ctx.createRadialGradient(x, y, 0, x, y, pf.r);
+        gr.addColorStop(0, `rgba(0,0,0,${0.12 * (1 - night)})`); gr.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = gr; ctx.fillRect(x - pf.r, y - pf.r, pf.r * 2, pf.r * 2);
+      }
+    }
+
+    // Plane shadows: the higher the plane, the further its shadow falls.
+    for (const p of list) {
+      const s = size * (1 + p.alt * 0.12) * groundK(p.alt);
+      ctx.save(); ctx.globalAlpha = p.opacity * (0.32 - p.alt * 0.1) * (1 - night * 0.55);
+      ctx.translate(p.x + p.alt * 26, p.y + p.alt * 34); ctx.rotate(p.heading); ctx.scale(s, s);
+      ctx.fillStyle = "#000"; ctx.fill(WINGS); ctx.fill(FUSE);
+      ctx.restore();
+    }
+    // Tyre smoke.
+    for (const q of particles) {
+      ctx.globalAlpha = 0.45 * (q.life / q.max); ctx.fillStyle = "#d4d4d8";
+      ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    for (const p of list) drawPlane(p, size);
+
+    // Night falls.
+    ctx.fillStyle = `rgba(6,11,30,${0.66 * night})`; ctx.fillRect(0, 0, W, H);
+    // Planes catch some light from the apron and their own lights, so they don't vanish at night.
+    ctx.globalAlpha = 0.38 * night;
+    for (const p of list) drawPlane(p, size, true);
+    ctx.globalAlpha = 1;
+
+    // ── Lights (additive) ──
+    ctx.globalCompositeOperation = "lighter";
+    for (const p of list) {
+      if (p.trail.length < 2) continue;
+      const n = p.trail.length, peak = (0.08 + 0.18 * night) * p.opacity;
+      ctx.lineWidth = 1.2;
+      for (let i = 1; i < n; i++) {
+        const a = p.trail[i - 1], b = p.trail[i];
+        if (Math.hypot(b.x - a.x, b.y - a.y) > 60) continue;   // never draw a jump as a streak
+        ctx.strokeStyle = `rgba(190,215,255,${peak * (i / n)})`;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+    }
+    if (lights > 0.01) {
+      // windows and floodlights
+      ctx.globalAlpha = 0.6 * lights; ctx.fillStyle = "rgba(255,210,120,1)";
+      for (let x = 252; x < 910; x += 22) ctx.fillRect(x, 570, 12, 3);
+      for (const gx of GATES) glow(GLOW.amber, gx, GATE_Y - 4, 34, 0.22 * lights);
+      runwayY.forEach((ry) => {
+        for (let x = RX0 + 4; x <= RX1 - 4; x += 30) { glow(GLOW.white, x, ry - rwHalf, 4.5, 0.8 * lights); glow(GLOW.white, x, ry + rwHalf, 4.5, 0.8 * lights); }
+        for (let k = -1; k <= 1; k++) { glow(GLOW.green, RX0 + 1, ry + k * rwHalf * 0.7, 5, 0.9 * lights); glow(GLOW.red, RX1 - 1, ry + k * rwHalf * 0.7, 5, 0.9 * lights); }
+        // approach lights, with the "rabbit" strobe running toward the runway
+        const rabbit = reduceMotion ? -1 : Math.floor((t * 7) % 10);
+        for (let k = 0; k < 7; k++) {
+          const x = RX0 - 16 - k * 22;
+          glow(GLOW.white, x, ry, 4, 0.55 * lights);
+          if (6 - k === rabbit) glow(GLOW.strobe, x, ry, 11, lights);
+        }
+      });
+      for (let x = HOLD_X + 10; x < 945; x += 34) { glow(GLOW.blue, x, TAXI_Y - 9, 3.5, 0.75 * lights); glow(GLOW.blue, x, TAXI_Y + 9, 3.5, 0.75 * lights); }
+      for (let y = runwayY[0] + rwHalf + 14; y < TAXI_Y - 12; y += 30) {
+        for (const x of [HOLD_X, ...exitX]) { glow(GLOW.blue, x - 9, y, 3.5, 0.75 * lights); glow(GLOW.blue, x + 9, y, 3.5, 0.75 * lights); }
+      }
+      // tower beacon: alternating green and white
+      const beat = Math.floor(t * 1.2) % 2;
+      glow(beat ? GLOW.green : GLOW.white, 124, 548, 12, (reduceMotion ? 0.6 : 0.9) * lights);
+    }
+    // Aircraft lights: red and green on the wingtips, white strobes, and landing lights on approach and takeoff.
+    for (const p of list) {
+      const s = size * (1 + p.alt * 0.2) * groundK(p.alt), a = p.opacity;
+      const navA = (0.35 + 0.65 * lights) * a;
+      const L = local(p, -6.8, -15.5, s), R = local(p, -6.8, 15.5, s), T = local(p, -16.6, 0, s);
+      glow(GLOW.red, L.x, L.y, 4.5, navA); glow(GLOW.green, R.x, R.y, 4.5, navA); glow(GLOW.white, T.x, T.y, 3.5, navA * 0.8);
+      if (!reduceMotion && p.alt > 0.02) {
+        const ph = (t + p.phase * 1.3) % 1.3;
+        if (ph < 0.07) { glow(GLOW.strobe, L.x, L.y, 10, a); glow(GLOW.strobe, R.x, R.y, 10, a); }
+        if ((t + p.phase) % 1 < 0.5) { const B = local(p, 0, 0, s); glow(GLOW.red, B.x, B.y, 5, 0.6 * a); }
+      }
+      const landingLight = (p.mode === "land" && p.alt > 0.005) || p.mode === "roll" || p.mode === "lined" || p.mode === "inbound";
+      if (landingLight && lights > 0.05) {
+        const N = local(p, 26, 0, s);
+        ctx.save(); ctx.translate(N.x, N.y); ctx.rotate(p.heading); ctx.globalAlpha = 0.45 * lights * a;
+        ctx.drawImage(GLOW.white, -22, -11, 64, 22); ctx.restore();
+      }
+    }
+    ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+
+    // Clouds above everything.
+    for (const c of clouds) for (const pf of c.puffs) {
+      const x = c.x + pf.dx, y = c.y + pf.dy;
+      const gr = ctx.createRadialGradient(x, y, 0, x, y, pf.r);
+      gr.addColorStop(0, `rgba(255,250,245,${0.13 * (1 - night * 0.75)})`); gr.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = gr; ctx.fillRect(x - pf.r, y - pf.r, pf.r * 2, pf.r * 2);
+    }
+
+    // Fuel warnings and flight tags.
+    for (const p of list) {
+      if (p.kind !== "arr" || (p.status !== "emergency" && p.status !== "low") || p.mode === "taxiin" || p.mode === "parked") continue;
+      const emerg = p.status === "emergency";
+      const pulse = reduceMotion ? 0.5 : (t * (emerg ? 1.4 : 0.8) + p.phase) % 1;
+      ctx.strokeStyle = emerg ? `rgba(248,113,113,${1 - pulse})` : `rgba(251,191,36,${0.75 - pulse * 0.5})`;
+      ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(p.x, p.y, (14 + pulse * 12) * planeBoost, 0, Math.PI * 2); ctx.stroke();
+      if (emerg) tag(`${p.id}${p.fuel != null ? ` · ${p.fuel}%` : ""}`, p.x + 14 * planeBoost, p.y - 18 * planeBoost, "#f87171", p.opacity);
+    }
+    runwayY.forEach((ry, i) => {
+      const r = fr.runways[i];
+      if (r && r.op !== "clear") tag(`${r.op === "landing" ? "▼" : "▲"} ${r.id}`, RX0 + 44, ry - rwHalf - 5, r.op === "landing" ? "#e2e8f0" : "#7dd3fc", 1);
+    });
+    const waiting = [...planes.values()].filter((p) => p.mode === "hidden").length;
+    if (waiting > 0) tag(`+${waiting} more waiting at the terminal`, 640, 625, "#7dd3fc", 1, "center");
+
+    // Clock in the corner: the run is set on an evening, so the light matches the time.
+    const mins = 19 * 60 + 5 + fr.minute;
+    tag(`${run.name || ""}  ${pad(Math.floor(mins / 60) % 24)}:${pad(mins % 60)}`, 12, 20, "#f8fafc", 1, "left", true);
+  }
+
+  // Planes on the ground are drawn a little smaller, and don't get the phone-size boost, so lines of them stay tidy.
+  const groundK = (alt) => lerp(0.8 * Math.min(planeBoost, 1.12) / planeBoost, 1, Math.min(1, alt / 0.12));
+  function drawPlane(p, size, litPass) {
+    const s = size * (1 + p.alt * 0.2) * groundK(p.alt);
+    ctx.save();
+    if (!litPass) ctx.globalAlpha = p.opacity;
+    else ctx.globalAlpha *= p.opacity;
+    ctx.translate(p.x, p.y); ctx.rotate(p.heading); ctx.scale(s, s);
+    ctx.fillStyle = "#d9dee5"; ctx.fill(WINGS);
+    ctx.fillStyle = "#9aa3ae"; ctx.fill(ENGINES);
+    ctx.fillStyle = "#f8fafc"; ctx.fill(FUSE);
+    ctx.fillStyle = p.tail; ctx.fill(TAILFIN);
+    ctx.fillStyle = "rgba(30,41,59,0.55)"; ctx.fillRect(11, -1.6, 2.4, 3.2);   // cockpit windows
+    if (!litPass) { ctx.strokeStyle = "rgba(0,0,0,0.25)"; ctx.lineWidth = 0.5; ctx.stroke(FUSE); }
+    ctx.restore();
+  }
+  function tag(text, x, y, color, alpha, align = "left", big) {
+    ctx.save(); ctx.globalAlpha = alpha;
+    ctx.font = `${big ? 700 : 600} ${big ? 11 : 9.5}px ui-monospace, Menlo, monospace`;
+    const w = ctx.measureText(text).width + 10, h = big ? 18 : 14;
+    const x0 = align === "center" ? x - w / 2 : x;
+    ctx.fillStyle = "rgba(8,12,20,0.62)"; roundRect(ctx, x0, y - h + 4, w, h, 4); ctx.fill();
+    ctx.fillStyle = color; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic"; ctx.fillText(text, x0 + 5, y + (big ? -1 : 0));
+    ctx.restore();
+  }
+
+  // ───────────────────────────── Hover: who is that? ─────────────────────────────
+  function describe(p) {
+    const rw = p.runway != null ? `RW-${pad(p.runway + 1)}` : "";
+    let line2 = "", line3 = "";
+    if (p.kind === "arr") {
+      line2 = [p.from && `From ${esc(p.from)}`, p.fuel != null && `${p.fuel}% fuel`].filter(Boolean).join(" · ");
+      line3 = { inbound: "Joining the holding pattern", hold: `Holding · #${(p.qIndex ?? 0) + 1} to land`, land: `Landing on ${rw}`,
+                taxiin: "Taxiing to the gate", parked: "At the gate", lost: "Out of fuel" }[p.mode] || "";
+    } else {
+      line2 = [p.to && `To ${esc(p.to)}`, p.waited != null && p.mode !== "roll" && `waited ${p.waited} min`].filter(Boolean).join(" · ");
+      line3 = { gate: p.qIndex >= QVIS ? `Boarding · #${p.qIndex + 1} in line` : "Boarding", pushback: "Pushing back", queue: `In line · #${(p.qIndex ?? 0) + 1} to take off`,
+                lineup: `Taxiing to ${rw}`, lined: `Lined up on ${rw}`, roll: `Taking off from ${rw}` }[p.mode] || "";
+    }
+    return `<b>${esc(p.id)}</b> <span class="dim">${esc(p.airline)}</span><br>${line2}${line2 && line3 ? "<br>" : ""}<span class="dim">${line3}</span>`;
+  }
+  function pointAt(e) {
+    const r = canvas.getBoundingClientRect(), x = (e.clientX - r.left) / scale, y = (e.clientY - r.top) / scale;
+    let best = null, bestD = 22 * planeBoost;
+    for (const p of planes.values()) { if (p.mode === "hidden" || p.opacity < 0.3) continue; const d = Math.hypot(p.x - x, p.y - y); if (d < bestD) { best = p; bestD = d; } }
+    hovered = best;
+    canvas.style.cursor = best ? "pointer" : "default";
+    tip.style.opacity = best ? 1 : 0;
+    if (best) {
+      tip.innerHTML = describe(best);
+      const px = e.clientX - r.left, py = e.clientY - r.top;
+      tip.style.transform = `translate(${Math.min(px + 14, r.width - tip.offsetWidth - 8)}px, ${Math.max(8, py - tip.offsetHeight - 10)}px)`;
+    }
+  }
+  canvas.addEventListener("pointermove", pointAt);
+  canvas.addEventListener("pointerdown", pointAt);   // a tap shows the same card on touch screens
+  canvas.addEventListener("pointerleave", () => { hovered = null; tip.style.opacity = 0; });
+  let hovered = null;
+
+  // ───────────────────────────── Playback ─────────────────────────────
+  let run = null, index = 0, timer = null, tickMs = 700, frameStart = performance.now(), pausedFrac = 0;
+  const cache = {};
+  const playBtn = $("play"), scrub = $("scrub"), clock = $("clock"), screenEl = $("screen");
+  let lastEventKey = "";
+
+  function frac(now) { return timer ? clamp((now - frameStart) / tickMs, 0, 1) : pausedFrac; }
+
+  function show(i, jump) {
+    index = clamp(i, 0, run.frames.length - 1);
+    frameStart = performance.now(); pausedFrac = 0;
+    if (jump) { planes.clear(); particles = []; gates = GATES.map(() => null); }
+    reconcile(run.frames[index], jump);
+    if (jump) update(0, run.frames[index].minute);
+    renderPanel(run.frames[index], index);
+    if (index === run.frames.length - 1) stop();
+  }
+  function play() {
+    if (index >= run.frames.length - 1) show(0, true);
+    clearInterval(timer);
+    frameStart = performance.now() - pausedFrac * tickMs;
+    timer = setInterval(() => show(index + 1), tickMs);
+    playBtn.textContent = "Pause";
+  }
+  function stop() {
+    if (timer) pausedFrac = frac(performance.now());
+    clearInterval(timer); timer = null;
+    playBtn.textContent = run && index >= run.frames.length - 1 ? "Replay" : "Play";
+  }
+
+  function renderPanel(frame, i) {
+    const st = frame.stats;
+    $("s-landed").textContent = st.landed;
+    $("s-departed").textContent = st.departed;
+    $("s-circling").textContent = frame.arrivals.length;
+    $("s-waiting").textContent = frame.departures.length;
+    $("s-emergencies").textContent = st.emergencies;
+    $("s-crashes").textContent = st.crashes;
+    const mm = (m) => `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
+    clock.textContent = `${mm(frame.minute)} / ${mm(frame.duration)}`;
+    scrub.value = i;
+    const evs = frame.events.slice(-6).reverse();
+    const key = evs.map((e) => e.minute + e.text).join("|");
+    if (key !== lastEventKey) {
+      const fresh = evs.length && !lastEventKey.startsWith(evs[0].minute + evs[0].text);
+      $("events").innerHTML = evs.map((e, k) => `<li${k === 0 && fresh ? ' class="new"' : ""}><b>${mm(e.minute)}</b>${esc(e.text)}</li>`).join("");
+      lastEventKey = key;
+    }
+    screenEl.innerHTML = ansiToHtml(run.screens[i] || "");
+  }
+
+
+  // Each run is a plain script file, so the page also works when opened straight from disk.
+  function loadRun(id) {
+    return new Promise((resolve, reject) => {
+      if (window.AIRPORT_RUNS && window.AIRPORT_RUNS[id]) return resolve(window.AIRPORT_RUNS[id]);
+      const s = document.createElement("script");
+      s.src = `runs/${id}.js`;
+      s.onload = () => resolve(window.AIRPORT_RUNS[id]);
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  async function load(id) {
+    document.querySelectorAll(".scenario").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.run === id)));
+    stop();
+    cache[id] ??= await loadRun(id);
+    run = cache[id];
+    layoutRunways(run.frames[0].runways.length);
+    scrub.max = run.frames.length - 1;
+    lastEventKey = "";
+    show(0, true);
+    play();
+  }
+  function setSpeed(ms) {
+    const f = frac(performance.now());
+    tickMs = ms;
+    document.querySelectorAll("#speeds .ap-btn").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.ms) === ms)));
+    if (timer) { pausedFrac = f; play(); }
+  }
+
+  playBtn.addEventListener("click", () => (timer ? stop() : play()));
+  scrub.addEventListener("input", () => { stop(); show(Number(scrub.value), true); });
+  $("scenarios").addEventListener("click", (e) => { const b = e.target.closest(".scenario"); if (b) load(b.dataset.run); });
+  $("speeds").addEventListener("click", (e) => { const b = e.target.closest(".ap-btn"); if (b) setSpeed(Number(b.dataset.ms)); });
+
+  let last = performance.now();
+  function loop(now) {
+    requestAnimationFrame(loop);   // first, so one bad frame can never stop the animation
+    if (!bg.width) resize();
+    if (!bg.width) return;
+    const dt = timer ? Math.min(0.25, (now - last) / 1000) : 0;
+    last = now; simT += dt;
+    if (run) { const f = frac(now); update(dt, run.frames[index].minute + f); render(now, f); }
+  }
+  requestAnimationFrame(loop);
+
+  // The program's ANSI colours, for the "what it printed" panel.
+  function ansiToHtml(text) {
+    let html = "", open = 0; const classes = new Set();
+    for (const part of text.split(/(\x1b\[[0-9;]*m)/)) {
+      const m = part.match(/^\x1b\[([0-9;]*)m$/);
+      if (!m) { html += part.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); continue; }
+      for (const code of (m[1] || "0").split(";")) {
+        if (code === "0") classes.clear();
+        else if (code === "1") classes.add("b");
+        else { for (const c of [...classes]) if (c !== "b") classes.delete(c); classes.add("c" + code); }
+      }
+      html += "</span>".repeat(open); open = classes.size ? 1 : 0;
+      if (open) html += `<span class="${[...classes].join(" ")}">`;
+    }
+    return html + "</span>".repeat(open);
+  }
+
+  setSpeed(reduceMotion ? 1400 : 700);
+  load("hub");
+})();
 </script>
 </body>
 </html>
