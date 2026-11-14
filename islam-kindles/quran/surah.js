@@ -173,7 +173,7 @@ async function loadSurah(id) {
 
             <div class="surah-hero">
                 <span class="surah-hero-num">Surah ${id} · ${type} · ${verses} verses</span>
-                <div class="surah-hero-arabic">${arabic}</div>
+                <div class="surah-hero-arabic" lang="ar" dir="rtl">${arabic}</div>
                 <h1 class="surah-hero-name">${name}</h1>
                 <div class="surah-hero-english">${english}</div>
             </div>
@@ -191,7 +191,7 @@ async function loadSurah(id) {
                     <div class="verse" style="animation-delay:${Math.min(i*0.02,0.5)}s">
                         <span class="verse-num">${ayah.numberInSurah}</span>
                         <div class="verse-content">
-                            <div class="verse-arabic">${ayah.text}</div>
+                            <div class="verse-arabic" lang="ar" dir="rtl">${ayah.text}</div>
                             <div class="verse-translation">${enAyahs[i]?.text || ""}</div>
                         </div>
                     </div>
@@ -236,8 +236,9 @@ function applyViewMode() {
     if (viewMode === "translation") document.body.classList.add("translation-only");
 }
 
-document.getElementById("menuToggle").addEventListener("click", () => {
-    document.getElementById("navLinks").classList.toggle("open");
+document.getElementById("menuToggle").addEventListener("click", (e) => {
+    const open = document.getElementById("navLinks").classList.toggle("open");
+    e.currentTarget.setAttribute("aria-expanded", String(open));
 });
 
 loadSurah(surahId);

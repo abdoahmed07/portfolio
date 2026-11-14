@@ -9,7 +9,7 @@
 
         .surah-hero-num {
             font-family: var(--font-m);
-            font-size: 0.68rem;
+            font-size: 0.75rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--muted);
@@ -49,7 +49,7 @@
 
         .meta-pill {
             font-family: var(--font-m);
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--muted);
@@ -80,7 +80,7 @@
 
         .view-btn {
             font-family: var(--font-m);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             padding: 7px 16px;
@@ -119,7 +119,7 @@
 
         .verse-num {
             font-family: var(--font-m);
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             color: var(--accent);
             background: var(--accent-dim);
             border-radius: 6px;

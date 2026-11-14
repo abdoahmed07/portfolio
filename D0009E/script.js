@@ -9,7 +9,8 @@ function toggleCode(btn) {
     const isOpen = body.classList.contains("open");
     body.classList.toggle("open", !isOpen);
     btn.classList.toggle("open", !isOpen);
-    btn.textContent = isOpen ? "View Code" : "Hide Code";
+    btn.textContent = isOpen ? "View code" : "Hide code";
+    btn.setAttribute("aria-expanded", String(!isOpen));
 }
 
 // ── LOAN CALCULATOR ────────────────────────────────────────
@@ -67,7 +68,8 @@ function calcRecipe() {
 }
 
 // ── DICTIONARY ─────────────────────────────────────────────
-const dict = {};
+// Map, not a plain object, so words like "constructor" work
+const dict = new Map();
 
 function dictMsg(msg, type) {
     const el = document.getElementById("dictMsg");
@@ -78,7 +80,7 @@ function dictMsg(msg, type) {
 
 function renderDict() {
     const el = document.getElementById("dictEntries");
-    const keys = Object.keys(dict);
+    const keys = [...dict.keys()];
     el.innerHTML = "";
     if (keys.length === 0) {
         const empty = document.createElement("div");
@@ -99,7 +101,7 @@ function renderDict() {
 
         const def = document.createElement("span");
         def.className = "dict-def";
-        def.textContent = dict[w];
+        def.textContent = dict.get(w);
 
         const del = document.createElement("button");
         del.className = "dict-del";
@@ -115,8 +117,8 @@ function dictInsert() {
     const word = document.getElementById("dictWord").value.trim();
     const def  = document.getElementById("dictDef").value.trim();
     if (!word||!def) { dictMsg("Enter both a word and a definition.","error"); return; }
-    if (word in dict) { dictMsg(`'${word}' already exists.`,"error"); return; }
-    dict[word] = def;
+    if (dict.has(word)) { dictMsg(`'${word}' already exists.`,"error"); return; }
+    dict.set(word, def);
     document.getElementById("dictWord").value = "";
     document.getElementById("dictDef").value  = "";
     dictMsg(`Inserted '${word}'.`,"success");
@@ -126,7 +128,7 @@ function dictInsert() {
 function dictLookup() {
     const word = document.getElementById("dictLookup").value.trim();
     if (!word) return;
-    if (word in dict) dictMsg(`${word}: ${dict[word]}`,"success");
+    if (dict.has(word)) dictMsg(`${word}: ${dict.get(word)}`,"success");
     else              dictMsg(`'${word}' not found.`,"error");
 }
 
@@ -136,14 +138,14 @@ function dictDelete() {
 
 function dictDeleteWord(word) {
     if (!word) return;
-    if (word in dict) { delete dict[word]; dictMsg(`Deleted '${word}'.`,"success"); renderDict(); }
+    if (dict.has(word)) { dict.delete(word); dictMsg(`Deleted '${word}'.`,"success"); renderDict(); }
     else dictMsg(`'${word}' not found.`,"error");
 }
 
 renderDict();
 
 // ── PHONEBOOK ──────────────────────────────────────────────
-const pb = {};
+const pb = new Map();   // number -> names
 
 function pbLog(msg, type) {
     const t = document.getElementById("pbTerminal");
@@ -175,12 +177,12 @@ function pbCmd(text) {
     }
 }
 
-function pbAdd(name,number){if(!pb[number])pb[number]=[];if(pb[number].includes(name)){pbLog(`${name} already exists for ${number}`,"error");return;}pb[number].push(name);pbLog(`Added ${name} with number ${number}`,"success");}
-function pbLookup(name){const m=Object.entries(pb).filter(([,n])=>n.includes(name)).map(([num])=>num);if(!m.length)pbLog(`${name} not found`,"error");else if(m.length===1)pbLog(`${name}'s number is ${m[0]}`,"success");else pbLog(`${name} has multiple numbers: ${m.join(", ")}`,"success");}
-function pbAlias(existing,alias,number){const m=Object.entries(pb).filter(([,n])=>n.includes(existing)).map(([num])=>num);if(!m.length){pbLog(`${existing} not found`,"error");return;}const num=number||m[0];if(!pb[num]){pbLog(`Number ${num} not found`,"error");return;}if(pb[num].includes(alias)){pbLog(`${alias} already exists for ${num}`,"error");return;}pb[num].push(alias);pbLog(`Added alias ${alias} for ${existing} (${num})`,"success");}
-function pbChange(name,newNum,oldNum){const m=Object.entries(pb).filter(([,n])=>n.includes(name)).map(([num])=>num);if(!m.length){pbLog(`${name} not found`,"error");return;}const on=oldNum||m[0];if(!pb[on]){pbLog(`Number ${on} not found`,"error");return;}pb[newNum]=[...pb[on]];delete pb[on];pbLog(`Changed ${name}'s number from ${on} to ${newNum}`,"success");}
-function pbRemove(name,number){if(!pb[number]||!pb[number].includes(name)){pbLog(`${name} with ${number} not found`,"error");return;}pb[number]=pb[number].filter(n=>n!==name);if(!pb[number].length)delete pb[number];pbLog(`Removed ${name} (${number})`,"success");}
-function pbList(){const e=Object.entries(pb);if(!e.length){pbLog("Phonebook is empty.","error");return;}e.forEach(([num,names])=>pbLog(`${num}: ${names.join(", ")}`,"success"));}
+function pbAdd(name,number){if(!pb.has(number))pb.set(number,[]);if(pb.get(number).includes(name)){pbLog(`${name} already exists for ${number}`,"error");return;}pb.get(number).push(name);pbLog(`Added ${name} with number ${number}`,"success");}
+function pbLookup(name){const m=[...pb].filter(([,n])=>n.includes(name)).map(([num])=>num);if(!m.length)pbLog(`${name} not found`,"error");else if(m.length===1)pbLog(`${name}'s number is ${m[0]}`,"success");else pbLog(`${name} has multiple numbers: ${m.join(", ")}`,"success");}
+function pbAlias(existing,alias,number){const m=[...pb].filter(([,n])=>n.includes(existing)).map(([num])=>num);if(!m.length){pbLog(`${existing} not found`,"error");return;}const num=number||m[0];if(!pb.has(num)){pbLog(`Number ${num} not found`,"error");return;}if(pb.get(num).includes(alias)){pbLog(`${alias} already exists for ${num}`,"error");return;}pb.get(num).push(alias);pbLog(`Added alias ${alias} for ${existing} (${num})`,"success");}
+function pbChange(name,newNum,oldNum){const m=[...pb].filter(([,n])=>n.includes(name)).map(([num])=>num);if(!m.length){pbLog(`${name} not found`,"error");return;}const on=oldNum||m[0];if(!pb.has(on)){pbLog(`Number ${on} not found`,"error");return;}const names=pb.get(on);pb.delete(on);pb.set(newNum,names);pbLog(`Changed ${name}'s number from ${on} to ${newNum}`,"success");}
+function pbRemove(name,number){if(!pb.has(number)||!pb.get(number).includes(name)){pbLog(`${name} with ${number} not found`,"error");return;}pb.set(number,pb.get(number).filter(n=>n!==name));if(!pb.get(number).length)pb.delete(number);pbLog(`Removed ${name} (${number})`,"success");}
+function pbList(){const e=[...pb];if(!e.length){pbLog("Phonebook is empty.","error");return;}e.forEach(([num,names])=>pbLog(`${num}: ${names.join(", ")}`,"success"));}
 
 const pbForms = {
     add:    { fields:["Name","Number"],           cmd:(v)=>`add ${v[0]} ${v[1]}` },

@@ -14,7 +14,8 @@ const MIN_LEN = 4;
 
 // ── LIVE INPUT FEEDBACK ────────────────────────────────────
 input.addEventListener("input", () => {
-    const val  = input.value;
+    // Count the trimmed name so spaces alone can't enable the button
+    const val  = input.value.trim();
     const len  = val.length;
     const valid = len >= MIN_LEN;
 
@@ -27,11 +28,12 @@ input.addEventListener("input", () => {
     charFill.classList.toggle("valid", valid);
 
     // border state
-    inputWrap.classList.toggle("valid",   valid && len > 0);
-    inputWrap.classList.toggle("invalid", !valid && len > 0);
+    const typed = input.value.length > 0;
+    inputWrap.classList.toggle("valid",   valid);
+    inputWrap.classList.toggle("invalid", !valid && typed);
 
     // validity label
-    if (len === 0) {
+    if (!typed) {
         validity.textContent = "";
         validity.className = "validity";
     } else if (valid) {

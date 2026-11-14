@@ -4,15 +4,6 @@
    num_islands(), animated cell by cell as it actually recurses.
 ════════════════════════════════════════════════════════════ */
 
-(function () {
-    var toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    });
-})();
 document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
         document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
@@ -51,14 +42,20 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
         for (var r = 0; r < ROWS; r++) {
             var rowEls = [];
             for (var c = 0; c < COLS; c++) {
-                var cell = document.createElement('div');
+                var cell = document.createElement('button');
+                cell.type = 'button';
                 cell.className = 'island-cell' + (grid[r][c] === '1' ? ' land' : '');
                 cell.dataset.r = r; cell.dataset.c = c;
+                cell.setAttribute('aria-label', 'Row ' + (r + 1) + ', column ' + (c + 1));
+                cell.setAttribute('aria-pressed', String(grid[r][c] === '1'));
                 cell.addEventListener('click', function () {
                     if (running) return;
                     var rr = parseInt(this.dataset.r), cc = parseInt(this.dataset.c);
+                    var hadFocus = document.activeElement === this;
                     grid[rr][cc] = grid[rr][cc] === '1' ? '0' : '1';
                     render();
+                    // the grid is rebuilt, so put keyboard focus back on the same cell
+                    if (hadFocus) cellEls[rr][cc].focus();
                 });
                 gridEl.appendChild(cell);
                 rowEls.push(cell);

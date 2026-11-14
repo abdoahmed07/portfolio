@@ -188,7 +188,7 @@ button.neutral, .button.neutral {
 }
 
 /* Focus ring for keyboard users (shows when tabbing) */
-button:focus, input[type="range"]:focus, summary.button:focus{
+button:focus-visible, input[type="range"]:focus-visible, summary.button:focus-visible, a:focus-visible{
   outline: 3px solid #e0d3b2;
   outline-offset: 2px;
 }
@@ -417,4 +417,18 @@ button:focus, input[type="range"]:focus, summary.button:focus{
 .back-to-portfolio:hover {
     background: rgba(255,255,255,0.2);
     color: #fff;
+}
+/* Shared site rules this page keeps while holding on to its own look */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important; scroll-behavior: auto !important;
+    }
+}
+
+/* On phones the soldier pushed the game below the fold, so he steps aside */
+@media (max-width: 640px) {
+    .side-img.side-img--abs { display: none; }
+    /* the help card opened off the left edge; on phones it spans the screen instead */
+    .help-pop__card { position: fixed; top: auto; bottom: 16px; left: 16px; right: 16px; width: auto; max-height: 70vh; overflow: auto; }
 }

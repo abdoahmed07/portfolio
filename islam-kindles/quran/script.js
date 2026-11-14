@@ -133,7 +133,7 @@ function renderSurahs(list) {
                 <div class="surah-name">${translit}</div>
                 <div class="surah-row2">
                     <span class="surah-english">${english}</span>
-                    <span class="surah-arabic">${arabic}</span>
+                    <span class="surah-arabic" lang="ar" dir="rtl">${arabic}</span>
                 </div>
                 <div class="surah-meta">${verses} verses · ${type}</div>
             </div>
@@ -154,6 +154,7 @@ document.getElementById("searchBar").addEventListener("input", function() {
     ));
 });
 
-document.getElementById("menuToggle").addEventListener("click", () => {
-    document.getElementById("navLinks").classList.toggle("open");
+document.getElementById("menuToggle").addEventListener("click", (e) => {
+    const open = document.getElementById("navLinks").classList.toggle("open");
+    e.currentTarget.setAttribute("aria-expanded", String(open));
 });

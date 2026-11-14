@@ -12,7 +12,7 @@ A static personal portfolio hosted on GitHub Pages at https://abdoahmed07.github
 
 ## Running it
 
-Open any `index.html` directly in a browser, or serve the repo root (this matches `.claude/launch.json`):
+Serve the repo root (this matches `.claude/launch.json`). Opening files directly works too, but the 3D layer can't load from `file://`, so stages show their fallback numbers:
 
 ```bash
 python3 -m http.server 8934
@@ -25,8 +25,9 @@ A Playwright CLI skill lives in `.claude/skills/playwright-cli` for checking pag
 
 ## Layout
 
-- `portfolio-site/` is the hub: `index.html` (project list) and `about.html`. The rest of the top-level folders are one project each, numbered 01-20 in the README and on the hub page.
-- Each project folder is self-contained, usually `index.html` + `script.js` + `style.css`. `islam-kindles/` is the exception, a multi-page site with subfolders and a shared `style.css`.
+- `portfolio-site/` is the hub: `index.html` (project list), `about.html`, and `hub.js` for the statement, filter and contact panel. The rest of the top-level folders are one project each, numbered 01-20 in the README and on the hub page.
+- `shared/` holds what every page uses: `base.css`, `theme.js`, `motion.js`, and `gl/` for the 3D layer (`studio.js`, `objects.js`, `chrome.js`).
+- Each project folder is otherwise self-contained, usually `index.html` + `script.js` + `style.css`. `islam-kindles/` is the exception, a multi-page site with subfolders and its own shared `style.css` on top of `shared/base.css`.
 - `login-system/` has PHP files for the real backend. Without a PHP server it falls back to demo mode automatically.
 - `airplane-simulator/` only holds the showcase page. The C++ source and Makefile the README mentions are not in this repo.
 
@@ -34,19 +35,24 @@ A Playwright CLI skill lives in `.claude/skills/playwright-cli` for checking pag
 
 A new project touches several places by hand:
 
-1. The new folder with its own `index.html`, `script.js`, `style.css`.
-2. A `<a class="project-item" data-num="NN">` entry in `portfolio-site/index.html`. Its `.project-tag` text must exactly match a `data-tag` on a `.filter-btn` in the filter strip, or filtering won't pick it up. Add a new filter button if the tag is new.
-3. The hardcoded `"20 projects"` count appears twice in `portfolio-site/index.html`: in the `.section-count` markup and in the `applyFilter` script (`tag === 'All'` branch). Update both.
-4. The README structure tree and project section.
+1. The new folder with its own `index.html`, `script.js`, `style.css`. Copy the head, nav, hero and footer from an existing project page (ray-tracer is a clean one). The hero's `.stage` needs `data-object="<folder name>"`, `data-accent="<accent hex>"` and the project number as its fallback text.
+2. An object builder in `shared/gl/objects.js`, keyed by the folder name. Without one the stage stays empty.
+3. A `<li class="project-item" data-num="NN">` entry in `portfolio-site/index.html`, with its own `.stage` (same `data-object` and `data-accent`), `data-glow` and `style="--c:<accent>"`. Its `.project-tag` text must exactly match a `data-tag` on a `.filter-btn` in the filter strip, or filtering won't pick it up. Add a new filter button if the tag is new.
+4. The hardcoded `"20 projects"` count appears twice: in the `.section-count` markup in `portfolio-site/index.html` and in `applyFilter` in `portfolio-site/hub.js` (`tag === 'All'` branch). Update both.
+5. The README structure tree and project section.
 
 ## Shared conventions across pages
 
-There's no shared stylesheet or script. Each page copies the same patterns, so keep them consistent when editing:
+Every page except the Fly game and the standalone Hammurabi page (both keep their own look) is built on `shared/`:
 
-- Theme: `<html data-theme="dark">`, an inline script in `<head>` that reads `localStorage.theme` before paint, and a `#themeToggle` button with moon/sun SVGs. Light mode is done by overriding CSS variables under `[data-theme="light"]`.
-- CSS variables on `:root` (`--bg`, `--surface`, `--border`, `--text`, `--muted`, `--accent`, `--accent-dim`, `--accent-glow`, `--font-display`, `--font-mono`). Each project has its own `--accent` color. Reuse the variables rather than hardcoding colors.
-- Fonts: Syne for headings, DM Mono for code/mono, loaded from Google Fonts.
-- Every project page links back to `../portfolio-site/index.html` and uses `../favicon.svg`.
+- Head: Geist and Geist Mono from Google Fonts, an inline script that reads `localStorage.theme` (inside `try`) before paint, the Three.js import map on pages with 3D, then `shared/base.css` before the page's own `style.css`.
+- Body: project pages use `<body class="pj">`. The page starts with a skip link, `.backdrop` and the `.site-nav` (name, "All projects" back link to `../portfolio-site/index.html`, empty `#themeToggle` that `theme.js` fills), and ends with `.site-footer`. Load `shared/theme.js` and `shared/motion.js` before the page script, and `shared/gl/studio.js` as a module after it.
+- Tokens live in `shared/base.css` for both themes (`--bg`, `--surface`, `--border`, `--text`, `--muted`, `--ink`, `--accent-text`, `--on-accent`, `--code-bg`, `--panel*`, radius and fonts). A page only sets `--accent` in `:root` and a darker `--accent` under `[data-theme="light"]` that passes AA on white. Reuse the tokens rather than hardcoding colors.
+- `--accent` is the project color. `--ink`/`--on-ink` are the monochrome fill for primary and pressed states, and `--on-accent` is text on an accent fill.
+- Terminals, canvases and simulators stay dark in both themes: give the block `.dark-panel`. Code blocks follow the theme, and `theme.js` swaps the highlight.js stylesheet.
+- Tab strips (`.tabs`, `.tab-bar`, `.file-tabs`) get ARIA roles and arrow keys from `theme.js`. Pages keep their own click handlers and the `.active` class.
+- Scroll effects come from `motion.js`: anything with `data-scene` gets `--p` and `--in`. Nothing listens to scroll events, and everything must read fine with reduced motion, where the `.motion` class is off.
+- 3D objects are decoration next to real text, so stages are `aria-hidden`. Without WebGL the page gets `.no-gl` and stages show the project number.
 - Source code is displayed with highlight.js from a CDN.
 
 ## Showcase philosophy

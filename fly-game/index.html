@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
+    <a href="../portfolio-site/index.html" class="back-to-portfolio">← All projects</a>
 
     <!-- START SCREEN -->
     <div id="startScreen" class="overlay-screen">
@@ -59,7 +59,7 @@
     <div id="gameOverScreen" class="overlay-screen hidden">
         <div class="overlay-content">
             <p class="overlay-eyebrow" id="goMode">game over</p>
-            <h1 class="overlay-title" id="finalScore">0</h1>
+            <h2 class="overlay-title" id="finalScore">0</h2>
             <p class="overlay-sub" id="finalMessage">Not bad.</p>
             <div class="final-stats">
                 <div class="stat"><span class="stat-val" id="finalHits">0</span><span class="stat-label">hits</span></div>
@@ -75,7 +75,7 @@
 
     <!-- GAME AREA -->
     <div id="container">
-        <div id="fly" class="fly" aria-label="fly"></div>
+        <div id="fly" class="fly" role="img" aria-label="Fly"></div>
         <!-- splat particles injected here -->
     </div>
 

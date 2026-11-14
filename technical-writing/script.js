@@ -3,16 +3,6 @@
    rendered from the actual markdown source.
 ════════════════════════════════════════════════════════════ */
 
-(function () {
-    var toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    });
-})();
-
 /* ── Tiny markdown renderer: # ## headers, ``` fences, **bold**, *em*, `code`, plain paragraphs ── */
 function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function inlineMd(s) {
@@ -36,7 +26,7 @@ function renderMarkdown(md) {
             i++; continue;
         }
         if (line.startsWith('## ')) { html.push('<h2>' + inlineMd(line.slice(3)) + '</h2>'); i++; continue; }
-        if (line.startsWith('# '))  { html.push('<h1>' + inlineMd(line.slice(2)) + '</h1>'); i++; continue; }
+        if (line.startsWith('# '))  { html.push('<h2 class="post-heading">' + inlineMd(line.slice(2)) + '</h2>'); i++; continue; }
         if (line.trim() === '---') { html.push('<hr class="reader-hr">'); i++; continue; }
         if (line.trim() === '') { i++; continue; }
         html.push('<p>' + inlineMd(line) + '</p>');
@@ -311,15 +301,16 @@ And if your PR gets rejected or the issue gets closed by someone else, that's fi
     var current = 0;
 
     list.innerHTML = POSTS.map(function (p, i) {
-        return '<div class="post-row" data-i="' + i + '">' +
-            '<div class="post-num">' + String(i + 1).padStart(2, '0') + '</div>' +
-            '<div><div class="post-title">' + p.title + '</div><div class="post-excerpt">' + p.excerpt + '</div></div></div>';
+        return '<button type="button" class="post-row" data-i="' + i + '">' +
+            '<span class="post-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+            '<span><span class="post-title">' + p.title + '</span><span class="post-excerpt">' + p.excerpt + '</span></span></button>';
     }).join('');
 
     function show(i) {
         current = i;
         document.querySelectorAll('.post-row').forEach(function (row) {
             row.classList.toggle('active', parseInt(row.dataset.i) === i);
+            row.setAttribute('aria-current', parseInt(row.dataset.i) === i ? 'true' : 'false');
         });
         reader.innerHTML = renderMarkdown('# ' + POSTS[i].title + '\n' + POSTS[i].md) +
             '<div class="reader-nav">' +

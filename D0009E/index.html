@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,46 +8,62 @@
     <title>D0009E · Abdalla</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-    <script>
-  (function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();
-</script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pj">
 
-<header class="top-bar">
-    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
-    <span class="top-bar-center">Luleå University of Technology</span>
-    <span class="nav-course">D0009E</span>
-</header>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
 
-<div class="page">
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
+
+<main class="page" id="main">
 
     <!-- HERO -->
-    <div class="hero">
-        <span class="hero-eyebrow">Introduction to Programming in Python</span>
-        <h1 class="hero-title">Course <span class="acc">D0009E</span></h1>
-        <p class="hero-desc">
-            Introduction to Programming: Python assignments covering functions,
-            data structures, object-oriented programming, and file I/O.
-            Each task is fully interactive. Try them live below.
-        </p>
-        <div class="hero-meta">
-            <span class="meta-pill">Python</span>
-            <span class="meta-pill">Functions</span>
-            <span class="meta-pill">Data Structures</span>
-            <span class="meta-pill">OOP</span>
-            <span class="meta-pill">File I/O</span>
-            <span class="meta-pill">6 tasks</span>
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+        <p class="hero-uni">Luleå University of Technology</p>
+            <span class="hero-eyebrow">Introduction to Programming in Python</span>
+            <h1 class="hero-title">Course <span class="acc">D0009E</span></h1>
+            <p class="hero-desc">
+                Introduction to Programming: Python assignments covering functions,
+                data structures, object-oriented programming, and file I/O.
+                Each task is fully interactive. Try them live below.
+            </p>
+            <div class="hero-meta">
+                <span class="meta-pill">Python</span>
+                <span class="meta-pill">Functions</span>
+                <span class="meta-pill">Data Structures</span>
+                <span class="meta-pill">OOP</span>
+                <span class="meta-pill">File I/O</span>
+                <span class="meta-pill">6 tasks</span>
+            </div>
         </div>
-    </div>
+        <div class="stage" data-object="D0009E" data-accent="#38bdf8" aria-hidden="true"><span class="stage-fallback">06</span></div>
+    </header>
 
     <!-- ════════════════════ LAB 1 ════════════════════ -->
-    <span class="section-label">Lab 1: Functions & Calculation</span>
+    <h2 class="section-label" data-scene>Lab 1: Functions & calculation</h2>
     <div class="projects projects-section-gap">
 
         <!-- L1-T1: Loan Calculator -->
@@ -55,7 +71,7 @@
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L1 · Task 1</span>
-                    <div class="card-title">Loan Cost Calculator</div>
+                    <div class="card-title">Loan cost calculator</div>
                     <p class="card-desc">Calculates the total cost of a loan given principal, interest rate, and number of years.</p>
                     <div class="card-tags">
                         <span class="tag">Functions</span>
@@ -63,29 +79,29 @@
                         <span class="tag">f-strings</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
             <div class="demo-panel">
                 <div class="demo-label">Live Demo</div>
                 <div class="demo-grid-3">
                     <div class="demo-field">
-                        <label class="demo-field-label">Principal (kr)</label>
+                        <label class="demo-field-label" for="loanP">Principal (kr)</label>
                         <input class="demo-input" type="number" id="loanP" value="50000" min="1"
                             onkeydown="if(event.key==='Enter') calcLoan()">
                     </div>
                     <div class="demo-field">
-                        <label class="demo-field-label">Interest Rate (%)</label>
+                        <label class="demo-field-label" for="loanR">Interest Rate (%)</label>
                         <input class="demo-input" type="number" id="loanR" value="3" step="0.1" min="0"
                             onkeydown="if(event.key==='Enter') calcLoan()">
                     </div>
                     <div class="demo-field">
-                        <label class="demo-field-label">Years</label>
+                        <label class="demo-field-label" for="loanA">Years</label>
                         <input class="demo-input" type="number" id="loanA" value="10" min="1"
                             onkeydown="if(event.key==='Enter') calcLoan()">
                     </div>
                 </div>
                 <button class="demo-btn" onclick="calcLoan()">Calculate</button>
-                <div class="demo-output hidden" id="loanOutput"></div>
+                <div class="demo-output hidden" id="loanOutput" aria-live="polite"></div>
             </div>
             <div class="code-body">
                 <div class="code-filename">L1_-_T1.py</div>
@@ -102,7 +118,7 @@ kostnad(50000, 0.03, 10)</code></pre>
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L1 · Task 2</span>
-                    <div class="card-title">Recipe Scaler</div>
+                    <div class="card-title">Recipe scaler</div>
                     <p class="card-desc">Scales a cake recipe to any number of people. Calculates ingredient amounts, mixing time, baking time, and total time.</p>
                     <div class="card-tags">
                         <span class="tag">Functions</span>
@@ -110,16 +126,16 @@ kostnad(50000, 0.03, 10)</code></pre>
                         <span class="tag">Return values</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
             <div class="demo-panel">
                 <div class="demo-label">Live Demo</div>
                 <div class="demo-field demo-field-narrow">
-                    <label class="demo-field-label">Number of people: <span id="recipeVal">4</span></label>
+                    <label class="demo-field-label" for="recipeP">Number of people: <span id="recipeVal">4</span></label>
                     <input class="demo-slider" type="range" id="recipeP" min="1" max="20" value="4"
                         oninput="document.getElementById('recipeVal').textContent=this.value; calcRecipe()">
                 </div>
-                <div class="demo-output demo-output-spaced" id="recipeOutput"></div>
+                <div class="demo-output demo-output-spaced" id="recipeOutput" aria-live="polite"></div>
             </div>
             <div class="code-body">
                 <div class="code-filename">L1_-_T2.py</div>
@@ -150,7 +166,7 @@ print_recipe(4)</code></pre>
     </div>
 
     <!-- ════════════════════ LAB 3 ════════════════════ -->
-    <span class="section-label">Lab 3: Data Structures (Three Implementations)</span>
+    <h2 class="section-label" data-scene>Lab 3: Data structures (three implementations)</h2>
 
     <div class="comparison-note">
         <h3>Same problem, three different data structures</h3>
@@ -178,11 +194,11 @@ print_recipe(4)</code></pre>
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L3 · Approach 1</span>
-                    <div class="card-title">Word Book: Using Two Lists</div>
+                    <div class="card-title">Word book: using two lists</div>
                     <p class="card-desc">Two synchronized lists: <code class="inline-code">words[]</code> and <code class="inline-code">defs[]</code>. The position of a word in one list always matches its definition in the other.</p>
                     <div class="card-tags"><span class="tag">Parallel Lists</span><span class="tag">Index sync</span><span class="tag">O(n) lookup</span></div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
             <div class="code-body">
                 <div class="code-filename">L3-1.py</div>
@@ -232,11 +248,11 @@ main_lists()</code></pre>
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L3 · Approach 2</span>
-                    <div class="card-title">Word Book: Using Tuples</div>
+                    <div class="card-title">Word book: using tuples</div>
                     <p class="card-desc">Stores each entry as a <code class="inline-code">(word, definition)</code> pair inside a list. More structured than parallel lists, but still requires iterating through everything to find a match.</p>
                     <div class="card-tags"><span class="tag">Tuples</span><span class="tag">List of pairs</span><span class="tag">O(n) lookup</span></div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
             <div class="code-body">
                 <div class="code-filename">L3-3.py</div>
@@ -285,11 +301,11 @@ main_tuples()</code></pre>
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L3 · Approach 3</span>
-                    <div class="card-title">Word Book: Using a Dictionary <span class="card-title-badge">★ Live Demo</span></div>
+                    <div class="card-title">Word book: using a dictionary <span class="card-title-badge">★ Live demo</span></div>
                     <p class="card-desc">Uses Python's built-in <code class="inline-code">dict</code>, the most natural fit. Direct key→value mapping with O(1) average lookup. The cleanest of the three.</p>
                     <div class="card-tags"><span class="tag">Dict</span><span class="tag">Hash table</span><span class="tag">O(1) lookup</span></div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
             <div class="demo-panel">
                 <div class="demo-label">Live Demo</div>
@@ -308,7 +324,7 @@ main_tuples()</code></pre>
                         <button class="demo-btn demo-btn-sm demo-btn-danger" onclick="dictDelete()">Delete</button>
                     </div>
                 </div>
-                <div class="demo-output hidden" id="dictMsg"></div>
+                <div class="demo-output hidden" id="dictMsg" aria-live="polite"></div>
                 <div class="dict-entries" id="dictEntries"></div>
             </div>
             <div class="code-body">
@@ -353,14 +369,14 @@ main_dic()</code></pre>
     </div>
 
     <!-- ════════════════════ LAB 4 ════════════════════ -->
-    <span class="section-label">Lab 4: Object-Oriented Programming</span>
+    <h2 class="section-label" data-scene>Lab 4: Object-oriented programming</h2>
     <div class="projects">
 
         <div class="project-card">
             <div class="card-header">
                 <div class="card-header-left">
                     <span class="card-num">L4</span>
-                    <div class="card-title">Phonebook: OOP with File I/O</div>
+                    <div class="card-title">Phonebook: OOP with file I/O</div>
                     <p class="card-desc">A full phonebook class. Supports multiple names (aliases) per number, persistent save/load, and a command-line interface dispatched via lambda dict.</p>
                     <div class="card-tags">
                         <span class="tag">Class</span><span class="tag">OOP</span>
@@ -368,7 +384,7 @@ main_dic()</code></pre>
                         <span class="tag">Lambda dispatch</span>
                     </div>
                 </div>
-                <button class="code-toggle" onclick="toggleCode(this)">View Code</button>
+                <button type="button" class="code-toggle" aria-expanded="false" onclick="toggleCode(this)">View code</button>
             </div>
 
             <div class="demo-panel">
@@ -483,8 +499,19 @@ phoneBook().run()</code></pre>
         </div>
 
     </div>
-</div>
+</main>
 
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

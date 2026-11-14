@@ -42,7 +42,7 @@
             border: none;
             cursor: pointer;
             font-size: 1.1rem;
-            color: #000;
+            color: var(--on-accent);
             font-weight: 700;
             transition: opacity 0.2s;
         }
@@ -51,7 +51,7 @@
 
         .search-hint {
             font-family: var(--font-m);
-            font-size: 0.72rem;
+            font-size: 0.875rem;
             color: var(--muted);
             max-width: 500px;
             margin: 0 auto 28px;
@@ -69,7 +69,8 @@
 
         .chip {
             font-family: var(--font-m);
-            font-size: 0.72rem;
+            line-height: inherit;
+            font-size: 0.75rem;
             color: var(--muted);
             background: var(--surface);
             border: 1px solid var(--border);
@@ -100,7 +101,7 @@
 
         .summary-label {
             font-family: var(--font-m);
-            font-size: 0.6rem;
+            font-size: 0.75rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--accent);
@@ -134,7 +135,7 @@
         .expanded-terms {
             margin-top: 10px;
             font-family: var(--font-m);
-            font-size: 0.68rem;
+            font-size: 0.75rem;
             color: var(--muted);
         }
 
@@ -145,13 +146,13 @@
             border-radius: 100px;
             padding: 2px 9px;
             margin: 3px 3px 0 0;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
         }
 
         /* Section */
         .section-head {
             font-family: var(--font-m);
-            font-size: 0.62rem;
+            font-size: 0.75rem;
             letter-spacing: 0.18em;
             text-transform: uppercase;
             color: var(--muted);
@@ -182,7 +183,7 @@
 
         .rcard-type {
             font-family: var(--font-m);
-            font-size: 0.58rem;
+            font-size: 0.75rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             margin-bottom: 8px;
@@ -211,7 +212,7 @@
 
         .rcard-text {
             font-family: var(--font-m);
-            font-size: 0.82rem;
+            font-size: 0.875rem;
             color: var(--muted);
             line-height: 1.75;
             font-weight: 300;
@@ -219,7 +220,7 @@
 
         .rcard-meta {
             font-family: var(--font-m);
-            font-size: 0.68rem;
+            font-size: 0.75rem;
             color: var(--muted);
             margin-top: 6px;
             opacity: 0.7;
@@ -227,7 +228,7 @@
 
         .rcard-why {
             font-family: var(--font-m);
-            font-size: 0.72rem;
+            font-size: 0.75rem;
             color: var(--muted);
             margin-top: 10px;
             padding-top: 10px;
@@ -240,7 +241,7 @@
             display: inline-block;
             margin-top: 10px;
             font-family: var(--font-m);
-            font-size: 0.68rem;
+            font-size: 0.75rem;
             color: var(--accent);
             text-decoration: none;
             letter-spacing: 0.05em;

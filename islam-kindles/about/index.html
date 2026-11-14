@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +7,28 @@
     <title>About · Islam Kindles</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="stylesheet" href="../../shared/base.css">
     <link rel="stylesheet" href="../style.css">
-        <link rel="stylesheet" href="style-page.css">
+    <link rel="stylesheet" href="style-page.css">
 </head>
-<body>
+<body class="pj ik">
+
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
 
     <header class="top-bar">
         <div class="logo"><a href="../index.html">Islam<span> Kindles</span></a></div>
-            <nav class="nav-links" id="navLinks">
+            <nav class="nav-links" id="navLinks" aria-label="Islam Kindles">
         <a href="../quran/index.html">Quran</a>
         <a href="../hadith/index.html">Hadith</a>
         <a href="../debunks/index.html">Debunks</a>
@@ -23,10 +36,10 @@
         <a href="../support/index.html">Support</a>
         <a href="../search.html" class="nav-search">✦ Search</a>
     </nav>
-        <button class="menu-toggle" id="menuToggle">☰</button>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</button>
     </header>
 
-    <div class="page-shell">
+    <main class="page-shell" id="main">
         <span class="section-eyebrow fade-up">The Project</span>
         <h1 class="section-title fade-up-2">About <span class="acc">Us</span></h1>
         <p class="section-sub fade-up-3">Islam Kindles is a student portfolio project built to practice web development while creating something meaningful.</p>
@@ -48,8 +61,17 @@
                 <p>This website is part of a student portfolio, built to practice HTML, CSS, JavaScript, and website structure, while also creating something with real purpose.</p>
             </div>
         </div>
-    </div>
+    </main>
 
-    <script src="script.js"></script>
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+    <script src="../../shared/theme.js"></script>
+<script src="../../shared/motion.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

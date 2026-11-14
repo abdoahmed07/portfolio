@@ -9,58 +9,69 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Syntax highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
     <!-- Theme must be set before CSS loads to avoid flash -->
-    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
 
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pj">
 
 <!-- Fixed navigation bar -->
-<nav class="topnav">
-    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
-        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-    </button>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
 </nav>
 
-<div class="page">
+<main class="page" id="main">
 
     <!-- HERO -->
-    <div class="hero">
-        <span class="hero-eyebrow">Veryl · Digital Design · LTU</span>
-        <h1 class="hero-title">D0011E<span class="acc">.</span></h1>
-        <p class="hero-desc">
-            Built a complete 32-bit MIPS processor from scratch, starting from a single
-            logic gate, assembling a full adder, scaling to a 32-bit ALU, and finishing
-            with a CPU that executes real assembly programs including an integer division
-            routine. Written in Veryl, a modern hardware description language that
-            compiles to SystemVerilog.
-        </p>
-        <div class="hero-meta">
-            <span class="meta-pill">Veryl</span>
-            <span class="meta-pill">SystemVerilog</span>
-            <span class="meta-pill">MIPS</span>
-            <span class="meta-pill">Digital Logic</span>
-            <span class="meta-pill">HDL</span>
-            <span class="meta-pill">Verilator</span>
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+        <p class="hero-uni">Luleå University of Technology</p>
+            <span class="hero-eyebrow">Veryl · Digital Design · LTU</span>
+            <h1 class="hero-title">D0011E<span class="acc">.</span></h1>
+            <p class="hero-desc">
+                Built a complete 32-bit MIPS processor from scratch, starting from a single
+                logic gate, assembling a full adder, scaling to a 32-bit ALU, and finishing
+                with a CPU that executes real assembly programs including an integer division
+                routine. Written in Veryl, a modern hardware description language that
+                compiles to SystemVerilog.
+            </p>
+            <div class="hero-meta">
+                <span class="meta-pill">Veryl</span>
+                <span class="meta-pill">SystemVerilog</span>
+                <span class="meta-pill">MIPS</span>
+                <span class="meta-pill">Digital Logic</span>
+                <span class="meta-pill">HDL</span>
+                <span class="meta-pill">Verilator</span>
+            </div>
         </div>
-    </div>
+        <div class="stage" data-object="D0011E" data-accent="#a78bfa" aria-hidden="true"><span class="stage-fallback">11</span></div>
+    </header>
 
     <!-- LAB PROGRESSION -->
-    <span class="section-label">Course Labs</span>
+    <h2 class="section-label" data-scene>Course labs</h2>
     <div class="labs-table">
         <div class="lab-row">
             <div class="lab-num">L2</div>
@@ -100,13 +111,13 @@
     </div>
 
     <!-- INTERACTIVE DEMOS -->
-    <span class="section-label">Interactive Demos</span>
+    <h2 class="section-label" data-scene>Interactive demos</h2>
 
     <div class="tabs">
-        <button class="tab-btn active" data-tab="bcd">Logic Checker</button>
+        <button class="tab-btn active" data-tab="bcd">Logic checker</button>
         <button class="tab-btn" data-tab="alu">ALU</button>
-        <button class="tab-btn" data-tab="mips">MIPS Emulator</button>
-        <button class="tab-btn" data-tab="code">Source Code</button>
+        <button class="tab-btn" data-tab="mips">MIPS emulator</button>
+        <button class="tab-btn" data-tab="code">Source code</button>
     </div>
 
     <!-- ── BCD CHECKER (Lab 2) ── -->
@@ -228,13 +239,13 @@
             update live.
         </p>
         <div class="mips-wrapper">
-            <div class="mips-panel">
+            <div class="mips-panel dark-panel">
                 <div class="mips-toolbar">
                     <div class="mips-toolbar-left">
                         <button class="mips-ctrl-btn" id="mipsStep">▶ Step</button>
                         <button class="mips-ctrl-btn" id="mipsRun">⏩ Run</button>
                         <button class="mips-ctrl-btn" id="mipsReset">↺ Reset</button>
-                        <select class="mips-prog-sel" id="mipsProg">
+                        <select class="mips-prog-sel" id="mipsProg" aria-label="Program">
                             <option value="sum">Sum 1+2+3+4+5</option>
                             <option value="div">Division 12 ÷ 5</option>
                         </select>
@@ -275,8 +286,19 @@
         </div>
     </div>
 
-</div><!-- /page -->
+</main>
 
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

@@ -4,16 +4,6 @@
    others to solve.
 ════════════════════════════════════════════════════════════ */
 
-/* ── Theme toggle & tabs ──────────────────────────────────── */
-(function () {
-    var toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    });
-})();
 document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
         document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
@@ -318,7 +308,7 @@ Steganography hides data in plain sight inside normal-looking files. Office docu
         });
         content.innerHTML =
             '<div class="wu-badge-row"><span class="wu-badge">' + w.cat + '</span><span class="wu-badge pts">' + w.pts + ' pts</span></div>' +
-            '<h1>PicoCTF, ' + w.title + '</h1>' + renderMarkdown(w.md);
+            '<h2 class="wu-heading">PicoCTF, ' + w.title + '</h2>' + renderMarkdown(w.md);
         content.scrollTop = 0;
     }
 

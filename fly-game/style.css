@@ -79,7 +79,7 @@ html, body {
     font-size: 0.6rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.6);
 }
 
 .hud-val {
@@ -182,18 +182,6 @@ html, body {
 .ctrl-btn--ghost:hover {
     background: rgba(255,255,255,0.08);
     color: var(--text);
-}
-
-.ctrl-btn--danger {
-    background: transparent;
-    color: var(--hit);
-    border-color: rgba(230,57,70,0.3);
-}
-
-.ctrl-btn--danger:hover {
-    background: var(--hit);
-    color: #fff;
-    border-color: var(--hit);
 }
 
 .ctrl-icon { font-size: 0.9rem; }
@@ -307,7 +295,7 @@ html, body {
     font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.6);
 }
 
 .overlay-title {
@@ -322,7 +310,7 @@ html, body {
 .overlay-sub {
     font-family: var(--font-m);
     font-size: 0.9rem;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,0.62);
     font-weight: 300;
     line-height: 1.7;
     max-width: 280px;
@@ -458,7 +446,7 @@ html, body {
 .mode-desc {
     font-family: var(--font-m);
     font-size: 0.72rem;
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.6);
     font-weight: 300;
     line-height: 1.5;
     display: block;
@@ -467,7 +455,7 @@ html, body {
 /* ─── DANGER BUTTON ────────────────────────────────────────── */
 .ctrl-btn--danger {
     background: transparent;
-    color: rgba(230, 57, 70, 0.7);
+    color: #ff7b85;
     border-color: rgba(230, 57, 70, 0.3);
 }
 
@@ -539,8 +527,8 @@ body.shake { animation: shake 0.35s ease; }
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.72);
+    background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.08);
     padding: 6px 12px;
     border-radius: 8px;
@@ -557,3 +545,13 @@ body.shake { animation: shake 0.35s ease; }
 /* ─── EXTRACTED INLINE STYLES ────────────────────────────── */
 .overlay-title--sm  { font-size: clamp(2rem, 6vw, 3.5rem); }
 .btn-row-centered   { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+/* Shared site rules this page keeps while holding on to its own look */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important; scroll-behavior: auto !important;
+    }
+}

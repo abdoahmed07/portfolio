@@ -23,7 +23,8 @@ function toggleCode(btn) {
     const isOpen = body.classList.contains("open");
     body.classList.toggle("open", !isOpen);
     btn.classList.toggle("open", !isOpen);
-    btn.textContent = isOpen ? "View Code" : "Hide Code";
+    btn.textContent = isOpen ? "View code" : "Hide code";
+    btn.setAttribute("aria-expanded", String(!isOpen));
 }
 
 function switchCodeTab(btn, targetId) {
@@ -312,8 +313,7 @@ function drawGame(){
     const exits=cr.exits.map((e,i)=>e!==null?DIR_NAMES[i]:null).filter(Boolean);
     const descEl=document.getElementById('gameDesc');
     if(descEl){
-        const col=cr.color==='#FFFF00'?'#cccc00':cr.color;
-        descEl.innerHTML=`You are in the <strong style="color:${col}">${escapeHTML(cr.name)}</strong> room. `+(exits.length?`Exits: <strong>${exits.join(' · ')}</strong>. Use WASD to navigate.`:`No exits from here.`);
+        descEl.innerHTML=`You are in the <span class="room-swatch" style="background:${cr.color}" aria-hidden="true"></span><strong>${escapeHTML(cr.name)}</strong> room. `+(exits.length?`Exits: <strong>${exits.join(' · ')}</strong>. Use WASD to navigate.`:`No exits from here.`);
     }
     document.getElementById('statusRoom').textContent=`Current room: ${cr.name}`;
     document.getElementById('statusExits').textContent=exits.length?`Exits: ${exits.join('  ·  ')}`:'No exits';

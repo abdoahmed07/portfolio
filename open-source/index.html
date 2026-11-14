@@ -9,51 +9,61 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pj">
 
-<nav class="topnav">
-    <a href="../portfolio-site/index.html" class="back-to-portfolio">← Portfolio</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle light / dark">
-        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-    </button>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
 </nav>
 
-<div class="page">
+<main class="page" id="main">
 
-    <div class="hero">
-        <span class="hero-eyebrow">Open Source · TypeScript · Summer 2026</span>
-        <h1 class="hero-title">Contributing to <span class="acc">socket.io</span></h1>
-        <p class="hero-desc">
-            Fixed a bug where pending acknowledgement callbacks were silently dropped when a
-            client disconnected before the server could respond. Found it while building the
-            <a href="../code-review/index.html" style="color:var(--accent)">real-time code review tool</a>,
-            read the contribution guide first, wrote a test, and had the PR merged into a
-            library used by millions of applications.
-        </p>
-        <div class="live-links">
-            <a class="live-link" href="https://github.com/socketio/socket.io/pulls" target="_blank" rel="noopener noreferrer">View merged PR ↗</a>
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+            <span class="hero-eyebrow">Open Source · TypeScript · Summer 2026</span>
+            <h1 class="hero-title">Contributing to <span class="acc">socket.io</span></h1>
+            <p class="hero-desc">
+                Fixed a bug where pending acknowledgement callbacks were silently dropped when a
+                client disconnected before the server could respond. Found it while building the
+                <a href="../code-review/index.html" style="color:var(--accent)">real-time code review tool</a>,
+                read the contribution guide first, wrote a test, and had the PR merged into a
+                library used by millions of applications.
+            </p>
+            <div class="live-links">
+                <a class="live-link" href="https://github.com/socketio/socket.io/pulls" target="_blank" rel="noopener noreferrer">View merged PR ↗</a>
+            </div>
+            <div class="hero-meta">
+                <span class="meta-pill">socket.io</span>
+                <span class="meta-pill">TypeScript</span>
+                <span class="meta-pill">Bug Fix</span>
+                <span class="meta-pill">Merged PR</span>
+            </div>
         </div>
-        <div class="hero-meta">
-            <span class="meta-pill">socket.io</span>
-            <span class="meta-pill">TypeScript</span>
-            <span class="meta-pill">Bug Fix</span>
-            <span class="meta-pill">Merged PR</span>
-        </div>
-    </div>
+        <div class="stage" data-object="open-source" data-accent="#eab308" aria-hidden="true"><span class="stage-fallback">18</span></div>
+    </header>
 
     <!-- ── TIMELINE ── -->
-    <span class="section-label">How It Went</span>
+    <h2 class="section-label" data-scene>How it went</h2>
     <div class="timeline">
         <div class="tl-step">
             <div class="tl-marker-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
@@ -93,8 +103,8 @@
     </div>
 
     <!-- ── THE FIX ── -->
-    <span class="section-label">The Fix</span>
-    <div class="diff-box">
+    <h2 class="section-label" data-scene>The fix</h2>
+    <div class="diff-box dark-panel">
         <div class="diff-header">lib/socket.ts</div>
         <div class="diff-body">
             <div class="diff-line diff-ctx">  private _onclose(reason: DisconnectReason, description?: CloseDescription) {</div>
@@ -112,7 +122,7 @@
             <div class="diff-line diff-ctx">    this.emit("disconnecting", reason, description);</div>
         </div>
     </div>
-    <div class="diff-box">
+    <div class="diff-box dark-panel">
         <div class="diff-header">test/socket.io.ts</div>
         <div class="diff-body">
             <div class="diff-line diff-add">it("should call ack callback with error when socket disconnects before ack", (done) => {</div>
@@ -131,21 +141,21 @@
     </div>
 
     <!-- ── BUG SIMULATOR ── -->
-    <span class="section-label">See The Bug</span>
+    <h2 class="section-label" data-scene>See the bug</h2>
     <p style="font-size:0.82rem;color:var(--muted);line-height:1.65;margin-bottom:20px;">A small simulation of the actual race condition. Toggle the switch to compare socket.io's behavior before and after the fix, then trigger the same disconnect-before-ack sequence both ways.</p>
     <div class="sim-panel">
         <div class="sim-toggle-row">
-            <button class="sim-switch on" id="fixSwitch"></button>
+            <button type="button" class="sim-switch on" id="fixSwitch" role="switch" aria-checked="true" aria-labelledby="fixLabel"></button>
             <span class="sim-toggle-label" id="fixLabel">Fixed (patched _onclose)</span>
         </div>
         <div class="sim-scenario">
             <button class="sim-btn" id="simRun">▶ Emit with ack, then disconnect</button>
         </div>
-        <div class="sim-status pending" id="simStatus"></div>
+        <div class="sim-status pending" id="simStatus" aria-live="polite"></div>
     </div>
 
     <!-- ── PR DESCRIPTION ── -->
-    <span class="section-label">PR Description</span>
+    <h2 class="section-label" data-scene>PR description</h2>
     <div class="pr-card">
         <div class="pr-title">fix: call pending ack callbacks with error on disconnect</div>
         <div class="pr-meta">Merged · week 6</div>
@@ -157,7 +167,7 @@
     </div>
 
     <!-- ── LEARNED ── -->
-    <span class="section-label">What I Learned</span>
+    <h2 class="section-label" data-scene>What I learned</h2>
     <div class="learned-list">
         <div class="learned-item">
             <b>Reading a real codebase is nothing like reading tutorials.</b>
@@ -173,8 +183,19 @@
         </div>
     </div>
 
-</div><!-- /page -->
+</main>
 
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
 <script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>
