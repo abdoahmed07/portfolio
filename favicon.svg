@@ -1,4 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#ff6b2b"/>
-  <text x="16" y="24" font-family="Arial Black, Arial, sans-serif" font-size="22" font-weight="900" fill="#ffffff" text-anchor="middle">A</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Abdalla: AB on the site's orange. The letters are drawn as lines so they look the same in every browser. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0703a"/>
+      <stop offset="1" stop-color="#c2410c"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <g fill="none" stroke="#ffffff" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 47 L20.5 17 L31 47"/>
+    <path d="M14.5 36.5 H26.5"/>
+    <path d="M38 17 V47 H46.5 a8 8 0 0 0 0 -16 H38"/>
+    <path d="M38 17 H45 a7 7 0 0 1 0 14"/>
+  </g>
 </svg>

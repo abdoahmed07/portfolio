@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Airport Simulator: a plane -->
+  <rect width="64" height="64" rx="14" fill="#0f766e"/>
+  <path d="M32 8c2.5 0 4 2.5 4 5v13l18 10v5l-18-5v10l5 4v4l-9-2-9 2v-4l5-4V36l-18 5v-5l18-10V13c0-2.5 1.5-5 4-5z" fill="#fff"/>
+</svg>
