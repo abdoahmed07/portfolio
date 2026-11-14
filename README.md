@@ -20,7 +20,7 @@ If you're looking at this for work or an application: I'm a first-year student w
 /
 ├── portfolio-site/         ← The main portfolio index page + About page
 ├── shared/                 ← Styles, theme, scroll and 3D code every page uses
-│   └── gl/                 ← Three.js studio, the 21 project objects, the hub's chrome form
+│   └── gl/                 ← Three.js studio, the 22 project objects, the hub's chrome form
 ├── name-checker/           ← Project 01
 ├── fly-game/               ← Project 02
 ├── islam-kindles/          ← Project 03
@@ -41,7 +41,8 @@ If you're looking at this for work or an application: I'm a first-year student w
 ├── open-source/            ← Project 18, a merged pull request to socket.io
 ├── technical-writing/      ← Project 19, five technical blog posts
 ├── problem-solving/        ← Project 20, LeetCode practice with an animated graph demo
-└── kent/                   ← Project 21, Kent card game, the real React build in app/
+├── kent/                   ← Project 21, Kent card game, the real React build in app/
+└── streak/                 ← Project 22, Streak habit tracker, the real app build in app/
 ```
 
 Each project folder has its own page, script and styles, and they all share `shared/`. There's no build step. Serve the repo root (see below) so the `../shared/` paths work.
@@ -274,6 +275,16 @@ A card game I grew up playing, rebuilt for the browser. Collect four of a kind, 
 The game rules live in a small TypeScript engine with 81 tests, separate from the React app. The showcase page embeds the real production build (in `kent/app/`) and shows the rule files.
 
 **Tech:** TypeScript · React 19 · Vite · Tailwind CSS · Zustand · Framer Motion · Vitest
+
+---
+
+### 22. Streak
+
+A calm, minimal habit tracker. One tap a day keeps a streak going, and check-ins sync between devices through Supabase. Rest days and excused days keep a streak alive without adding to it, weekly habits ("4× a week") count weeks instead of days, and it installs on a phone like an app and works offline. A guided chat helps set up a new habit. Still in progress.
+
+The showcase page has a four-week calendar you can tap, with the numbers worked out by the app's real `streak.ts` (bundled into `streak/streak-rules.js`), the production build of the app in `streak/app/` (it needs an account), and the source.
+
+**Tech:** TypeScript · React 19 · Vite · Supabase (Postgres, auth, row-level security) · PWA · Vitest
 
 ---
 

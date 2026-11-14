@@ -480,6 +480,22 @@ export function builders(T, M, RoundedBox, small) {
                 g.add(card);
             });
             g.rotation.set(-0.2, 0.25, 0);
+        },
+
+        /* four weeks of check-ins: done days raised, a rest day flat, today lit */
+        'streak': function (g, A) {
+            var days = '1111101 1101111 1111111 11112..';
+            add(g, rbox(2.25, 0.08, 1.38, 0.04), M.graphite, [0, -0.04, 0]);
+            days.split(' ').forEach(function (week, r) {
+                week.split('').forEach(function (c, k) {
+                    var x = (k - 3) * 0.29, z = (r - 1.5) * 0.29;
+                    if (c === '1') add(g, rbox(0.23, 0.12, 0.23, 0.04), M.ceramic, [x, 0.06, z]);
+                    else if (c === '2') add(g, rbox(0.23, 0.2, 0.23, 0.04), A.glow, [x, 0.1, z]);
+                    else if (c === '0') add(g, rbox(0.23, 0.03, 0.23, 0.012), M.brushed, [x, 0.015, z]);
+                    else add(g, rbox(0.23, 0.02, 0.23, 0.01), M.satin, [x, 0.01, z]);
+                });
+            });
+            g.rotation.set(0.55, -0.4, 0);
         }
     };
 }

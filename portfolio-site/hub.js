@@ -27,7 +27,7 @@
         });
         if (tag === 'All') {
             allItems.forEach(function (item) { item.hidden = false; });
-            countEl.textContent = '21 projects';
+            countEl.textContent = '22 projects';
         } else {
             var n = 0;
             allItems.forEach(function (item) {

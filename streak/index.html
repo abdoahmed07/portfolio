@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streak · Abdalla</title>
+    <meta name="description" content="Streak: a calm, minimal habit tracker. React, TypeScript and Supabase, installable as an app, with streak rules for rest days, excused days and weekly targets.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="pj">
+
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
+
+<main class="page" id="main">
+
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+            <span class="hero-eyebrow">TypeScript · Full-stack app</span>
+            <h1 class="hero-title">Streak<span class="acc">.</span></h1>
+            <p class="hero-desc">
+                A calm, minimal habit tracker. One tap a day keeps a streak going, and it syncs
+                between your phone and laptop. Rest days and excused days keep a streak alive
+                without adding to it, so one bad day doesn't wipe out a month. It installs on a
+                phone like an app and works offline. Still in progress.
+            </p>
+            <div class="hero-meta">
+                <span class="meta-pill">TypeScript</span>
+                <span class="meta-pill">React 19</span>
+                <span class="meta-pill">Supabase</span>
+                <span class="meta-pill">PWA</span>
+                <span class="meta-pill">Vite</span>
+                <span class="meta-pill">Vitest</span>
+            </div>
+        </div>
+        <div class="stage" data-object="streak" data-accent="#4ade80" aria-hidden="true"><span class="stage-fallback">22</span></div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="rules">▶ Try the streak rules</button>
+        <button class="tab-btn" data-tab="app">The real app</button>
+        <button class="tab-btn" data-tab="code">Source code</button>
+    </div>
+
+    <!-- ── STREAK RULES DEMO ── -->
+    <div class="tab-content active" id="tab-rules">
+        <p class="tab-note">
+            One habit over the last four weeks. Tap a day to change it: done, rest, excused, then
+            empty again. The numbers come from the app's real <code>streak.ts</code>, the same file
+            its tests cover. You can't change days in the future, and today doesn't count as missed
+            until it's over.
+        </p>
+
+        <div class="sk-panel dark-panel">
+            <div class="sk-bar">
+                <div class="sk-seg" id="skSchedule" role="group" aria-label="Schedule">
+                    <button type="button" class="sk-seg-btn" data-schedule="daily" aria-pressed="true">Every day</button>
+                    <button type="button" class="sk-seg-btn" data-schedule="weekly" aria-pressed="false">4× a week</button>
+                </div>
+                <div class="sk-bar-right">
+                    <button type="button" class="sk-btn" id="skSample">Sample month</button>
+                    <button type="button" class="sk-btn" id="skClear">Clear</button>
+                </div>
+            </div>
+
+            <div class="sk-body">
+                <div class="sk-cal">
+                    <div class="sk-week sk-head" aria-hidden="true">
+                        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                    </div>
+                    <div id="skGrid"></div>
+                    <ul class="sk-key">
+                        <li><i class="sk-day is-done"></i>Done</li>
+                        <li><i class="sk-day is-rest"></i>Rest day</li>
+                        <li><i class="sk-day is-excused"></i>Excused</li>
+                        <li><i class="sk-day is-missed"></i>Missed</li>
+                        <li><i class="sk-day is-open"></i>Today</li>
+                    </ul>
+                </div>
+
+                <dl class="sk-stats" aria-live="polite">
+                    <div><dd id="skCurrent">0</dd><dt id="skCurrentLbl">Current streak</dt></div>
+                    <div><dd id="skBest">0</dd><dt>Best streak</dt></div>
+                    <div><dd id="skTotal">0</dd><dt>Times done</dt></div>
+                    <div><dd id="skExtra">0</dd><dt id="skExtraLbl">Rest days left this month</dt></div>
+                </dl>
+            </div>
+            <p class="sk-msg" id="skMsg"></p>
+        </div>
+
+        <div class="ds-grid">
+            <div class="ds-card">
+                <div class="ds-icon">▬</div>
+                <div class="ds-title">Rest days</div>
+                <div class="ds-desc">A few per month, set per habit. A rest day bridges the streak without adding to it. Rest days over the allowance count as misses, so the numbers always follow the current settings.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">•</div>
+                <div class="ds-title">Excused days</div>
+                <div class="ds-desc">For days you couldn't, like being sick. They also keep the streak alive. For a weekly habit they count toward the week's target.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">7</div>
+                <div class="ds-title">Weekly habits</div>
+                <div class="ds-desc">"4× a week" counts weeks, not days. The current week can only add to the streak. In the first week the target is capped at the days left, so starting on a Saturday isn't an instant miss.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">↺</div>
+                <div class="ds-title">Nothing stored</div>
+                <div class="ds-desc">Streaks are never saved. They're worked out from the check-ins every time, so a backfilled day or a changed setting can't leave a stale number behind.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── THE REAL APP ── -->
+    <div class="tab-content" id="tab-app">
+        <p class="tab-note">
+            The production build of the app. It needs an account,
+            since your habits sync through Supabase and every account only sees its own data.
+            For the full experience, open it on a phone and add it to the home screen.
+        </p>
+        <div class="app-wrap">
+            <div class="app-phone dark-panel">
+                <iframe class="app-frame" src="app/index.html" title="Streak habit tracker" loading="lazy"></iframe>
+            </div>
+        </div>
+        <p class="app-open"><a href="app/index.html" target="_blank" rel="noopener">Open Streak in its own tab</a></p>
+    </div>
+
+    <!-- ── CODE ── -->
+    <div class="tab-content" id="tab-code">
+        <p class="tab-note">
+            The streak maths and the new-habit chat are pure TypeScript with no UI and no clock,
+            which makes them easy to test. 23 tests cover them.
+        </p>
+        <div class="file-tabs">
+            <button class="file-tab active" data-file="streak">streak.ts</button>
+            <button class="file-tab" data-file="streakTest">streak.test.ts</button>
+            <button class="file-tab" data-file="dates">dates.ts</button>
+            <button class="file-tab" data-file="habitFlow">habitFlow.ts</button>
+            <button class="file-tab" data-file="schema">schema.sql</button>
+        </div>
+        <div class="code-viewer">
+            <pre><code id="codeBlock" class="language-typescript"></code></pre>
+        </div>
+    </div>
+
+    <!-- ── NOTES ── -->
+    <h2 class="section-label" data-scene>How it's built</h2>
+    <div class="learned-list">
+        <div class="learned-item">
+            <b>Taps show at once, then sync.</b>
+            <p>A check-in is shown straight away, queued on the device and sent to Supabase. If it fails, a notice offers Retry, and the queue also retries when you're back online or reopen the app. It even survives a reload.</p>
+        </div>
+        <div class="learned-item">
+            <b>Fast start, works offline.</b>
+            <p>The last loaded data is kept on the device, so Today opens instantly and works without a connection. Fresh data replaces it as soon as the network answers.</p>
+        </div>
+        <div class="learned-item">
+            <b>Private by default.</b>
+            <p>Row-level security in Postgres means each account can only read and write its own habits. The browser only ever has the public anon key.</p>
+        </div>
+        <div class="learned-item">
+            <b>Never colour alone.</b>
+            <p>Rest days carry a bar and excused days a dot, every day in the heatmap has a label, and muted text is checked for contrast.</p>
+        </div>
+    </div>
+
+</main>
+
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
+<script src="streak-rules.js"></script>
+<script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
+</body>
+</html>

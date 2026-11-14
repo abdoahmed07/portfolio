@@ -1,0 +1,111 @@
+/* Page accent. Everything shared (tokens, nav, hero, tabs, code viewer) is in shared/base.css. */
+:root { --accent: #4ade80; --accent-dark: #4ade80; }
+[data-theme="light"] { --accent: #15803d; }
+
+/* ── Tabs ── */
+.tab-content { display: none; animation: fadeUp 0.35s ease both; }
+.tab-content.active { display: block; }
+.tab-note code { color: var(--accent-text); font-family: var(--font-mono); font-size: 0.9em; }
+
+/* ── Streak rules demo (dark, like the app) ── */
+.sk-panel {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0e0f11;
+    margin-bottom: 24px;
+}
+.sk-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    padding: 12px 16px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02);
+}
+.sk-bar-right { display: flex; gap: 8px; }
+.sk-seg { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.sk-seg-btn, .sk-btn {
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
+    background: transparent; border: 0; padding: 7px 14px; cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+}
+.sk-seg-btn + .sk-seg-btn { border-left: 1px solid var(--border); }
+.sk-seg-btn[aria-pressed="true"] { color: var(--accent); background: var(--accent-dim); }
+.sk-btn { border: 1px solid var(--border); border-radius: 8px; }
+.sk-seg-btn:hover, .sk-btn:hover { color: var(--text); }
+
+.sk-body {
+    display: grid; grid-template-columns: minmax(0, 440px) minmax(200px, 1fr); gap: 40px;
+    padding: 24px;
+}
+.sk-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 8px; }
+.sk-head span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); text-align: center; }
+
+.sk-day {
+    position: relative; aspect-ratio: 1; border-radius: 10px; border: 1px solid transparent;
+    background: #22262b; color: #8a8f98; font: 500 0.8rem var(--font-mono);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+    transition: transform 0.15s, background 0.15s;
+}
+.sk-day:not(:disabled):hover { transform: translateY(-1px); }
+.sk-day:active:not(:disabled) { transform: scale(0.96); }
+.sk-day:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sk-day.is-done    { background: #4ade80; color: #06210f; }
+.sk-day.is-rest    { background: #5d6b7e; color: #e8e9ea; }
+.sk-day.is-excused { background: #a07a2c; color: #fff8e6; }
+.sk-day.is-missed  { background: #22262b; }
+.sk-day.is-open    { background: transparent; border-color: #4ade80; color: #e8e9ea; }
+.sk-day.is-future, .sk-day.is-before { background: transparent; border-color: #24272c; color: #3d4148; cursor: default; }
+/* never colour alone: rest gets a bar, excused a dot, the same marks the app uses */
+.sk-day.is-rest::after    { content: ''; position: absolute; left: 22%; right: 22%; bottom: 16%; height: 3px; border-radius: 2px; background: rgba(14,15,17,0.75); }
+.sk-day.is-excused::after { content: ''; position: absolute; bottom: 14%; width: 5px; height: 5px; border-radius: 50%; background: rgba(14,15,17,0.75); }
+.sk-day.is-today span { text-decoration: underline; text-underline-offset: 3px; }
+
+.sk-key {
+    list-style: none; padding: 0; margin: 16px 0 0;
+    display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.75rem; color: var(--muted);
+}
+.sk-key li { display: flex; align-items: center; gap: 8px; }
+.sk-key .sk-day { width: 18px; height: 18px; border-radius: 5px; cursor: default; }
+.sk-key .sk-day::after { bottom: 3px; }
+.sk-key .sk-day.is-rest::after { height: 2px; }
+.sk-key .sk-day.is-excused::after { width: 3px; height: 3px; }
+
+.sk-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 16px; align-content: start; margin: 0; }
+.sk-stats div { display: flex; flex-direction: column; }
+.sk-stats dt { order: 2; font-size: 0.75rem; color: var(--muted); line-height: 1.35; margin-top: 4px; }
+.sk-stats dd { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 1.9rem; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+.sk-stats div:first-child dd { color: #4ade80; }
+.sk-msg { min-height: 1.4em; margin: 0; padding: 0 24px 16px; font-size: 0.8rem; color: #e0b660; }
+
+/* ── The real app ── */
+.app-wrap { display: flex; justify-content: center; }
+.app-phone {
+    width: 400px; max-width: 100%;
+    border: 1px solid var(--border); border-radius: 28px; overflow: hidden;
+    background: #0e0f11; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.5);
+}
+.app-frame { display: block; width: 100%; height: 760px; border: 0; }
+.app-open { margin-top: 12px; font-size: 0.875rem; text-align: center; }
+.app-open a { color: var(--accent-text); }
+
+/* ── Rules cards ── */
+.ds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ds-card { transition: border-color 0.2s; }
+.ds-card:hover { border-color: var(--accent); }
+.ds-icon { font-size: 1.4rem; margin-bottom: 12px; color: var(--accent-text); }
+.ds-title { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; color: var(--text); }
+.ds-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 760px) {
+    .sk-body { grid-template-columns: 1fr; gap: 24px; padding: 16px; }
+    .sk-week { gap: 5px; margin-bottom: 5px; }
+    .sk-day { border-radius: 8px; font-size: 0.72rem; }
+    .ds-grid { grid-template-columns: 1fr; }
+    .app-frame { height: 680px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .sk-day { transition: none; }
+}
