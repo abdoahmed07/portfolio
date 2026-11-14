@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kent · Abdalla</title>
+    <meta name="description" content="Kent: a card game from my childhood about secret signals, rebuilt for the browser in TypeScript and React. You and a bot partner against bot teams.">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="../shared/base.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="pj">
+
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Main">
+    <span class="site-nav-name">Abdalla</span>
+    <div class="site-nav-right">
+        <a href="../portfolio-site/index.html" class="site-nav-link"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 10H4M10 16l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
+    </div>
+</nav>
+
+<main class="page" id="main">
+
+    <header class="hero" data-scene="hero">
+        <div class="hero-text">
+            <span class="hero-eyebrow">TypeScript · Card game</span>
+            <h1 class="hero-title">Kent<span class="acc">!</span></h1>
+            <p class="hero-desc">
+                A card game I grew up playing. Collect four of a kind, then secretly signal your
+                partner with a hand gesture before the other team catches you. It only ever worked
+                with everyone around one table, so I rebuilt it for the browser. Right now it's you
+                and a bot partner against bot teams. Still in progress: I'm tuning the rules,
+                the bots and the design.
+            </p>
+            <div class="hero-meta">
+                <span class="meta-pill">TypeScript</span>
+                <span class="meta-pill">React 19</span>
+                <span class="meta-pill">Vite</span>
+                <span class="meta-pill">Tailwind CSS</span>
+                <span class="meta-pill">Zustand</span>
+                <span class="meta-pill">Vitest</span>
+            </div>
+        </div>
+        <div class="stage" data-object="kent" data-accent="#f0c766" aria-hidden="true"><span class="stage-fallback">21</span></div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="play">▶ Play</button>
+        <button class="tab-btn" data-tab="rules">How to play</button>
+        <button class="tab-btn" data-tab="code">Source code</button>
+    </div>
+
+    <!-- ── PLAY ── -->
+    <div class="tab-content active" id="tab-play">
+        <p class="tab-note">
+            The real game, built from the same code as the standalone version. Pick 4, 6 or 8
+            players and how hard the bots are, then press play. Sound is on by default, the
+            speaker button in the corner mutes it.
+        </p>
+        <div class="game-panel dark-panel">
+            <iframe class="game-frame" src="app/index.html" title="Kent card game" allow="autoplay; fullscreen"></iframe>
+        </div>
+        <p class="game-open"><a href="app/index.html" target="_blank" rel="noopener">Open the game in its own tab</a></p>
+    </div>
+
+    <!-- ── RULES ── -->
+    <div class="tab-content" id="tab-rules">
+        <p class="tab-note">
+            Teams of two, partners sitting across from each other. You're at the bottom of the
+            table and your partner is the bot opposite you.
+        </p>
+        <div class="ds-grid">
+            <div class="ds-card">
+                <div class="ds-icon">♠</div>
+                <div class="ds-title">The goal</div>
+                <div class="ds-desc">Get four cards of the same rank in your 4-card hand. Four kings, four 7s, anything.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">⇄</div>
+                <div class="ds-title">Swapping</div>
+                <div class="ds-desc">Four cards lie face up in the middle. There are no turns: tap a card in your hand, then a middle card, to trade. Whoever swaps first gets it. When nobody wants to swap any more, four new cards are dealt.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">✌️</div>
+                <div class="ds-title">Signals</div>
+                <div class="ds-desc">Before each hand your team secretly picks one of four gestures as its real signal. Anyone can tap any gesture at any time and everyone sees it. Only your partner knows which one is real, the other three are bluffs.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">📣</div>
+                <div class="ds-title">KENT and COUNTER KENT</div>
+                <div class="ds-desc">Call KENT when you think your partner has four of a kind. Call COUNTER KENT when you think an opponent is signalling right now. It only counts if they really have four of a kind and tapped their real signal in the last 3 seconds. A wrong call costs your own team.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">K</div>
+                <div class="ds-title">Letters</div>
+                <div class="ds-desc">Each lost hand gives your team the next letter of K-E-N-T. The first team to spell the whole word loses. If the deck runs out before anyone calls, the hand is a draw and gets redealt.</div>
+            </div>
+            <div class="ds-card">
+                <div class="ds-icon">🤖</div>
+                <div class="ds-title">Bots</div>
+                <div class="ds-desc">Easy, Medium or Hard. Bots swap toward four of a kind, signal their partner, call KENT on a real signal and COUNTER KENT when an opponent keeps tapping the same gesture. They bluff too, so don't spam your real one.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CODE ── -->
+    <div class="tab-content" id="tab-code">
+        <p class="tab-note">
+            All the rules live in a small engine with no UI, so they can be tested on their own.
+            The React app only reads from it and draws the table. These are the rule files.
+        </p>
+        <div class="file-tabs">
+            <button class="file-tab active" data-file="kent">kent.ts</button>
+            <button class="file-tab" data-file="swapping">swapping.ts</button>
+            <button class="file-tab" data-file="dealing">dealing.ts</button>
+            <button class="file-tab" data-file="fourOfAKind">fourOfAKind.ts</button>
+            <button class="file-tab" data-file="scoring">scoring.ts</button>
+            <button class="file-tab" data-file="bots">bots.ts</button>
+        </div>
+        <div class="code-viewer">
+            <pre><code id="codeBlock" class="language-typescript"></code></pre>
+        </div>
+    </div>
+
+    <!-- ── WHY ── -->
+    <h2 class="section-label" data-scene>Why I made it</h2>
+    <div class="learned-list">
+        <div class="learned-item">
+            <b>A game from my childhood.</b>
+            <p>We played Kent around a table with friends and family, trying to sneak a signal to a partner while everyone stared at our hands. It was one of the most fun games we had, but only if you were all in the same room.</p>
+        </div>
+        <div class="learned-item">
+            <b>Rules first, screen second.</b>
+            <p>The rules are plain TypeScript with 81 tests, separate from the React app. That makes it easy to change a rule without breaking the table, and the same engine can run an online version later.</p>
+        </div>
+        <div class="learned-item">
+            <b>Next: playing with friends.</b>
+            <p>Right now it's you against bots while I get the game itself right. Online play, so friends can join from their own devices, is the next step.</p>
+        </div>
+    </div>
+
+</main>
+
+<footer class="site-footer">
+    <div class="site-footer-line">
+        <p>© 2026 Abdalla</p>
+        <p>Built with curiosity.</p>
+    </div>
+</footer>
+
+
+<script src="../shared/theme.js"></script>
+<script src="../shared/motion.js"></script>
+<script src="script.js"></script>
+<script type="module" src="../shared/gl/studio.js"></script>
+</body>
+</html>

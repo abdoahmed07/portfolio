@@ -1,0 +1,41 @@
+/* Page accent. Everything shared (tokens, nav, hero, tabs, code viewer) is in shared/base.css. */
+:root { --accent: #f0c766; --accent-dark: #f0c766; }
+[data-theme="light"] { --accent: #8a5a00; }
+
+/* ── Tabs ── */
+.tab-content { display: none; animation: fadeUp 0.35s ease both; }
+.tab-content.active { display: block; }
+
+/* ── The game ── */
+.game-panel {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0a0f0d;
+}
+.game-frame {
+    display: block;
+    width: 100%;
+    height: 840px;   /* the table needs about 830px to show your hand and the call buttons */
+    border: 0;
+}
+.game-open { margin-top: 12px; font-size: 0.875rem; }
+.game-open a { color: var(--accent-text); }
+
+/* ── Rules cards ── */
+.ds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ds-card { transition: border-color 0.2s; }
+.ds-card:hover { border-color: var(--accent); }
+.ds-icon { font-size: 1.4rem; margin-bottom: 12px; }
+.ds-title { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; color: var(--text); }
+.ds-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 680px) {
+    .ds-grid { grid-template-columns: 1fr; }
+    .game-frame { height: 780px; }
+}

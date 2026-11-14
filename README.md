@@ -20,7 +20,7 @@ If you're looking at this for work or an application: I'm a first-year student w
 /
 ├── portfolio-site/         ← The main portfolio index page + About page
 ├── shared/                 ← Styles, theme, scroll and 3D code every page uses
-│   └── gl/                 ← Three.js studio, the 20 project objects, the hub's chrome form
+│   └── gl/                 ← Three.js studio, the 21 project objects, the hub's chrome form
 ├── name-checker/           ← Project 01
 ├── fly-game/               ← Project 02
 ├── islam-kindles/          ← Project 03
@@ -40,7 +40,8 @@ If you're looking at this for work or an application: I'm a first-year student w
 ├── ctf/                    ← Project 17, PicoCTF writeups + a live SQL injection challenge
 ├── open-source/            ← Project 18, a merged pull request to socket.io
 ├── technical-writing/      ← Project 19, five technical blog posts
-└── problem-solving/        ← Project 20, LeetCode practice with an animated graph demo
+├── problem-solving/        ← Project 20, LeetCode practice with an animated graph demo
+└── kent/                   ← Project 21, Kent card game, the real React build in app/
 ```
 
 Each project folder has its own page, script and styles, and they all share `shared/`. There's no build step. Serve the repo root (see below) so the `../shared/` paths work.
@@ -263,6 +264,16 @@ Five blog posts written the same week each thing happened: setting up Node + Pos
 Weekly LeetCode practice across four weeks: arrays and hash maps, trees and recursion, and graph traversal (BFS/DFS). The showcase page includes a live animated Number of Islands demo, running the actual recursive DFS from the solution, not a re-implementation.
 
 **Tech:** Python · the classic interview patterns: hash maps, tree recursion, three-color cycle detection
+
+---
+
+### 21. Kent
+
+A card game I grew up playing, rebuilt for the browser. Collect four of a kind, then secretly signal your partner with one of four hand gestures before the other team catches you. Call KENT when your partner signals, or COUNTER KENT when you catch an opponent. Each lost hand gives your team a letter, and the first team to spell K-E-N-T loses. Right now it's you and a bot partner against bot teams, with Easy, Medium and Hard bots. Still in progress.
+
+The game rules live in a small TypeScript engine with 81 tests, separate from the React app. The showcase page embeds the real production build (in `kent/app/`) and shows the rule files.
+
+**Tech:** TypeScript · React 19 · Vite · Tailwind CSS · Zustand · Framer Motion · Vitest
 
 ---
 

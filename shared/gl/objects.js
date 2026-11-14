@@ -466,6 +466,20 @@ export function builders(T, M, RoundedBox, small) {
                 });
             });
             g.rotation.y = 0.4;
+        },
+
+        /* four of a kind, fanned out in one hand */
+        'kent': function (g, A) {
+            [-1.5, -0.5, 0.5, 1.5].forEach(function (k, i) {
+                var card = new T.Group();
+                add(card, rbox(0.82, 1.18, 0.022, 0.06), i === 3 ? M.ceramic : M.paper, [0, 0.62, 0]);
+                add(card, rbox(0.62, 0.96, 0.004, 0.04), M.satin, [0, 0.62, 0.013]);
+                add(card, extrude([[0, 0.12], [0.09, 0], [0, -0.12], [-0.09, 0]], 0.006, 0.004), i === 3 ? A.glow : M.brushed, [0, 0.62, 0.02]);
+                card.rotation.z = -k * 0.2;
+                card.position.set(k * 0.12, -0.55, i * 0.03);
+                g.add(card);
+            });
+            g.rotation.set(-0.2, 0.25, 0);
         }
     };
 }

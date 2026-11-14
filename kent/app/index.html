@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- PNG first: Safari doesn't use SVG tab icons. New file names (not just ?v=) so Safari's
+         icon cache treats them as a brand-new icon. -->
+    <link rel="icon" href="./kent-icon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="./kent-icon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="apple-touch-icon" href="./kent-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0f0d" />
+    <title>Kent</title>
+    <script>
+      // Browsers hold on to an old tab icon even after it changes. Swapping the icon links for
+      // fresh copies once the page has loaded makes the browser fetch and redraw the new one.
+      addEventListener("load", () => {
+        document.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"]').forEach((link) => {
+          const fresh = link.cloneNode();
+          fresh.href = link.href.split("?")[0] + "?v=" + Date.now();
+          link.replaceWith(fresh);
+        });
+      });
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="./assets/index-B4ZNqQ4v.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B3vFZhkV.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

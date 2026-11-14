@@ -25,11 +25,12 @@ A Playwright CLI skill lives in `.claude/skills/playwright-cli` for checking pag
 
 ## Layout
 
-- `portfolio-site/` is the hub: `index.html` (project list), `about.html`, and `hub.js` for the statement, filter and contact panel. The rest of the top-level folders are one project each, numbered 01-20 in the README and on the hub page.
+- `portfolio-site/` is the hub: `index.html` (project list), `about.html`, and `hub.js` for the statement, filter and contact panel. The rest of the top-level folders are one project each, numbered 01-21 in the README and on the hub page.
 - `shared/` holds what every page uses: `base.css`, `theme.js`, `motion.js`, and `gl/` for the 3D layer (`studio.js`, `objects.js`, `chrome.js`).
 - Each project folder is otherwise self-contained, usually `index.html` + `script.js` + `style.css`. `islam-kindles/` is the exception, a multi-page site with subfolders and its own shared `style.css` on top of `shared/base.css`.
 - `login-system/` has PHP files for the real backend. Without a PHP server it falls back to demo mode automatically.
-- `airplane-simulator/` only holds the showcase page. The C++ source and Makefile the README mentions are not in this repo.
+- `airplane-simulator/` only holds the showcase page. The C++ source lives in the separate Sides repo (`Sides/Airplane-simulator`). The demo plays recorded runs of that program from `airplane-simulator/runs/*.js`; re-record them if the C++ changes.
+- `kent/app/` is the production build of the Kent React app, copied from `Sides/Kent/apps/client/dist` after `pnpm build`. Don't edit it by hand, rebuild and copy it again. Its module script means it only runs when served, not from `file://`.
 
 ## Adding or changing a project
 
@@ -38,7 +39,7 @@ A new project touches several places by hand:
 1. The new folder with its own `index.html`, `script.js`, `style.css`. Copy the head, nav, hero and footer from an existing project page (ray-tracer is a clean one). The hero's `.stage` needs `data-object="<folder name>"`, `data-accent="<accent hex>"` and the project number as its fallback text.
 2. An object builder in `shared/gl/objects.js`, keyed by the folder name. Without one the stage stays empty.
 3. A `<li class="project-item" data-num="NN">` entry in `portfolio-site/index.html`, with its own `.stage` (same `data-object` and `data-accent`), `data-glow` and `style="--c:<accent>"`. Its `.project-tag` text must exactly match a `data-tag` on a `.filter-btn` in the filter strip, or filtering won't pick it up. Add a new filter button if the tag is new.
-4. The hardcoded `"20 projects"` count appears twice: in the `.section-count` markup in `portfolio-site/index.html` and in `applyFilter` in `portfolio-site/hub.js` (`tag === 'All'` branch). Update both.
+4. The hardcoded `"21 projects"` count appears twice: in the `.section-count` markup in `portfolio-site/index.html` and in `applyFilter` in `portfolio-site/hub.js` (`tag === 'All'` branch). Update both.
 5. The README structure tree and project section.
 
 ## Shared conventions across pages
