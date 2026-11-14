@@ -1,345 +1,187 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abdalla's Portfolio</title>
-
-    <!-- Favicon fallbacks: same-dir copy, root copy -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-
-    <!-- SEO -->
-    <meta name="description" content="Abdalla's developer portfolio: games, tools, full-stack projects, and university coursework built with HTML, CSS, JavaScript, Python, Java, and C#.">
+    <meta name="description" content="Abdalla's portfolio: LTU course work, games, apps and projects built from scratch. Most of them run right in your browser.">
     <meta name="author" content="Abdalla">
     <meta name="robots" content="index, follow">
-
-    <!-- Open Graph -->
     <meta property="og:title" content="Abdalla's Portfolio">
-    <meta property="og:description" content="Developer in progress: building things, breaking things, learning everything.">
+    <meta property="og:description" content="Course work, games, apps and projects built from scratch.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://abdoahmed07.github.io/portfolio/portfolio-site/index.html">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
-            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
-        }
-    }
-    </script>
-    <link rel="stylesheet" href="../shared/base.css">
+    <meta property="og:image" content="https://abdoahmed07.github.io/portfolio/portfolio-site/img/raytracer.jpg">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <script>(function(){var t;try{t=localStorage.getItem('theme');}catch(e){}if(t!=='light'&&t!=='dark')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+    <link rel="stylesheet" href="../shared/site.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="hub">
+<body>
     <a class="skip-link" href="#projects">Skip to projects</a>
 
-    <div class="backdrop" aria-hidden="true"></div>
-    <!-- the pinned chrome form, drawn behind the page -->
-    <canvas class="gl gl-back" id="glBack" aria-hidden="true"></canvas>
+    <nav class="site-nav" aria-label="Main">
+        <a class="site-nav-name" href="index.html">Abdalla</a>
+        <div class="site-nav-right">
+            <a href="#projects" class="site-nav-link">Projects</a>
+            <a href="about.html" class="site-nav-link">About</a>
+            <a href="https://github.com/abdoahmed07" class="site-nav-link">GitHub</a>
+            <button class="theme-toggle" id="themeToggle" type="button"></button>
+        </div>
+    </nav>
 
-    <div class="page">
-        <nav class="site-nav" aria-label="Main">
-            <span class="site-nav-name">Abdalla</span>
-            <div class="site-nav-right">
-                <a href="#projects" class="site-nav-link nav-projects">Projects</a>
-                <a href="about.html" class="site-nav-link">About</a>
-                <button class="theme-toggle" id="themeToggle" type="button"></button>
-            </div>
-        </nav>
-
-        <header class="scene hero" data-scene="hero">
-            <div class="sticky">
-                <div class="hero-inner">
-                    <h1 class="hero-title">Hi, I'm<br>Abdalla<span class="brand-dot">.</span></h1>
-                    <p class="hero-sub">Developer in progress: building things, breaking things, learning everything.</p>
+    <main>
+        <div class="wrap hero">
+            <div>
+                <h1 class="rise">Hi, I'm Abdalla.</h1>
+                <p class="lede rise d1">I study Computer Engineering at Luleå University of Technology. This is what I've built so far: course work, games, apps and things made from scratch. Most of it runs right here in your browser.</p>
+                <div class="ctas rise d2">
+                    <a class="btn btn-primary" href="#projects">See all projects</a>
+                    <a class="btn btn-ghost" href="about.html">About me</a>
                 </div>
             </div>
-        </header>
+            <figure class="rise d1">
+                <a href="../ray-tracer/index.html"><img src="img/raytracer.jpg" width="1200" height="801" alt="Hundreds of matte, metal and glass spheres rendered by my ray tracer"></a>
+                <figcaption>Rendered by my ray tracer, written from scratch in C++.</figcaption>
+            </figure>
+        </div>
 
-        <section class="scene statement" data-scene="statement" aria-label="About my work">
-            <div class="sticky">
-                <p class="statement-text" id="statement">Code, games, and everything between.</p>
+        <section>
+            <div class="wrap">
+                <h2>Try them in your browser</h2>
+                <p class="section-lede">No install, no setup. Open one and go.</p>
+                <div class="apps">
+                    <a class="app kent" href="../kent/index.html">
+                        <img src="img/kent.jpg" width="1280" height="620" alt="A game of Kent in progress: four cards in the middle, my hand, and the signal buttons" loading="lazy">
+                        <div class="app-body">
+                            <h3>Kent</h3>
+                            <p>A card game from my childhood. Collect four of a kind, then secretly signal your partner with a hand gesture before the other team catches you. Play against bots.</p>
+                            <span class="tag">TypeScript · React</span>
+                            <span class="go">Play Kent</span>
+                        </div>
+                    </a>
+                    <a class="app soft" href="../streak/index.html">
+                        <div class="app-body">
+                            <h3>Streak</h3>
+                            <p>A calm, minimal habit tracker. One tap a day to keep your streaks going, synced across your devices.</p>
+                            <span class="tag">React · Supabase · installable on your phone</span>
+                            <span class="go">Try the streak rules</span>
+                        </div>
+                    </a>
+                    <a class="app plain" href="../code-review/index.html">
+                        <div class="app-body">
+                            <h3>Code Review</h3>
+                            <p>Paste code, share the link, and comment on any line. Everyone viewing sees new comments instantly.</p>
+                            <span class="tag">React · Node · Socket.io · PostgreSQL</span>
+                            <span class="go">See how it works</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="apps second">
+                    <a class="app" href="../neural-network/index.html">
+                        <img class="shot" src="img/digits.jpg" width="900" height="500" alt="A hand-drawn 4 on a black pad, recognised as 4" loading="lazy">
+                        <div class="app-body">
+                            <h3>Draw a Digit</h3>
+                            <p>Draw a number and a neural network I wrote from scratch guesses it as you draw.</p>
+                            <span class="tag">Python + NumPy model, running in your browser</span>
+                            <span class="go">Try it</span>
+                        </div>
+                    </a>
+                    <a class="app airport" href="../airplane-simulator/index.html">
+                        <img class="shot" src="img/airport.jpg" width="1200" height="630" alt="The animated airport at night: four lit runways, planes landing and taking off, and departures waiting on the taxiway" loading="lazy">
+                        <div class="app-body">
+                            <h3>Airport Simulator</h3>
+                            <p>Watch planes hold, land, taxi and take off as dusk turns to night. Pick a quiet airport or one with too few runways.</p>
+                            <span class="tag">C++, animated from the real program</span>
+                            <span class="go">Watch it run</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </section>
 
-        <main class="scene work" data-scene="work" id="projects" tabindex="-1">
-            <div class="work-head">
-                <div class="work-title-row">
-                    <h2 class="work-title">Projects</h2>
-                    <p class="section-count" aria-live="polite">22 projects</p>
+        <section id="projects" tabindex="-1">
+            <div class="wrap">
+                <h2>All projects</h2>
+                <p class="section-lede">22 projects, grouped by what they are. Each one has its own page with a demo or the code.</p>
+                <div class="groups">
+                    <div class="group" id="courses">
+                        <h3>LTU courses</h3>
+                        <ul>
+                            <li><a href="../D0009E/index.html"><strong>D0009E: Intro to programming</strong><span class="lang">Python</span><span class="what">Six assignments: functions, data structures, OOP and file I/O.</span></a></li>
+                            <li><a href="../D0010E/index.html"><strong>D0010E: Object-oriented programming</strong><span class="lang">Java</span><span class="what">Six labs, from a custom ArrayList to a full event simulation.</span></a></li>
+                            <li><a href="../D0011E/index.html"><strong>D0011E: Digital design</strong><span class="lang">Veryl HDL</span><span class="what">A 32-bit MIPS processor, built up from a single full adder.</span></a></li>
+                            <li><a href="../D0015E/index.html"><strong>D0015E: Computer science &amp; engineering</strong><span class="lang">Mixed</span><span class="what">Five modules: a Hammurabi game, Arduino, LaTeX, algorithms and ethics.</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="group" id="games">
+                        <h3>Games</h3>
+                        <ul>
+                            <li><a href="../kent/index.html"><strong>Kent</strong><span class="lang">TypeScript</span><span class="what">A card game about secret signals. You and a bot partner against bot teams.</span></a></li>
+                            <li><a href="../hero-fight/index.html"><strong>HeroFight</strong><span class="lang">C#</span><span class="what">A turn-based RPG: pick a class, clear the rooms, beat the dragon.</span></a></li>
+                            <li><a href="../fly-game/index.html"><strong>The Fly</strong><span class="lang">JavaScript</span><span class="what">A simple game built to test your reflexes.</span></a></li>
+                            <li><a href="../tic-tac-toe/index.html"><strong>Tic-Tac-Toe</strong><span class="lang">JavaScript</span><span class="what">The classic game, my end project for Programming 2.</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="group" id="apps">
+                        <h3>Apps and websites</h3>
+                        <ul>
+                            <li><a href="../streak/index.html"><strong>Streak</strong><span class="lang">React · Supabase</span><span class="what">A calm habit tracker. One tap a day, synced across devices.</span></a></li>
+                            <li><a href="../code-review/index.html"><strong>Code Review</strong><span class="lang">React · Node</span><span class="what">Paste code, share the link and comment on any line in real time.</span></a></li>
+                            <li><a href="../login-system/index.html"><strong>Login / Signup System</strong><span class="lang">PHP · JavaScript</span><span class="what">A login and signup flow built from scratch for Programming 2.</span></a></li>
+                            <li><a href="../islam-kindles/index.html"><strong>Islam Kindles</strong><span class="lang">HTML · CSS</span><span class="what">A practice website for exploring layout and structure.</span></a></li>
+                            <li><a href="../name-checker/index.html"><strong>Name Checker</strong><span class="lang">JavaScript</span><span class="what">The first website I ever made. Where it all started.</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="group" id="scratch">
+                        <h3>Built from scratch</h3>
+                        <ul>
+                            <li><a href="../airplane-simulator/index.html"><strong>Airport Simulator</strong><span class="lang">C++</span><span class="what">Planes hold, land, taxi and take off, animated from the real program.</span></a></li>
+                            <li><a href="../ray-tracer/index.html"><strong>Ray Tracer</strong><span class="lang">C++</span><span class="what">Matte, metal and glass spheres, path traced live in your browser.</span></a></li>
+                            <li><a href="../interpreter/index.html"><strong>Lox Interpreter</strong><span class="lang">Java</span><span class="what">A small programming language you can write and run on the page.</span></a></li>
+                            <li><a href="../neural-network/index.html"><strong>Neural Network</strong><span class="lang">Python</span><span class="what">Draw a digit and a network trained from scratch guesses it.</span></a></li>
+                            <li><a href="../packet-analyser/index.html"><strong>Packet Analyser</strong><span class="lang">C</span><span class="what">Decodes network packets by hand, layer by layer.</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="group" id="more">
+                        <h3>Security, open source and writing</h3>
+                        <ul>
+                            <li><a href="../ctf/index.html"><strong>CTF Writeups</strong><span class="lang">Security</span><span class="what">Ten solved security challenges, plus a live SQL injection one I built.</span></a></li>
+                            <li><a href="../open-source/index.html"><strong>socket.io fix</strong><span class="lang">TypeScript</span><span class="what">A merged bug fix in a widely used real-time library.</span></a></li>
+                            <li><a href="../technical-writing/index.html"><strong>Field Notes</strong><span class="lang">Writing</span><span class="what">Five posts on what I learned building and deploying apps.</span></a></li>
+                            <li><a href="../problem-solving/index.html"><strong>Problem Solving</strong><span class="lang">Python</span><span class="what">LeetCode practice, with an animated Number of Islands search.</span></a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="filter-strip" id="filterStrip" role="group" aria-label="Filter projects by tag">
-                    <button type="button" class="filter-btn" data-tag="All" aria-pressed="true">All</button>
-                    <button type="button" class="filter-btn" data-tag="Game" aria-pressed="false">Game</button>
-                    <button type="button" class="filter-btn" data-tag="Tool" aria-pressed="false">Tool</button>
-                    <button type="button" class="filter-btn" data-tag="Website" aria-pressed="false">Website</button>
-                    <button type="button" class="filter-btn" data-tag="Full-stack" aria-pressed="false">Full-stack</button>
-                    <button type="button" class="filter-btn" data-tag="Python" aria-pressed="false">Python</button>
-                    <button type="button" class="filter-btn" data-tag="Java" aria-pressed="false">Java</button>
-                    <button type="button" class="filter-btn" data-tag="Mixed" aria-pressed="false">Mixed</button>
-                    <button type="button" class="filter-btn" data-tag="C#" aria-pressed="false">C#</button>
-                    <button type="button" class="filter-btn" data-tag="C++" aria-pressed="false">C++</button>
-                    <button type="button" class="filter-btn" data-tag="HDL" aria-pressed="false">HDL</button>
-                    <button type="button" class="filter-btn" data-tag="C" aria-pressed="false">C</button>
-                    <button type="button" class="filter-btn" data-tag="Security" aria-pressed="false">Security</button>
-                    <button type="button" class="filter-btn" data-tag="Open Source" aria-pressed="false">Open Source</button>
-                    <button type="button" class="filter-btn" data-tag="Writing" aria-pressed="false">Writing</button>
-                </div>
-            </div>
-            <ol class="projects" id="projectList">
-                <li class="project-item" data-num="01" data-scene data-glow="#22d3ee" style="--c:#22d3ee">
-                    <div class="stage proj-stage" data-object="name-checker" data-accent="#22d3ee" aria-hidden="true"><span class="stage-fallback">01</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">01</span><span class="project-tag">Tool</span></p>
-                        <h3 class="proj-title"><a href="../name-checker/index.html">Name Checker</a></h3>
-                        <p class="proj-desc">The first website I ever created. Where it all started.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="02" data-scene data-glow="#c8f04d" style="--c:#c8f04d">
-                    <div class="stage proj-stage" data-object="fly-game" data-accent="#c8f04d" aria-hidden="true"><span class="stage-fallback">02</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">02</span><span class="project-tag">Game</span></p>
-                        <h3 class="proj-title"><a href="../fly-game/index.html">The Fly</a></h3>
-                        <p class="proj-desc">A deceptively simple game built to challenge your reflexes.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="03" data-scene data-glow="#10b981" style="--c:#10b981">
-                    <div class="stage proj-stage" data-object="islam-kindles" data-accent="#10b981" aria-hidden="true"><span class="stage-fallback">03</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">03</span><span class="project-tag">Website</span></p>
-                        <h3 class="proj-title"><a href="../islam-kindles/index.html">Islam Kindles</a></h3>
-                        <p class="proj-desc">A practice web project for exploring layout and structure.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="04" data-scene data-glow="#f59e0b" style="--c:#f59e0b">
-                    <div class="stage proj-stage" data-object="login-system" data-accent="#f59e0b" aria-hidden="true"><span class="stage-fallback">04</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">04</span><span class="project-tag">Full-stack</span></p>
-                        <h3 class="proj-title"><a href="../login-system/index.html">Login / Signup System</a></h3>
-                        <p class="proj-desc">End project for Programming 2. Authentication flow with two access methods built from scratch.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="05" data-scene data-glow="#a855f7" style="--c:#a855f7">
-                    <div class="stage proj-stage" data-object="tic-tac-toe" data-accent="#a855f7" aria-hidden="true"><span class="stage-fallback">05</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">05</span><span class="project-tag">Game</span></p>
-                        <h3 class="proj-title"><a href="../tic-tac-toe/index.html">Tic-Tac-Toe</a></h3>
-                        <p class="proj-desc">End project for Programming 2. Classic game logic built in the browser.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="06" data-scene data-glow="#38bdf8" style="--c:#38bdf8">
-                    <div class="stage proj-stage" data-object="D0009E" data-accent="#38bdf8" aria-hidden="true"><span class="stage-fallback">06</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">06</span><span class="project-tag">Python</span></p>
-                        <h3 class="proj-title"><a href="../D0009E/index.html">D0009E: Intro to Programming</a></h3>
-                        <p class="proj-desc">University course assignments, six tasks in Python covering functions, data structures, OOP, and file I/O.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="07" data-scene data-glow="#f59e0b" style="--c:#f59e0b">
-                    <div class="stage proj-stage" data-object="D0010E" data-accent="#f59e0b" aria-hidden="true"><span class="stage-fallback">07</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">07</span><span class="project-tag">Java</span></p>
-                        <h3 class="proj-title"><a href="../D0010E/index.html">D0010E: Object-Oriented Programming</a></h3>
-                        <p class="proj-desc">6 Java labs: custom ArrayList, room navigation game (MVC), BFS graph traversal, state machine calculator, and a full discrete event simulation.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="08" data-scene data-glow="#f59e0b" style="--c:#f59e0b">
-                    <div class="stage proj-stage" data-object="D0015E" data-accent="#f59e0b" aria-hidden="true"><span class="stage-fallback">08</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">08</span><span class="project-tag">Mixed</span></p>
-                        <h3 class="proj-title"><a href="../D0015E/index.html">D0015E: Computer Science &amp; Engineering</a></h3>
-                        <p class="proj-desc">Five modules in one course: Hammurabi simulation game, Arduino circuits, LaTeX documents, algorithm analysis, and engineering ethics.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="09" data-scene data-glow="#ff6b2b" style="--c:#ff6b2b">
-                    <div class="stage proj-stage" data-object="hero-fight" data-accent="#ff6b2b" aria-hidden="true"><span class="stage-fallback">09</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">09</span><span class="project-tag">C#</span></p>
-                        <h3 class="proj-title"><a href="../hero-fight/index.html">HeroFight</a></h3>
-                        <p class="proj-desc">Turn-based console RPG in C# .NET 10. Three classes, full combat system, OOP architecture with abstract classes, interfaces, and polymorphism.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="10" data-scene data-glow="#38bdf8" style="--c:#38bdf8">
-                    <div class="stage proj-stage" data-object="airplane-simulator" data-accent="#38bdf8" aria-hidden="true"><span class="stage-fallback">10</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">10</span><span class="project-tag">C++</span></p>
-                        <h3 class="proj-title"><a href="../airplane-simulator/index.html">Airport Simulator</a></h3>
-                        <p class="proj-desc">Terminal-based C++ simulator with manually implemented priority queue and FIFO queue. Manages plane arrivals, fuel emergencies, runway assignments, and live ANSI stats.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="11" data-scene data-glow="#a78bfa" style="--c:#a78bfa">
-                    <div class="stage proj-stage" data-object="D0011E" data-accent="#a78bfa" aria-hidden="true"><span class="stage-fallback">11</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">11</span><span class="project-tag">HDL</span></p>
-                        <h3 class="proj-title"><a href="../D0011E/index.html">D0011E: Digital Design</a></h3>
-                        <p class="proj-desc">Built a complete 32-bit MIPS processor from scratch in Veryl HDL, from a single full adder to a running CPU with ALU, register file, control decoder, data memory, branch and jump instructions, and an integer division program.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="12" data-scene data-glow="#6366f1" style="--c:#6366f1">
-                    <div class="stage proj-stage" data-object="code-review" data-accent="#6366f1" aria-hidden="true"><span class="stage-fallback">12</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">12</span><span class="project-tag">Full-stack</span></p>
-                        <h3 class="proj-title"><a href="../code-review/index.html">Code Review Tool</a></h3>
-                        <p class="proj-desc">Real-time collaborative code commenting web app. React, Node, PostgreSQL, and Socket.io, with JWT auth, deployed live on Railway and Vercel.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="13" data-scene data-glow="#fb7185" style="--c:#fb7185">
-                    <div class="stage proj-stage" data-object="ray-tracer" data-accent="#fb7185" aria-hidden="true"><span class="stage-fallback">13</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">13</span><span class="project-tag">C++</span></p>
-                        <h3 class="proj-title"><a href="../ray-tracer/index.html">Ray Tracer</a></h3>
-                        <p class="proj-desc">Physically-based path tracer built from scratch in C++, ported to JavaScript so it renders live in the browser with real depth of field and glass refraction.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="14" data-scene data-glow="#60a5fa" style="--c:#60a5fa">
-                    <div class="stage proj-stage" data-object="interpreter" data-accent="#60a5fa" aria-hidden="true"><span class="stage-fallback">14</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">14</span><span class="project-tag">Java</span></p>
-                        <h3 class="proj-title"><a href="../interpreter/index.html">Lox Interpreter</a></h3>
-                        <p class="proj-desc">A complete tree-walking interpreter for the Lox language, following Crafting Interpreters. Write and run real Lox code live in the browser, closures, classes, and inheritance included.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="15" data-scene data-glow="#ec4899" style="--c:#ec4899">
-                    <div class="stage proj-stage" data-object="neural-network" data-accent="#ec4899" aria-hidden="true"><span class="stage-fallback">15</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">15</span><span class="project-tag">Python</span></p>
-                        <h3 class="proj-title"><a href="../neural-network/index.html">Neural Network</a></h3>
-                        <p class="proj-desc">Feedforward neural network trained from scratch with only NumPy, no PyTorch or TensorFlow. Draw a digit and watch the real trained weights classify it live.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="16" data-scene data-glow="#22c55e" style="--c:#22c55e">
-                    <div class="stage proj-stage" data-object="packet-analyser" data-accent="#22c55e" aria-hidden="true"><span class="stage-fallback">16</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">16</span><span class="project-tag">C</span></p>
-                        <h3 class="proj-title"><a href="../packet-analyser/index.html">netwatch: Packet Analyser</a></h3>
-                        <p class="proj-desc">Terminal network analyser using libpcap, decoding Ethernet/IPv4/TCP/UDP/DNS by hand. Live-simulated capture with the same header parsing and BPF-style filters.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="17" data-scene data-glow="#ef4444" style="--c:#ef4444">
-                    <div class="stage proj-stage" data-object="ctf" data-accent="#ef4444" aria-hidden="true"><span class="stage-fallback">17</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">17</span><span class="project-tag">Security</span></p>
-                        <h3 class="proj-title"><a href="../ctf/index.html">CTF Writeups</a></h3>
-                        <p class="proj-desc">10 solved PicoCTF challenges across web, crypto, reverse engineering, binary exploitation, and forensics, plus a live version of an original SQL injection challenge.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="18" data-scene data-glow="#eab308" style="--c:#eab308">
-                    <div class="stage proj-stage" data-object="open-source" data-accent="#eab308" aria-hidden="true"><span class="stage-fallback">18</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">18</span><span class="project-tag">Open Source</span></p>
-                        <h3 class="proj-title"><a href="../open-source/index.html">Contributing to socket.io</a></h3>
-                        <p class="proj-desc">A merged pull request fixing a bug where pending acknowledgement callbacks were silently dropped on disconnect, in a library used by millions of applications.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="19" data-scene data-glow="#fb7185" style="--c:#fb7185">
-                    <div class="stage proj-stage" data-object="technical-writing" data-accent="#fb7185" aria-hidden="true"><span class="stage-fallback">19</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">19</span><span class="project-tag">Writing</span></p>
-                        <h3 class="proj-title"><a href="../technical-writing/index.html">Field Notes</a></h3>
-                        <p class="proj-desc">Five technical posts written the same week each thing happened: PostgreSQL setup, WebSockets vs HTTP, JWT auth, production deployment, and an open source contribution story.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="20" data-scene data-glow="#14b8a6" style="--c:#14b8a6">
-                    <div class="stage proj-stage" data-object="problem-solving" data-accent="#14b8a6" aria-hidden="true"><span class="stage-fallback">20</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">20</span><span class="project-tag">Python</span></p>
-                        <h3 class="proj-title"><a href="../problem-solving/index.html">Problem Solving</a></h3>
-                        <p class="proj-desc">Weekly LeetCode practice across hash maps, tree recursion, and graph traversal. Includes a live animated Number of Islands DFS running the real solution code.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="21" data-scene data-glow="#f0c766" style="--c:#f0c766">
-                    <div class="stage proj-stage" data-object="kent" data-accent="#f0c766" aria-hidden="true"><span class="stage-fallback">21</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">21</span><span class="project-tag">Game</span></p>
-                        <h3 class="proj-title"><a href="../kent/index.html">Kent</a></h3>
-                        <p class="proj-desc">A card game from my childhood. Collect four of a kind, then secretly signal your partner with a hand gesture before the other team catches you. You and a bot partner against bot teams.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-                <li class="project-item" data-num="22" data-scene data-glow="#4ade80" style="--c:#4ade80">
-                    <div class="stage proj-stage" data-object="streak" data-accent="#4ade80" aria-hidden="true"><span class="stage-fallback">22</span></div>
-                    <div class="proj-body">
-                        <p class="proj-meta"><span class="proj-num">22</span><span class="project-tag">Full-stack</span></p>
-                        <h3 class="proj-title"><a href="../streak/index.html">Streak</a></h3>
-                        <p class="proj-desc">A calm, minimal habit tracker. One tap a day keeps a streak going, synced across devices with Supabase and installable as an app. Try the real streak rules right on the page.</p>
-                        <span class="proj-cta" aria-hidden="true">View project <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    </div>
-                </li>
-            </ol>
-        </main>
-
-        <section class="scene outro" data-scene="outro">
-            <div class="outro-inner">
-                <h2 class="outro-title">Want to know more?</h2>
-                <a class="outro-link" href="about.html">About me
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
             </div>
         </section>
-    </div>
+
+        <section id="contact">
+            <div class="wrap contact">
+                <div>
+                    <h2>Get in touch</h2>
+                    <p class="section-lede">Found a bug? Have feedback? Just want to say hi? Send me a message.</p>
+                </div>
+                <form id="contactForm" action="https://formspree.io/f/xvzdrjpg" method="POST" novalidate>
+                    <label class="cf-label" for="cf-email">Your email</label>
+                    <input class="cf-input" id="cf-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+                    <label class="cf-label" for="cf-msg">Message</label>
+                    <textarea class="cf-input" id="cf-msg" name="message" placeholder="What's on your mind?" required rows="4"></textarea>
+                    <button class="btn btn-primary cf-submit" type="submit" id="cfSubmit">Send message</button>
+                    <p class="cf-status" id="cfStatus" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+    </main>
 
     <footer class="site-footer">
         <div class="site-footer-line">
             <p>© 2026 Abdalla</p>
-            <p>Built with curiosity.</p>
+            <a href="https://github.com/abdoahmed07/portfolio">github.com/abdoahmed07/portfolio</a>
         </div>
     </footer>
 
-    <!-- CONTACT BUTTON + PANEL -->
-    <button class="contact-btn" id="contactBtn" type="button" aria-label="Contact" aria-expanded="false" aria-controls="contactPanel">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-            <path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Contact</span>
-    </button>
-
-    <div class="contact-panel" id="contactPanel" role="dialog" aria-labelledby="contactTitle" inert>
-        <div class="contact-head">
-            <h2 class="contact-title" id="contactTitle">Get in touch</h2>
-            <button class="contact-close" id="contactClose" type="button" aria-label="Close contact form">✕</button>
-        </div>
-        <p class="contact-desc">Found a bug? Have feedback? Just want to say hi? Drop me a message.</p>
-
-        <!-- Formspree form -->
-        <form id="contactForm" action="https://formspree.io/f/xvzdrjpg" method="POST" novalidate>
-            <label class="cf-label" for="cf-email">Your email</label>
-            <input class="cf-input" id="cf-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
-            <label class="cf-label" for="cf-msg">Message</label>
-            <textarea class="cf-input" id="cf-msg" name="message" placeholder="What's on your mind?" required rows="3"></textarea>
-            <button class="cf-submit" type="submit" id="cfSubmit">Send message</button>
-        </form>
-        <p class="cf-status" id="cfStatus" aria-live="polite"></p>
-    </div>
-
-    <script src="../shared/theme.js"></script>
-    <script src="../shared/motion.js"></script>
+    <script src="../shared/site.js"></script>
     <script src="hub.js"></script>
-    <script type="module" src="../shared/gl/studio.js"></script>
 </body>
 </html>

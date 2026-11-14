@@ -1,0 +1,290 @@
+/* Shared base for every page: simple and clean, in the style of the Sides site.
+   One accent for the whole site. Light and dark follow the system until the visitor
+   picks one with the toggle (site.js sets data-theme on <html> before paint).
+   Project pages keep their own style.css for their demo; the class names below
+   (hero, tabs, cards, code viewer) are the ones those pages already use. */
+
+:root {
+    --bg:        #f4f4f5;
+    --surface:   #ffffff;
+    --surface-2: #ececef;
+    --border:    #dcdce0;
+    --border-strong: #c4c4ca;
+    --text:      #18181b;
+    --muted:     #52525b;
+    --faint:     #d4d4d8;
+    --ink:       #18181b;
+    --on-ink:    #ffffff;
+    --brand:     #c2410c;
+    --accent:    #c2410c;
+    --accent-dark: #f0703a;
+    --accent-dim:  color-mix(in oklab, var(--accent) 12%, transparent);
+    --accent-glow: color-mix(in oklab, var(--accent) 16%, transparent);
+    --accent-text: #b13a0a;
+    --accent-soft: #fbe9df;
+    --on-accent: #ffffff;
+    /* demo panels (terminals, canvases) stay dark in both themes */
+    --panel:     #0e0f12;
+    --panel-2:   #16161a;
+    --panel-border: rgba(255,255,255,0.1);
+    --panel-ink: #e6e6ea;
+    --panel-muted: #a1a1aa;
+    /* code blocks follow the theme (highlight.js swaps with it) */
+    --code-bg:   #ffffff;
+    --code-tab:  #f4f4f5;
+    --code-border: #dcdce0;
+    --code-ink:  #1f1f23;
+    --code-muted: #52525b;
+    --font-display: ui-sans-serif, -apple-system, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    --font-body:    ui-sans-serif, -apple-system, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    --font-mono:    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-pill: 999px;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --gutter: 24px;
+    --wrap: 1080px;
+    --shadow: 0 1px 2px rgb(24 24 27 / .06), 0 12px 32px -12px rgb(24 24 27 / .18);
+    color-scheme: light;
+}
+[data-theme="dark"] {
+    --bg:        #0d0d10;
+    --surface:   #16161a;
+    --surface-2: #1d1d22;
+    --border:    #2a2a31;
+    --border-strong: #3a3a42;
+    --text:      #f1f1f3;
+    --muted:     #a1a1aa;
+    --faint:     #34343b;
+    --ink:       #f1f1f3;
+    --on-ink:    #0d0d10;
+    --brand:     #f0703a;
+    --accent:    #f0703a;
+    --accent-text: #f58a5b;
+    --accent-soft: #2a1710;
+    --on-accent: #1a0d06;
+    --code-bg:   #111114;
+    --code-tab:  #16161a;
+    --code-border: #2a2a31;
+    --code-ink:  #e6e6ea;
+    --code-muted: #a1a1aa;
+    --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 16px 40px -16px rgb(0 0 0 / .7);
+    color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+/* project pages were built on a zero-margin reset; :where keeps it at zero specificity so every page rule still wins */
+:where(.pj) *, :where(.pj) *::before, :where(.pj) *::after { margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+}
+a { color: inherit; }
+img, svg, canvas { max-width: 100%; }
+img { display: block; height: auto; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+.sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip-link {
+    position: absolute; left: 16px; top: -80px; z-index: 1000;
+    background: var(--ink); color: var(--on-ink);
+    padding: 10px 16px; border-radius: var(--radius-sm);
+    font: 600 14px var(--font-body); text-decoration: none;
+}
+.skip-link:focus { top: 16px; }
+
+.wrap { max-width: calc(var(--wrap) + 2 * var(--gutter)); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ── NAV ── */
+.site-nav {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    max-width: calc(var(--wrap) + 2 * var(--gutter)); height: 68px; margin: 0 auto; padding: 0 var(--gutter);
+}
+.site-nav-name { font-weight: 700; font-size: 18px; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+.site-nav-right { display: flex; align-items: center; gap: 22px; }
+.site-nav-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 15px; color: var(--muted); text-decoration: none; transition: color .2s;
+}
+.site-nav-link:hover, .site-nav-link[aria-current="page"] { color: var(--text); }
+.site-nav-link svg { flex: none; }
+
+.theme-toggle {
+    width: 36px; height: 36px; display: grid; place-items: center; flex: none;
+    padding: 0; background: transparent; color: var(--text);
+    border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer;
+    transition: background .2s;
+}
+.theme-toggle:hover { background: var(--surface-2); }
+.theme-toggle .icon-sun { display: none; }
+[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+/* ── BUTTONS ── */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 46px; padding: 0 20px;
+    border-radius: var(--radius-sm); border: 1px solid transparent;
+    font: 600 15px var(--font-body); text-decoration: none; white-space: nowrap; cursor: pointer;
+    transition: transform .2s var(--ease), background-color .2s, filter .2s;
+}
+.btn:active { transform: translateY(1px) scale(.98); }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { filter: brightness(1.06); }
+.btn-ghost { border-color: var(--border); color: var(--text); background: transparent; }
+.btn-ghost:hover { background: var(--surface-2); }
+
+/* ── FOOTER ── */
+.site-footer {
+    max-width: calc(var(--wrap) + 2 * var(--gutter)); margin: 0 auto; padding: 0 var(--gutter);
+    color: var(--muted); font-size: 14px;
+}
+.site-footer-line {
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    border-top: 1px solid var(--border); padding: 32px 0 48px;
+}
+.site-footer p { margin: 0; }
+.site-footer a { text-decoration: none; }
+.site-footer a:hover { color: var(--text); }
+
+/* ═══════════════════════════════════════════════════════════
+   PROJECT PAGES (body.pj). Scoped so these win over each page's
+   older single-class rules without needing !important.
+   ═══════════════════════════════════════════════════════════ */
+.pj .page {
+    max-width: calc(var(--wrap) + 2 * var(--gutter));
+    margin: 0 auto; padding: 0 var(--gutter) 80px;
+}
+
+.pj .hero { display: block; padding: 24px 0 40px; margin: 0; text-align: left; animation: none; }
+.pj .hero-eyebrow { display: block; margin: 0 0 12px; font-size: 14px; color: var(--muted); letter-spacing: 0; text-transform: none; font-family: var(--font-body); }
+.pj .hero-eyebrow a { color: var(--muted); text-decoration: none; }
+.pj .hero-eyebrow a:hover { color: var(--accent-text); }
+.pj .hero-title {
+    margin: 0 0 14px;
+    font: 750 clamp(2.1rem, 4.4vw, 3rem)/1.08 var(--font-display); letter-spacing: -0.03em;
+    color: var(--text);
+}
+.pj .hero-title .acc, .pj .acc { color: inherit; }
+.pj .hero-desc, .pj .hero-sub {
+    margin: 0; max-width: 64ch;
+    font-size: 17px; line-height: 1.6; color: var(--muted);
+}
+.pj .hero-desc em { color: var(--text); }
+.pj .hero-meta, .pj .hero-pills { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 18px; }
+.pj .meta-pill, .pj .hero-pill, .pj .hero-pills .tag {
+    font-size: 13px; color: var(--muted);
+    background: var(--surface-2); border: 0; border-radius: 6px; padding: 3px 9px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .pj .hero > * { animation: rise .7s var(--ease) both; }
+    .pj .hero > :nth-child(2) { animation-delay: .05s; }
+    .pj .hero > :nth-child(n+3) { animation-delay: .1s; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.pj .section-label {
+    display: block; margin: 72px 0 20px; padding: 40px 0 0;
+    border-top: 1px solid var(--border);
+    font: 700 clamp(1.4rem, 2.4vw, 1.75rem)/1.2 var(--font-display); letter-spacing: -0.025em;
+    text-transform: none; color: var(--text);
+}
+
+/* tabs: a quiet segmented strip */
+.pj .tabs, .pj .tab-bar, .pj .tab-nav {
+    display: flex; gap: 2px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    width: fit-content; max-width: 100%; margin: 0 0 20px; padding: 3px;
+    border: 1px solid var(--border); border-radius: 12px; background: var(--surface);
+}
+.pj .tabs::-webkit-scrollbar, .pj .tab-bar::-webkit-scrollbar, .pj .tab-nav::-webkit-scrollbar { display: none; }
+.pj .tab-btn {
+    flex: none; font: 600 14px var(--font-body); letter-spacing: 0;
+    color: var(--muted); background: transparent;
+    border: 0; border-radius: 9px; padding: 8px 14px; cursor: pointer; white-space: nowrap;
+    transition: color .2s, background .2s;
+}
+.pj .tab-btn:hover:not(.active) { color: var(--text); }
+.pj .tab-btn.active { color: var(--text); background: var(--surface-2); }
+.pj .tab-note { font-size: 15px; color: var(--muted); line-height: 1.6; margin: 0 0 18px; max-width: 70ch; }
+
+/* cards and lists */
+.pj .learned-item, .pj .ds-card {
+    border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface);
+    padding: 20px 22px;
+}
+.pj .learned-list { display: flex; flex-direction: column; gap: 10px; }
+.pj .learned-item b { color: var(--text); font-weight: 650; font-size: 16px; }
+.pj .learned-item p { font-size: 15px; color: var(--muted); line-height: 1.6; margin: 4px 0 0; }
+.pj .ds-card:hover { border-color: var(--border-strong); }
+.pj .ds-title { font: 650 16px var(--font-display); letter-spacing: -0.01em; color: var(--text); }
+.pj .ds-desc { font-family: var(--font-body); font-size: 14px; color: var(--muted); line-height: 1.6; }
+.pj code:not(.hljs):not([class*="language-"]) { font-family: var(--font-mono); font-size: .92em; }
+
+/* code viewer */
+.pj .file-tabs {
+    display: flex; overflow-x: auto; scrollbar-width: none;
+    background: var(--code-tab); border: 1px solid var(--code-border); border-bottom: 0;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+.pj .file-tabs::-webkit-scrollbar { display: none; }
+.pj .file-tab {
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0; color: var(--code-muted);
+    background: none; border: 0; border-bottom: 2px solid transparent; padding: 11px 16px; cursor: pointer; white-space: nowrap;
+}
+.pj .file-tab:hover:not(.active) { color: var(--code-ink); }
+.pj .file-tab.active { color: var(--code-ink); border-bottom-color: var(--accent); background: var(--code-bg); }
+.pj .code-viewer { border: 1px solid var(--code-border); border-radius: var(--radius-sm); overflow: hidden; background: var(--code-bg); }
+.pj .file-tabs + .code-viewer { border-radius: 0 0 var(--radius-sm) var(--radius-sm); }
+.pj .code-viewer pre { margin: 0; max-height: 560px; overflow: auto; background: var(--code-bg); }
+.pj .code-viewer pre code { font-family: var(--font-mono); font-size: 13px; line-height: 1.65; display: block; padding: 20px 22px; color: var(--code-ink); }
+.pj .hljs { background: transparent !important; }
+
+/* Demo panels (terminals, canvases, simulators) stay dark in both themes. A page adds
+   .dark-panel to such a block so everything inside reads the dark tokens. */
+.dark-panel {
+    color-scheme: dark;
+    --text: var(--panel-ink);
+    --muted: var(--panel-muted);
+    --border: var(--panel-border);
+    --surface: var(--panel-2);
+    --surface-2: #1d1d22;
+    --accent: var(--accent-dark);
+    --accent-text: #f58a5b;
+    --on-accent: #1a0d06;
+    color: var(--panel-ink);
+}
+
+/* highlight.js colors that fall short of AA in the stock themes */
+.hljs-meta, .hljs-meta .hljs-keyword, .hljs-meta .hljs-string { color: #d4978a; }
+[data-theme="light"] .hljs-meta, [data-theme="light"] .hljs-meta .hljs-keyword { color: #005cc5; }
+[data-theme="light"] .hljs-meta .hljs-string { color: #0a3069; }
+[data-theme="light"] .hljs-built_in, [data-theme="light"] .hljs-symbol { color: #a94700; }
+.dark-panel .hljs-built_in, .dark-panel .hljs-symbol { color: #66cccc; }
+
+/* ═══ MOBILE ═══ */
+@media (max-width: 760px) {
+    .pj .hero { padding: 8px 0 32px; }
+    .pj .section-label { margin-top: 56px; padding-top: 32px; }
+    .pj .page { padding-bottom: 56px; }
+}
+@media (max-width: 480px) {
+    :root { --gutter: 16px; }
+    .site-nav-right { gap: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important; scroll-behavior: auto !important;
+    }
+}
