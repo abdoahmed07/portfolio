@@ -103,53 +103,222 @@
         <section id="projects" tabindex="-1">
             <div class="wrap">
                 <h2>All projects</h2>
-                <p class="section-lede">22 projects, grouped by what they are. Each one has its own page with a demo or the code.</p>
+                <p class="section-lede">22 projects, grouped by what they are. Almost all of them run right in your browser, so pick one and try it.</p>
                 <div class="groups">
                     <div class="group" id="courses">
-                        <h3>LTU courses</h3>
-                        <ul>
-                            <li><a href="../D0009E/index.html"><strong>D0009E: Intro to programming</strong><span class="lang">Python</span><span class="what">Six assignments: functions, data structures, OOP and file I/O.</span></a></li>
-                            <li><a href="../D0010E/index.html"><strong>D0010E: Object-oriented programming</strong><span class="lang">Java</span><span class="what">Six labs, from a custom ArrayList to a full event simulation.</span></a></li>
-                            <li><a href="../D0011E/index.html"><strong>D0011E: Digital design</strong><span class="lang">Veryl HDL</span><span class="what">A 32-bit MIPS processor, built up from a single full adder.</span></a></li>
-                            <li><a href="../D0015E/index.html"><strong>D0015E: Computer science &amp; engineering</strong><span class="lang">Mixed</span><span class="what">Five modules: a Hammurabi game, Arduino, LaTeX, algorithms and ethics.</span></a></li>
+                        <div class="group-head">
+                            <h3>LTU courses</h3>
+                            <p>Course work from my first year of Computer Engineering at Luleå University of Technology.</p>
+                        </div>
+                        <ul class="cards" data-n="4">
+                            <li><a class="card" href="../D0009E/index.html">
+                                <span class="card-media"><img src="img/projects/D0009E.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>D0009E: Intro to programming</strong>
+                                    <span class="what">Six Python assignments: functions, data structures, OOP and file I/O.</span>
+                                    <span class="card-foot"><span class="lang">Python</span><span class="go">Try the labs <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../D0010E/index.html">
+                                <span class="card-media"><img src="img/projects/D0010E.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>D0010E: Object-oriented programming</strong>
+                                    <span class="what">Six Java labs, from a custom ArrayList to a full event simulation.</span>
+                                    <span class="card-foot"><span class="lang">Java</span><span class="go">Try the labs <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../D0011E/index.html">
+                                <span class="card-media"><img src="img/projects/D0011E.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>D0011E: Digital design</strong>
+                                    <span class="what">A 32-bit MIPS processor, built up from a single full adder.</span>
+                                    <span class="card-foot"><span class="lang">Veryl HDL</span><span class="go">Try the circuits <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../D0015E/index.html">
+                                <span class="card-media"><img src="img/projects/D0015E.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>D0015E: Computer science &amp; engineering</strong>
+                                    <span class="what">Five modules, including a Hammurabi strategy game you can play.</span>
+                                    <span class="card-foot"><span class="lang">Mixed</span><span class="go">Play Hammurabi <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
                         </ul>
                     </div>
                     <div class="group" id="games">
-                        <h3>Games</h3>
-                        <ul>
-                            <li><a href="../kent/index.html"><strong>Kent</strong><span class="lang">TypeScript</span><span class="what">A card game about secret signals. You and a bot partner against bot teams.</span></a></li>
-                            <li><a href="../hero-fight/index.html"><strong>HeroFight</strong><span class="lang">C#</span><span class="what">A turn-based RPG: pick a class, clear the rooms, beat the dragon.</span></a></li>
-                            <li><a href="../fly-game/index.html"><strong>The Fly</strong><span class="lang">JavaScript</span><span class="what">A simple game built to test your reflexes.</span></a></li>
-                            <li><a href="../tic-tac-toe/index.html"><strong>Tic-Tac-Toe</strong><span class="lang">JavaScript</span><span class="what">The classic game, my end project for Programming 2.</span></a></li>
+                        <div class="group-head">
+                            <h3>Games</h3>
+                            <p>Things to play, from my first browser game to a full card game.</p>
+                        </div>
+                        <ul class="cards" data-n="4">
+                            <li><a class="card" href="../kent/index.html">
+                                <span class="card-media"><img src="img/projects/kent.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-play">Playable</span></span>
+                                <span class="card-body">
+                                    <strong>Kent</strong>
+                                    <span class="what">A card game about secret signals. You and a bot partner against bot teams.</span>
+                                    <span class="card-foot"><span class="lang">TypeScript</span><span class="go">Play <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../hero-fight/index.html">
+                                <span class="card-media"><img src="img/projects/hero-fight.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-play">Playable</span></span>
+                                <span class="card-body">
+                                    <strong>HeroFight</strong>
+                                    <span class="what">A turn-based RPG: pick a class, clear the rooms, beat the dragon.</span>
+                                    <span class="card-foot"><span class="lang">C#</span><span class="go">Play <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../fly-game/index.html">
+                                <span class="card-media"><img src="img/projects/fly-game.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-play">Playable</span></span>
+                                <span class="card-body">
+                                    <strong>The Fly</strong>
+                                    <span class="what">Click the fly before it gets away. A simple test of your reflexes.</span>
+                                    <span class="card-foot"><span class="lang">JavaScript</span><span class="go">Play <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../tic-tac-toe/index.html">
+                                <span class="card-media"><img src="img/projects/tic-tac-toe.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-play">Playable</span></span>
+                                <span class="card-body">
+                                    <strong>Tic-Tac-Toe</strong>
+                                    <span class="what">The classic game against a bot or a friend. End project for Programming 2.</span>
+                                    <span class="card-foot"><span class="lang">JavaScript</span><span class="go">Play <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
                         </ul>
                     </div>
                     <div class="group" id="apps">
-                        <h3>Apps and websites</h3>
-                        <ul>
-                            <li><a href="../streak/index.html"><strong>Streak</strong><span class="lang">React · Supabase</span><span class="what">A calm habit tracker. One tap a day, synced across devices.</span></a></li>
-                            <li><a href="../code-review/index.html"><strong>Code Review</strong><span class="lang">React · Node</span><span class="what">Paste code, share the link and comment on any line in real time.</span></a></li>
-                            <li><a href="../login-system/index.html"><strong>Login / Signup System</strong><span class="lang">PHP · JavaScript</span><span class="what">A login and signup flow built from scratch for Programming 2.</span></a></li>
-                            <li><a href="../islam-kindles/index.html"><strong>Islam Kindles</strong><span class="lang">HTML · CSS</span><span class="what">A practice website for exploring layout and structure.</span></a></li>
-                            <li><a href="../name-checker/index.html"><strong>Name Checker</strong><span class="lang">JavaScript</span><span class="what">The first website I ever made. Where it all started.</span></a></li>
+                        <div class="group-head">
+                            <h3>Apps and websites</h3>
+                            <p>Full-stack apps with real backends, and the websites I started with.</p>
+                        </div>
+                        <ul class="cards" data-n="5">
+                            <li><a class="card" href="../streak/index.html">
+                                <span class="card-media"><img src="img/projects/streak.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Streak</strong>
+                                    <span class="what">A calm habit tracker. One tap a day, synced across devices.</span>
+                                    <span class="card-foot"><span class="lang">React · Supabase</span><span class="go">Try the streak rules <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../code-review/index.html">
+                                <span class="card-media"><img src="img/projects/code-review.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Code Review</strong>
+                                    <span class="what">Paste code, share the link and comment on any line in real time.</span>
+                                    <span class="card-foot"><span class="lang">React · Node</span><span class="go">See it work <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../login-system/index.html">
+                                <span class="card-media"><img src="img/projects/login-system.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Login / Signup System</strong>
+                                    <span class="what">A login and signup flow built from scratch for Programming 2.</span>
+                                    <span class="card-foot"><span class="lang">PHP · JavaScript</span><span class="go">Try it <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../islam-kindles/index.html">
+                                <span class="card-media"><img src="img/projects/islam-kindles.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-site">Website</span></span>
+                                <span class="card-body">
+                                    <strong>Islam Kindles</strong>
+                                    <span class="what">A practice website for exploring layout and structure.</span>
+                                    <span class="card-foot"><span class="lang">HTML · CSS</span><span class="go">Visit the site <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../name-checker/index.html">
+                                <span class="card-media"><img src="img/projects/name-checker.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Name Checker</strong>
+                                    <span class="what">The first website I ever made. Where it all started.</span>
+                                    <span class="card-foot"><span class="lang">JavaScript</span><span class="go">Try it <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
                         </ul>
                     </div>
                     <div class="group" id="scratch">
-                        <h3>Built from scratch</h3>
-                        <ul>
-                            <li><a href="../airplane-simulator/index.html"><strong>Airport Simulator</strong><span class="lang">C++</span><span class="what">Planes hold, land, taxi and take off, animated from the real program.</span></a></li>
-                            <li><a href="../ray-tracer/index.html"><strong>Ray Tracer</strong><span class="lang">C++</span><span class="what">Matte, metal and glass spheres, path traced live in your browser.</span></a></li>
-                            <li><a href="../interpreter/index.html"><strong>Lox Interpreter</strong><span class="lang">Java</span><span class="what">A small programming language you can write and run on the page.</span></a></li>
-                            <li><a href="../neural-network/index.html"><strong>Neural Network</strong><span class="lang">Python</span><span class="what">Draw a digit and a network trained from scratch guesses it.</span></a></li>
-                            <li><a href="../packet-analyser/index.html"><strong>Packet Analyser</strong><span class="lang">C</span><span class="what">Decodes network packets by hand, layer by layer.</span></a></li>
+                        <div class="group-head">
+                            <h3>Built from scratch</h3>
+                            <p>No frameworks doing the hard part. Each one runs its real algorithm in your browser.</p>
+                        </div>
+                        <ul class="cards" data-n="5">
+                            <li><a class="card" href="../airplane-simulator/index.html">
+                                <span class="card-media"><img src="img/projects/airplane-simulator.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Airport Simulator</strong>
+                                    <span class="what">Planes hold, land, taxi and take off, animated from the real program.</span>
+                                    <span class="card-foot"><span class="lang">C++</span><span class="go">Watch it run <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../ray-tracer/index.html">
+                                <span class="card-media"><img src="img/projects/ray-tracer.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Ray Tracer</strong>
+                                    <span class="what">Matte, metal and glass spheres, path traced live in your browser.</span>
+                                    <span class="card-foot"><span class="lang">C++</span><span class="go">Render a scene <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../interpreter/index.html">
+                                <span class="card-media"><img src="img/projects/interpreter.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Lox Interpreter</strong>
+                                    <span class="what">A small programming language you can write and run on the page.</span>
+                                    <span class="card-foot"><span class="lang">Java</span><span class="go">Run some code <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../neural-network/index.html">
+                                <span class="card-media"><img src="img/projects/neural-network.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Neural Network</strong>
+                                    <span class="what">Draw a digit and a network trained from scratch guesses it.</span>
+                                    <span class="card-foot"><span class="lang">Python</span><span class="go">Draw a digit <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../packet-analyser/index.html">
+                                <span class="card-media"><img src="img/projects/packet-analyser.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Packet Analyser</strong>
+                                    <span class="what">Decodes network packets by hand, layer by layer.</span>
+                                    <span class="card-foot"><span class="lang">C</span><span class="go">Watch the packets <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
                         </ul>
                     </div>
                     <div class="group" id="more">
-                        <h3>Security, open source and writing</h3>
-                        <ul>
-                            <li><a href="../ctf/index.html"><strong>CTF Writeups</strong><span class="lang">Security</span><span class="what">Ten solved security challenges, plus a live SQL injection one I built.</span></a></li>
-                            <li><a href="../open-source/index.html"><strong>socket.io fix</strong><span class="lang">TypeScript</span><span class="what">A merged bug fix in a widely used real-time library.</span></a></li>
-                            <li><a href="../technical-writing/index.html"><strong>Field Notes</strong><span class="lang">Writing</span><span class="what">Five posts on what I learned building and deploying apps.</span></a></li>
-                            <li><a href="../problem-solving/index.html"><strong>Problem Solving</strong><span class="lang">Python</span><span class="what">LeetCode practice, with an animated Number of Islands search.</span></a></li>
+                        <div class="group-head">
+                            <h3>Security, open source and writing</h3>
+                            <p>Breaking things on purpose, fixing someone else&#x27;s code, and writing it all down.</p>
+                        </div>
+                        <ul class="cards" data-n="4">
+                            <li><a class="card" href="../ctf/index.html">
+                                <span class="card-media"><img src="img/projects/ctf.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>CTF Writeups</strong>
+                                    <span class="what">Ten solved security challenges, plus a live SQL injection one I built.</span>
+                                    <span class="card-foot"><span class="lang">Security</span><span class="go">Try the challenge <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../open-source/index.html">
+                                <span class="card-media"><img src="img/projects/open-source.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>socket.io fix</strong>
+                                    <span class="what">A merged bug fix in a widely used real-time library. See the bug happen.</span>
+                                    <span class="card-foot"><span class="lang">TypeScript</span><span class="go">See the fix <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../technical-writing/index.html">
+                                <span class="card-media"><img src="img/projects/technical-writing.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-read">Blog posts</span></span>
+                                <span class="card-body">
+                                    <strong>Field Notes</strong>
+                                    <span class="what">Five posts on what I learned building and deploying apps.</span>
+                                    <span class="card-foot"><span class="lang">Writing</span><span class="go">Read the posts <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
+                            <li><a class="card" href="../problem-solving/index.html">
+                                <span class="card-media"><img src="img/projects/problem-solving.jpg" width="640" height="400" alt="" loading="lazy"><span class="badge badge-demo">Live demo</span></span>
+                                <span class="card-body">
+                                    <strong>Problem Solving</strong>
+                                    <span class="what">LeetCode practice, with an animated Number of Islands search.</span>
+                                    <span class="card-foot"><span class="lang">Python</span><span class="go">Watch it solve <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                                </span>
+                            </a></li>
                         </ul>
                     </div>
                 </div>
